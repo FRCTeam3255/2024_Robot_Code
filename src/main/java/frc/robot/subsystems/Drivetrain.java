@@ -13,7 +13,10 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -27,6 +30,9 @@ public class Drivetrain extends SN_SuperSwerve {
   private static TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
   private static SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(prefDrivetrain.driveKs.getValue(),
       prefDrivetrain.driveKa.getValue(), prefDrivetrain.driveKv.getValue());
+
+  StructArrayPublisher<SwerveModuleState> swerveDesiredStatesPublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("/SmartDashboard/Drivetrain/SwerveDesiredStates", SwerveModuleState.struct).publish();
 
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -95,9 +101,7 @@ public class Drivetrain extends SN_SuperSwerve {
   @Override
   public void periodic() {
     super.periodic();
-    for (int i = 0; i < 4; i++) {
-      SmartDashboard.putNumber("MODULE " + i + ": DESIRED ANGLE DEGREES",
-          Units.rotationsToDegrees(super.swerveDesiredStates[i]));
-    }
+
+    swerveDesiredStatesPublisher.set(super.lastDesiredStates);
   }
 }
