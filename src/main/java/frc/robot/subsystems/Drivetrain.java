@@ -17,7 +17,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.constDrivetrain;
@@ -59,13 +58,13 @@ public class Drivetrain extends SN_SuperSwerve {
         constDrivetrain.DRIVE_NEUTRAL_MODE,
         constDrivetrain.STEER_NEUTRAL_MODE,
         VecBuilder.fill(
-            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
-            Units.feetToMeters(prefDrivetrain.measurementStdDevsFeet.getValue()),
-            Units.degreesToRadians(prefDrivetrain.measurementStdDevsDegrees.getValue())),
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
+            Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
+            Units.degreesToRadians(prefDrivetrain.measurementStdDevsHeading.getValue())),
         VecBuilder.fill(
-            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
-            Units.feetToMeters(prefVision.measurementStdDevsFeet.getValue()),
-            Units.degreesToRadians(prefVision.measurementStdDevsDegrees.getValue())),
+            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
+            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
+            Units.degreesToRadians(prefVision.visionStdDevsHeading.getValue())),
         new PIDConstants(prefDrivetrain.autoDriveP.getValue(),
             prefDrivetrain.autoDriveI.getValue(),
             prefDrivetrain.autoDriveD.getValue()),
