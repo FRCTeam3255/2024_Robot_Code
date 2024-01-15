@@ -10,13 +10,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Drive;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
+  private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
+  private final Shooter subShooter = new Shooter();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -39,6 +43,8 @@ public class RobotContainer {
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+
+    conOperator.btn_RightTrigger.onTrue(new Shoot(subShooter));
   }
 
   public Command getAutonomousCommand() {
