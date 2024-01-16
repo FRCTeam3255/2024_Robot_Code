@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.constDrivetrain;
@@ -102,5 +103,11 @@ public class Drivetrain extends SN_SuperSwerve {
     super.periodic();
 
     swerveDesiredStatesPublisher.set(super.lastDesiredStates);
+    for (int i = 0; i < 4; i++) {
+      SmartDashboard.putNumber("Drivetrain/Module " + i + "/Desired Speed",
+          Math.abs(Units.metersToFeet(super.lastDesiredStates[i].speedMetersPerSecond)));
+      SmartDashboard.putNumber("Drivetrain/Module " + i + "/ACTUAL Speed",
+          Math.abs(Units.metersToFeet((modules[i].driveMotor.getVelocity().getValue()) * (Units.inchesToMeters(3.8) * Math.PI))));
+    }
   }
 }

@@ -5,6 +5,10 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
@@ -42,6 +46,11 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return null;
+    // Load the path you want to follow using its name in the GUI
+    PathPlannerPath path = PathPlannerPath.fromPathFile("LinePath");
+
+    // Create a path following command using AutoBuilder. This will also trigger
+    // event markers.
+    return AutoBuilder.followPath(path);
   }
 }

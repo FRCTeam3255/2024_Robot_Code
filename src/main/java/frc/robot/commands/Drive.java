@@ -24,7 +24,7 @@ public class Drive extends Command {
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
 
-    isOpenLoop = true;
+    isOpenLoop = false;
 
     addRequirements(this.subDrivetrain);
   }

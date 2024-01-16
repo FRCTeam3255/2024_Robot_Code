@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.4584654569625854,
-      "y": 7.276999473571777
-    },
-    "rotation": -90.0002104591497
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -14,12 +8,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PaW1aW2sW3sC1s"
+            "pathName": "LinePath"
           }
         }
       ]
     }
   },
   "folder": null,
-  "choreoAuto": true
+  "choreoAuto": false
 }

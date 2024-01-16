@@ -22,11 +22,11 @@ import edu.wpi.first.math.util.Units;
 public class RobotPreferences {
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 2.5);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
-    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 1);
+    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
-    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 1);
+    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 8);
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 0.0);
 
@@ -35,11 +35,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv", 0);
 
     // This PID is implemented on the Drivetrain subsystem
-    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 2);
+    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 1);
     public static final SN_DoublePreference autoDriveI = new SN_DoublePreference("autoDriveI", 0);
     public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0);
 
-    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 0.5);
+    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 1);
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
