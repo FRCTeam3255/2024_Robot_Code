@@ -5,7 +5,7 @@ package frc.robot;
 public class RobotMap {
   public static class mapControllers {
     public static final int DRIVER_USB = 0;
-    public static final int OPERATOR_USB = 0;
+    public static final int OPERATOR_USB = 1;
 
   }
 

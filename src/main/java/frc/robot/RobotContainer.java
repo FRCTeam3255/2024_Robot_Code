@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_XboxController;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
@@ -44,7 +47,8 @@ public class RobotContainer {
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
-    conOperator.btn_RightTrigger.onTrue(new Shoot(subShooter));
+    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
   }
 
   public Command getAutonomousCommand() {

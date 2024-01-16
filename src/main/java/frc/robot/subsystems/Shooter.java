@@ -5,9 +5,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences.prefShooter;
 
@@ -21,8 +23,8 @@ public class Shooter extends SubsystemBase {
   VelocityVoltage request;
 
   public Shooter() {
-    leftMotor = new TalonFX(0);
-    rightMotor = new TalonFX(1);
+    leftMotor = new TalonFX(10, "rio");
+    rightMotor = new TalonFX(11, "rio");
 
     leftConfig = new TalonFXConfiguration();
     rightConfig = new TalonFXConfiguration();
@@ -33,8 +35,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public void configure() {
-    leftMotor.setInverted(true);
-    rightMotor.setInverted(false);
 
     leftConfig.Slot0.kS = prefShooter.leftShooterS.getValue();
     leftConfig.Slot0.kV = prefShooter.leftShooterV.getValue();
@@ -50,6 +50,10 @@ public class Shooter extends SubsystemBase {
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
+
+    leftMotor.setInverted(false);
+    rightMotor.setInverted(true);
+
   }
 
   public void setMotorVelocities(double leftVelocity, double leftFF, double rightVelocity, double rightFF) {
@@ -57,8 +61,16 @@ public class Shooter extends SubsystemBase {
     rightMotor.setControl(request.withVelocity(rightVelocity).withFeedForward(rightFF));
   }
 
+  public void setNeutralOutput() {
+    leftMotor.setControl(new NeutralOut());
+    rightMotor.setControl(new NeutralOut());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left Motor Velocity", leftMotor.getVelocity().getValue());
+    SmartDashboard.putNumber("Right Motor Velocity", rightMotor.getVelocity().getValue());
+
   }
 }
