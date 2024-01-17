@@ -15,24 +15,27 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.constDrivetrain;
 import frc.robot.RobotMap.mapDrivetrain;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefVision;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Drivetrain extends SN_SuperSwerve {
+public class Drivetrain extends SN_SuperSwerve implements Logged {
   private static TalonFXConfiguration driveConfiguration = new TalonFXConfiguration();
   private static TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
   private static SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(prefDrivetrain.driveKs.getValue(),
       prefDrivetrain.driveKa.getValue(), prefDrivetrain.driveKv.getValue());
 
-  StructArrayPublisher<SwerveModuleState> swerveDesiredStatesPublisher = NetworkTableInstance.getDefault()
-      .getStructArrayTopic("/SmartDashboard/Drivetrain/SwerveDesiredStates", SwerveModuleState.struct).publish();
+  // Struct logging - Allows for logging data that SmartDashboard alone can't log,
+  // but must be called on the variable's creation
+  @Log.NT
+  private SwerveModuleState[] loggedDesiredStates;
+  @Log.NT
+  private SwerveModuleState[] loggedActualStates;
 
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -94,20 +97,40 @@ public class Drivetrain extends SN_SuperSwerve {
     super.configure();
   }
 
-  public void addEventToAutoMap(String key, Command command) {
-    super.autoEventMap.put(key, command);
+  /**
+   * <p>
+   * <b>Must be run periodically in order to function properly!</b>
+   * </p>
+   * Updates the values of all Struct variables, which are logged using Monologue
+   */
+  public void updateMonologueValues() {
+    loggedDesiredStates = getDesiredModuleStates();
+    loggedActualStates = getActualModuleStates();
   }
 
   @Override
   public void periodic() {
     super.periodic();
+    updateMonologueValues();
 
-    swerveDesiredStatesPublisher.set(super.lastDesiredStates);
-    for (int i = 0; i < 4; i++) {
-      SmartDashboard.putNumber("Drivetrain/Module " + i + "/Desired Speed",
-          Math.abs(Units.metersToFeet(super.lastDesiredStates[i].speedMetersPerSecond)));
-      SmartDashboard.putNumber("Drivetrain/Module " + i + "/ACTUAL Speed",
-          Math.abs(Units.metersToFeet((modules[i].driveMotor.getVelocity().getValue()) * (Units.inchesToMeters(3.8) * Math.PI))));
+    for (SN_SwerveModule mod : modules) {
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Speed (MPS)",
+          Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Speed (MPS)",
+          Math.abs(Units.metersToFeet(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Angle (Degrees)",
+          Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees())));
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Angle (Degrees)",
+          Math.abs(Units.metersToFeet(getActualModuleStates()[mod.moduleNumber].angle.getDegrees())));
+
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Offset Absolute Encoder Angle (Rotations)",
+          mod.getAbsoluteEncoder());
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Absolute Encoder Raw Value (Rotations)",
+          mod.getRawAbsoluteEncoder());
     }
+
+    field.setRobotPose(getPose());
+    SmartDashboard.putData(field);
   }
 }
