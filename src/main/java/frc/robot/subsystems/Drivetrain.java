@@ -13,6 +13,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +37,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   private SwerveModuleState[] loggedDesiredStates;
   @Log.NT
   private SwerveModuleState[] loggedActualStates;
+  @Log.NT
+  private Pose3d currentRobotPose;
 
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -106,6 +109,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   public void updateMonologueValues() {
     loggedDesiredStates = getDesiredModuleStates();
     loggedActualStates = getActualModuleStates();
+    currentRobotPose = new Pose3d(getPose());
   }
 
   @Override
@@ -115,9 +119,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
     for (SN_SwerveModule mod : modules) {
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Speed (MPS)",
-          Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+          Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond));
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Speed (MPS)",
-          Math.abs(Units.metersToFeet(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+          Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond));
 
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Angle (Degrees)",
           Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees())));
@@ -132,5 +136,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
     field.setRobotPose(getPose());
     SmartDashboard.putData(field);
+    SmartDashboard.putNumber("Drivetrain Rotation", getRotation().getDegrees());
   }
 }
