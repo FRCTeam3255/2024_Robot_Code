@@ -14,8 +14,10 @@ import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
@@ -25,6 +27,7 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Shooter subShooter = new Shooter();
+  private final Intake subIntake = new Intake();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -52,6 +55,8 @@ public class RobotContainer {
     conOperator.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subShooter.setPitchMotor(prefShooter.pitchMotorPosition.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
+
+    conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
   }
 
   public Command getAutonomousCommand() {
