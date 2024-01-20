@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.Constants.constDrivetrain;
 import frc.robot.RobotMap.mapDrivetrain;
@@ -28,8 +29,6 @@ import monologue.Annotations.Log;
 public class Drivetrain extends SN_SuperSwerve implements Logged {
   private static TalonFXConfiguration driveConfiguration = new TalonFXConfiguration();
   private static TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
-  private static SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(prefDrivetrain.driveKs.getValue(),
-      prefDrivetrain.driveKa.getValue(), prefDrivetrain.driveKv.getValue());
 
   // Struct logging - Allows for logging data that SmartDashboard alone can't log,
   // but must be called on the variable's creation
@@ -62,6 +61,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         prefDrivetrain.minimumSteerSpeedPercent.getValue(),
         constDrivetrain.DRIVE_MOTOR_INVERT,
         constDrivetrain.STEER_MOTOR_INVERT,
+        constDrivetrain.CANCODER_INVERT,
         constDrivetrain.DRIVE_NEUTRAL_MODE,
         constDrivetrain.STEER_NEUTRAL_MODE,
         VecBuilder.fill(
@@ -86,6 +86,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
   @Override
   public void configure() {
+    driveConfiguration.Slot0.kV = prefDrivetrain.driveKv.getValue();
     driveConfiguration.Slot0.kP = prefDrivetrain.driveP.getValue();
     driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue();
     driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
@@ -96,7 +97,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
     SN_SwerveModule.driveConfiguration = driveConfiguration;
     SN_SwerveModule.steerConfiguration = steerConfiguration;
-    SN_SwerveModule.driveFeedForward = driveFeedForward;
     super.configure();
   }
 
