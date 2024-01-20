@@ -130,4 +130,9 @@ public class RobotPreferences {
         0);
 
   }
+
+  public static final class prefIntake {
+    public static final SN_DoublePreference intakeSpeed = new SN_DoublePreference("intakeSpeed", 0.5);
+    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeSpeed", 0.5);
+  }
 }
