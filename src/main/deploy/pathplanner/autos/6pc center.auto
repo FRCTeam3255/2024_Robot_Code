@@ -40,6 +40,12 @@
           "data": {
             "pathName": "C2sC1"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C1s"
+          }
         }
       ]
     }

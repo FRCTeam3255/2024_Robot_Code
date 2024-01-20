@@ -118,10 +118,10 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     updateMonologueValues();
 
     for (SN_SwerveModule mod : modules) {
-      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Speed (MPS)",
-          Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond));
-      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Speed (MPS)",
-          Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond));
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Speed (FPS)",
+          Units.metersToFeet(Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Speed (FPS)",
+          Units.metersToFeet(Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
 
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Angle (Degrees)",
           Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees())));
