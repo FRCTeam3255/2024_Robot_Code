@@ -1,18 +1,18 @@
 {
     "fileName": "SuperCORE.json",
     "name": "SuperCORE",
-    "version": "2024.2.1",
+    "version": "2024.2.0",
     "frcYear": 2024,
     "uuid": "f82a9412-6f53-4bc0-960c-6895a5236f57",
     "mavenUrls": [
-        "http://127.0.0.1:5500/releases/"
+        "https://frcteam3255.github.io/SuperCORE/releases/"
     ],
-    "jsonUrl": "http://127.0.0.1:5500/releases/com/frcteam3255/supercore/SuperCORE-latest.json",
+    "jsonUrl": "https://frcteam3255.github.io/SuperCORE/releases/com/frcteam3255/supercore/SuperCORE-latest.json",
     "javaDependencies": [
         {
             "groupId": "com.frcteam3255",
             "artifactId": "supercore",
-            "version": "2024.2.1"
+            "version": "2024.2.0"
         }
     ],
     "jniDependencies": [],

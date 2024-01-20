@@ -24,7 +24,7 @@ public class Drive extends Command {
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
 
-    isOpenLoop = false;
+    isOpenLoop = true;
 
     addRequirements(this.subDrivetrain);
   }
@@ -40,7 +40,7 @@ public class Drive extends Command {
     double yVelocity = -yAxis.getAsDouble() * prefDrivetrain.driveSpeed.getValue();
     double rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
 
-    subDrivetrain.drive(new Translation2d(xVelocity, 0), 0, isOpenLoop);
+    subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);
   }
 
   @Override

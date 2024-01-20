@@ -46,6 +46,6 @@ public class RobotContainer implements Logged {
 
   public Command getAutonomousCommand() {
 
-    return new PathPlannerAuto("LineAuto");
+    return new PathPlannerAuto("Line Test");
   }
 }

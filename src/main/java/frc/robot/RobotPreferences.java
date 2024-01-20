@@ -23,15 +23,15 @@ import edu.wpi.first.math.util.Units;
 public class RobotPreferences {
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.020019550342130987);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.0);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
-    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.00020019550342130986);
+    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
-    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 7.2070381231671545);
+    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 100);
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 0.14414076246334312);
 
-    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv", 0.009008797653958945);
+    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv", 0.1);
 
     // This PID is implemented on the Drivetrain subsystem
     public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0);
@@ -62,7 +62,7 @@ public class RobotPreferences {
      * MAX: 943.751 DPS (Due to gearing and robot size)
      * <b>Units:</b> Degrees per second
      */
-    public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 360);
+    public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 540);
 
     /**
      * <b>Units:</b> Feet
