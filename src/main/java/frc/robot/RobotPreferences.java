@@ -105,4 +105,29 @@ public class RobotPreferences {
         "visionStdDevsHeading", Units.metersToFeet(0.9));
 
   }
+
+  public static final class prefShooter {
+    public static final SN_DoublePreference leftShooterS = new SN_DoublePreference("leftShooterS", 0);
+    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", 0.12);
+    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.3);
+    public static final SN_DoublePreference leftShooterI = new SN_DoublePreference("leftShooterI", 0);
+    public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0);
+
+    public static final SN_DoublePreference rightShooterS = new SN_DoublePreference("rightShooterS", 0);
+    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.12);
+    public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.3);
+    public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
+    public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0);
+
+    public static final SN_DoublePreference shooterVelocityVoltage = new SN_DoublePreference("shooterVelocityVoltage",
+        0);
+
+    public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity", 60);
+    public static final SN_DoublePreference leftShooterFeedForward = new SN_DoublePreference("leftShooterFeedForward",
+        0);
+    public static final SN_DoublePreference rightShooterVelocity = new SN_DoublePreference("rightShooterVelocity", 70);
+    public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
+        0);
+
+  }
 }
