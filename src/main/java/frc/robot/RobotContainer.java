@@ -6,7 +6,7 @@ package frc.robot;
 
 import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_XboxController;
-
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -17,10 +17,11 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Drivetrain;
+import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class RobotContainer {
+public class RobotContainer implements Logged {
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
@@ -60,6 +61,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return null;
+
+    return new PathPlannerAuto("Line Test");
   }
 }

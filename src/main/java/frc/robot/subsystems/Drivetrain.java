@@ -13,25 +13,31 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.Constants.constDrivetrain;
 import frc.robot.RobotMap.mapDrivetrain;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefVision;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Drivetrain extends SN_SuperSwerve {
+public class Drivetrain extends SN_SuperSwerve implements Logged {
   private static TalonFXConfiguration driveConfiguration = new TalonFXConfiguration();
   private static TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
-  private static SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(prefDrivetrain.driveKs.getValue(),
-      prefDrivetrain.driveKa.getValue(), prefDrivetrain.driveKv.getValue());
 
-  StructArrayPublisher<SwerveModuleState> swerveDesiredStatesPublisher = NetworkTableInstance.getDefault()
-      .getStructArrayTopic("/SmartDashboard/Drivetrain/SwerveDesiredStates", SwerveModuleState.struct).publish();
+  // Struct logging - Allows for logging data that SmartDashboard alone can't log,
+  // but must be called on the variable's creation
+  @Log.NT
+  private SwerveModuleState[] loggedDesiredStates;
+  @Log.NT
+  private SwerveModuleState[] loggedActualStates;
+  @Log.NT
+  private Pose3d currentRobotPose;
 
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -55,6 +61,7 @@ public class Drivetrain extends SN_SuperSwerve {
         prefDrivetrain.minimumSteerSpeedPercent.getValue(),
         constDrivetrain.DRIVE_MOTOR_INVERT,
         constDrivetrain.STEER_MOTOR_INVERT,
+        constDrivetrain.CANCODER_INVERT,
         constDrivetrain.DRIVE_NEUTRAL_MODE,
         constDrivetrain.STEER_NEUTRAL_MODE,
         VecBuilder.fill(
@@ -79,6 +86,7 @@ public class Drivetrain extends SN_SuperSwerve {
 
   @Override
   public void configure() {
+    driveConfiguration.Slot0.kV = prefDrivetrain.driveKv.getValue();
     driveConfiguration.Slot0.kP = prefDrivetrain.driveP.getValue();
     driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue();
     driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
@@ -89,18 +97,45 @@ public class Drivetrain extends SN_SuperSwerve {
 
     SN_SwerveModule.driveConfiguration = driveConfiguration;
     SN_SwerveModule.steerConfiguration = steerConfiguration;
-    SN_SwerveModule.driveFeedForward = driveFeedForward;
     super.configure();
   }
 
-  public void addEventToAutoMap(String key, Command command) {
-    super.autoEventMap.put(key, command);
+  /**
+   * <p>
+   * <b>Must be run periodically in order to function properly!</b>
+   * </p>
+   * Updates the values of all Struct variables, which are logged using Monologue
+   */
+  public void updateMonologueValues() {
+    loggedDesiredStates = getDesiredModuleStates();
+    loggedActualStates = getActualModuleStates();
+    currentRobotPose = new Pose3d(getPose());
   }
 
   @Override
   public void periodic() {
     super.periodic();
+    updateMonologueValues();
 
-    swerveDesiredStatesPublisher.set(super.lastDesiredStates);
+    for (SN_SwerveModule mod : modules) {
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Speed (FPS)",
+          Units.metersToFeet(Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Speed (FPS)",
+          Units.metersToFeet(Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Angle (Degrees)",
+          Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees())));
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Angle (Degrees)",
+          Math.abs(Units.metersToFeet(getActualModuleStates()[mod.moduleNumber].angle.getDegrees())));
+
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Offset Absolute Encoder Angle (Rotations)",
+          mod.getAbsoluteEncoder());
+      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Absolute Encoder Raw Value (Rotations)",
+          mod.getRawAbsoluteEncoder());
+    }
+
+    field.setRobotPose(getPose());
+    SmartDashboard.putData(field);
+    SmartDashboard.putNumber("Drivetrain Rotation", getRotation().getDegrees());
   }
 }

@@ -1,7 +1,7 @@
 {
     "fileName": "SuperCORE.json",
     "name": "SuperCORE",
-    "version": "2024.1.0",
+    "version": "2024.2.0",
     "frcYear": 2024,
     "uuid": "f82a9412-6f53-4bc0-960c-6895a5236f57",
     "mavenUrls": [
@@ -12,7 +12,7 @@
         {
             "groupId": "com.frcteam3255",
             "artifactId": "supercore",
-            "version": "2024.1.0"
+            "version": "2024.2.0"
         }
     ],
     "jniDependencies": [],

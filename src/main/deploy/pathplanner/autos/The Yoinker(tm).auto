@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4584654569625854,
-      "y": 7.276999473571777
+      "x": 1.434658169746399,
+      "y": 1.5144612789154053
     },
-    "rotation": -90.0002104591497
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PaW1aW2sW3sC1s"
+            "pathName": "Yoinker"
           }
         }
       ]
