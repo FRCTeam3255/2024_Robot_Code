@@ -6,20 +6,21 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
 
 public class Intake extends SubsystemBase {
   TalonFX intakeMotor;
-  Spark leftCenteringMotor;
-  Spark rightCenteringMotor;
+  CANSparkMax leftCenteringMotor;
+  CANSparkMax rightCenteringMotor;
 
   public Intake() {
     intakeMotor = new TalonFX(mapIntake.INTAKE_MAIN_MOTOR_CAN, "rio");
-    leftCenteringMotor = new Spark(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN);
-    rightCenteringMotor = new Spark(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN);
+    leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
+    rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
 
     configure();
   }
@@ -29,16 +30,14 @@ public class Intake extends SubsystemBase {
     rightCenteringMotor.setInverted(true);
   }
 
-  public void setIntakeMotorsSpeed(double speed) {
-    intakeMotor.set(speed);
-    leftCenteringMotor.set(speed);
-    rightCenteringMotor.set(speed);
+  public void setIntakeMotorsSpeed(double intakeSpeed, double centeringSpeed) {
+    intakeMotor.set(intakeSpeed);
+    leftCenteringMotor.set(centeringSpeed);
+    rightCenteringMotor.set(centeringSpeed);
   }
 
   public void setNeutralMode() {
     intakeMotor.setControl(new NeutralOut());
-    leftCenteringMotor.stopMotor();
-    rightCenteringMotor.stopMotor();
   }
 
   @Override
