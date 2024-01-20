@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
@@ -51,6 +52,8 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
+    conOperator.btn_RightBumper
+        .onTrue(Commands.runOnce(() -> subShooter.setPitchMotor(prefShooter.pitchMotorPosition.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
     conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));

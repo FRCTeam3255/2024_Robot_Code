@@ -119,6 +119,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
     public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0);
 
+    public static final SN_DoublePreference pitchShooterP = new SN_DoublePreference("pitchShooterP", 24);
+    public static final SN_DoublePreference pitchShooterI = new SN_DoublePreference("pitchShooterI", 0);
+    public static final SN_DoublePreference pitchShooterD = new SN_DoublePreference("pitchShooterD", 0);
+
     public static final SN_DoublePreference shooterVelocityVoltage = new SN_DoublePreference("shooterVelocityVoltage",
         0);
 
@@ -128,6 +132,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference rightShooterVelocity = new SN_DoublePreference("rightShooterVelocity", 70);
     public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
         0);
+
+    public static final SN_DoublePreference pitchMotorPosition = new SN_DoublePreference("pitchMotorPosition",
+        10);
 
   }
 

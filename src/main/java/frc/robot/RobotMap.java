@@ -44,7 +44,9 @@ public class RobotMap {
   }
 
   public static class mapShooter {
-
+    public static final int SHOOTER_LEFT_MOTOR_CAN = 10;
+    public static final int SHOOTER_RIGHT_MOTOR_CAN = 11;
+    public static final int SHOOTER_PITCH_MOTOR_CAN = 12;
   }
 
 }
