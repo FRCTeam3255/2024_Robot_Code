@@ -9,6 +9,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 /*
@@ -81,5 +84,20 @@ public final class Constants {
     public static final double WHEELBASE = Units.inchesToMeters(23.75); // Distance between Front & Back Wheels
 
     public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = true;
+  }
+
+  public static class constVision {
+
+    public static final String AR_NAME = "Global_Shutter_Camera";
+    public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
+
+    // TODO: Update to match 2024 Robot
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(
+        new Translation3d(Units.inchesToMeters(-3), Units.inchesToMeters(6.5), 0.46355),
+        new Rotation3d(0, 0, 0));
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(
+        new Translation3d(Units.inchesToMeters(-3.6875), Units.inchesToMeters(6.5), 0.46355),
+        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+
   }
 }
