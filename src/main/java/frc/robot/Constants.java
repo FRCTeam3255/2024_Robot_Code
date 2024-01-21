@@ -7,9 +7,25 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.frcteam3255.components.swerve.SN_SwerveConstants;
 
 import edu.wpi.first.math.util.Units;
 
+/*
+ * | Unit Type | Unit to Use |
+ * | ---------- | ------------ |
+ * | Distance | Meters |
+ * | Distance per Time | Meters per Second |
+ * | Angle | Degrees |
+ * | Angle per Time | Degrees per Second |
+ * | Time | Seconds |
+ * 
+ * If the unit does not fall under any of these types, 
+ * add a JavaDoc for that variable specifying it's unit. 
+ * Avoid specifying units in the variable name.
+ * Preferences that obviously don't use the above units (ex. PID)
+ * are exempt from this
+ */
 public final class Constants {
   /**
    * Volts
@@ -21,13 +37,26 @@ public final class Constants {
   }
 
   public static class constDrivetrain {
+    public static class pracBot {
+      // In Rotations: Obtain by aligning all of the wheels in the correct direction
+      // and copy-pasting the Raw Absolute Encoder value
+      public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.921631;
+      public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.425781;
+      public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.743896;
+      public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 1.393066;
+
+      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L2;
+
+    }
+
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
-    // and
-    // copy-pasting the Raw Absolute Encoder value
+    // and copy-pasting the Raw Absolute Encoder value
     public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.322754;
     public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.045410;
     public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.192871;
     public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.314941;
+
+    public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L3;
 
     public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
