@@ -31,6 +31,17 @@ public final class Constants {
    * Volts
    */
   public static final double MAX_VOLTAGE = 12;
+  public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
+
+  // TODO: UPDATE
+  public static final String[] PDH_DEVICES = {
+      "Swerve/FL Steer", "Swerve/FL Drive",
+      null, null, null, null, null, null,
+      "Swerve/FR Steer", "Swerve/FR Drive",
+      "Swerve/BR Steer", "Swerve/BR Drive",
+      null, null, null, null, null, "Swerve/BL Steer",
+      "Swerve/BL Drive", "Ethernet Switch",
+      "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
 
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;

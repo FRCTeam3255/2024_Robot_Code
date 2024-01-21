@@ -8,7 +8,11 @@ import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -36,11 +40,21 @@ public class RobotContainer implements Logged {
   private final Shooter subShooter = new Shooter();
   private final Intake subIntake = new Intake();
 
-  public static boolean isPracticeBot() {
-    return !isPracticeBot.get();
-  }
+  private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   public RobotContainer() {
+    // Set out log file to be in its own folder
+    if (Robot.isSimulation()) {
+      DataLogManager.start("src/main");
+    } else {
+      DataLogManager.start();
+    }
+    // Log data that is being put to shuffleboard
+    DataLogManager.logNetworkTables(true);
+    // Log the DS data and joysticks
+    DriverStation.startDataLog(DataLogManager.getLog(), true);
+    DriverStation.silenceJoystickConnectionWarning(Constants.SILENCE_JOYSTICK_WARNINGS);
+
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
     // The Left Y and X Axes are swapped because from behind the glass, the X Axis
@@ -73,5 +87,39 @@ public class RobotContainer implements Logged {
   public Command getAutonomousCommand() {
 
     return new PathPlannerAuto("Line Test");
+  }
+
+  // Custom Methods
+
+  public static boolean isPracticeBot() {
+    return !isPracticeBot.get();
+  }
+
+  /**
+   * Enable or disable whether the switchable channel on the PDH is supplied
+   * power.
+   * 
+   * @param isPowered Whether the channel receives power or not
+   */
+  public void setSwitchableChannelPower(boolean isPowered) {
+    PDH.setSwitchableChannel(isPowered);
+  }
+
+  /**
+   * Updates the values supplied to the PDH to SmartDashboard. Should be called
+   * periodically.
+   */
+  public static void logPDHValues() {
+    SmartDashboard.putNumber("PDH/Input Voltage", PDH.getVoltage());
+    SmartDashboard.putBoolean("PDH/Is Switchable Channel Powered", PDH.getSwitchableChannel());
+    SmartDashboard.putNumber("PDH/Total Current", PDH.getTotalCurrent());
+    SmartDashboard.putNumber("PDH/Total Power", PDH.getTotalPower());
+    SmartDashboard.putNumber("PDH/Total Energy", PDH.getTotalEnergy());
+
+    for (int i = 0; i < Constants.PDH_DEVICES.length; i++) {
+      if (Constants.PDH_DEVICES[i] != null) {
+        SmartDashboard.putNumber("PDH/" + Constants.PDH_DEVICES[i] + " Current", PDH.getCurrent(i));
+      }
+    }
   }
 }
