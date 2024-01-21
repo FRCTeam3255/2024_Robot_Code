@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -26,8 +27,12 @@ public class Intake extends SubsystemBase {
   }
 
   public void configure() {
-    leftCenteringMotor.setInverted(false);
-    rightCenteringMotor.setInverted(true);
+    intakeMotor.getConfigurator().apply(new TalonFXConfiguration());
+    leftCenteringMotor.restoreFactoryDefaults();
+    rightCenteringMotor.restoreFactoryDefaults();
+
+    leftCenteringMotor.setInverted(true);
+    rightCenteringMotor.setInverted(false);
   }
 
   public void setIntakeMotorsSpeed(double intakeSpeed, double centeringSpeed) {
@@ -38,6 +43,8 @@ public class Intake extends SubsystemBase {
 
   public void setNeutralMode() {
     intakeMotor.setControl(new NeutralOut());
+    leftCenteringMotor.set(0);
+    rightCenteringMotor.set(0);
   }
 
   @Override
