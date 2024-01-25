@@ -1,0 +1,22 @@
+AUTO NAMING CONVENTIONS
+
+First Letter indicates the category of auto.
+The AMP is at the top of the field and the BLUE alliance is on the left.
+
+D - Down
+U - Up
+W - Wing
+
+The rest of the auto indicates the game pieces it collects, and if it scores them. See AutoDiagram.png for more information.
+EX:
+PsW1sC2a = Preload scores in speaker, we intake Wing Note 1 and score it in the speaker, we intake Centerline Note 2 and score it in the Amp.
+
+"Until" indicates that the process repeats for all game pieces on the way to that piece. 
+This is because the path in Choreo is actually one large path that we split up into .traj files when exporting.
+It is highly reccommended to view the path in Choreo using ChoreoPaths.chor before usage so you understand them. 
+
+Usage:
+
+You want an auto to go up from C2 to C3, score C3, then go to C4.
+GO FROM C2 TO C3: U C1UntilC5.2.traj
+SCORE C3 THEN GO TO C4: U C1sUntilC5s.3
