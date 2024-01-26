@@ -40,7 +40,7 @@ public class RobotMap {
   }
 
   public static class mapIntake {
-    public static final int INTAKE_MAIN_MOTOR_CAN = 20;
+    public static final int INTAKE_ROLLER_MOTOR_CAN = 20;
     public static final int INTAKE_LEFT_CENTERING_MOTOR_CAN = 21;
     public static final int INTAKE_RIGHT_CENTERING_MOTOR_CAN = 22;
   }
@@ -51,4 +51,6 @@ public class RobotMap {
     public static final int SHOOTER_PITCH_MOTOR_CAN = 12;
   }
 
+  public static class mapVision {
+  }
 }

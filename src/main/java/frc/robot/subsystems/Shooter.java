@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapShooter;
@@ -69,25 +70,50 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  /**
+   * Sets the velocity of both shooting motors.
+   * 
+   * @param leftVelocity  The velocity to set to the left motor. <b> Units: </b>
+   *                      Rotations per second
+   * @param leftFF        The Feed Forward of the left motor
+   * @param rightVelocity The velocity to set to the right motor. <b> Units: </b>
+   *                      Rotations per second
+   * @param rightFF       The Feed Forward of the right motor
+   */
   public void setMotorVelocities(double leftVelocity, double leftFF, double rightVelocity, double rightFF) {
     leftMotor.setControl(velocityRequest.withVelocity(leftVelocity).withFeedForward(leftFF));
     rightMotor.setControl(velocityRequest.withVelocity(rightVelocity).withFeedForward(rightFF));
   }
 
-  public void setPitchMotor(double position) {
-    pitchMotor.setControl(positionRequest.withPosition(position));
+  /**
+   * Sets the angle of the pitch motor
+   * 
+   * @param angle The angle to set the pitch motor to, in degrees
+   */
+  public void setPitchMotorAngle(double angle) {
+    pitchMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
-  public void setNeutralOutput() {
+  /**
+   * Sets all of the shooting motors to neutral.
+   */
+  public void setShootingNeutralOutput() {
     leftMotor.setControl(new NeutralOut());
     rightMotor.setControl(new NeutralOut());
+  }
+
+  /**
+   * Sets the pitch motor to neutral.
+   */
+  public void setPitchNeutralOutput() {
+    pitchMotor.setControl(new NeutralOut());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left Motor Velocity", leftMotor.getVelocity().getValue());
-    SmartDashboard.putNumber("Right Motor Velocity", rightMotor.getVelocity().getValue());
+    SmartDashboard.putNumber("Shooter/Left Motor Velocity", leftMotor.getVelocity().getValue());
+    SmartDashboard.putNumber("Shooter/Right Motor Velocity", rightMotor.getVelocity().getValue());
 
   }
 }

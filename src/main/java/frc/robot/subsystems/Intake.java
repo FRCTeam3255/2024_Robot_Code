@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
 
 public class Intake extends SubsystemBase {
-  TalonFX intakeMotor;
+  TalonFX rollerMotor;
   CANSparkMax leftCenteringMotor;
   CANSparkMax rightCenteringMotor;
 
   public Intake() {
-    intakeMotor = new TalonFX(mapIntake.INTAKE_MAIN_MOTOR_CAN, "rio");
+    rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
     leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
 
@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void configure() {
-    intakeMotor.getConfigurator().apply(new TalonFXConfiguration());
+    rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
     leftCenteringMotor.restoreFactoryDefaults();
     rightCenteringMotor.restoreFactoryDefaults();
 
@@ -35,14 +35,26 @@ public class Intake extends SubsystemBase {
     rightCenteringMotor.setInverted(false);
   }
 
+  /**
+   * Sets the speed of all of the motors on the intake to the given values.
+   * 
+   * @param intakeSpeed    This is applied to the roller motor. <b> Units: </b>
+   *                       Speed from
+   *                       -1.0 to 1.0.
+   * @param centeringSpeed This is applied to both centering motors. <b> Units:
+   *                       </b> Speed from -1.0 to 1.0.
+   */
   public void setIntakeMotorsSpeed(double intakeSpeed, double centeringSpeed) {
-    intakeMotor.set(intakeSpeed);
+    rollerMotor.set(intakeSpeed);
     leftCenteringMotor.set(centeringSpeed);
     rightCenteringMotor.set(centeringSpeed);
   }
 
+  /**
+   * Sets all of the motors to neutral.
+   */
   public void setNeutralMode() {
-    intakeMotor.setControl(new NeutralOut());
+    rollerMotor.setControl(new NeutralOut());
     leftCenteringMotor.set(0);
     rightCenteringMotor.set(0);
   }
