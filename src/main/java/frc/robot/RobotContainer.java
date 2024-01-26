@@ -53,7 +53,7 @@ public class RobotContainer implements Logged {
     DataLogManager.logNetworkTables(true);
     // Log the DS data and joysticks
     DriverStation.startDataLog(DataLogManager.getLog(), true);
-    DriverStation.silenceJoystickConnectionWarning(Constants.SILENCE_JOYSTICK_WARNINGS);
+    DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
 
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
@@ -81,19 +81,21 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings() {
     conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
     conOperator.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subShooter.setPitchMotor(prefShooter.pitchMotorPosition.getValue())));
+        .onTrue(Commands.runOnce(() -> subShooter.setPitchMotorAngle(prefShooter.pitchMotorAngle.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
     conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
   }
 
   public Command getAutonomousCommand() {
-
     return new PathPlannerAuto("Line Test");
   }
 
   // Custom Methods
 
+  /**
+   * @return If the robot is the practice robot
+   */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
   }
@@ -119,9 +121,9 @@ public class RobotContainer implements Logged {
     SmartDashboard.putNumber("PDH/Total Power", PDH.getTotalPower());
     SmartDashboard.putNumber("PDH/Total Energy", PDH.getTotalEnergy());
 
-    for (int i = 0; i < Constants.PDH_DEVICES.length; i++) {
-      if (Constants.PDH_DEVICES[i] != null) {
-        SmartDashboard.putNumber("PDH/" + Constants.PDH_DEVICES[i] + " Current", PDH.getCurrent(i));
+    for (int i = 0; i < Constants.constRobot.PDH_DEVICES.length; i++) {
+      if (Constants.constRobot.PDH_DEVICES[i] != null) {
+        SmartDashboard.putNumber("PDH/" + Constants.constRobot.PDH_DEVICES[i] + " Current", PDH.getCurrent(i));
       }
     }
   }

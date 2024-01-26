@@ -15,7 +15,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 /*
- * | Unit Type | Unit to Use |
+ * | Unit Type | Preferred Unit to Use |
  * | ---------- | ------------ |
  * | Distance | Meters |
  * | Distance per Time | Meters per Second |
@@ -30,21 +30,9 @@ import edu.wpi.first.math.util.Units;
  * are exempt from this
  */
 public final class Constants {
-  /**
-   * Volts
-   */
-  public static final double MAX_VOLTAGE = 12;
-  public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
-  // TODO: UPDATE
-  public static final String[] PDH_DEVICES = {
-      "Swerve/FL Steer", "Swerve/FL Drive",
-      null, null, null, null, null, null,
-      "Swerve/FR Steer", "Swerve/FR Drive",
-      "Swerve/BR Steer", "Swerve/BR Drive",
-      null, null, null, null, null, "Swerve/BL Steer",
-      "Swerve/BL Drive", "Ethernet Switch",
-      "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
+  public static class constClimber {
+  }
 
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
@@ -86,8 +74,33 @@ public final class Constants {
     public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = true;
   }
 
-  public static class constVision {
+  public static class constIntake {
+  }
 
+  /**
+   * General Robot Constants that don't fall under a subsystem
+   */
+  public static class constRobot {
+    /**
+     * Volts
+     */
+    public static final double MAX_VOLTAGE = 12;
+    public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
+
+    public static final String[] PDH_DEVICES = {
+        "Swerve/FL Steer", "Swerve/FL Drive",
+        null, null, null, null, null, null,
+        "Swerve/FR Steer", "Swerve/FR Drive",
+        "Swerve/BR Steer", "Swerve/BR Drive",
+        null, null, null, null, null, "Swerve/BL Steer",
+        "Swerve/BL Drive", "Ethernet Switch",
+        "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
+  }
+
+  public static class constShooter {
+  }
+
+  public static class constVision {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 

@@ -2,11 +2,12 @@ package frc.robot;
 
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.preferences.SN_DoublePreference;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.util.Units;
 
 /*
- * | Unit Type | Unit to Use |
+ * | Unit Type | Preferred Unit to Use |
  * | ---------- | ------------ |
  * | Distance | Meters |
  * | Distance per Time | Meters per Second |
@@ -58,8 +59,10 @@ public class RobotPreferences {
         SN_SwerveConstants.MK4I_L3.maxSpeedMeters);
 
     /**
+     * <p>
      * Rotational speed while manually driving
      * MAX: 943.751 DPS (Due to gearing and robot size)
+     * </p>
      * <b>Units:</b> Degrees per second
      */
     public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 540);
@@ -76,34 +79,34 @@ public class RobotPreferences {
         "autoMaxAccel", 6);
 
     /**
+     * <p>
      * Pose estimator standard deviation for encoder & gyro data
+     * </p>
      * <b>Units:</b> Feet
      */
     public static final SN_DoublePreference measurementStdDevsPosition = new SN_DoublePreference(
         "measurementStdDevsPosition", Units.metersToFeet(0.1));
+
     /**
+     * <p>
      * Pose estimator standard deviation for encoder & gyro data
+     * </p>
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference measurementStdDevsHeading = new SN_DoublePreference(
         "measurementStdDevsHeading", Units.metersToFeet(0.1));
   }
 
-  public static final class prefVision {
+  public static final class prefIntake {
     /**
-     * Pose estimator standard deviation for vision data
-     * <b>Units:</b> Feet
+     * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
-        "visionStdDevsPosition", Units.metersToFeet(0.9));
-    /**
-     * Pose estimator standard deviation for vision data
-     * <b>Units:</b> Degrees
-     */
-    public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
-        "visionStdDevsHeading", Units.metersToFeet(0.9));
+    public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 0.7);
 
-    public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeSpeed", 0.7);
   }
 
   public static final class prefShooter {
@@ -126,20 +129,49 @@ public class RobotPreferences {
     public static final SN_DoublePreference shooterVelocityVoltage = new SN_DoublePreference("shooterVelocityVoltage",
         0);
 
-    public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity", 60);
+    /**
+     * <b>Units:</b> Meters per second
+     */
+    public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity",
+        SN_Math.rotationsToMeters(60, 1, 0));
     public static final SN_DoublePreference leftShooterFeedForward = new SN_DoublePreference("leftShooterFeedForward",
         0);
-    public static final SN_DoublePreference rightShooterVelocity = new SN_DoublePreference("rightShooterVelocity", 70);
+
+    /**
+     * <b>Units:</b> Meters per second
+     */
+    public static final SN_DoublePreference rightShooterVelocity = new SN_DoublePreference("rightShooterVelocity",
+        SN_Math.rotationsToMeters(70, 1, 0));
     public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
         0);
 
-    public static final SN_DoublePreference pitchMotorPosition = new SN_DoublePreference("pitchMotorPosition",
+    /**
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference pitchMotorAngle = new SN_DoublePreference("pitchMotorAngle",
         10);
 
   }
 
-  public static final class prefIntake {
-    public static final SN_DoublePreference intakeSpeed = new SN_DoublePreference("intakeSpeed", 0.7);
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeSpeed", 0.7);
+  public static final class prefVision {
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data
+     * <p>
+     * <b>Units:</b> Feet
+     */
+    public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
+        "visionStdDevsPosition", Units.metersToFeet(0.9));
+    
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data
+     * </p>
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
+        "visionStdDevsHeading", Units.metersToFeet(0.9));
+
+    public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
   }
 }
