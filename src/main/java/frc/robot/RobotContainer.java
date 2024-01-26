@@ -62,12 +62,13 @@ public class RobotContainer implements Logged {
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
-    configureBindings();
+    configureDriverBindings();
+    configureOperatorBindings();
 
     subDrivetrain.resetModulesToAbsolute();
   }
 
-  private void configureBindings() {
+  private void configureDriverBindings() {
     conDriver.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     conDriver.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
 
@@ -75,7 +76,9 @@ public class RobotContainer implements Logged {
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+  }
 
+  private void configureOperatorBindings() {
     conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
     conOperator.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subShooter.setPitchMotor(prefShooter.pitchMotorPosition.getValue())));
