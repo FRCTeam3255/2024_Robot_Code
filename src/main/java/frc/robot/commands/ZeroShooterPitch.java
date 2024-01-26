@@ -4,43 +4,53 @@
 
 package frc.robot.commands;
 
-import com.frcteam3255.utils.SN_Math;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.subsystems.Shooter;
 
-public class Shoot extends Command {
+public class ZeroShooterPitch extends Command {
   Shooter subShooter;
 
-  public Shoot(Shooter subShooter) {
+  boolean isZeroed;
+
+  public ZeroShooterPitch(Shooter subShooter) {
     this.subShooter = subShooter;
-    // Use addRequirements() here to declare subsystem dependencies.
+
+    addRequirements(subShooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subShooter.setPitchVoltage(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subShooter.setShootingVelocities(SN_Math.metersToRotations(prefShooter.leftShooterVelocity.getValue(), 1, 0),
-        prefShooter.leftShooterFeedForward.getValue(),
-        SN_Math.metersToRotations(prefShooter.rightShooterVelocity.getValue(), 1, 0),
-        prefShooter.rightShooterFeedForward.getValue());
+    subShooter.setPitchVoltage(prefShooter.pitchZeroingVoltage.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subShooter.setShootingNeutralOutput();
+    // Stop all movement
+    subShooter.setPitchVoltage(0);
+
+    // Reset to the current position if this command was not interrupted
+    if (!interrupted) {
+      subShooter.setPitchAngle(subShooter.getPitchAngle());
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // The hood is zeroed when a. Enough velocity is being supplied to it b. It has
+    // been long enough
+    if (subShooter.getPitchVelocity() < prefShooter.pitchZeroedVelocity.getValue()) {
+      return true; // TODO: ADD TIME
+    }
     return false;
   }
 }

@@ -148,8 +148,20 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchMotorAngle = new SN_DoublePreference("pitchMotorAngle",
-        10);
+    public static final SN_DoublePreference pitchAngle = new SN_DoublePreference("pitchAngle", 10);
+
+    /**
+     * The voltage supplied to the motor in order to zero
+     * <b>Units:</b> Volts
+     */
+    public static final SN_DoublePreference pitchZeroingVoltage = new SN_DoublePreference("pitchZeroingVoltage", 0.1);
+
+    /**
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     * <b>Units:</b> Degrees per second
+     */
+    public static final SN_DoublePreference pitchZeroedVelocity = new SN_DoublePreference("pitchZeroedVelocity", 0.1);
 
   }
 
