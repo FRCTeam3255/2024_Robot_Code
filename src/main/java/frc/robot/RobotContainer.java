@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 

@@ -95,9 +95,6 @@ public final class Constants {
   }
 
   public static class constShooter {
-    // TODO: ADD JAVADOCS, GET UNITS, GET VALUES, YADA YADA
-    public static final double PITCH_CIRCUMFERENCE = 0;
-    public static final double PITCH_GEAR_RATIO = 0;
   }
 
   public static class constVision {

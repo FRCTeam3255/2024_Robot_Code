@@ -10,12 +10,10 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.constShooter;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
 
@@ -65,7 +63,6 @@ public class Shooter extends SubsystemBase {
     pitchConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     pitchConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     pitchConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
-    pitchConfig.Feedback.SensorToMechanismRatio = constShooter.PITCH_GEAR_RATIO;
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
