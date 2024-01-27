@@ -26,7 +26,7 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subShooter.setMotorVelocities(SN_Math.metersToRotations(prefShooter.leftShooterVelocity.getValue(), 1, 0),
+    subShooter.setShootingVelocities(SN_Math.metersToRotations(prefShooter.leftShooterVelocity.getValue(), 1, 0),
         prefShooter.leftShooterFeedForward.getValue(),
         SN_Math.metersToRotations(prefShooter.rightShooterVelocity.getValue(), 1, 0),
         prefShooter.rightShooterFeedForward.getValue());

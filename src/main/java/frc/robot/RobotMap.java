@@ -12,6 +12,7 @@ public class RobotMap {
   }
 
   public static class mapClimber {
+    public static final int CLIMBER_MOTOR_CAN = 30;
   }
 
   public static class mapDrivetrain {
