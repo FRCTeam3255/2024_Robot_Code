@@ -22,6 +22,14 @@ import edu.wpi.first.math.util.Units;
  * are exempt from this
  */
 public class RobotPreferences {
+  public static final class climberPref {
+    public static final SN_DoublePreference climberMoterFowardLimit = new SN_DoublePreference(
+        "climberMotorForwardLimit", 10);
+    public static final SN_DoublePreference climberMoterReverseLimit = new SN_DoublePreference(
+        "climberMotorReverseLimit", 5);
+
+  }
+
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
     public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.0);
@@ -101,12 +109,12 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 0.7);
+    public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 1);
 
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeSpeed", 0.7);
+    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeSpeed", 1);
   }
 
   public static final class prefShooter {
@@ -148,8 +156,32 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchMotorAngle = new SN_DoublePreference("pitchMotorAngle",
-        10);
+    public static final SN_DoublePreference pitchAngle = new SN_DoublePreference("pitchAngle", 10);
+
+    /**
+     * <p>
+     * The voltage supplied to the motor in order to zero
+     * </p>
+     * <b>Units:</b> Volts
+     */
+    public static final SN_DoublePreference pitchZeroingVoltage = new SN_DoublePreference("pitchZeroingVoltage", -0.5);
+
+    /**
+     * <p>
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     * </p>
+     * <b>Units:</b> Degrees per second
+     */
+    public static final SN_DoublePreference pitchZeroedVelocity = new SN_DoublePreference("pitchZeroedVelocity", 0.01);
+
+    /**
+     * <p>
+     * The elapsed time required to consider the pivot motor as zeroed
+     * </p>
+     * <b>Units:</b> Seconds
+     */
+    public static final SN_DoublePreference pitchZeroedTime = new SN_DoublePreference("pitchZeroedTime", 0.25);
 
   }
 

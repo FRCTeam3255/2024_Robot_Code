@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.frcteam3255.joystick.SN_DualActionStick;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -22,6 +21,7 @@ import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ZeroShooterPitch;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
@@ -81,7 +81,7 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings() {
     conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
     conOperator.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subShooter.setPitchMotorAngle(prefShooter.pitchMotorAngle.getValue())));
+        .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
     conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));

@@ -42,12 +42,12 @@ public final class Constants {
     public static class pracBot {
       // In Rotations: Obtain by aligning all of the wheels in the correct direction
       // and copy-pasting the Raw Absolute Encoder value
-      public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.921631;
-      public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.425781;
-      public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.743896;
-      public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 1.393066;
+      public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.055664;
+      public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.076172;
+      public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.245117;
+      public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.083252;
 
-      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L2;
+      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L3;
 
     }
 
@@ -98,6 +98,7 @@ public final class Constants {
   }
 
   public static class constShooter {
+    public static final double PITCH_GEAR_RATIO = 1;
   }
 
   public static class constVision {
