@@ -22,6 +22,14 @@ import edu.wpi.first.math.util.Units;
  * are exempt from this
  */
 public class RobotPreferences {
+  public static final class climberPref {
+    public static final SN_DoublePreference climberMoterFowardLimit = new SN_DoublePreference(
+        "climberMotorForwardLimit", 10);
+    public static final SN_DoublePreference climberMoterReverseLimit = new SN_DoublePreference(
+        "climberMotorReverseLimit", 5);
+
+  }
+
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
     public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.0);
