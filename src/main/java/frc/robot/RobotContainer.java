@@ -26,6 +26,7 @@ import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turret;
 
 public class RobotContainer implements Logged {
   // Misc
@@ -39,6 +40,7 @@ public class RobotContainer implements Logged {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Shooter subShooter = new Shooter();
   private final Intake subIntake = new Intake();
+  private final Turret subTurret = new Turret();
 
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
@@ -65,6 +67,7 @@ public class RobotContainer implements Logged {
     configureBindings();
 
     subDrivetrain.resetModulesToAbsolute();
+    subTurret.resetTurretToAbsolutePosition();
   }
 
   private void configureBindings() {
