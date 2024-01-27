@@ -34,17 +34,17 @@ public class Climber extends SubsystemBase {
 
   public void configure() {
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMoterLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMoterFowardLimit.getValue();
+
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMoterReverseLimit.getValue();
 
   }
 
   public void setClimberMotorSpeed(double motorVelocity, double motorFF) {
-    if (climberMotor.getPosition().getValue() >= climberPref.climberMoterLimit.getValue()) {
-      climberMotor.setControl(velocityRequest.withVelocity(0).withFeedForward(0));
-    } else {
-      climberMotor.setControl(velocityRequest.withVelocity(motorVelocity).withFeedForward(motorFF));
 
-    }
+    climberMotor.setControl(velocityRequest.withVelocity(motorVelocity).withFeedForward(motorFF));
+
   }
 
   public void setNeutralOutput() {
