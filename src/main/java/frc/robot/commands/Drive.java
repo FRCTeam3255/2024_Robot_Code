@@ -38,7 +38,7 @@ public class Drive extends Command {
     // Get Joystick inputs
     double xVelocity = xAxis.getAsDouble() * prefDrivetrain.driveSpeed.getValue();
     double yVelocity = -yAxis.getAsDouble() * prefDrivetrain.driveSpeed.getValue();
-    double rVelocity = rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
+    double rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
 
     subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);
   }

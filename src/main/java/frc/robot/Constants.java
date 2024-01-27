@@ -44,7 +44,7 @@ public final class Constants {
       public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.245117;
       public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.083252;
 
-      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L2;
+      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L3;
 
     }
 
