@@ -14,6 +14,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.constShooter;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
 
@@ -63,6 +64,7 @@ public class Shooter extends SubsystemBase {
     pitchConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     pitchConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     pitchConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
+    pitchConfig.Feedback.SensorToMechanismRatio = constShooter.PITCH_GEAR_RATIO;
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
@@ -147,8 +149,11 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter/Left Motor Velocity", leftMotor.getVelocity().getValue());
-    SmartDashboard.putNumber("Shooter/Right Motor Velocity", rightMotor.getVelocity().getValue());
+    SmartDashboard.putNumber("Shooter/Left/Velocity RPS", leftMotor.getVelocity().getValue());
+    SmartDashboard.putNumber("Shooter/Right/Velocity RPS", rightMotor.getVelocity().getValue());
+    SmartDashboard.putNumber("Shooter/Pitch/Velocity DPS", getPitchVelocity());
+    SmartDashboard.putNumber("Shooter/Pitch/Voltage", getPitchVoltage());
+    SmartDashboard.putNumber("Shooter/Pitch/Angle", getPitchAngle());
 
   }
 }

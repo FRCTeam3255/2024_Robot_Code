@@ -21,6 +21,7 @@ import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ZeroShooterPitch;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
@@ -70,6 +71,7 @@ public class RobotContainer implements Logged {
     // DRIVER
     conDriver.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     conDriver.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    conDriver.btn_A.whileTrue(new ZeroShooterPitch(subShooter));
 
     // Defaults to Field-Relative, is Robot-Relative while held
     conDriver.btn_LeftBumper
@@ -77,12 +79,13 @@ public class RobotContainer implements Logged {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // OPERATOR
-    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
-    conOperator.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
+    // conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
+    // conOperator.btn_RightBumper
+    // .onTrue(Commands.runOnce(() ->
+    // subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
+    // conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
-    conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
+    // conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
   }
 
   public Command getAutonomousCommand() {
