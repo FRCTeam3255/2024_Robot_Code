@@ -4,32 +4,30 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
 
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
-  CANSparkMax leftCenteringMotor;
-  CANSparkMax rightCenteringMotor;
+  TalonSRX leftCenteringMotor;
+  TalonSRX rightCenteringMotor;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
-    leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
-    rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
+    leftCenteringMotor = new TalonSRX(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN);
+    rightCenteringMotor = new TalonSRX(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN);
 
     configure();
   }
 
   public void configure() {
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
-    leftCenteringMotor.restoreFactoryDefaults();
-    rightCenteringMotor.restoreFactoryDefaults();
 
     leftCenteringMotor.setInverted(true);
     rightCenteringMotor.setInverted(false);
@@ -46,8 +44,8 @@ public class Intake extends SubsystemBase {
    */
   public void setIntakeMotorsSpeed(double intakeSpeed, double centeringSpeed) {
     rollerMotor.set(intakeSpeed);
-    leftCenteringMotor.set(centeringSpeed);
-    rightCenteringMotor.set(centeringSpeed);
+    leftCenteringMotor.set(ControlMode.PercentOutput, centeringSpeed);
+    rightCenteringMotor.set(ControlMode.PercentOutput, centeringSpeed);
   }
 
   /**
@@ -55,8 +53,8 @@ public class Intake extends SubsystemBase {
    */
   public void setNeutralMode() {
     rollerMotor.setControl(new NeutralOut());
-    leftCenteringMotor.set(0);
-    rightCenteringMotor.set(0);
+    leftCenteringMotor.neutralOutput();
+    rightCenteringMotor.neutralOutput();
   }
 
   @Override
