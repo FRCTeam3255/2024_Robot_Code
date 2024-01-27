@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.frcteam3255.preferences.SN_DoublePreference;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.climberPref;
 import frc.robot.subsystems.Climber;
@@ -11,10 +13,15 @@ import frc.robot.subsystems.Climber;
 public class Climb extends Command {
 
   Climber globalClimber;
+  SN_DoublePreference globalVelocity;
+  SN_DoublePreference globalFeedForward;
 
   /** Creates a new Climb. */
-  public Climb(Climber givenClimber) {
+  public Climb(Climber givenClimber, SN_DoublePreference givenVelocity, SN_DoublePreference givenFeedForward) {
+    globalVelocity = givenVelocity;
     globalClimber = givenClimber;
+    globalFeedForward = givenFeedForward;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,8 +33,7 @@ public class Climb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalClimber.setClimberMotorSpeed(climberPref.climberMotorVelocity.getValue(),
-        climberPref.climberMotorFeedForward.getValue());
+    globalClimber.setClimberMotorSpeed(globalVelocity.getValue(), globalFeedForward.getValue());
 
   }
 
