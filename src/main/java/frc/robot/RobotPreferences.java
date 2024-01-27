@@ -165,7 +165,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Degrees per second
      */
-    public static final SN_DoublePreference pitchZeroedVelocity = new SN_DoublePreference("pitchZeroedVelocity", 0.05);
+    public static final SN_DoublePreference pitchZeroedVelocity = new SN_DoublePreference("pitchZeroedVelocity", 0.01);
 
     /**
      * <p>

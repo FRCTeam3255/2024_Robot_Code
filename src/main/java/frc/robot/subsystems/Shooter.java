@@ -108,6 +108,15 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
+   * Sets the current angle of the pitch motor to read as the given value
+   * 
+   * @param angle The angle to set the pitch motor to. <b> Units: </b> Degrees
+   */
+  public void setPitchSensorAngle(double angle) {
+    pitchMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
+  /**
    * Sets the voltage of the pitch motor
    * 
    * @param voltage The voltage to set the pitch motor to. <b> Units: </b>

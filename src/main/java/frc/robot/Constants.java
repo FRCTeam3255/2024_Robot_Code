@@ -95,7 +95,7 @@ public final class Constants {
   }
 
   public static class constShooter {
-    public static final double PITCH_GEAR_RATIO = 40.09; // TODO: REMOVE
+    public static final double PITCH_GEAR_RATIO = 1;
   }
 
   public static class constVision {

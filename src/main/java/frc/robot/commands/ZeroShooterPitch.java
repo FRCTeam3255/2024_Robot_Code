@@ -13,7 +13,7 @@ import frc.robot.subsystems.Shooter;
 public class ZeroShooterPitch extends Command {
   Shooter subShooter;
 
-  double zeroingTimestamp = 0;
+  double zeroingTimestamp;
 
   public ZeroShooterPitch(Shooter subShooter) {
     this.subShooter = subShooter;
@@ -25,6 +25,7 @@ public class ZeroShooterPitch extends Command {
   @Override
   public void initialize() {
     subShooter.setPitchVoltage(0);
+    zeroingTimestamp = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +42,7 @@ public class ZeroShooterPitch extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subShooter.setPitchAngle(subShooter.getPitchAngle());
+      subShooter.setPitchSensorAngle(0);
     }
   }
 
@@ -49,13 +50,15 @@ public class ZeroShooterPitch extends Command {
   @Override
   public boolean isFinished() {
     // If the current velocity is low enough to be considered as zeroed
-    if (subShooter.getPitchVelocity() < prefShooter.pitchZeroedVelocity.getValue()) {
-      // And this is the first time it has happened, begin the timer
+    if (Math.abs(subShooter.getPitchVelocity()) <= Math.abs(prefShooter.pitchZeroedVelocity.getValue())) {
+      // And this is the first loop it has happened, begin the timer
       if (zeroingTimestamp == 0) {
         zeroingTimestamp = Timer.getFPGATimestamp();
         return false;
       }
-      // If this isn't the first time, return if it has been long enough
+
+      // If this isn't the first loop, return if it has been below the threshold for
+      // long enough
       return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefShooter.pitchZeroedTime.getValue();
     }
 
