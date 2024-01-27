@@ -104,13 +104,14 @@ public final class Constants {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 
-    // TODO: Update to match 2024 Robot
+    // TODO: Update when we have the CAD
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(-3), Units.inchesToMeters(6.5), 0.46355),
-        new Rotation3d(0, 0, 0));
+        new Translation3d(0.3183, Units.inchesToMeters(-10), 0.209),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-30)));
+
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(-3.6875), Units.inchesToMeters(6.5), 0.46355),
-        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+        new Translation3d(0.3183, Units.inchesToMeters(10), 0.209),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(30)));
 
   }
 }
