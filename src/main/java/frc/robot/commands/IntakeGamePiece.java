@@ -24,7 +24,7 @@ public class IntakeGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subIntake.setIntakeMotorsSpeed(prefIntake.intakeSpeed.getValue(), prefIntake.intakeCenteringSpeed.getValue());
+    subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(), prefIntake.intakeCenteringSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.

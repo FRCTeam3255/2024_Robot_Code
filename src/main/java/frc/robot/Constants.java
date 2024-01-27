@@ -12,7 +12,7 @@ import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import edu.wpi.first.math.util.Units;
 
 /*
- * | Unit Type | Unit to Use |
+ * | Unit Type | Preferred Unit to Use |
  * | ---------- | ------------ |
  * | Distance | Meters |
  * | Distance per Time | Meters per Second |
@@ -27,21 +27,9 @@ import edu.wpi.first.math.util.Units;
  * are exempt from this
  */
 public final class Constants {
-  /**
-   * Volts
-   */
-  public static final double MAX_VOLTAGE = 12;
-  public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
-  // TODO: UPDATE
-  public static final String[] PDH_DEVICES = {
-      "Swerve/FL Steer", "Swerve/FL Drive",
-      null, null, null, null, null, null,
-      "Swerve/FR Steer", "Swerve/FR Drive",
-      "Swerve/BR Steer", "Swerve/BR Drive",
-      null, null, null, null, null, "Swerve/BL Steer",
-      "Swerve/BL Drive", "Ethernet Switch",
-      "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
+  public static class constClimber {
+  }
 
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
@@ -82,4 +70,34 @@ public final class Constants {
 
     public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = true;
   }
+
+  public static class constIntake {
+  }
+
+  /**
+   * General Robot Constants that don't fall under a subsystem
+   */
+  public static class constRobot {
+    /**
+     * Volts
+     */
+    public static final double MAX_VOLTAGE = 12;
+    public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
+
+    public static final String[] PDH_DEVICES = {
+        "Swerve/FL Steer", "Swerve/FL Drive",
+        null, null, null, null, null, null,
+        "Swerve/FR Steer", "Swerve/FR Drive",
+        "Swerve/BR Steer", "Swerve/BR Drive",
+        null, null, null, null, null, "Swerve/BL Steer",
+        "Swerve/BL Drive", "Ethernet Switch",
+        "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
+  }
+
+  public static class constShooter {
+  }
+
+  public static class constVision {
+  }
+
 }
