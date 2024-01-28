@@ -241,4 +241,9 @@ public class RobotPreferences {
         "visionStdDevsHeading", Units.metersToFeet(0.9));
 
   }
+
+  public static final class transferPref {
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMoterSpeed", .5);
+  }
+
 }
