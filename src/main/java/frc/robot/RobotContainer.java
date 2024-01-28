@@ -21,7 +21,6 @@ import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.ZeroShooterPitch;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
