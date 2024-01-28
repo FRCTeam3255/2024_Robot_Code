@@ -23,10 +23,23 @@ import edu.wpi.first.math.util.Units;
  */
 public class RobotPreferences {
   public static final class climberPref {
-    public static final SN_DoublePreference climberMoterFowardLimit = new SN_DoublePreference(
+    public static final SN_DoublePreference climberMotorFowardLimit = new SN_DoublePreference(
         "climberMotorForwardLimit", 10);
     public static final SN_DoublePreference climberMoterReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", 5);
+        "climberMotorReverseLimit", -5);
+    public static final SN_DoublePreference climberMotorForwardVelocity = new SN_DoublePreference(
+        "climberMotorForwardVelocity", 1);
+    public static final SN_DoublePreference climberMotorForwardFeedForward = new SN_DoublePreference(
+        "climberMotorForwardFeedForward", .5);
+    public static final SN_DoublePreference climberMotorReverseVelocity = new SN_DoublePreference(
+        "climberMotorReverseVelocity", -1);
+    public static final SN_DoublePreference climberMotorReverseFeedForward = new SN_DoublePreference(
+        "climberMotorReverseFeedForward", -.5);
+    public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
+    public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
+    public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
+    public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
   }
 
@@ -222,6 +235,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
         "visionStdDevsPosition", Units.metersToFeet(0.9));
+    
     /**
      * <p>
      * Pose estimator standard deviation for vision data
@@ -231,5 +245,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
         "visionStdDevsHeading", Units.metersToFeet(0.9));
 
+    public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
   }
 }
