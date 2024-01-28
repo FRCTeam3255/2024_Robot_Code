@@ -18,8 +18,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefShooter;
+import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.LockTurret;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -63,6 +65,8 @@ public class RobotContainer implements Logged {
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
+    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
+
     configureBindings();
 
     subDrivetrain.resetModulesToAbsolute();
@@ -86,6 +90,9 @@ public class RobotContainer implements Logged {
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
     conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
+    conOperator.btn_B.onTrue(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretDebugAngle.getValue()))); // TODO:
+    // DEBUG
+    // (remove)
   }
 
   public Command getAutonomousCommand() {

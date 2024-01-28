@@ -9,6 +9,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 
 /*
@@ -69,6 +71,18 @@ public final class Constants {
     public static final double WHEELBASE = Units.inchesToMeters(23.75); // Distance between Front & Back Wheels
 
     public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = true;
+  }
+
+  public static class constField {
+    /**
+     * The coordinate of the center of the Speaker, in meters
+     */
+    public static final Pose2d SPEAKER_CENTER = new Pose2d(0, 5.638, new Rotation2d(0));
+
+    /**
+     * The coordinate of the center of the amp, in meters
+     */
+    public static final Pose2d AMP_CENTER = new Pose2d(1.834, 8.218, new Rotation2d(0));
   }
 
   public static class constIntake {

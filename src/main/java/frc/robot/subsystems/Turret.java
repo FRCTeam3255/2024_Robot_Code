@@ -17,20 +17,21 @@ import frc.robot.RobotPreferences.prefTurret;
 
 public class Turret extends SubsystemBase {
   TalonFX turretMotor;
-
   DutyCycleEncoder absoluteEncoder;
-
   TalonFXConfiguration turretConfig;
-
   double absoluteEncoderOffset;
-
   PositionVoltage positionRequest;
+
+  private boolean lockSpeaker = false;
+  private boolean lockAmp = false;
 
   public Turret() {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
     turretConfig = new TalonFXConfiguration();
     absoluteEncoderOffset = prefTurret.turretAbsoluteEncoderOffset.getValue();
+
+    positionRequest = new PositionVoltage(0);
 
     configure();
   }
@@ -51,12 +52,12 @@ public class Turret extends SubsystemBase {
   // "Set" Methods
 
   /**
-   * Sets the position of the turret
+   * Sets the angle of the turret
    * 
-   * @param position The position to set the turret to. <b> Units: </b> Degrees
+   * @param angle The angle to set the turret to. <b> Units: </b> Degrees
    */
-  public void setTurretPosition(double position) {
-    turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(position)));
+  public void setTurretAngle(double angle) {
+    turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   /**
@@ -64,6 +65,32 @@ public class Turret extends SubsystemBase {
    */
   public void resetTurretToAbsolutePosition() {
     turretMotor.setPosition(getAbsoluteEncoder());
+  }
+
+  /**
+   * Toggle if the turret should lock onto the position of the speaker. If true,
+   * this will also disable the lock to the amp.
+   * 
+   * @param lockSpeaker If we should lock on to the speaker
+   */
+  public void setLockSpeaker(boolean lockSpeaker) {
+    if (lockSpeaker == true) {
+      lockAmp = false;
+    }
+    this.lockSpeaker = lockSpeaker;
+  }
+
+  /**
+   * Toggle if the turret should lock onto the position of the amp. If true,
+   * this will also disable the lock to the speaker.
+   * 
+   * @param lockSpeaker If we should lock on to the amp
+   */
+  public void setLockAmp(boolean lockAmp) {
+    if (lockAmp == true) {
+      lockSpeaker = false;
+    }
+    this.lockAmp = lockAmp;
   }
 
   // "Get" Methods
@@ -95,6 +122,23 @@ public class Turret extends SubsystemBase {
    */
   public double getAngle() {
     return Units.rotationsToDegrees(turretMotor.getPosition().getValueAsDouble());
+  }
+
+  public boolean getLockSpeaker() {
+    return lockSpeaker;
+  }
+
+  public boolean getLockAmp() {
+    return lockAmp;
+  }
+
+  /**
+   * @param angle The angle to check. <b> Units: </b> Degrees
+   * @return If the given angle is possible for the turret to reach
+   */
+  public boolean isAnglePossible(double angle) {
+    return (angle <= Units.rotationsToDegrees(prefTurret.turretForwardLimit.getValue())
+        && angle >= Units.rotationsToDegrees(prefTurret.turretReverseLimit.getValue()));
   }
 
   @Override

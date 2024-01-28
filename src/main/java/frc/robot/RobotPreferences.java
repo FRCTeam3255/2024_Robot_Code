@@ -192,14 +192,16 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Rotations
      */
-    public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit", 20);
+    public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit",
+        Units.degreesToRotations(90));
     /**
      * <p>
      * The mininum soft limit of the turret
      * </p>
      * <b>Units:</b> Rotations
      */
-    public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit", 5);
+    public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
+        Units.degreesToRotations(-90));
 
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 24);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
@@ -207,6 +209,8 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference turretAbsoluteEncoderOffset = new SN_DoublePreference(
         "turretAbsoluteEncoderOffset", 0);
+
+    public static final SN_DoublePreference turretDebugAngle = new SN_DoublePreference("turretDebugAngle", 90);
   }
 
   public static final class prefVision {
