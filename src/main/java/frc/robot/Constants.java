@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -12,6 +14,8 @@ import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /*
  * | Unit Type | Preferred Unit to Use |
@@ -74,15 +78,43 @@ public final class Constants {
   }
 
   public static class constField {
-    /**
-     * The coordinate of the center of the Speaker, in meters
-     */
-    public static final Pose2d SPEAKER_CENTER = new Pose2d(0, 5.638, new Rotation2d(0));
+    public static Optional<Alliance> ALLIANCE = Optional.empty();
 
     /**
-     * The coordinate of the center of the amp, in meters
+     * Gets the positions of all of the necessary field elements on the field. All
+     * coordinates are in meters and are relative to the blue alliance. See
+     * <a href=
+     * https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
+     * Robot Coordinate Systems</a>
+     * 
+     * @return An array of field element positions. 0 = Speaker, 1 = Amp
      */
-    public static final Pose2d AMP_CENTER = new Pose2d(1.834, 8.218, new Rotation2d(0));
+    public static Pose2d[] GET_FIELD_POSITIONS() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return new Pose2d[] { SPEAKER_RED, AMP_RED };
+      }
+      return new Pose2d[] { SPEAKER_BLUE, AMP_BLUE };
+    }
+
+    /**
+     * The coordinate of the center of the blue speaker, in meters
+     */
+    private static final Pose2d SPEAKER_BLUE = new Pose2d(0, 5.547, new Rotation2d(0));
+
+    /**
+     * The coordinate of the center of the blue amp, in meters
+     */
+    private static final Pose2d AMP_BLUE = new Pose2d(1.827, 8.2112312, new Rotation2d(0));
+
+    /**
+     * The coordinate of the center of the red speaker, in meters
+     */
+    private static final Pose2d SPEAKER_RED = new Pose2d(16.5410515, 5.547, new Rotation2d(0));
+
+    /**
+     * The coordinate of the center of the red amp, in meters
+     */
+    private static final Pose2d AMP_RED = new Pose2d(14.706, 8.2112312, new Rotation2d(0));
   }
 
   public static class constIntake {

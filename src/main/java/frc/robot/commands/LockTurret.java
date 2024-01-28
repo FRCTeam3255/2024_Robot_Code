@@ -4,9 +4,13 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -22,8 +26,11 @@ public class LockTurret extends Command {
 
   Rotation2d desiredAngle = new Rotation2d();
 
-  Pose2d speakerPose = Constants.constField.SPEAKER_CENTER;
-  Pose2d ampPose = Constants.constField.AMP_CENTER;
+  Optional<Alliance> alliance = DriverStation.getAlliance();
+
+  Pose2d[] fieldPoses;
+  Pose2d speakerPose;
+  Pose2d ampPose;
   Pose2d robotPose = new Pose2d();
 
   public LockTurret(Turret subTurret, Drivetrain subDrivetrain) {
@@ -37,6 +44,10 @@ public class LockTurret extends Command {
   @Override
   public void initialize() {
     desiredAngle = Rotation2d.fromDegrees(subTurret.getAngle());
+
+    fieldPoses = Constants.constField.GET_FIELD_POSITIONS();
+    speakerPose = fieldPoses[0];
+    ampPose = fieldPoses[1];
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,6 +63,7 @@ public class LockTurret extends Command {
       double distY = robotPose.getY() - speakerPose.getY();
 
       desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
+      desiredAngle = desiredAngle.rotateBy(robotPose.getRotation().unaryMinus());
 
       // This is an "else if" so that if both are equal somehow, we lock onto the
       // speaker rather than flipping between the two
@@ -59,7 +71,8 @@ public class LockTurret extends Command {
       double distX = robotPose.getX() - ampPose.getX();
       double distY = robotPose.getY() - ampPose.getY();
 
-      desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distX, distY)) - 90);
+      desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
+      desiredAngle = desiredAngle.rotateBy(robotPose.getRotation().unaryMinus());
     }
 
     if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
