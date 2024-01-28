@@ -52,6 +52,11 @@ public class RobotMap {
     public static final int SHOOTER_PITCH_MOTOR_CAN = 12;
   }
 
+  public static class mapTurret {
+    public static final int TURRET_MOTOR_CAN = 40;
+    public static final int TURRET_ABSOLUTE_ENCODER_DIO = 1;
+  }
+
   public static class mapVision {
   }
 }

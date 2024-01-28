@@ -185,6 +185,30 @@ public class RobotPreferences {
 
   }
 
+  public static final class prefTurret {
+    /**
+     * <p>
+     * The maximum soft limit of the turret
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit", 20);
+    /**
+     * <p>
+     * The mininum soft limit of the turret
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit", 5);
+
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 24);
+    public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
+    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
+
+    public static final SN_DoublePreference turretAbsoluteEncoderOffset = new SN_DoublePreference(
+        "turretAbsoluteEncoderOffset", 0);
+  }
+
   public static final class prefVision {
     /**
      * <p>
