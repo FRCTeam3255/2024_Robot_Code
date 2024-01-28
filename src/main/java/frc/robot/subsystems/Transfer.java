@@ -23,8 +23,8 @@ public class Transfer extends SubsystemBase {
     transferMotor = new TalonSRX(mapTransfer.TRANSFER_MOTOR_CAN);
   }
 
-  public void setTranferMotorSpeed() {
-    transferMotor.set(ControlMode.PercentOutput, transferPref.transferMotorSpeed.getValue());
+  public void setTranferMotorSpeed(double motorSpeed) {
+    transferMotor.set(ControlMode.PercentOutput, motorSpeed);
   }
 
   public void setNeutralOutput() {

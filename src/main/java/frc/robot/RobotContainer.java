@@ -23,12 +23,14 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroShooterPitch;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
 public class RobotContainer implements Logged {
@@ -45,6 +47,7 @@ public class RobotContainer implements Logged {
   private final Intake subIntake = new Intake();
   private final Climber subClimber = new Climber();
   private final Turret subTurret = new Turret();
+  private final Transfer subTransfer = new Transfer();
 
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
@@ -94,6 +97,8 @@ public class RobotContainer implements Logged {
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
     conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
+
+    conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
   }
 
   public Command getAutonomousCommand() {
