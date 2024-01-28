@@ -33,18 +33,23 @@ public class Climber extends SubsystemBase {
   }
 
   public void configure() {
+    climberConfig.Slot0.kS = climberPref.climberS.getValue();
+    climberConfig.Slot0.kV = climberPref.climberV.getValue();
+    climberConfig.Slot0.kP = climberPref.climberP.getValue();
+    climberConfig.Slot0.kI = climberPref.climberI.getValue();
+    climberConfig.Slot0.kD = climberPref.climberD.getValue();
+
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMoterFowardLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMotorFowardLimit.getValue();
 
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMoterReverseLimit.getValue();
-
+    climberMotor.getConfigurator().apply(climberConfig);
   }
 
-  public void setClimberMotorSpeed(double motorVelocity, double motorFF) {
+  public void setClimberMotorSpeed(double motorVelocity, double motorFeedForward) {
 
-    climberMotor.setControl(velocityRequest.withVelocity(motorVelocity).withFeedForward(motorFF));
-
+    climberMotor.setControl(velocityRequest.withVelocity(motorVelocity).withFeedForward(motorFeedForward));
   }
 
   public void setNeutralOutput() {
