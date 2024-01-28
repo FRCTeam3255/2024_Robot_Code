@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
@@ -47,6 +48,7 @@ public class Turret extends SubsystemBase {
 
     turretMotor.getConfigurator().apply(turretConfig);
   }
+  // "Set" Methods
 
   /**
    * Sets the position of the turret
@@ -56,6 +58,15 @@ public class Turret extends SubsystemBase {
   public void setTurretPosition(double position) {
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(position)));
   }
+
+  /**
+   * Reset the turret encoder motor to absolute encoder's value
+   */
+  public void resetTurretToAbsolutePosition() {
+    turretMotor.setPosition(getAbsoluteEncoder());
+  }
+
+  // "Get" Methods
 
   /**
    * Get the raw position of the turret encoder (without offset)
@@ -80,14 +91,16 @@ public class Turret extends SubsystemBase {
   }
 
   /**
-   * Reset the turret encoder motor to absolute encoder's value
+   * @return The current angle of the turret. <b> Units: </b> Degrees
    */
-  public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition(getAbsoluteEncoder());
+  public double getAngle() {
+    return Units.rotationsToDegrees(turretMotor.getPosition().getValueAsDouble());
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Turret/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
+    SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
+    SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
   }
 }
