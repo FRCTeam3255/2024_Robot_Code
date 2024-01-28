@@ -54,8 +54,7 @@ public class LockTurret extends Command {
   @Override
   public void execute() {
     robotPose = subDrivetrain.getPose();
-    // lockSpeaker = subTurret.getLockSpeaker();
-    lockSpeaker = true;
+    lockSpeaker = subTurret.getLockSpeaker();
     lockAmp = subTurret.getLockAmp();
 
     if (lockSpeaker) {
@@ -79,7 +78,7 @@ public class LockTurret extends Command {
       subTurret.setTurretAngle(desiredAngle.getDegrees());
     }
 
-    SmartDashboard.putNumber("DEBUG - TURRET DESIRED ANGLE", desiredAngle.getDegrees());
+    SmartDashboard.putNumber("DEBUG - TURRET DESIRED ANGLE", desiredAngle.getDegrees()); // TODO: REMOVE
   }
 
   // Called once the command ends or is interrupted.
