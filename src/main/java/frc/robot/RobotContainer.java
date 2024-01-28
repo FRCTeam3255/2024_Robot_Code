@@ -18,14 +18,15 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefShooter;
+import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.ZeroShooterPitch;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 public class RobotContainer implements Logged {
   // Misc
@@ -39,6 +40,7 @@ public class RobotContainer implements Logged {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Shooter subShooter = new Shooter();
   private final Intake subIntake = new Intake();
+  private final Vision subVision = new Vision();
 
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
@@ -61,6 +63,8 @@ public class RobotContainer implements Logged {
     // is actually in front of you
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
+
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
     configureDriverBindings();
     configureOperatorBindings();
