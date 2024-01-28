@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +20,7 @@ public class LockTurret extends Command {
   boolean lockSpeaker;
   boolean lockAmp;
 
-  double desiredAngle;
+  Rotation2d desiredAngle = new Rotation2d();
 
   Pose2d speakerPose = Constants.constField.SPEAKER_CENTER;
   Pose2d ampPose = Constants.constField.AMP_CENTER;
@@ -35,7 +36,7 @@ public class LockTurret extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    desiredAngle = subTurret.getAngle();
+    desiredAngle = Rotation2d.fromDegrees(subTurret.getAngle());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,11 +51,7 @@ public class LockTurret extends Command {
       double distX = robotPose.getX() - speakerPose.getX();
       double distY = robotPose.getY() - speakerPose.getY();
 
-      desiredAngle = Units.radiansToDegrees(Math.atan2(distX, distY)) - 90;
-
-      if (subTurret.isAnglePossible(desiredAngle)) {
-        subTurret.setTurretAngle(desiredAngle);
-      }
+      desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
 
       // This is an "else if" so that if both are equal somehow, we lock onto the
       // speaker rather than flipping between the two
@@ -62,14 +59,14 @@ public class LockTurret extends Command {
       double distX = robotPose.getX() - ampPose.getX();
       double distY = robotPose.getY() - ampPose.getY();
 
-      desiredAngle = Units.radiansToDegrees(Math.atan2(distX, distY)) - 90;
-
-      if (subTurret.isAnglePossible(desiredAngle)) {
-        subTurret.setTurretAngle(desiredAngle);
-      }
+      desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distX, distY)) - 90);
     }
 
-    SmartDashboard.putNumber("DEBUG - TURRET DESIRED ANGLE", desiredAngle);
+    if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
+      subTurret.setTurretAngle(desiredAngle.getDegrees());
+    }
+
+    SmartDashboard.putNumber("DEBUG - TURRET DESIRED ANGLE", desiredAngle.getDegrees());
   }
 
   // Called once the command ends or is interrupted.
