@@ -13,7 +13,7 @@ This robot will be competing at the regional level in the following competitions
 - [Website](https://supernurds.com)
 
 ## What is CRESCENDO?
-![Crescendo Banner](src\main\assets\FRC_SocialDLC_FB_Post.png)
+![Crescendo Banner](src/main/assets/FRC_SocialDLC_FB_Post.png)
 
 CRESCENDO, presented by Haas, is the 2024 Season of the FIRST Robotics Competition. Each season has its unique objectives and limitations. 
 Students have 6 weeks to construct a robot to compete in the season. Once the 6 weeks are up, teams compete at regional or district-level 
