@@ -5,6 +5,10 @@ package frc.robot;
 public class RobotMap {
   public static final int IS_PRACTICE_BOT_DIO = 0;
 
+  public static class mapLEDs {
+    public static final int LEDs_CANdle_ID = 60;
+  }
+
   public static class mapControllers {
     public static final int DRIVER_USB = 0;
     public static final int OPERATOR_USB = 1;
