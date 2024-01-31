@@ -9,6 +9,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 /*
@@ -99,6 +102,17 @@ public final class Constants {
   }
 
   public static class constVision {
-  }
+    public static final String AR_NAME = "Global_Shutter_Camera";
+    public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 
+    // TODO: Update when we have the CAD
+    public static final Transform3d ROBOT_TO_OV = new Transform3d(
+        new Translation3d(0.3183, Units.inchesToMeters(-10), 0.209),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-30)));
+
+    public static final Transform3d ROBOT_TO_AR = new Transform3d(
+        new Translation3d(0.3183, Units.inchesToMeters(10), 0.209),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(30)));
+
+  }
 }

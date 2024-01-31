@@ -231,6 +231,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
         "visionStdDevsPosition", Units.metersToFeet(0.9));
+    
     /**
      * <p>
      * Pose estimator standard deviation for vision data
@@ -240,6 +241,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
         "visionStdDevsHeading", Units.metersToFeet(0.9));
 
+    public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
   }
 
   public static final class transferPref {
