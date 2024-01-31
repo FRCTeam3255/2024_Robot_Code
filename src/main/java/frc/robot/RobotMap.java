@@ -19,6 +19,10 @@ public class RobotMap {
     public static final int CLIMBER_MOTOR_CAN = 30;
   }
 
+  public static class mapTransfer {
+    public static final int TRANSFER_MOTOR_CAN = 50;
+  }
+
   public static class mapDrivetrain {
     public static final String CAN_BUS_NAME = "Swerve";
     public static final int PIGEON_CAN = 0;

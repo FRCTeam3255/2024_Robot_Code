@@ -243,4 +243,9 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
   }
+
+  public static final class transferPref {
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMoterSpeed", .5);
+  }
+
 }
