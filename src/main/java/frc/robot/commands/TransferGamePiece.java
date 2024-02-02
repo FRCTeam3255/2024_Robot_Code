@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.transferPref;
+import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.subsystems.Transfer;
 
 public class TransferGamePiece extends Command {
@@ -26,7 +26,7 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalTransfer.setTranferMotorSpeed(transferPref.transferMotorSpeed.getValue());
+    globalTransfer.setTranferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.

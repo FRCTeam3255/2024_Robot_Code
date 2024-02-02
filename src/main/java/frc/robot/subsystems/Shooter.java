@@ -64,14 +64,22 @@ public class Shooter extends SubsystemBase {
     pitchConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     pitchConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     pitchConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
+
+    pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefShooter.pitchForwardLimit.getValue();
+
+    pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefShooter.pitchReverseLimit.getValue();
+
     pitchConfig.Feedback.SensorToMechanismRatio = constShooter.PITCH_GEAR_RATIO;
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
     pitchMotor.getConfigurator().apply(pitchConfig);
 
-    leftMotor.setInverted(false);
-    rightMotor.setInverted(true);
+    leftMotor.setInverted(prefShooter.leftShooterInvert.getValue());
+    rightMotor.setInverted(prefShooter.rightShooterInvert.getValue());
+    pitchMotor.setInverted(prefShooter.pitchShooterInvert.getValue());
 
   }
 

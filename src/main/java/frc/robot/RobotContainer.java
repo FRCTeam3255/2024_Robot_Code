@@ -79,8 +79,9 @@ public class RobotContainer implements Logged {
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
-    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    // subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
+    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+    // subVision));
 
     configureDriverBindings();
     configureOperatorBindings();
@@ -96,6 +97,7 @@ public class RobotContainer implements Logged {
         new Climb(subClimber, climberPref.climberMotorForwardVelocity, climberPref.climberMotorForwardFeedForward));
     conDriver.btn_South.whileTrue(
         new Climb(subClimber, climberPref.climberMotorReverseVelocity, climberPref.climberMotorReverseFeedForward));
+
     // Defaults to Field-Relative, is Robot-Relative while held
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
@@ -103,13 +105,22 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings() {
-    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
-    conOperator.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
+    conOperator.btn_RightBumper.whileTrue(new Shoot(subShooter));
 
-    conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
-    conOperator.btn_B.onTrue(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretDebugAngle.getValue()))); // TODO:
+    // conOperator.btn_RightBumper
+    // .onTrue(Commands.runOnce(() ->
+    // subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
+    // conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
+
+    // conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
+    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(1.0)));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(-1.0)));
+
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subTurret.setTurretVoltage(1.0)));
+    conOperator.btn_B.onTrue(Commands.runOnce(() -> subTurret.setTurretVoltage(-1.0)));
+
+    // conOperator.btn_B.onTrue(Commands.runOnce(() ->
+    // subTurret.setTurretAngle(prefTurret.turretDebugAngle.getValue()))); // TODO:
     // DEBUG
     // (remove)
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));

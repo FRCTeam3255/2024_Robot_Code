@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
+import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
@@ -136,33 +137,36 @@ public class RobotPreferences {
     public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.3);
     public static final SN_DoublePreference leftShooterI = new SN_DoublePreference("leftShooterI", 0);
     public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0);
+    public static final SN_BooleanPreference leftShooterInvert = new SN_BooleanPreference("leftShooterInvert", true);
 
     public static final SN_DoublePreference rightShooterS = new SN_DoublePreference("rightShooterS", 0);
     public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.12);
     public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.3);
     public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
     public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0);
+    public static final SN_BooleanPreference rightShooterInvert = new SN_BooleanPreference("rightShooterInvert", false);
 
     public static final SN_DoublePreference pitchShooterP = new SN_DoublePreference("pitchShooterP", 24);
     public static final SN_DoublePreference pitchShooterI = new SN_DoublePreference("pitchShooterI", 0);
     public static final SN_DoublePreference pitchShooterD = new SN_DoublePreference("pitchShooterD", 0);
+    public static final SN_BooleanPreference pitchShooterInvert = new SN_BooleanPreference("pitchShooterInvert", true);
 
     public static final SN_DoublePreference shooterVelocityVoltage = new SN_DoublePreference("shooterVelocityVoltage",
         0);
 
     /**
-     * <b>Units:</b> Meters per second
+     * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity",
-        SN_Math.rotationsToMeters(60, 1, 0));
+        60);
     public static final SN_DoublePreference leftShooterFeedForward = new SN_DoublePreference("leftShooterFeedForward",
         0);
 
     /**
-     * <b>Units:</b> Meters per second
+     * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterVelocity = new SN_DoublePreference("rightShooterVelocity",
-        SN_Math.rotationsToMeters(70, 1, 0));
+        70);
     public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
         0);
 
@@ -196,6 +200,29 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference pitchZeroedTime = new SN_DoublePreference("pitchZeroedTime", 0.25);
 
+    /**
+     * <p>
+     * The maximum soft limit of the pitch motor
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
+        Units.degreesToRotations(59));
+    /**
+     * <p>
+     * The minium soft limit of the pitch motor
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference pitchReverseLimit = new SN_DoublePreference("pitchReverseLimit",
+        Units.degreesToRotations(0));
+
+  }
+
+  public static final class prefTransfer {
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", 1.0);
+
+    public static final SN_BooleanPreference transferInverted = new SN_BooleanPreference("transferInverted", true);
   }
 
   public static final class prefTurret {
@@ -206,24 +233,25 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit",
-        Units.degreesToRotations(90));
+        Units.degreesToRotations(45));
     /**
      * <p>
-     * The mininum soft limit of the turret
+     * The minium soft limit of the turret
      * </p>
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
-        Units.degreesToRotations(-90));
+        Units.degreesToRotations(-45));
 
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 24);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
 
     public static final SN_DoublePreference turretAbsoluteEncoderOffset = new SN_DoublePreference(
-        "turretAbsoluteEncoderOffset", 0);
+        "turretAbsoluteEncoderOffset", 0.811603);
 
     public static final SN_DoublePreference turretDebugAngle = new SN_DoublePreference("turretDebugAngle", 90);
+    public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
   }
 
   public static final class prefVision {
@@ -235,7 +263,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
         "visionStdDevsPosition", Units.metersToFeet(0.9));
-    
+
     /**
      * <p>
      * Pose estimator standard deviation for vision data
@@ -246,10 +274,6 @@ public class RobotPreferences {
         "visionStdDevsHeading", Units.metersToFeet(0.9));
 
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
-  }
-
-  public static final class transferPref {
-    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMoterSpeed", .5);
   }
 
 }

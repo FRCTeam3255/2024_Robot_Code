@@ -6,21 +6,24 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapTransfer;
-import frc.robot.RobotPreferences.transferPref;
+import frc.robot.RobotPreferences.prefTransfer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.controls.NeutralOut;
 
 public class Transfer extends SubsystemBase {
-  /** Creates a new Transfer. */
-  public void configure() {
-  }
-
   TalonSRX transferMotor;
 
   public Transfer() {
     transferMotor = new TalonSRX(mapTransfer.TRANSFER_MOTOR_CAN);
+    configure();
+  }
+
+  public void configure() {
+    transferMotor.configFactoryDefault();
+
+    transferMotor.setInverted(prefTransfer.transferInverted.getValue());
   }
 
   public void setTranferMotorSpeed(double motorSpeed) {

@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.util.Units;
@@ -22,6 +23,7 @@ public class Turret extends SubsystemBase {
   TalonFXConfiguration turretConfig;
   double absoluteEncoderOffset;
   PositionVoltage positionRequest;
+  VoltageOut voltageRequest;
 
   private boolean lockSpeaker = false;
   private boolean lockAmp = false;
@@ -33,6 +35,7 @@ public class Turret extends SubsystemBase {
     absoluteEncoderOffset = prefTurret.turretAbsoluteEncoderOffset.getValue();
 
     positionRequest = new PositionVoltage(0);
+    voltageRequest = new VoltageOut(0);
 
     configure();
   }
@@ -51,6 +54,7 @@ public class Turret extends SubsystemBase {
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
 
     turretMotor.getConfigurator().apply(turretConfig);
+    turretMotor.setInverted(prefTurret.turretInverted.getValue());
   }
   // "Set" Methods
 
@@ -64,10 +68,22 @@ public class Turret extends SubsystemBase {
   }
 
   /**
+   * Sets the voltage of the turret motor
+   * 
+   * @param voltage The voltage to set the turret motor to. <b> Units: </b>
+   *                Volts
+   */
+  public void setTurretVoltage(double voltage) {
+    turretMotor.setControl(voltageRequest.withOutput(voltage));
+  }
+
+  /**
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition(getAbsoluteEncoder());
+    // turretMotor.setPosition(getAbsoluteEncoder());
+    turretMotor.setPosition(0);
+
   }
 
   /**

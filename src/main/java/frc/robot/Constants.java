@@ -143,7 +143,7 @@ public final class Constants {
   }
 
   public static class constShooter {
-    public static final double PITCH_GEAR_RATIO = 1;
+    public static final double PITCH_GEAR_RATIO = 57;
   }
 
   public static class constTurret {
