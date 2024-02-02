@@ -16,7 +16,8 @@ public class RobotMap {
   }
 
   public static class mapTransfer {
-    public static final int TRANSFER_MOTOR_CAN = 50;
+    public static final int FEEDER_MOTOR_CAN = 50;
+    public static final int TRANSFER_MOTOR_CAN = 51;
   }
 
   public static class mapDrivetrain {
