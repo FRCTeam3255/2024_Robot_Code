@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
+import frc.robot.Constants.constTurret.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
 
@@ -25,8 +26,7 @@ public class Turret extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
 
-  private boolean lockSpeaker = false;
-  private boolean lockAmp = false;
+  private LockedLocation lockedLocation = LockedLocation.NONE;
 
   public Turret() {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
@@ -87,29 +87,24 @@ public class Turret extends SubsystemBase {
   }
 
   /**
-   * Toggle if the turret should lock onto the position of the speaker. If true,
-   * this will also disable the lock to the amp.
-   * 
-   * @param lockSpeaker If we should lock on to the speaker
+   * Set the turret's locking location to the speaker.
    */
-  public void setLockSpeaker(boolean lockSpeaker) {
-    if (lockSpeaker == true) {
-      lockAmp = false;
-    }
-    this.lockSpeaker = lockSpeaker;
+  public void setLockSpeaker() {
+    lockedLocation = LockedLocation.SPEAKER;
   }
 
   /**
-   * Toggle if the turret should lock onto the position of the amp. If true,
-   * this will also disable the lock to the speaker.
-   * 
-   * @param lockSpeaker If we should lock on to the amp
+   * Set the turret's locking location to the amp.
    */
-  public void setLockAmp(boolean lockAmp) {
-    if (lockAmp == true) {
-      lockSpeaker = false;
-    }
-    this.lockAmp = lockAmp;
+  public void setLockAmp() {
+    lockedLocation = LockedLocation.AMP;
+  }
+
+  /**
+   * Disable the turret's locking.
+   */
+  public void setLockNone() {
+    lockedLocation = LockedLocation.NONE;
   }
 
   // "Get" Methods
@@ -143,12 +138,11 @@ public class Turret extends SubsystemBase {
     return Units.rotationsToDegrees(turretMotor.getPosition().getValueAsDouble());
   }
 
-  public boolean getLockSpeaker() {
-    return lockSpeaker;
-  }
-
-  public boolean getLockAmp() {
-    return lockAmp;
+  /**
+   * @return The current location that the turret is locked onto
+   */
+  public LockedLocation getLockedLocation() {
+    return lockedLocation;
   }
 
   /**

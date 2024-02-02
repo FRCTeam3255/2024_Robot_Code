@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.FieldConstants;
+import frc.robot.Constants.constTurret.LockedLocation;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Turret;
 
@@ -21,8 +23,7 @@ public class LockTurret extends Command {
   Turret subTurret;
   Drivetrain subDrivetrain;
 
-  boolean lockSpeaker;
-  boolean lockAmp;
+  LockedLocation lockedLocation = LockedLocation.NONE;
 
   Rotation2d desiredAngle = new Rotation2d();
 
@@ -45,7 +46,7 @@ public class LockTurret extends Command {
   public void initialize() {
     desiredAngle = Rotation2d.fromDegrees(subTurret.getAngle());
 
-    fieldPoses = Constants.constField.GET_FIELD_POSITIONS();
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS();
     speakerPose = fieldPoses[0];
     ampPose = fieldPoses[1];
   }
@@ -54,10 +55,9 @@ public class LockTurret extends Command {
   @Override
   public void execute() {
     robotPose = subDrivetrain.getPose();
-    lockSpeaker = subTurret.getLockSpeaker();
-    lockAmp = subTurret.getLockAmp();
+    lockedLocation = subTurret.getLockedLocation();
 
-    if (lockSpeaker) {
+    if (lockedLocation.equals(LockedLocation.SPEAKER)) {
       double distX = robotPose.getX() - speakerPose.getX();
       double distY = robotPose.getY() - speakerPose.getY();
 
@@ -66,7 +66,7 @@ public class LockTurret extends Command {
 
       // This is an "else if" so that if both are equal somehow, we lock onto the
       // speaker rather than flipping between the two
-    } else if (lockAmp) {
+    } else if (lockedLocation.equals(LockedLocation.AMP)) {
       double distX = robotPose.getX() - ampPose.getX();
       double distY = robotPose.getY() - ampPose.getY();
 

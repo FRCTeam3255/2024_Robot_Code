@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    Constants.constField.ALLIANCE = DriverStation.getAlliance();
+    FieldConstants.ALLIANCE = DriverStation.getAlliance();
   }
 
   @Override

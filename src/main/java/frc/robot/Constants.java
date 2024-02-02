@@ -79,46 +79,6 @@ public final class Constants {
     public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = true;
   }
 
-  public static class constField {
-    public static Optional<Alliance> ALLIANCE = Optional.empty();
-
-    /**
-     * Gets the positions of all of the necessary field elements on the field. All
-     * coordinates are in meters and are relative to the blue alliance. See
-     * <a href=
-     * https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
-     * Robot Coordinate Systems</a>
-     * 
-     * @return An array of field element positions. 0 = Speaker, 1 = Amp
-     */
-    public static Pose2d[] GET_FIELD_POSITIONS() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return new Pose2d[] { SPEAKER_RED, AMP_RED };
-      }
-      return new Pose2d[] { SPEAKER_BLUE, AMP_BLUE };
-    }
-
-    /**
-     * The coordinate of the center of the blue speaker, in meters
-     */
-    private static final Pose2d SPEAKER_BLUE = new Pose2d(0, 5.547, new Rotation2d(0));
-
-    /**
-     * The coordinate of the center of the blue amp, in meters
-     */
-    private static final Pose2d AMP_BLUE = new Pose2d(1.827, 8.2112312, new Rotation2d(0));
-
-    /**
-     * The coordinate of the center of the red speaker, in meters
-     */
-    private static final Pose2d SPEAKER_RED = new Pose2d(16.5410515, 5.547, new Rotation2d(0));
-
-    /**
-     * The coordinate of the center of the red amp, in meters
-     */
-    private static final Pose2d AMP_RED = new Pose2d(14.706, 8.2112312, new Rotation2d(0));
-  }
-
   public static class constIntake {
   }
 
@@ -148,6 +108,10 @@ public final class Constants {
 
   public static class constTurret {
     public static final double GEAR_RATIO = 39;
+
+    public enum LockedLocation {
+      NONE, SPEAKER, AMP
+    }
   }
 
   public static class constVision {
