@@ -12,6 +12,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.constTurret;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
 
@@ -46,6 +47,8 @@ public class Turret extends SubsystemBase {
 
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefTurret.turretReverseLimit.getValue();
+
+    turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
 
     turretMotor.getConfigurator().apply(turretConfig);
   }

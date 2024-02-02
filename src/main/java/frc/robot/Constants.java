@@ -146,6 +146,10 @@ public final class Constants {
     public static final double PITCH_GEAR_RATIO = 1;
   }
 
+  public static class constTurret {
+    public static final double GEAR_RATIO = 39;
+  }
+
   public static class constVision {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
