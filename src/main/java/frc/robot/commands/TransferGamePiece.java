@@ -5,16 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.transferPref;
+import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.subsystems.Transfer;
 
 public class TransferGamePiece extends Command {
   /** Creates a new TransferGamePiece. */
-  Transfer globalTransfer;
+  Transfer globalFeeder;
 
   public TransferGamePiece(Transfer givenTransfer) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalTransfer = givenTransfer;
+    globalFeeder = givenTransfer;
+
+    // globalTransfer = givenTransfer;
 
   }
 
@@ -26,13 +28,15 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalTransfer.setTranferMotorSpeed(transferPref.transferMotorSpeed.getValue());
+    globalFeeder.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
+    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalTransfer.setNeutralOutput();
+    globalFeeder.setFeederNeutralOutput();
+    globalFeeder.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.

@@ -115,4 +115,10 @@ public final class Constants {
         new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(30)));
 
   }
+
+  public static class constTransfer {
+    public static final double CURRENT_LIMIT_CEILING_AMPS = 40;
+    public static final double CURRENT_LIMIT_AFTER_SEC = 10;
+    public static final double CURRENT_LIMIT_FLOOR_AMPS = 8;
+  }
 }
