@@ -43,7 +43,7 @@ public class FieldConstants {
      * The coordinate of the center of the blue amp, in meters.
      */
     private static final Pose3d AMP = new Pose3d(1.827, 8.2112312, (0.457 / 2) + 0.660, new Rotation3d(0, 0, 0));
-    // 0.457m = The width of the AMP opening
+    // 0.457m = The height of the AMP opening
     // 0.660m = The height between the floor and the bottom of the opening
   }
 

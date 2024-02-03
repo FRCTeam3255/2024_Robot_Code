@@ -199,7 +199,10 @@ public class Shooter extends SubsystemBase {
   public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
       LockedLocation lockedLocation) {
     double distX = 0;
+    double distY = 0;
     double distZ = 0;
+
+    double distXY = 0;
 
     Pose3d pitchPose = new Pose3d(robotPose).transformBy(constShooter.ROBOT_TO_PITCH);
     Pose3d speakerPose = fieldPoses[0];
@@ -207,25 +210,30 @@ public class Shooter extends SubsystemBase {
 
     Rotation2d desiredAngle = new Rotation2d();
 
-    // TODO: math question because its almost midnight. Do we care about y position
-    // as well? Do you need to pitch MORE if you are at an angle? like. ya know. i
-    // cant think when its this late
     switch (lockedLocation) {
       default:
         break;
 
       case SPEAKER:
         distX = Math.abs(speakerPose.getX() - pitchPose.getX());
+        distY = Math.abs(speakerPose.getY() - pitchPose.getY());
         distZ = Math.abs(speakerPose.getZ() - pitchPose.getZ());
 
-        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distX, distZ)));
+        // Distance Formula
+        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+
+        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
         break;
 
       case AMP:
         distX = Math.abs(ampPose.getX() - pitchPose.getX());
+        distY = Math.abs(ampPose.getY() - pitchPose.getY());
         distZ = Math.abs(ampPose.getZ() - pitchPose.getZ());
 
-        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distX, distZ)));
+        // Distance Formula
+        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+
+        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
         break;
 
       case NONE:
