@@ -38,7 +38,7 @@ public class Transfer extends SubsystemBase {
   /** Creates a new Transfer. */
   public void configure() {
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
-    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(true);
+    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(false);
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
   }
 
@@ -66,8 +66,8 @@ public class Transfer extends SubsystemBase {
 
   }
 
-  public void setTransferMotorSpeed(double transferSpeed, double transferFeedForward) {
-    transferMotor.setControl(velocityRequest.withVelocity(transferSpeed).withFeedForward(transferFeedForward));
+  public void setTransferMotorSpeed(double transferSpeed) {
+    transferMotor.set(transferSpeed);
 
   }
 

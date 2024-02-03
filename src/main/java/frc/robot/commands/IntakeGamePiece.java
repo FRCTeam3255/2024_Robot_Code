@@ -29,8 +29,7 @@ public class IntakeGamePiece extends Command {
   @Override
   public void execute() {
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(), prefIntake.intakeCenteringSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue(),
-        prefTransfer.transferFeedForwardVelocity.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.

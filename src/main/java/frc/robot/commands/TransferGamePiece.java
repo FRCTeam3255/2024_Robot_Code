@@ -29,8 +29,7 @@ public class TransferGamePiece extends Command {
   @Override
   public void execute() {
     globalFeeder.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
-    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue(),
-        prefTransfer.transferFeedForwardVelocity.getValue());
+    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
