@@ -28,15 +28,16 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalFeeder.setMotorSpeed(prefTransfer.feederMotorSpeed.getValue(), prefTransfer.transferMoterSpeed.getValue(),
+    globalFeeder.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
+    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue(),
         prefTransfer.transferFeedForwardVelocity.getValue());
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalFeeder.setNeutralOutput();
+    globalFeeder.setFeederNeutralOutput();
+    globalFeeder.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.

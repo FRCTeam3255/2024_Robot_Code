@@ -61,14 +61,22 @@ public class Transfer extends SubsystemBase {
     // isCurrentLimitingOn = status;
   }
 
-  public void setMotorSpeed(double feederSpeed, double transferSpeed, double transferFeedForward) {
+  public void setFeederMotorSpeed(double feederSpeed) {
     feederMotor.set(ControlMode.PercentOutput, feederSpeed);
-    transferMotor.set(transferSpeed);
-    transferMotor.setControl(velocityRequest.withVelocity(transferSpeed).withFeedForward(transferFeedForward));
+
   }
 
-  public void setNeutralOutput() {
+  public void setTransferMotorSpeed(double transferSpeed, double transferFeedForward) {
+    transferMotor.setControl(velocityRequest.withVelocity(transferSpeed).withFeedForward(transferFeedForward));
+
+  }
+
+  public void setFeederNeutralOutput() {
     feederMotor.neutralOutput();
+  }
+
+  public void setTransferNeutralOutput() {
+    transferMotor.setControl(new NeutralOut());
   }
 
   @Override
