@@ -10,6 +10,7 @@ import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -28,8 +29,10 @@ public class Transfer extends SubsystemBase {
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
+
     transferCurrentLimitConfigs = new CurrentLimitsConfigs();
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
+
     velocityRequest = new VelocityVoltage(0).withSlot(0);
     configure();
   }
@@ -43,11 +46,15 @@ public class Transfer extends SubsystemBase {
 
   /** Creates a new Transfer. */
   public void configure() {
-    transferMotor.setInverted(prefTransfer.transferInverted.getValue());
+    transferMotor.setInverted(prefTransfer.transferMotorInverted.getValue());
 
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
     transferCurrentLimitConfigs.withStatorCurrentLimitEnable(false);
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
+
+    feederMotor.configFactoryDefault();
+    feederMotor.setInverted(prefTransfer.transferFeederInverted.getValue());
+    feederMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void setCurrentLimiting(boolean status) {
@@ -68,7 +75,6 @@ public class Transfer extends SubsystemBase {
 
   public void setTransferMotorSpeed(double transferSpeed) {
     transferMotor.set(transferSpeed);
-
   }
 
   public void setFeederNeutralOutput() {

@@ -128,7 +128,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeSpeed", 1);
+    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1.0);
   }
 
   public static final class prefShooter {
@@ -207,7 +207,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
-        Units.degreesToRotations(59));
+        Units.degreesToRotations(25));
     /**
      * <p>
      * The minium soft limit of the pitch motor
@@ -220,17 +220,23 @@ public class RobotPreferences {
   }
 
   public static final class prefTransfer {
-    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", 0.5);
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", 1.0);
 
-    public static final SN_BooleanPreference transferInverted = new SN_BooleanPreference("transferInverted", true);
+    public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",
+        true);
+    public static final SN_BooleanPreference transferFeederInverted = new SN_BooleanPreference("transferFeederInverted",
+        true);
 
-    public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
-        "feederMotorSpeed", .5);
+    /**
+     * <b>Units:</b> Percent Output
+     */
+    public static final SN_DoublePreference transferFeederMotorSpeed = new SN_DoublePreference(
+        "transferFeederMotorSpeed", 1.0);
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance",
         14000);
-    public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
-        "transferFeedForwardVelocity", .25);
+    public static final SN_DoublePreference transferFeedForward = new SN_DoublePreference(
+        "transferFeedForward", .25);
   }
 
   public static final class prefTurret {

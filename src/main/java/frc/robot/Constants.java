@@ -92,11 +92,12 @@ public final class Constants {
     public static final double MAX_VOLTAGE = 12;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
+    // Updated by Alice to match Comp bot Feb. 2nd
     public static final String[] PDH_DEVICES = {
         "Swerve/FL Steer", "Swerve/FL Drive", // 00, 01
         null, null, null, null, null, null,
-        "Swerve/FR Steer", "Swerve/FR Drive",
-        "Swerve/BR Steer", "Swerve/BR Drive", // 10, 11
+        "Swerve/FR Steer", "Swerve/FR Drive", // 08, 09
+        "Swerve/BR Drive", "Swerve/BR Steer", // 10, 11
         null, null, null, null, null, "Swerve/BL Steer",
         "Swerve/BL Drive", "Ethernet Switch",
         "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };

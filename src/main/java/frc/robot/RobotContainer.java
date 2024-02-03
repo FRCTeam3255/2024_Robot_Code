@@ -116,14 +116,17 @@ public class RobotContainer implements Logged {
     conOperator.btn_Y.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(1.0)));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(-1.0)));
 
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> subTurret.setTurretVoltage(1.0)));
-    conOperator.btn_B.onTrue(Commands.runOnce(() -> subTurret.setTurretVoltage(-1.0)));
+    // conOperator.btn_X.onTrue(Commands.runOnce(() ->
+    // subTurret.setTurretVoltage(1.0)));
+    // conOperator.btn_B.onTrue(Commands.runOnce(() ->
+    // subTurret.setTurretVoltage(-1.0)));
 
     // conOperator.btn_B.onTrue(Commands.runOnce(() ->
     // subTurret.setTurretAngle(prefTurret.turretDebugAngle.getValue()))); // TODO:
     // DEBUG
     // (remove)
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
+    conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
   }
 
   public Command getAutonomousCommand() {

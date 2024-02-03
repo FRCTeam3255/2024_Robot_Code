@@ -55,8 +55,8 @@ public class LockTurret extends Command {
   @Override
   public void execute() {
     robotPose = subDrivetrain.getPose();
-    // lockedLocation = subTurret.getLockedLocation();
-    lockedLocation = lockedLocation.SPEAKER;
+    lockedLocation = subTurret.getLockedLocation();
+    // lockedLocation = lockedLocation.SPEAKER;
 
     if (lockedLocation.equals(LockedLocation.SPEAKER)) {
       double distX = robotPose.getX() - speakerPose.getX();
