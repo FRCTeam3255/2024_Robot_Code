@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
+import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 import com.frcteam3255.utils.SN_Math;
 
@@ -247,7 +248,7 @@ public class RobotPreferences {
   public static final class prefTransfer {
     public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
         "feederMotorSpeed", .5);
-    public static final SN_DoublePreference transferMoterSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance",
         14000);
@@ -257,6 +258,8 @@ public class RobotPreferences {
         "transferGamePieceCollectedBelowAmps", 20);
     public static final SN_DoublePreference transferGamePieceCollectedAboveAmps = new SN_DoublePreference(
         "transferGamePieceCollectedAboveAmps", 5);
+    public static final SN_BooleanPreference enableStatorCurrentLimit = new SN_BooleanPreference(
+        "enableStatorCurrentLimit", false);
   }
 
 }

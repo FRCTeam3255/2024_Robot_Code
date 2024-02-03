@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -18,6 +16,10 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public class Transfer extends SubsystemBase {
+  TalonSRX feederMotor;
+  TalonFX transferMotor;
+  VelocityVoltage velocityRequest;
+  CurrentLimitsConfigs transferCurrentLimitConfigs;
 
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
@@ -43,18 +45,10 @@ public class Transfer extends SubsystemBase {
 
   /** Creates a new Transfer. */
   public void configure() {
-    transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
-    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(false);
+    transferCurrentLimitConfigs.StatorCurrentLimit = constTransfer.CURRENT_LIMIT_CEILING_AMPS;
+    transferCurrentLimitConfigs.StatorCurrentLimitEnable = prefTransfer.enableStatorCurrentLimit.getValue();
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
   }
-
-  TalonSRX feederMotor;
-
-  TalonFX transferMotor;
-
-  VelocityVoltage velocityRequest;
-
-  CurrentLimitsConfigs transferCurrentLimitConfigs;
 
   public void setFeederMotorSpeed(double feederSpeed) {
     feederMotor.set(ControlMode.PercentOutput, feederSpeed);

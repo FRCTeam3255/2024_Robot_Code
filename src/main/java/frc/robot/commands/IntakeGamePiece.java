@@ -34,7 +34,7 @@ public class IntakeGamePiece extends Command {
     } else {
       subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(),
           prefIntake.intakeCenteringSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
     }
   }
 
