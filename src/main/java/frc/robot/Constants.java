@@ -110,6 +110,15 @@ public final class Constants {
   public static class constTurret {
     public static final double GEAR_RATIO = 39;
 
+    // TODO: Update with real values (MUST DO BEFORE TESTING!)
+    /**
+     * The position, in meters, of the center of the turret relative to the center
+     * of the robot.
+     */
+    public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
+        new Translation3d(0, 0, 0),
+        new Rotation3d(0, 0, 0));
+
     public enum LockedLocation {
       NONE, SPEAKER, AMP
     }

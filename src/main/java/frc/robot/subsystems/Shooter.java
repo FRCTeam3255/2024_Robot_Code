@@ -165,6 +165,15 @@ public class Shooter extends SubsystemBase {
     return Units.rotationsToDegrees(pitchMotor.getPosition().getValueAsDouble());
   }
 
+  /**
+   * @param angle The angle to check. <b> Units: </b> Degrees
+   * @return If the given angle is possible for the pitch motor to reach
+   */
+  public boolean isAnglePossible(double angle) {
+    return (angle <= Units.rotationsToDegrees(prefShooter.pitchForwardLimit.getValue())
+        && angle >= Units.rotationsToDegrees(prefShooter.pitchReverseLimit.getValue()));
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -173,6 +182,5 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooter/Pitch/Velocity DPS", getPitchVelocity());
     SmartDashboard.putNumber("Shooter/Pitch/Voltage", getPitchVoltage());
     SmartDashboard.putNumber("Shooter/Pitch/Angle", getPitchAngle());
-
   }
 }

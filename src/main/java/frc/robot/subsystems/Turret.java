@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -143,6 +148,61 @@ public class Turret extends SubsystemBase {
    */
   public LockedLocation getLockedLocation() {
     return lockedLocation;
+  }
+
+  /**
+   * Calculates the desired angle needed to lock onto the turret's current locked
+   * location.
+   * Returns empty if there is nothing set to be locked onto OR the desired angle
+   * is EXACTLY 0.0 degrees
+   * 
+   * @param robotPose  The current pose of the robot
+   * @param fieldPoses The poses of the field elements, matching your alliance
+   *                   color
+   * @return The desired angle required to reach the current locked location
+   */
+  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses) {
+    double distX = 0;
+    double distY = 0;
+
+    final Transform2d robotToTurret = new Transform2d(
+        constTurret.ROBOT_TO_TURRET.getX(),
+        constTurret.ROBOT_TO_TURRET.getY(),
+        constTurret.ROBOT_TO_TURRET.getRotation().toRotation2d());
+
+    Pose2d turretPose = robotPose.transformBy(robotToTurret);
+    Pose3d speakerPose = fieldPoses[0];
+    Pose3d ampPose = fieldPoses[1];
+
+    Rotation2d desiredAngle = new Rotation2d();
+
+    switch (lockedLocation) {
+      default:
+        break;
+
+      case SPEAKER:
+        distX = turretPose.getX() - speakerPose.getX();
+        distY = turretPose.getY() - speakerPose.getY();
+
+        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
+        desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
+
+        break;
+      case AMP:
+        distX = turretPose.getX() - ampPose.getX();
+        distY = turretPose.getY() - ampPose.getY();
+
+        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
+        desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
+
+        break;
+      case NONE:
+        break;
+    }
+
+    return (desiredAngle.equals(new Rotation2d())) ? Optional.empty() : Optional.of(desiredAngle);
+    // I HAVE NO CLUE IF IM DOING THIS PROPERLY SOMEONE PLEASE SEND HELP
+    // I WILL ALSO ACCEPT TEA OR MONEY
   }
 
   /**
