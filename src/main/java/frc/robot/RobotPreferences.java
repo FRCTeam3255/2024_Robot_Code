@@ -248,8 +248,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
         "feederMotorSpeed", .5);
     public static final SN_DoublePreference transferMoterSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
-    public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference("desiredVelocity",
+    public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
+        "transferNoteVelocityTolerance",
         14000);
+    public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
+        "transferFeedForwardVelocity", .25);
     // public static final SN_DoublePreference
   }
 

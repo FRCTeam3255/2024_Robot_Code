@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public class Transfer extends SubsystemBase {
@@ -23,6 +24,7 @@ public class Transfer extends SubsystemBase {
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
     transferCurrentLimitConfigs = new CurrentLimitsConfigs();
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
+    velocityRequest = new VelocityVoltage(0).withSlot(0);
     configure();
   }
 
@@ -44,6 +46,8 @@ public class Transfer extends SubsystemBase {
 
   TalonFX transferMotor;
 
+  VelocityVoltage velocityRequest;
+
   CurrentLimitsConfigs transferCurrentLimitConfigs;
 
   public void setCurrentLimiting(boolean status) {
@@ -57,9 +61,10 @@ public class Transfer extends SubsystemBase {
     // isCurrentLimitingOn = status;
   }
 
-  public void setMotorSpeed(double feederSpeed, double transferSpeed) {
+  public void setMotorSpeed(double feederSpeed, double transferSpeed, double transferFeedForward) {
     feederMotor.set(ControlMode.PercentOutput, feederSpeed);
     transferMotor.set(transferSpeed);
+    transferMotor.setControl(velocityRequest.withVelocity(transferSpeed).withFeedForward(transferFeedForward));
   }
 
   public void setNeutralOutput() {

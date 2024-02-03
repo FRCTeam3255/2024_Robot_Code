@@ -28,7 +28,8 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalFeeder.setMotorSpeed(prefTransfer.feederMotorSpeed.getValue(), prefTransfer.transferMoterSpeed.getValue());
+    globalFeeder.setMotorSpeed(prefTransfer.feederMotorSpeed.getValue(), prefTransfer.transferMoterSpeed.getValue(),
+        prefTransfer.transferFeedForwardVelocity.getValue());
 
   }
 
