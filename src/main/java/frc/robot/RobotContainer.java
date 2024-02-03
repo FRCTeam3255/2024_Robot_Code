@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constTurret.LockedLocation;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
 import frc.robot.RobotPreferences.prefShooter;
@@ -43,6 +44,8 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer implements Logged {
   // Misc
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.IS_PRACTICE_BOT_DIO);
+  private static LockedLocation lockedLocation = LockedLocation.NONE;
+  private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   // Controllers
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -56,8 +59,6 @@ public class RobotContainer implements Logged {
   private final Climber subClimber = new Climber();
   private final Turret subTurret = new Turret();
   private final Transfer subTransfer = new Transfer();
-
-  private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   public RobotContainer() {
     // Set out log file to be in its own folder
@@ -133,7 +134,7 @@ public class RobotContainer implements Logged {
     return new PathPlannerAuto("Line Test");
   }
 
-  // Custom Methods
+  // --- Custom Methods ---
 
   /**
    * @return If the robot is the practice robot
@@ -141,6 +142,8 @@ public class RobotContainer implements Logged {
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
   }
+
+  // --- PDH ---
 
   /**
    * Enable or disable whether the switchable channel on the PDH is supplied
@@ -169,4 +172,35 @@ public class RobotContainer implements Logged {
       }
     }
   }
+
+  // --- Locking Logic ---
+
+  /**
+   * Set the locking location to the speaker.
+   */
+  public static void setLockSpeaker() {
+    lockedLocation = LockedLocation.SPEAKER;
+  }
+
+  /**
+   * Set the locking location to the amp.
+   */
+  public static void setLockAmp() {
+    lockedLocation = LockedLocation.AMP;
+  }
+
+  /**
+   * Set the locking location to no field elements.
+   */
+  public static void setLockNone() {
+    lockedLocation = LockedLocation.NONE;
+  }
+
+  /**
+   * @return The current location that the robot locked onto
+   */
+  public static LockedLocation getLockedLocation() {
+    return lockedLocation;
+  }
+
 }

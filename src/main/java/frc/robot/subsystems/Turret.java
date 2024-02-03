@@ -31,8 +31,6 @@ public class Turret extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
 
-  private LockedLocation lockedLocation = LockedLocation.NONE;
-
   public Turret() {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
@@ -91,27 +89,6 @@ public class Turret extends SubsystemBase {
 
   }
 
-  /**
-   * Set the turret's locking location to the speaker.
-   */
-  public void setLockSpeaker() {
-    lockedLocation = LockedLocation.SPEAKER;
-  }
-
-  /**
-   * Set the turret's locking location to the amp.
-   */
-  public void setLockAmp() {
-    lockedLocation = LockedLocation.AMP;
-  }
-
-  /**
-   * Disable the turret's locking.
-   */
-  public void setLockNone() {
-    lockedLocation = LockedLocation.NONE;
-  }
-
   // "Get" Methods
 
   /**
@@ -144,24 +121,20 @@ public class Turret extends SubsystemBase {
   }
 
   /**
-   * @return The current location that the turret is locked onto
-   */
-  public LockedLocation getLockedLocation() {
-    return lockedLocation;
-  }
-
-  /**
    * Calculates the desired angle needed to lock onto the turret's current locked
    * location.
    * Returns empty if there is nothing set to be locked onto OR the desired angle
    * is EXACTLY 0.0 degrees
    * 
-   * @param robotPose  The current pose of the robot
-   * @param fieldPoses The poses of the field elements, matching your alliance
-   *                   color
+   * @param robotPose      The current pose of the robot
+   * @param fieldPoses     The poses of the field elements, matching your alliance
+   *                       color
+   * @param lockedLocation The location that we are locked onto
+   * 
    * @return The desired angle required to reach the current locked location
    */
-  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses) {
+  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
+      LockedLocation lockedLocation) {
     double distX = 0;
     double distY = 0;
 
