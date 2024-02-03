@@ -31,8 +31,14 @@ public class Transfer extends SubsystemBase {
   public boolean isGamePieceCollected() {
     double current = transferMotor.getStatorCurrent().getValue();
     double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
-    return true;
-    // line 33 is temp NOT DONE
+    double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
+    double aboveCurrent = prefTransfer.transferGamePieceCollectedAboveAmps.getValue();
+    if (current < belowCurrent && current > aboveCurrent
+        && Math.abs(transferMotor.getVelocity().getValue()) > Math.abs(desiredVelocity)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /** Creates a new Transfer. */
@@ -49,17 +55,6 @@ public class Transfer extends SubsystemBase {
   VelocityVoltage velocityRequest;
 
   CurrentLimitsConfigs transferCurrentLimitConfigs;
-
-  public void setCurrentLimiting(boolean status) {
-    // //
-    // https://v5.docs.ctr-electronics.com/en/stable/ch13_MC.html?highlight=Current%20limit#new-api-in-2020
-    // transferMotor
-    // .configStatorCurrentLimit(new StatorCurrentLimitConfiguration(status,
-    // constTransfer.CURRENT_LIMIT_FLOOR_AMPS,
-    // constTransfer.CURRENT_LIMIT_CEILING_AMPS,
-    // constTransfer.CURRENT_LIMIT_AFTER_SEC));
-    // isCurrentLimitingOn = status;
-  }
 
   public void setFeederMotorSpeed(double feederSpeed) {
     feederMotor.set(ControlMode.PercentOutput, feederSpeed);

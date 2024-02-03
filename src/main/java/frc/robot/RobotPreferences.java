@@ -253,7 +253,10 @@ public class RobotPreferences {
         14000);
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
-    // public static final SN_DoublePreference
+    public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
+        "transferGamePieceCollectedBelowAmps", 20);
+    public static final SN_DoublePreference transferGamePieceCollectedAboveAmps = new SN_DoublePreference(
+        "transferGamePieceCollectedAboveAmps", 5);
   }
 
 }
