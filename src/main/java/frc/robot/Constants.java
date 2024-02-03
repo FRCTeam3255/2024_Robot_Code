@@ -105,6 +105,19 @@ public final class Constants {
 
   public static class constShooter {
     public static final double PITCH_GEAR_RATIO = 57;
+
+    // TODO: Update with real values (MUST DO BEFORE TESTING!)
+    /**
+     * The position, in meters, of the center of rotation for the pitch motor
+     * relative to the center of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
+    public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
+        new Translation3d(0, 0, 0),
+        new Rotation3d(0, 0, 0));
   }
 
   public static class constTurret {
@@ -113,7 +126,11 @@ public final class Constants {
     // TODO: Update with real values (MUST DO BEFORE TESTING!)
     /**
      * The position, in meters, of the center of the turret relative to the center
-     * of the robot.
+     * of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
         new Translation3d(0, 0, 0),
@@ -128,11 +145,28 @@ public final class Constants {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 
-    // TODO: Update when we have the CAD
+    // TODO: Update when we have the CAD and finalize the positions
+
+    /**
+     * The position, in meters, of the center of the camera lens relative to the
+     * center of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
         new Translation3d(0.3183, Units.inchesToMeters(-10), 0.209),
         new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-30)));
 
+    /**
+     * The position, in meters, of the center of the camera lens relative to the
+     * center of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
         new Translation3d(0.3183, Units.inchesToMeters(10), 0.209),
         new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(30)));

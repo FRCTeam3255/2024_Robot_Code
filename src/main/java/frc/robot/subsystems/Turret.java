@@ -121,8 +121,14 @@ public class Turret extends SubsystemBase {
   }
 
   /**
-   * Calculates the desired angle needed to lock onto the turret's current locked
-   * location.
+   * <p>
+   * Calculates the desired angle needed to lock onto the robot's current locked
+   * location. This requires the positive direction of the turret's rotation and
+   * the robot's rotation to be <a href =
+   * "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#rotation-conventions">
+   * Robot Oriented (Counter-Clockwise). </a>
+   * </p>
+   * 
    * Returns empty if there is nothing set to be locked onto OR the desired angle
    * is EXACTLY 0.0 degrees
    * 
@@ -157,7 +163,10 @@ public class Turret extends SubsystemBase {
         distX = turretPose.getX() - speakerPose.getX();
         distY = turretPose.getY() - speakerPose.getY();
 
+        // I can't explain this negative sign but it works man (probably something to do
+        // with CCW and CC)
         desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
+        // I also can't explain the unary minus but see above
         desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
 
         break;

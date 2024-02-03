@@ -9,14 +9,12 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
-import frc.robot.Constants.constTurret;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constTurret.LockedLocation;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Turret;
@@ -56,7 +54,8 @@ public class LockTurret extends Command {
   public void execute() {
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses);
+    Optional<Rotation2d> calculatedAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
+        RobotContainer.getLockedLocation());
 
     if (calculatedAngle.isPresent()) {
       desiredAngle = calculatedAngle.get();
@@ -67,7 +66,8 @@ public class LockTurret extends Command {
       subTurret.setTurretAngle(desiredAngle.getDegrees());
     }
 
-    SmartDashboard.putNumber("DEBUG - TURRET DESIRED ANGLE", desiredAngle.getDegrees()); // TODO: REMOVE
+    // TODO: REMOVE!! DO NOT APPROVE THIS PR WITH THIS pls i will forget
+    SmartDashboard.putNumber("DEBUG - TURRET DESIRED ANGLE", desiredAngle.getDegrees());
   }
 
   // Called once the command ends or is interrupted.

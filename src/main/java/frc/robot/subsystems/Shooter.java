@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -12,10 +14,15 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constShooter;
+import frc.robot.Constants.constTurret.LockedLocation;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
 
@@ -172,6 +179,60 @@ public class Shooter extends SubsystemBase {
   public boolean isAnglePossible(double angle) {
     return (angle <= Units.rotationsToDegrees(prefShooter.pitchForwardLimit.getValue())
         && angle >= Units.rotationsToDegrees(prefShooter.pitchReverseLimit.getValue()));
+  }
+
+  /**
+   * <p>
+   * Calculates the desired angle needed to lock onto the robot's current locked
+   * location.
+   * 
+   * Returns empty if there is nothing set to be locked onto OR the desired angle
+   * is EXACTLY 0.0 degrees
+   * 
+   * @param robotPose      The current pose of the robot
+   * @param fieldPoses     The poses of the field elements, matching your alliance
+   *                       color
+   * @param lockedLocation The location that we are locked onto
+   * 
+   * @return The desired angle required to reach the current locked location
+   */
+  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
+      LockedLocation lockedLocation) {
+    double distX = 0;
+    double distZ = 0;
+
+    Pose3d pitchPose = new Pose3d(robotPose).transformBy(constShooter.ROBOT_TO_PITCH);
+    Pose3d speakerPose = fieldPoses[0];
+    Pose3d ampPose = fieldPoses[1];
+
+    Rotation2d desiredAngle = new Rotation2d();
+
+    // TODO: math question because its almost midnight. Do we care about y position
+    // as well? Do you need to pitch MORE if you are at an angle? like. ya know. i
+    // cant think when its this late
+    switch (lockedLocation) {
+      default:
+        break;
+
+      case SPEAKER:
+        distX = Math.abs(speakerPose.getX() - pitchPose.getX());
+        distZ = Math.abs(speakerPose.getZ() - pitchPose.getZ());
+
+        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distX, distZ)));
+        break;
+
+      case AMP:
+        distX = Math.abs(ampPose.getX() - pitchPose.getX());
+        distZ = Math.abs(ampPose.getZ() - pitchPose.getZ());
+
+        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distX, distZ)));
+        break;
+
+      case NONE:
+        break;
+    }
+
+    return (desiredAngle.equals(new Rotation2d())) ? Optional.empty() : Optional.of(desiredAngle);
   }
 
   @Override

@@ -123,9 +123,6 @@ public class RobotContainer implements Logged {
     // subTurret.setTurretVoltage(-1.0)));
 
     // conOperator.btn_B.onTrue(Commands.runOnce(() ->
-    // subTurret.setTurretAngle(prefTurret.turretDebugAngle.getValue()))); // TODO:
-    // DEBUG
-    // (remove)
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
     conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
   }

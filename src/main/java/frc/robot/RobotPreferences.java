@@ -24,7 +24,7 @@ import edu.wpi.first.math.util.Units;
  */
 public class RobotPreferences {
   public static final class climberPref {
-    public static final SN_DoublePreference climberMotorFowardLimit = new SN_DoublePreference(
+    public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
         "climberMotorForwardLimit", 10);
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
         "climberMotorReverseLimit", -5);
