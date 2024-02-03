@@ -42,7 +42,7 @@ public class Climber extends SubsystemBase {
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMotorFowardLimit.getValue();
 
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMoterReverseLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMotorReverseLimit.getValue();
     climberMotor.getConfigurator().apply(climberConfig);
   }
 
