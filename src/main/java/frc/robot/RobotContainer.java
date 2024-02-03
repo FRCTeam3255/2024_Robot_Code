@@ -79,7 +79,7 @@ public class RobotContainer implements Logged {
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
-    // subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
+    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
     // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
     // subVision));
 
