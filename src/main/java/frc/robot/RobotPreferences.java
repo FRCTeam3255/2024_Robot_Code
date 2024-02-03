@@ -151,6 +151,12 @@ public class RobotPreferences {
         0);
 
     /**
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
+        "shooterUpToSpeedTolerance", 3);
+
+    /**
      * <b>Units:</b> Meters per second
      */
     public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity",
@@ -231,7 +237,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
         "visionStdDevsPosition", Units.metersToFeet(0.9));
-    
+
     /**
      * <p>
      * Pose estimator standard deviation for vision data

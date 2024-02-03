@@ -84,6 +84,8 @@ public final class Constants {
     public static final int LED_NUMBER = 150; // TODO: what is value?????
     public static final double LED_BRIGHTNESS = 1;
 
+    public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
+
     public static final ColorFlowAnimation AMPLIFY_ANIMATION = new ColorFlowAnimation(3, 7, 252, 0, 0.5, LED_NUMBER,
         Direction.Forward);
     public static final ColorFlowAnimation CO_OP_ANIMATION = new ColorFlowAnimation(230, 223, 34, 0, 0.5, LED_NUMBER,
