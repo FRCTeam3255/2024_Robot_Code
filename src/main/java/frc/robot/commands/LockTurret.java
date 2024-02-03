@@ -7,13 +7,13 @@ package frc.robot.commands;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.FieldConstants;
 import frc.robot.Constants.constTurret.LockedLocation;
 import frc.robot.subsystems.Drivetrain;
@@ -29,9 +29,9 @@ public class LockTurret extends Command {
 
   Optional<Alliance> alliance = DriverStation.getAlliance();
 
-  Pose2d[] fieldPoses;
-  Pose2d speakerPose;
-  Pose2d ampPose;
+  Pose3d[] fieldPoses;
+  Pose3d speakerPose;
+  Pose3d ampPose;
   Pose2d robotPose = new Pose2d();
 
   public LockTurret(Turret subTurret, Drivetrain subDrivetrain) {

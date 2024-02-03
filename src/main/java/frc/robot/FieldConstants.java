@@ -2,8 +2,8 @@ package frc.robot;
 
 import java.util.Optional;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
@@ -23,12 +23,12 @@ public class FieldConstants {
    * @return An array of field element positions. 0 = Your Speaker, 1 = Your Amp,
    *         2 = Opposing Speaker, 3 = Opposing Amp
    */
-  public static Pose2d[] GET_FIELD_POSITIONS() {
+  public static Pose3d[] GET_FIELD_POSITIONS() {
     if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-      return new Pose2d[] { redConstants.SPEAKER, redConstants.AMP, blueConstants.SPEAKER,
+      return new Pose3d[] { redConstants.SPEAKER, redConstants.AMP, blueConstants.SPEAKER,
           blueConstants.AMP };
     }
-    return new Pose2d[] { blueConstants.SPEAKER, blueConstants.AMP, redConstants.SPEAKER,
+    return new Pose3d[] { blueConstants.SPEAKER, blueConstants.AMP, redConstants.SPEAKER,
         redConstants.AMP };
   }
 
@@ -37,23 +37,25 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the blue speaker, in meters
      */
-    private static final Pose2d SPEAKER = new Pose2d(0, 5.547, new Rotation2d(0));
+    private static final Pose3d SPEAKER = new Pose3d(0, 5.547, 2.0525, new Rotation3d(0, 0, 0));
 
     /**
-     * The coordinate of the center of the blue amp, in meters
+     * The coordinate of the center of the blue amp, in meters.
      */
-    private static final Pose2d AMP = new Pose2d(1.827, 8.2112312, new Rotation2d(0));
+    private static final Pose3d AMP = new Pose3d(1.827, 8.2112312, (0.457 / 2) + 0.660, new Rotation3d(0, 0, 0));
+    // 0.457m = The width of the AMP opening
+    // 0.660m = The height between the floor and the bottom of the opening
   }
 
   private static final class redConstants {
     /**
      * The coordinate of the center of the red speaker, in meters
      */
-    private static final Pose2d SPEAKER = new Pose2d(16.5410515, 5.547, new Rotation2d(0));
+    private static final Pose3d SPEAKER = new Pose3d(16.5410515, 5.547, 2.0525, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the red amp, in meters
      */
-    private static final Pose2d AMP = new Pose2d(14.706, 8.2112312, new Rotation2d(0));
+    private static final Pose3d AMP = new Pose3d(14.706, 8.2112312, (0.457 / 2) + 0.660, new Rotation3d(0, 0, 0));
   }
 }
