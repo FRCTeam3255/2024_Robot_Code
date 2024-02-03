@@ -251,13 +251,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance",
-        14000);
+        0); // TODO: CHECK VELOCITY AS WELL
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
-        "transferGamePieceCollectedBelowAmps", 20);
+        "transferGamePieceCollectedBelowAmps", 19);
     public static final SN_DoublePreference transferGamePieceCollectedAboveAmps = new SN_DoublePreference(
-        "transferGamePieceCollectedAboveAmps", 5);
+        "transferGamePieceCollectedAboveAmps", 10);
     public static final SN_BooleanPreference enableStatorCurrentLimit = new SN_BooleanPreference(
         "enableStatorCurrentLimit", false);
   }

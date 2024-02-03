@@ -36,6 +36,7 @@ public class IntakeGamePiece extends Command {
           prefIntake.intakeCenteringSpeed.getValue());
       subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
     }
+    subTransfer.setFeederMotorSpeed(0.1);
   }
 
   // Called once the command ends or is interrupted.
