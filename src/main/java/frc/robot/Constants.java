@@ -81,14 +81,14 @@ public final class Constants {
   }
 
   public static class constLEDs {
-    public static final int LED_NUMBER = 150; // TODO: what is value?????
+    public static final int LED_NUMBER = 150;
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
 
-    public static final ColorFlowAnimation AMPLIFY_ANIMATION = new ColorFlowAnimation(3, 7, 252, 0, 0.5, LED_NUMBER,
+    public static final ColorFlowAnimation AMPLIFY_ANIMATION = new ColorFlowAnimation(160, 10, 247, 0, 0.95, LED_NUMBER,
         Direction.Forward);
-    public static final ColorFlowAnimation CO_OP_ANIMATION = new ColorFlowAnimation(230, 223, 34, 0, 0.5, LED_NUMBER,
+    public static final ColorFlowAnimation CO_OP_ANIMATION = new ColorFlowAnimation(255, 247, 3, 0, 0.95, LED_NUMBER,
         Direction.Forward);
   }
 
