@@ -34,6 +34,7 @@ public class Shoot extends Command {
         prefShooter.leftShooterFeedForward.getValue(),
         SN_Math.metersToRotations(prefShooter.rightShooterVelocity.getValue(), 1, 0),
         prefShooter.rightShooterFeedForward.getValue());
+
     // Set LEDs when shooters are up to speed
     if (subShooter.getLeftShooterVelocity() > (prefShooter.leftShooterVelocity.getValue()
         - prefShooter.shooterUpToSpeedTolerance.getValue())
