@@ -134,6 +134,22 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
+   * @return The current velocity of the left shooter motor. <b> Units: </b>
+   *         Rotations per second
+   */
+  public double getLeftShooterVelocity() {
+    return leftMotor.getVelocity().getValueAsDouble();
+  }
+
+  /**
+   * @return The current velocity of the right shooter motor. <b> Units: </b>
+   *         Rotations per second
+   */
+  public double getRightShooterVelocity() {
+    return rightMotor.getVelocity().getValueAsDouble();
+  }
+
+  /**
    * @return The current applied (output) voltage. <b> Units: </b> Volts
    */
   public double getPitchVoltage() {
