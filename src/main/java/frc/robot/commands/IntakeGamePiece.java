@@ -6,13 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
+import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Transfer;
 
 public class IntakeGamePiece extends Command {
   Intake subIntake;
+  Transfer subTransfer;
 
-  public IntakeGamePiece(Intake subIntake) {
+  public IntakeGamePiece(Intake subIntake, Transfer subTransfer) {
     this.subIntake = subIntake;
+    this.subTransfer = subTransfer;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,12 +29,14 @@ public class IntakeGamePiece extends Command {
   @Override
   public void execute() {
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(), prefIntake.intakeCenteringSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     subIntake.setNeutralMode();
+    subTransfer.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.

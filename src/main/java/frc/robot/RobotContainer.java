@@ -108,7 +108,7 @@ public class RobotContainer implements Logged {
         .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
-    conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
+    conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
 
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
 

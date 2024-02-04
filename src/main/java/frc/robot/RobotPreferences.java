@@ -25,7 +25,7 @@ public class RobotPreferences {
   public static final class climberPref {
     public static final SN_DoublePreference climberMotorFowardLimit = new SN_DoublePreference(
         "climberMotorForwardLimit", 10);
-    public static final SN_DoublePreference climberMoterReverseLimit = new SN_DoublePreference(
+    public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
         "climberMotorReverseLimit", -5);
     public static final SN_DoublePreference climberMotorForwardVelocity = new SN_DoublePreference(
         "climberMotorForwardVelocity", 1);
@@ -250,8 +250,16 @@ public class RobotPreferences {
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
   }
 
-  public static final class transferPref {
-    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMoterSpeed", .5);
+  public static final class prefTransfer {
+    public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
+        "feederMotorSpeed", .5);
+    public static final SN_DoublePreference transferMoterSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
+    public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
+        "transferNoteVelocityTolerance",
+        14000);
+    public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
+        "transferFeedForwardVelocity", .25);
+    // public static final SN_DoublePreference
   }
 
 }
