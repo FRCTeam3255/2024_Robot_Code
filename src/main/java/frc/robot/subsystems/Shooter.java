@@ -31,6 +31,9 @@ public class Shooter extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
 
+  double rightMotorGoalSpeed;
+  double leftMotorGoalSpeed;
+
   public Shooter() {
     leftMotor = new TalonFX(mapShooter.SHOOTER_LEFT_MOTOR_CAN, "rio");
     rightMotor = new TalonFX(mapShooter.SHOOTER_RIGHT_MOTOR_CAN, "rio");
@@ -88,6 +91,8 @@ public class Shooter extends SubsystemBase {
   public void setShootingVelocities(double leftVelocity, double leftFF, double rightVelocity, double rightFF) {
     leftMotor.setControl(velocityRequest.withVelocity(leftVelocity).withFeedForward(leftFF));
     rightMotor.setControl(velocityRequest.withVelocity(rightVelocity).withFeedForward(rightFF));
+    rightMotorGoalSpeed = rightVelocity;
+    leftMotorGoalSpeed = leftVelocity;
   }
 
   /**
@@ -153,6 +158,14 @@ public class Shooter extends SubsystemBase {
    */
   public double getPitchAngle() {
     return Units.rotationsToDegrees(pitchMotor.getPosition().getValueAsDouble());
+  }
+
+  public double getRightMotorSpeed() {
+    return rightMotor.getVelocity().getValueAsDouble();
+  }
+
+  public double getLeftMotorSpeed() {
+    return leftMotor.getVelocity().getValueAsDouble();
   }
 
   @Override
