@@ -171,11 +171,33 @@ public class Shooter extends SubsystemBase {
     return Units.rotationsToDegrees(pitchMotor.getPosition().getValueAsDouble());
   }
 
+  /**
+   * @param desiredVelocity What velocity you are checking. <b> Units: </b>
+   *                        Rotations per second
+   * @param tolerance       The tolerance of when you would consider the motor to
+   *                        be at velocity <b> Units: </b> Rotations per second
+   * @return If the left shooter motor is at the velocity
+   */
+  public boolean isLeftShooterAtVelocity(double desiredVelocity, double tolerance) {
+    return (Math.abs(getLeftShooterVelocity() - desiredVelocity)) <= tolerance;
+  }
+
+  /**
+   * @param desiredVelocity What velocity you are checking. <b> Units: </b>
+   *                        Rotations per second
+   * @param tolerance       The tolerance of when you would consider the motor to
+   *                        be at velocity <b> Units: </b> Rotations per second
+   * @return If the right shooter motor is at the velocity
+   */
+  public boolean isRightShooterAtVelocity(double desiredVelocity, double tolerance) {
+    return (Math.abs(getRightShooterVelocity() - desiredVelocity)) <= tolerance;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter/Left/Velocity RPS", leftMotor.getVelocity().getValue());
-    SmartDashboard.putNumber("Shooter/Right/Velocity RPS", rightMotor.getVelocity().getValue());
+    SmartDashboard.putNumber("Shooter/Left/Velocity RPS", getLeftShooterVelocity());
+    SmartDashboard.putNumber("Shooter/Right/Velocity RPS", getRightShooterVelocity());
     SmartDashboard.putNumber("Shooter/Pitch/Velocity DPS", getPitchVelocity());
     SmartDashboard.putNumber("Shooter/Pitch/Voltage", getPitchVoltage());
     SmartDashboard.putNumber("Shooter/Pitch/Angle", getPitchAngle());
