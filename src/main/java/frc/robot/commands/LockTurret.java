@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.constTurret.LockedLocation;
+import frc.robot.Constants.LockedLocation;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Turret;
 

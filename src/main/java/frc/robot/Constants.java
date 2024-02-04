@@ -135,10 +135,6 @@ public final class Constants {
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
         new Translation3d(0, 0, 0),
         new Rotation3d(0, 0, 0));
-
-    public enum LockedLocation {
-      NONE, SPEAKER, AMP
-    }
   }
 
   public static class constVision {
@@ -176,5 +172,12 @@ public final class Constants {
     public static final double CURRENT_LIMIT_CEILING_AMPS = 40;
     public static final double CURRENT_LIMIT_AFTER_SEC = 10;
     public static final double CURRENT_LIMIT_FLOOR_AMPS = 8;
+  }
+
+  /**
+   * Locations that the robot can attempt to lock onto.
+   */
+  public enum LockedLocation {
+    NONE, SPEAKER, AMP
   }
 }
