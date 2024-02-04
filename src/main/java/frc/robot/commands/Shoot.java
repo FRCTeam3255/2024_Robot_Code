@@ -36,10 +36,10 @@ public class Shoot extends Command {
         prefShooter.rightShooterFeedForward.getValue());
 
     // Set LEDs when shooters are up to speed
-    if (subShooter.getLeftShooterVelocity() > (prefShooter.leftShooterVelocity.getValue()
-        - prefShooter.shooterUpToSpeedTolerance.getValue())
-        && subShooter.getRightShooterVelocity() > (prefShooter.rightShooterVelocity.getValue()
-            - prefShooter.shooterUpToSpeedTolerance.getValue())) {
+    if (subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
+        prefShooter.shooterUpToSpeedTolerance.getValue())
+        && subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
+            prefShooter.shooterUpToSpeedTolerance.getValue())) {
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
     } else {
       subLEDs.clearAnimation();
