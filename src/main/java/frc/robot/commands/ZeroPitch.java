@@ -7,42 +7,42 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.prefShooter;
-import frc.robot.subsystems.Shooter;
+import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.subsystems.Pitch;
 
-public class ZeroShooterPitch extends Command {
-  Shooter subShooter;
+public class ZeroPitch extends Command {
+  Pitch subPitch;
 
   double zeroingTimestamp;
 
-  public ZeroShooterPitch(Shooter subShooter) {
-    this.subShooter = subShooter;
+  public ZeroPitch(Pitch subPitch) {
+    this.subPitch = subPitch;
 
-    addRequirements(subShooter);
+    addRequirements(subPitch);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subShooter.setPitchVoltage(0);
+    subPitch.setPitchVoltage(0);
     zeroingTimestamp = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subShooter.setPitchVoltage(prefShooter.pitchZeroingVoltage.getValue());
+    subPitch.setPitchVoltage(prefPitch.pitchZeroingVoltage.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Stop all movement
-    subShooter.setPitchVoltage(0);
+    subPitch.setPitchVoltage(0);
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subShooter.setPitchSensorAngle(0);
+      subPitch.setPitchSensorAngle(0);
     }
   }
 
@@ -50,7 +50,7 @@ public class ZeroShooterPitch extends Command {
   @Override
   public boolean isFinished() {
     // If the current velocity is low enough to be considered as zeroed
-    if (Math.abs(subShooter.getPitchVelocity()) <= Math.abs(prefShooter.pitchZeroedVelocity.getValue())) {
+    if (Math.abs(subPitch.getPitchVelocity()) <= Math.abs(prefPitch.pitchZeroedVelocity.getValue())) {
       // And this is the first loop it has happened, begin the timer
       if (zeroingTimestamp == 0) {
         zeroingTimestamp = Timer.getFPGATimestamp();
@@ -59,7 +59,7 @@ public class ZeroShooterPitch extends Command {
 
       // If this isn't the first loop, return if it has been below the threshold for
       // long enough
-      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefShooter.pitchZeroedTime.getValue();
+      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefPitch.pitchZeroedTime.getValue();
     }
 
     // If the above wasn't true, we have gained too much velocity so we need to

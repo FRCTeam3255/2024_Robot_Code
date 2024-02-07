@@ -18,7 +18,7 @@ public class LEDs extends SubsystemBase {
 
   /** Creates a new LEDs. */
   public LEDs() {
-    CANdle = new CANdle(mapLEDs.LEDs_CANdle_ID);
+    CANdle = new CANdle(mapLEDs.CANDLE_CAN);
     configure();
   }
 
