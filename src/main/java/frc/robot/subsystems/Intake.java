@@ -6,10 +6,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
 
@@ -17,11 +19,15 @@ public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
   CANSparkMax leftCenteringMotor;
   CANSparkMax rightCenteringMotor;
+  TalonFX pivotMotor;
+
+  PositionVoltage positionRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
     leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
+    pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
 
     configure();
   }
@@ -57,6 +63,15 @@ public class Intake extends SubsystemBase {
     rollerMotor.setControl(new NeutralOut());
     leftCenteringMotor.set(0);
     rightCenteringMotor.set(0);
+  }
+
+  /**
+   * Sets the angle of the pivot motor
+   * 
+   * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
+   */
+  public void setPivotMotorAngle(double angle) {
+    pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   @Override
