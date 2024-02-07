@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.led.ColorFlowAnimation;
-import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;

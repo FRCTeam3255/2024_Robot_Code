@@ -20,6 +20,7 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
+import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
@@ -102,7 +103,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings() {
-    conOperator.btn_RightBumper.whileTrue(new Shoot(subShooter));
     conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
     conOperator.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
