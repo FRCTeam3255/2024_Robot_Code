@@ -20,6 +20,8 @@ public class Vision extends SubsystemBase {
   PhotonPoseEstimator ARCameraPoseEstimator;
   PhotonPoseEstimator OVCameraPoseEstimator;
   AprilTagFieldLayout aprilTagFieldLayout;
+  PhotonCamera ARCamera;
+  PhotonCamera OVCamera;
 
   public Vision() {
     try {
@@ -28,8 +30,17 @@ public class Vision extends SubsystemBase {
       System.out.println("Could not load AprilTagFieldLayout!" + e);
     }
 
-    PhotonCamera ARCamera = new PhotonCamera(constVision.AR_NAME);
-    PhotonCamera OVCamera = new PhotonCamera(constVision.OV_NAME);
+    try {
+      ARCamera = new PhotonCamera(constVision.AR_NAME);
+    } catch (Exception e) {
+      System.out.println("AR Camera not found!");
+    }
+
+    try {
+      OVCamera = new PhotonCamera(constVision.OV_NAME);
+    } catch (Exception e) {
+      System.out.println("OV Camera not found!");
+    }
 
     ARCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
