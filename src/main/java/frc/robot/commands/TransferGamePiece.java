@@ -15,9 +15,6 @@ public class TransferGamePiece extends Command {
   public TransferGamePiece(Transfer givenTransfer) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalFeeder = givenTransfer;
-
-    // globalTransfer = givenTransfer;
-
   }
 
   // Called when the command is initially scheduled.
@@ -28,8 +25,8 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalFeeder.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
-    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
+    globalFeeder.setFeederMotorSpeed(prefTransfer.transferFeederMotorSpeed.getValue());
+    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.

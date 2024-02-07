@@ -30,7 +30,7 @@ public class IntakeGamePiece extends Command {
   public void execute() {
     subIntake.setPivotMotorAngle(prefIntake.intakeIntakingPosition.getValue());
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(), prefIntake.intakeCenteringSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
@@ -39,6 +39,7 @@ public class IntakeGamePiece extends Command {
     subIntake.setPivotMotorAngle(prefIntake.intakeStowPosition.getValue());
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
+    subTransfer.setFeederNeutralOutput();
   }
 
   // Returns true when the command should end.

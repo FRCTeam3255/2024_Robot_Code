@@ -20,6 +20,8 @@ public class AddVisionMeasurement extends Command {
   Vision subVision;
   Pose2d estimatedPose;
   double timestamp;
+  Optional<EstimatedRobotPose> ARresult = Optional.empty();
+  Optional<EstimatedRobotPose> OVresult = Optional.empty();
 
   public AddVisionMeasurement(Drivetrain subDrivetrain, Vision subVision) {
     this.subDrivetrain = subDrivetrain;
@@ -33,16 +35,16 @@ public class AddVisionMeasurement extends Command {
 
   @Override
   public void execute() {
-    Optional<EstimatedRobotPose> ARresult = subVision.getPoseFromARCamera();
-    Optional<EstimatedRobotPose> OVresult = subVision.getPoseFromOVCamera();
+    ARresult = subVision.getPoseFromARCamera();
+    OVresult = subVision.getPoseFromOVCamera();
 
-    if (ARresult != null && ARresult.isPresent() && !RobotState.isAutonomous()) {
+    if (ARresult.isPresent() && !RobotState.isAutonomous()) {
       estimatedPose = ARresult.get().estimatedPose.toPose2d();
       timestamp = ARresult.get().timestampSeconds;
       subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
     }
 
-    if (OVresult != null && OVresult.isPresent() && !RobotState.isAutonomous()) {
+    if (OVresult.isPresent() && !RobotState.isAutonomous()) {
       estimatedPose = OVresult.get().estimatedPose.toPose2d();
       timestamp = OVresult.get().timestampSeconds;
       subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
