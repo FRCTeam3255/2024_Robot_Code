@@ -57,7 +57,7 @@ public class Vision extends SubsystemBase {
     try {
       return ARCameraPoseEstimator.update();
     } catch (Exception e) {
-      return null;
+      return Optional.empty();
     }
   }
 
@@ -65,7 +65,7 @@ public class Vision extends SubsystemBase {
     try {
       return OVCameraPoseEstimator.update();
     } catch (Exception e) {
-      return null;
+      return Optional.empty();
     }
   }
 
