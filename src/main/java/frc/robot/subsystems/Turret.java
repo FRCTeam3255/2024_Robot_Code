@@ -84,9 +84,7 @@ public class Turret extends SubsystemBase {
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
-    // turretMotor.setPosition(getAbsoluteEncoder());
-    turretMotor.setPosition(0);
-
+    turretMotor.setPosition(getAbsoluteEncoder());
   }
 
   // "Get" Methods

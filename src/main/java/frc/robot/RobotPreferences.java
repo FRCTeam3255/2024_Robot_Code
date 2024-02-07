@@ -3,7 +3,6 @@ package frc.robot;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
-import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.util.Units;
 
@@ -210,7 +209,7 @@ public class RobotPreferences {
         Units.degreesToRotations(25));
     /**
      * <p>
-     * The minium soft limit of the pitch motor
+     * The minimum soft limit of the pitch motor
      * </p>
      * <b>Units:</b> Rotations
      */
@@ -250,7 +249,7 @@ public class RobotPreferences {
         Units.degreesToRotations(45));
     /**
      * <p>
-     * The minium soft limit of the turret
+     * The minimum soft limit of the turret
      * </p>
      * <b>Units:</b> Rotations
      */

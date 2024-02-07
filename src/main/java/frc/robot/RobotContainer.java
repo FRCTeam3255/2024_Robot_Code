@@ -19,19 +19,13 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
-import frc.robot.RobotPreferences.prefShooter;
-import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
-import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeGamePiece;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.ZeroShooterPitch;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -81,8 +75,7 @@ public class RobotContainer implements Logged {
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
-    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-    // subVision));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
     configureDriverBindings();
     configureOperatorBindings();
@@ -108,21 +101,9 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings() {
     conOperator.btn_RightBumper.whileTrue(new Shoot(subShooter));
 
-    // conOperator.btn_RightBumper
-    // .onTrue(Commands.runOnce(() ->
-    // subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
-    // conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
-
-    // conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake));
     conOperator.btn_Y.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(1.0)));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(-1.0)));
 
-    // conOperator.btn_X.onTrue(Commands.runOnce(() ->
-    // subTurret.setTurretVoltage(1.0)));
-    // conOperator.btn_B.onTrue(Commands.runOnce(() ->
-    // subTurret.setTurretVoltage(-1.0)));
-
-    // conOperator.btn_B.onTrue(Commands.runOnce(() ->
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
     conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
   }

@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import com.frcteam3255.utils.SN_Math;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.subsystems.Shooter;

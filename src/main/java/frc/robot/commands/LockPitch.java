@@ -37,8 +37,7 @@ public class LockPitch extends Command {
     this.subShooter = Shooter;
     this.subDrivetrain = subDrivetrain;
 
-    // TODO: figure out if this implementation will cause problems with shooting (im
-    // pretty sure it will, we need to think about this)
+    // TODO: move pitch motor out of shooter subsystem; this will cause issues as-is
     addRequirements(subShooter);
   }
 

@@ -30,7 +30,6 @@ public class IntakeGamePiece extends Command {
   public void execute() {
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(), prefIntake.intakeCenteringSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
-    // subTransfer.setFeederMotorSpeed(-1);
   }
 
   // Called once the command ends or is interrupted.
@@ -38,7 +37,7 @@ public class IntakeGamePiece extends Command {
   public void end(boolean interrupted) {
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
-    // subTransfer.setFeederNeutralOutput();
+    subTransfer.setFeederNeutralOutput();
   }
 
   // Returns true when the command should end.
