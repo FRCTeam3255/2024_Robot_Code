@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
@@ -25,11 +26,8 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
-import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeGamePiece;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.LockTurret;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.ZeroShooterPitch;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -43,6 +41,8 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer implements Logged {
   // Misc
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.IS_PRACTICE_BOT_DIO);
+  private static LockedLocation lockedLocation = LockedLocation.NONE;
+  private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   // Controllers
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -57,8 +57,6 @@ public class RobotContainer implements Logged {
   private final Turret subTurret = new Turret();
   private final Transfer subTransfer = new Transfer();
   private final LEDs subLEDs = new LEDs();
-
-  private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   public RobotContainer() {
     // Set out log file to be in its own folder
@@ -80,6 +78,7 @@ public class RobotContainer implements Logged {
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
+    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
     configureDriverBindings();
@@ -96,6 +95,7 @@ public class RobotContainer implements Logged {
         new Climb(subClimber, climberPref.climberMotorForwardVelocity, climberPref.climberMotorForwardFeedForward));
     conDriver.btn_South.whileTrue(
         new Climb(subClimber, climberPref.climberMotorReverseVelocity, climberPref.climberMotorReverseFeedForward));
+
     // Defaults to Field-Relative, is Robot-Relative while held
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
@@ -108,9 +108,11 @@ public class RobotContainer implements Logged {
         .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
-    conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
+    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(1.0)));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(-1.0)));
 
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
+    conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
 
     conOperator.btn_B.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)))
         .onFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
@@ -122,7 +124,7 @@ public class RobotContainer implements Logged {
     return new PathPlannerAuto("Line Test");
   }
 
-  // Custom Methods
+  // --- Custom Methods ---
 
   /**
    * @return If the robot is the practice robot
@@ -130,6 +132,8 @@ public class RobotContainer implements Logged {
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
   }
+
+  // --- PDH ---
 
   /**
    * Enable or disable whether the switchable channel on the PDH is supplied
@@ -158,4 +162,35 @@ public class RobotContainer implements Logged {
       }
     }
   }
+
+  // --- Locking Logic ---
+
+  /**
+   * Set the locking location to the speaker.
+   */
+  public static void setLockSpeaker() {
+    lockedLocation = LockedLocation.SPEAKER;
+  }
+
+  /**
+   * Set the locking location to the amp.
+   */
+  public static void setLockAmp() {
+    lockedLocation = LockedLocation.AMP;
+  }
+
+  /**
+   * Set the locking location to no field elements.
+   */
+  public static void setLockNone() {
+    lockedLocation = LockedLocation.NONE;
+  }
+
+  /**
+   * @return The current location that the robot locked onto
+   */
+  public static LockedLocation getLockedLocation() {
+    return lockedLocation;
+  }
+
 }

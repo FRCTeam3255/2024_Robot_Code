@@ -7,7 +7,6 @@ package frc.robot.commands;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.climberPref;
 import frc.robot.subsystems.Climber;
 
 public class Climb extends Command {

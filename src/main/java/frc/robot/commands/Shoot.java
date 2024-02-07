@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import com.frcteam3255.utils.SN_Math;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefShooter;
@@ -30,9 +28,10 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subShooter.setShootingVelocities(SN_Math.metersToRotations(prefShooter.leftShooterVelocity.getValue(), 1, 0),
+    subShooter.setShootingVelocities(
+        prefShooter.leftShooterVelocity.getValue(),
         prefShooter.leftShooterFeedForward.getValue(),
-        SN_Math.metersToRotations(prefShooter.rightShooterVelocity.getValue(), 1, 0),
+        prefShooter.rightShooterVelocity.getValue(),
         prefShooter.rightShooterFeedForward.getValue());
 
     // Set LEDs when shooters are up to speed

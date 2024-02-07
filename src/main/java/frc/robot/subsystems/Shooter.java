@@ -4,17 +4,24 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constShooter;
+import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
 
@@ -64,14 +71,23 @@ public class Shooter extends SubsystemBase {
     pitchConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     pitchConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     pitchConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
+
+    pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefShooter.pitchForwardLimit.getValue();
+
+    pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefShooter.pitchReverseLimit.getValue();
+
     pitchConfig.Feedback.SensorToMechanismRatio = constShooter.PITCH_GEAR_RATIO;
+    pitchConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
     pitchMotor.getConfigurator().apply(pitchConfig);
 
-    leftMotor.setInverted(false);
-    rightMotor.setInverted(true);
+    leftMotor.setInverted(prefShooter.leftShooterInvert.getValue());
+    rightMotor.setInverted(prefShooter.rightShooterInvert.getValue());
+    pitchMotor.setInverted(prefShooter.pitchShooterInvert.getValue());
 
   }
 
@@ -172,6 +188,77 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
+   * @param angle The angle to check. <b> Units: </b> Degrees
+   * @return If the given angle is possible for the pitch motor to reach
+   */
+  public boolean isAnglePossible(double angle) {
+    return (angle <= Units.rotationsToDegrees(prefShooter.pitchForwardLimit.getValue())
+        && angle >= Units.rotationsToDegrees(prefShooter.pitchReverseLimit.getValue()));
+  }
+
+  /**
+   * <p>
+   * Calculates the desired angle needed to lock onto the robot's current locked
+   * location.
+   * 
+   * Returns empty if there is nothing set to be locked onto OR the desired angle
+   * is EXACTLY 0.0 degrees
+   * 
+   * @param robotPose      The current pose of the robot
+   * @param fieldPoses     The poses of the field elements, matching your alliance
+   *                       color
+   * @param lockedLocation The location that we are locked onto
+   * 
+   * @return The desired angle required to reach the current locked location
+   */
+  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
+      LockedLocation lockedLocation) {
+    double distX = 0;
+    double distY = 0;
+    double distZ = 0;
+
+    double distXY = 0;
+
+    Pose3d pitchPose = new Pose3d(robotPose).transformBy(constShooter.ROBOT_TO_PITCH);
+    Pose3d speakerPose = fieldPoses[0];
+    Pose3d ampPose = fieldPoses[1];
+
+    Rotation2d desiredAngle = new Rotation2d();
+
+    switch (lockedLocation) {
+      default:
+        break;
+
+      case SPEAKER:
+        distX = Math.abs(speakerPose.getX() - pitchPose.getX());
+        distY = Math.abs(speakerPose.getY() - pitchPose.getY());
+        distZ = Math.abs(speakerPose.getZ() - pitchPose.getZ());
+
+        // Distance Formula
+        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+
+        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
+        break;
+
+      case AMP:
+        distX = Math.abs(ampPose.getX() - pitchPose.getX());
+        distY = Math.abs(ampPose.getY() - pitchPose.getY());
+        distZ = Math.abs(ampPose.getZ() - pitchPose.getZ());
+
+        // Distance Formula
+        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+
+        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
+        break;
+
+      case NONE:
+        break;
+    }
+
+    return (desiredAngle.equals(new Rotation2d())) ? Optional.empty() : Optional.of(desiredAngle);
+  }
+  
+  /**
    * @param desiredVelocity What velocity you are checking. <b> Units: </b>
    *                        Rotations per second
    * @param tolerance       The tolerance of when you would consider the motor to
@@ -201,6 +288,5 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooter/Pitch/Velocity DPS", getPitchVelocity());
     SmartDashboard.putNumber("Shooter/Pitch/Voltage", getPitchVoltage());
     SmartDashboard.putNumber("Shooter/Pitch/Angle", getPitchAngle());
-
   }
 }
