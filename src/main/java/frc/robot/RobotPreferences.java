@@ -142,8 +142,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference intakeStowPosition = new SN_DoublePreference(
         "intakeStowPosition", 0);
-    
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1.0);
+
   }
 
   public static final class prefShooter {
