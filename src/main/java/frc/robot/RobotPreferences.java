@@ -134,14 +134,14 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference intakeIntakingPosition = new SN_DoublePreference(
-        "intakePivotMotorPosition", 10);
+        "intakeIntakingPosition", 10);
 
     /**
      * The intake's pivot motor position when it is stowed
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference intakeStowPosition = new SN_DoublePreference(
-        "intakePivotMotorPosition", 0);
+        "intakeStowPosition", 0);
   }
 
   public static final class prefShooter {
