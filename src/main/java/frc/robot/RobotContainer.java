@@ -103,7 +103,7 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings() {
-    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
+    // conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
     conOperator.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));

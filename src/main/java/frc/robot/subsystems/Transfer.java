@@ -32,7 +32,7 @@ public class Transfer extends SubsystemBase {
     double current = transferMotor.getStatorCurrent().getValue();
     double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
     return true;
-    // line 33 is temp NOT DONE
+    // line 34 is temp NOT DONE
   }
 
   /** Creates a new Transfer. */
