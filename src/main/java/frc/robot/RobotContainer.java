@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
 import frc.robot.RobotPreferences.prefShooter;
@@ -33,6 +34,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Vision;
@@ -54,6 +56,7 @@ public class RobotContainer implements Logged {
   private final Climber subClimber = new Climber();
   private final Turret subTurret = new Turret();
   private final Transfer subTransfer = new Transfer();
+  private final LEDs subLEDs = new LEDs();
 
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
@@ -100,7 +103,7 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings() {
-    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter));
+    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
     conOperator.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
@@ -108,6 +111,11 @@ public class RobotContainer implements Logged {
     conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
 
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
+
+    conOperator.btn_B.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)))
+        .onFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
+    conOperator.btn_X.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)))
+        .onFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
   }
 
   public Command getAutonomousCommand() {
