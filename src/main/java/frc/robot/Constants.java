@@ -154,8 +154,6 @@ public final class Constants {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 
-    // TODO: Update when we have the CAD and finalize the positions
-
     /**
      * The position, in meters, of the center of the camera lens relative to the
      * center of the robot (Robot Coordinates).
@@ -165,8 +163,8 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(0.3183, Units.inchesToMeters(-10), 0.209),
-        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-30)));
+        new Translation3d(Units.inchesToMeters(-12.125), Units.inchesToMeters(-8.625), Units.inchesToMeters(21.75)),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-45)));
 
     /**
      * The position, in meters, of the center of the camera lens relative to the
@@ -177,8 +175,8 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(0.3183, Units.inchesToMeters(10), 0.209),
-        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(30)));
+        new Translation3d(Units.inchesToMeters(-12.125), Units.inchesToMeters(8.625), Units.inchesToMeters(21.75)),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(45)));
   }
 
   public static class constTransfer {
