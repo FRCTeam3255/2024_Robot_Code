@@ -119,6 +119,35 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
+    public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("ïntakePivotP", 24);
+    public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("ïntakePivotI", 0);
+    public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("ïntakePivotD", 0);
+    /**
+     * Enable or disable the intake pivot forward limit
+     */
+    public static final SN_BooleanPreference intakePivotForwardLimitEnable = new SN_BooleanPreference(
+        "intakePivotForwardLimitEnable", true);
+    /**
+     * <p>
+     * The maximum soft limit of the intake pivot
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference intakeForwardLimit = new SN_DoublePreference("intakeForwardLimit",
+        Units.degreesToRotations(45));
+    /**
+     * Enable or disable the intake pivot forward limit
+     */
+    public static final SN_BooleanPreference intakePivotReverseLimitEnable = new SN_BooleanPreference(
+        "intakePivotReverseLimitEnable", true);
+    /**
+     * <p>
+     * The minimum soft limit of the intake pivot
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference intakeReverseLimit = new SN_DoublePreference("intakeReverseLimit",
+        Units.degreesToRotations(-45));
     /**
      * <b> Units: </b> Percent Output
      */
