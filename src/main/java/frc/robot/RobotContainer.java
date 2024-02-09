@@ -81,8 +81,7 @@ public class RobotContainer implements Logged {
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
-    // subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
-    // TODO: ADD BACK IN
+    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
@@ -113,6 +112,8 @@ public class RobotContainer implements Logged {
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
     conOperator.btn_Y.onTrue(Commands.runOnce(() -> setLockSpeaker()));
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> setLockNone()));
+
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
