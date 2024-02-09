@@ -162,14 +162,11 @@ public class Turret extends SubsystemBase {
 
     Pose2d turretPose = robotPose.transformBy(robotToTurret);
 
-    double distX = turretPose.getX() - targetPose.getX();
-    double distY = turretPose.getY() - targetPose.getY();
+    Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
+    Rotation2d desiredAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
 
-    Rotation2d desiredAngle = Rotation2d.fromDegrees((Units.radiansToDegrees(Math.atan2(distY, distX))));
-
-    desiredAngle = desiredAngle.rotateBy(turretPose.getRotation());
-
-    return Optional.of(desiredAngle);
+    // TODO: figure out why this is a unary Minus (i REALLY done goofed somewhere)
+    return Optional.of(desiredAngle.rotateBy(turretPose.getRotation().unaryMinus()));
   }
 
   /**
