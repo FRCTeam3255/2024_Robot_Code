@@ -135,6 +135,7 @@ public final class Constants {
 
   public static class constTurret {
     public static final double GEAR_RATIO = 39;
+    public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
     /**
      * The position, in meters, of the center of the turret relative to the center

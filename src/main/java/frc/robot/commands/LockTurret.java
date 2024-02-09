@@ -59,15 +59,11 @@ public class LockTurret extends Command {
 
     if (calculatedAngle.isPresent()) {
       desiredAngle = calculatedAngle.get();
+      if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
+        subTurret.setTurretAngle(desiredAngle.getDegrees());
+      }
     }
-    // Otherwise, try to go to the last calculated angle
-
-    SmartDashboard.putNumber("DEBUG - TURRET DESIRED ANGLE", desiredAngle.getDegrees());
-    SmartDashboard.putString("DEBUG - LOCKED LOCATION", RobotContainer.getLockedLocation().toString());
-    if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
-      subTurret.setTurretAngle(desiredAngle.getDegrees());
-    }
-
+    SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredAngle.getDegrees());
   }
 
   // Called once the command ends or is interrupted.

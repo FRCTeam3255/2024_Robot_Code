@@ -55,6 +55,7 @@ public class Turret extends SubsystemBase {
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefTurret.turretReverseLimit.getValue();
 
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
+    turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
     turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
@@ -157,6 +158,9 @@ public class Turret extends SubsystemBase {
       default:
         break;
 
+      case NONE:
+        break;
+
       case SPEAKER:
         distX = turretPose.getX() - speakerPose.getX();
         distY = turretPose.getY() - speakerPose.getY();
@@ -175,8 +179,6 @@ public class Turret extends SubsystemBase {
         desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
         desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
 
-        break;
-      case NONE:
         break;
     }
 

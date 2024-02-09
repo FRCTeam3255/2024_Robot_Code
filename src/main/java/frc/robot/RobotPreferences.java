@@ -263,9 +263,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-80));
 
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 45);
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
-    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
+    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
 
     public static final SN_DoublePreference turretAbsoluteEncoderOffset = new SN_DoublePreference(
         "turretAbsoluteEncoderOffset", 0.811603);
