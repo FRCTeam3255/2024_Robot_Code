@@ -214,6 +214,12 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference pitchAngle = new SN_DoublePreference("pitchAngle", 10);
 
+    public static final SN_DoublePreference speakerPitchAngle = new SN_DoublePreference("speakerPitchAngle", 40);
+
+    public static final SN_DoublePreference ampPitchAngle = new SN_DoublePreference("ampPitchAngle", 20);
+
+    public static final SN_DoublePreference trapPitchAngle = new SN_DoublePreference("trapPitchAngle", 20);
+
     /**
      * <p>
      * The voltage supplied to the motor in order to zero

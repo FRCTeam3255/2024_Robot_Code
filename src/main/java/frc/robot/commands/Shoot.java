@@ -21,8 +21,7 @@ public class Shoot extends Command {
   SN_DoublePreference rightShooterVelocity;
   SN_DoublePreference rightShooterFeedForward;
 
-  public Shoot(Shooter subShooter, LEDs subLEDs, SN_DoublePreference leftShooterVelocity,
-      SN_DoublePreference leftShooterFeedForward, SN_DoublePreference rightShooterFeedForward) {
+  public Shoot(Shooter subShooter, LEDs subLEDs) {
     this.subShooter = subShooter;
     this.subLEDs = subLEDs;
     this.leftShooterVelocity = leftShooterVelocity;
@@ -30,6 +29,7 @@ public class Shoot extends Command {
     this.rightShooterVelocity = rightShooterVelocity;
     this.rightShooterFeedForward = rightShooterFeedForward;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subShooter);
   }
 
   // Called when the command is initially scheduled.
