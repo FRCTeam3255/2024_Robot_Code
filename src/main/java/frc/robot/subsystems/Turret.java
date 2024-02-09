@@ -133,8 +133,7 @@ public class Turret extends SubsystemBase {
    * Robot Oriented (Counter-Clockwise). </a>
    * </p>
    * 
-   * Returns empty if there is nothing set to be locked onto OR the desired angle
-   * is EXACTLY 0.0 degrees
+   * Returns empty if there is nothing set to be locked onto.
    * 
    * @param robotPose      The current pose of the robot
    * @param fieldPoses     The poses of the field elements, matching your alliance
