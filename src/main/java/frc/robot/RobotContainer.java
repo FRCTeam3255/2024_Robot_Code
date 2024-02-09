@@ -108,7 +108,6 @@ public class RobotContainer implements Logged {
     conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
     conOperator.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
     conOperator.btn_Y.onTrue(Commands.runOnce(() -> subPitch.setPitchVoltage(1.0)));
     conOperator.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchVoltage(-1.0)));
@@ -116,10 +115,9 @@ public class RobotContainer implements Logged {
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
     conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
 
-    conOperator.btn_B.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)))
-        .onFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
-    conOperator.btn_X.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)))
-        .onFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
+    conOperator.btn_B.onTrue(Commands.runOnce(() -> setLockSpeaker()));
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subTurret.setTurretAngle(0)));
+
   }
 
   public Command getAutonomousCommand() {
