@@ -170,7 +170,7 @@ public class Pitch extends SubsystemBase {
         // Distance Formula
         distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
 
-        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
+        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distZ, distXY)));
         break;
 
       case AMP:
