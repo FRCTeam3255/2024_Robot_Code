@@ -24,6 +24,7 @@ import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
@@ -80,7 +81,9 @@ public class RobotContainer implements Logged {
     subDrivetrain
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
 
-    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
+    // subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
+    // TODO: ADD BACK IN
+    subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
     configureDriverBindings();
@@ -109,15 +112,11 @@ public class RobotContainer implements Logged {
     conOperator.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
-    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subPitch.setPitchVoltage(1.0)));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchVoltage(-1.0)));
+    conOperator.btn_Y.onTrue(Commands.runOnce(() -> setLockSpeaker()));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
     conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
-
-    conOperator.btn_B.onTrue(Commands.runOnce(() -> setLockSpeaker()));
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> subTurret.setTurretAngle(0)));
-
   }
 
   public Command getAutonomousCommand() {
