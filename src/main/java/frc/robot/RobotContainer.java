@@ -94,9 +94,9 @@ public class RobotContainer implements Logged {
     conDriver.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     conDriver.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     conDriver.btn_North.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorForwardVelocity, climberPref.climberMotorForwardFeedForward));
+        new Climb(subClimber, climberPref.climberMotorForwardSpeed));
     conDriver.btn_South.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorReverseVelocity, climberPref.climberMotorReverseFeedForward));
+        new Climb(subClimber, climberPref.climberMotorReverseSpeed));
 
     // Defaults to Field-Relative, is Robot-Relative while held
     conDriver.btn_LeftBumper
