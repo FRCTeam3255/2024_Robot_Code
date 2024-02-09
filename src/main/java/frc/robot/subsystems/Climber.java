@@ -47,11 +47,11 @@ public class Climber extends SubsystemBase {
 
   public void setClimberMotorSpeed(double motorVelocity, double motorFeedForward) {
 
-    climberMotor.setControl(velocityRequest.withVelocity(motorVelocity).withFeedForward(motorFeedForward));
+    climberMotor.set(motorFeedForward);
   }
 
   public void setNeutralOutput() {
-    climberMotor.setControl(new NeutralOut());
+    climberMotor.set(0);
   }
 
   @Override
