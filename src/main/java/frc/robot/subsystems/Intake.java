@@ -41,10 +41,10 @@ public class Intake extends SubsystemBase {
     pivotConfig.Slot0.kD = prefIntake.intakePivotD.getValue();
 
     pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefIntake.intakeForwardLimit.getValue();
+    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefIntake.intakePivotForwardLimit.getValue();
 
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.intakeReverseLimit.getValue();
+    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.intakePivotReverseLimit.getValue();
 
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
     pivotMotor.getConfigurator().apply(pivotConfig);

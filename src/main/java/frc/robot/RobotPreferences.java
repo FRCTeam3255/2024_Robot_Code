@@ -133,7 +133,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Rotations
      */
-    public static final SN_DoublePreference intakeForwardLimit = new SN_DoublePreference("intakeForwardLimit",
+    public static final SN_DoublePreference intakePivotForwardLimit = new SN_DoublePreference("intakeForwardLimit",
         Units.degreesToRotations(45));
     /**
      * Enable or disable the intake pivot forward limit
@@ -146,7 +146,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Rotations
      */
-    public static final SN_DoublePreference intakeReverseLimit = new SN_DoublePreference("intakeReverseLimit",
+    public static final SN_DoublePreference intakePivotReverseLimit = new SN_DoublePreference("intakeReverseLimit",
         Units.degreesToRotations(-45));
     /**
      * <b> Units: </b> Percent Output
