@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
@@ -58,13 +59,11 @@ public class LockTurret extends Command {
 
     if (calculatedAngle.isPresent()) {
       desiredAngle = calculatedAngle.get();
+      if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
+        subTurret.setTurretAngle(desiredAngle.getDegrees());
+      }
     }
-    // Otherwise, try to go to the last calculated angle
-
-    if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
-      subTurret.setTurretAngle(desiredAngle.getDegrees());
-    }
-
+    SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredAngle.getDegrees());
   }
 
   // Called once the command ends or is interrupted.
