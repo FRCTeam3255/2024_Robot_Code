@@ -167,10 +167,9 @@ public class Pitch extends SubsystemBase {
         distY = Math.abs(speakerPose.getY() - pitchPose.getY());
         distZ = Math.abs(speakerPose.getZ() - pitchPose.getZ());
 
-        // Distance Formula
-        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+        distXY = Math.hypot(distX, distXY);
 
-        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distZ, distXY)));
+        desiredAngle = new Rotation2d(distXY, distZ);
         break;
 
       case AMP:
@@ -178,10 +177,9 @@ public class Pitch extends SubsystemBase {
         distY = Math.abs(ampPose.getY() - pitchPose.getY());
         distZ = Math.abs(ampPose.getZ() - pitchPose.getZ());
 
-        // Distance Formula
-        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+        distXY = Math.hypot(distX, distXY);
 
-        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
+        desiredAngle = new Rotation2d(distXY, distZ);
         break;
 
       case NONE:

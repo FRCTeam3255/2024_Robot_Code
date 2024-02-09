@@ -31,6 +31,11 @@ public class Turret extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
 
+  final Transform2d robotToTurret = new Transform2d(
+      constTurret.ROBOT_TO_TURRET.getX(),
+      constTurret.ROBOT_TO_TURRET.getY(),
+      constTurret.ROBOT_TO_TURRET.getRotation().toRotation2d());
+
   public Turret() {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
@@ -140,51 +145,31 @@ public class Turret extends SubsystemBase {
    */
   public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
       LockedLocation lockedLocation) {
-    double distX = 0;
-    double distY = 0;
-
-    final Transform2d robotToTurret = new Transform2d(
-        constTurret.ROBOT_TO_TURRET.getX(),
-        constTurret.ROBOT_TO_TURRET.getY(),
-        constTurret.ROBOT_TO_TURRET.getRotation().toRotation2d());
-
-    Pose2d turretPose = robotPose.transformBy(robotToTurret);
-    Pose3d speakerPose = fieldPoses[0];
-    Pose3d ampPose = fieldPoses[1];
-
-    Rotation2d desiredAngle = new Rotation2d();
+    Pose3d targetPose;
 
     switch (lockedLocation) {
       default:
-        break;
-
-      case NONE:
-        break;
+        return Optional.empty();
 
       case SPEAKER:
-        distX = turretPose.getX() - speakerPose.getX();
-        distY = turretPose.getY() - speakerPose.getY();
-
-        // I can't explain this negative sign but it works man (probably something to do
-        // with CCW and CC)
-        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) - 90);
-        // I also can't explain the unary minus but see above
-        desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
-
+        targetPose = fieldPoses[0];
         break;
+
       case AMP:
-        distX = turretPose.getX() - ampPose.getX();
-        distY = turretPose.getY() - ampPose.getY();
-
-        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
-        desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
-
+        targetPose = fieldPoses[1];
         break;
     }
 
-    return (desiredAngle.equals(new Rotation2d())) ? Optional.empty() : Optional.of(desiredAngle);
-    // I HAVE NO CLUE IF IM DOING THIS PROPERLY SOMEONE PLEASE SEND HELP
-    // I WILL ALSO ACCEPT TEA OR MONEY
+    Pose2d turretPose = robotPose.transformBy(robotToTurret);
+
+    double distX = turretPose.getX() - targetPose.getX();
+    double distY = turretPose.getY() - targetPose.getY();
+
+    Rotation2d desiredAngle = Rotation2d.fromDegrees((Units.radiansToDegrees(Math.atan2(distY, distX))));
+
+    desiredAngle = desiredAngle.rotateBy(turretPose.getRotation());
+
+    return Optional.of(desiredAngle);
   }
 
   /**

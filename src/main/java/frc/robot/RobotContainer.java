@@ -85,39 +85,39 @@ public class RobotContainer implements Logged {
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
-    configureDriverBindings();
-    configureOperatorBindings();
+    configureDriverBindings(conDriver);
+    configureOperatorBindings(conOperator);
 
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
   }
 
-  private void configureDriverBindings() {
-    conDriver.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
-    conDriver.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    conDriver.btn_North.whileTrue(
+  private void configureDriverBindings(SN_XboxController controller) {
+    controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_North.whileTrue(
         new Climb(subClimber, climberPref.climberMotorForwardSpeed));
-    conDriver.btn_South.whileTrue(
+    controller.btn_South.whileTrue(
         new Climb(subClimber, climberPref.climberMotorReverseSpeed));
 
     // Defaults to Field-Relative, is Robot-Relative while held
-    conDriver.btn_LeftBumper
+    controller.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
   }
 
-  private void configureOperatorBindings() {
-    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
-    conOperator.btn_RightBumper
+  private void configureOperatorBindings(SN_XboxController controller) {
+    controller.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
+    controller.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
-    conOperator.btn_Y.onTrue(Commands.runOnce(() -> setLockSpeaker()));
-    conOperator.btn_X.onTrue(Commands.runOnce(() -> setLockNone()));
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockSpeaker()));
+    controller.btn_X.onTrue(Commands.runOnce(() -> setLockNone()));
 
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
+    controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
-    conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
+    controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
+    controller.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
   }
 
   public Command getAutonomousCommand() {
