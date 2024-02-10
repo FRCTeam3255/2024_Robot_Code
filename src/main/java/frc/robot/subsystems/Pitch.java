@@ -34,7 +34,7 @@ public class Pitch extends SubsystemBase {
   public Pitch() {
     pitchMotor = new TalonFX(mapPitch.PITCH_MOTOR_CAN, "rio");
     pitchConfig = new TalonFXConfiguration();
-
+    pitchCurrentLimitConfig = new CurrentLimitsConfigs();
     positionRequest = new PositionVoltage(0).withSlot(0);
     voltageRequest = new VoltageOut(0);
 
