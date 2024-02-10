@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import frc.robot.Constants.constClimber;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
 import frc.robot.RobotPreferences.climberPref;
@@ -37,12 +39,19 @@ public class Climber extends SubsystemBase {
 
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMotorReverseLimit.getValue();
+
+    climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
     climberMotor.getConfigurator().apply(climberConfig);
+
   }
 
   public void setClimberMotorSpeed(double motorSpeed) {
 
     climberMotor.set(motorSpeed);
+  }
+
+  public double getPosition() {
+    return climberMotor.getPosition().getValue();
   }
 
   public void setNeutralOutput() {
@@ -51,6 +60,8 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Climber/Motor position(Rotations)", getPosition());
+    SmartDashboard.putNumber("Climber/Motor percent output", climberMotor.get());
     // This method will be called once per scheduler run
   }
 
