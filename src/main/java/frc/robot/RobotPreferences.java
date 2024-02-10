@@ -142,7 +142,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Rotations
      */
-    public static final SN_DoublePreference intakePivotReverseLimit = new SN_DoublePreference("intakeReverseLimit",
+    public static final SN_DoublePreference intakePivotReverseLimit = new SN_DoublePreference("intakePivotReverseLimit",
         Units.degreesToRotations(-45));
     /**
      * <b> Units: </b> Percent Output
