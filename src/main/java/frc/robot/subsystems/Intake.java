@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
@@ -79,6 +80,10 @@ public class Intake extends SubsystemBase {
     rightCenteringMotor.set(0);
   }
 
+  private double getRollerPercentOutput() {
+    return rollerMotor.get();
+  }
+
   /**
    * Sets the angle of the pivot motor
    * 
@@ -90,6 +95,9 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Intake/Roller Percent Output", getRollerPercentOutput());
+    SmartDashboard.putNumber("Intake/Pivot Angle", pivotMotor.getPosition().getValue());
   }
 }
