@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pitch;
 
@@ -58,14 +60,14 @@ public class LockPitch extends Command {
         RobotContainer.getLockedLocation());
 
     if (calculatedAngle.isPresent()) {
-      desiredAngle = calculatedAngle.get();
-    }
+      desiredAngle = Rotation2d.fromRotations(
+          MathUtil.clamp(
+              calculatedAngle.get().getRotations(),
+              prefPitch.pitchReverseLimit.getValue(),
+              prefPitch.pitchForwardLimit.getValue()));
 
-    // Otherwise, try to go to the last calculated angle
-    if (subPitch.isAnglePossible(desiredAngle.getDegrees())) {
       subPitch.setPitchAngle(desiredAngle.getDegrees());
     }
-
     SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredAngle.getDegrees());
   }
 
