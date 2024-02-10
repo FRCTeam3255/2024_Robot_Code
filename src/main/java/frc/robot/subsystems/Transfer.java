@@ -97,8 +97,8 @@ public class Transfer extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Transfer/Left/Velocity RPS", getFeederMotorPercentOutput());
-    SmartDashboard.putNumber("Transfer/Right/Velocity RPS", getTransferMotorPercentOutput());
+    SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
+    SmartDashboard.putNumber("Transfer/transfer/Percent", getTransferMotorPercentOutput());
   }
 
 }
