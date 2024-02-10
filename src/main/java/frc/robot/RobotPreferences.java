@@ -308,9 +308,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
 
-    public static final SN_DoublePreference turretAbsoluteEncoderOffset = new SN_DoublePreference(
-        "turretAbsoluteEncoderOffset", 0.811603);
-
     public static final SN_DoublePreference turretDebugAngle = new SN_DoublePreference("turretDebugAngle", 90);
     public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
   }
