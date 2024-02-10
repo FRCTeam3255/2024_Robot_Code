@@ -60,7 +60,7 @@ public class Intake extends SubsystemBase {
     rightCenteringMotor.set(0);
   }
 
-  private double getRollerVelocity() {
+  private double getRollerPercentOutput() {
     return rollerMotor.get();
   }
 
@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake/roller/Velocity RPS", getRollerVelocity());
+    SmartDashboard.putNumber("Roller Percent Output", getRollerPercentOutput());
 
   }
 }
