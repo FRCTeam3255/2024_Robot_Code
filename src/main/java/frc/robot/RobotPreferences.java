@@ -127,7 +127,8 @@ public class RobotPreferences {
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 24);
+    public static final SN_DoublePreference pitchV = new SN_DoublePreference("pitchV", 0.3);
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 70);
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
     public static final SN_BooleanPreference pitchInvert = new SN_BooleanPreference("pitchInvert", true);
@@ -169,7 +170,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
-        Units.degreesToRotations(25));
+        Units.degreesToRotations(52));
     /**
      * <p>
      * The minimum soft limit of the pitch motor
@@ -249,7 +250,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit",
-        Units.degreesToRotations(45));
+        Units.degreesToRotations(80));
     /**
      * <p>
      * The minimum soft limit of the turret
@@ -257,11 +258,11 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
-        Units.degreesToRotations(-45));
+        Units.degreesToRotations(-80));
 
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 24);
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
-    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
+    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
 
     public static final SN_DoublePreference turretAbsoluteEncoderOffset = new SN_DoublePreference(
         "turretAbsoluteEncoderOffset", 0.811603);

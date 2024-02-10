@@ -136,8 +136,8 @@ public final class Constants {
 
   public static class constTurret {
     public static final double GEAR_RATIO = 39;
+    public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
-    // TODO: Update with real values (MUST DO BEFORE TESTING!)
     /**
      * The position, in meters, of the center of the turret relative to the center
      * of the robot (Robot Coordinates).
@@ -147,8 +147,11 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
-        new Translation3d(0, 0, 0),
-        new Rotation3d(0, 0, 0));
+        new Translation3d(0, 0, Units.inchesToMeters(14.5)),
+        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+
+    // TODO: figure out why its 180 because it makes no sense and theres probably a
+    // bug somewhere
   }
 
   public static class constVision {
