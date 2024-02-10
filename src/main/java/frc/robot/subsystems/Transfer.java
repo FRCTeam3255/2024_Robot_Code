@@ -86,19 +86,19 @@ public class Transfer extends SubsystemBase {
     transferMotor.setControl(new NeutralOut());
   }
 
-  private double getTransferMotorVelocity() {
-    return transferMotor.getVelocity().getValueAsDouble();
+  private double getTransferMotorPercentOutput() {
+    return transferMotor.get();
   }
 
-  private double getFeederMotorVelocity() {
+  private double getFeederMotorPercentOutput() {
     return feederMotor.getMotorOutputPercent();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Transfer/Left/Velocity RPS", getFeederMotorVelocity());
-    SmartDashboard.putNumber("Transfer/Right/Velocity RPS", getTransferMotorVelocity());
+    SmartDashboard.putNumber("Transfer/Left/Velocity RPS", getFeederMotorPercentOutput());
+    SmartDashboard.putNumber("Transfer/Right/Velocity RPS", getTransferMotorPercentOutput());
   }
 
 }
