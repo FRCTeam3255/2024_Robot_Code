@@ -55,6 +55,7 @@ public class Turret extends SubsystemBase {
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefTurret.turretReverseLimit.getValue();
 
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
+    turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
     turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
@@ -62,7 +63,7 @@ public class Turret extends SubsystemBase {
   // "Set" Methods
 
   /**
-   * Sets the angle of the turret
+   * Sets the physical angle of the turret
    * 
    * @param angle The angle to set the turret to. <b> Units: </b> Degrees
    */
@@ -157,13 +158,16 @@ public class Turret extends SubsystemBase {
       default:
         break;
 
+      case NONE:
+        break;
+
       case SPEAKER:
         distX = turretPose.getX() - speakerPose.getX();
         distY = turretPose.getY() - speakerPose.getY();
 
         // I can't explain this negative sign but it works man (probably something to do
         // with CCW and CC)
-        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
+        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) - 90);
         // I also can't explain the unary minus but see above
         desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
 
@@ -175,8 +179,6 @@ public class Turret extends SubsystemBase {
         desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
         desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
 
-        break;
-      case NONE:
         break;
     }
 

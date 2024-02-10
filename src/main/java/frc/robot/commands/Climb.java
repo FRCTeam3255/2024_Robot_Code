@@ -12,14 +12,12 @@ import frc.robot.subsystems.Climber;
 public class Climb extends Command {
 
   Climber globalClimber;
-  SN_DoublePreference globalVelocity;
-  SN_DoublePreference globalFeedForward;
+  SN_DoublePreference globalSpeed;
 
   /** Creates a new Climb. */
-  public Climb(Climber givenClimber, SN_DoublePreference givenVelocity, SN_DoublePreference givenFeedForward) {
-    globalVelocity = givenVelocity;
+  public Climb(Climber givenClimber, SN_DoublePreference givenSpeed) {
+    globalSpeed = givenSpeed;
     globalClimber = givenClimber;
-    globalFeedForward = givenFeedForward;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -32,7 +30,7 @@ public class Climb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalClimber.setClimberMotorSpeed(globalVelocity.getValue(), globalFeedForward.getValue());
+    globalClimber.setClimberMotorSpeed(globalSpeed.getValue());
 
   }
 

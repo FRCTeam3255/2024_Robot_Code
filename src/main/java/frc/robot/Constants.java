@@ -91,6 +91,24 @@ public final class Constants {
         Direction.Forward);
   }
 
+  public static class constPitch {
+    public static final double PITCH_GEAR_RATIO = 57;
+    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+
+    // TODO: Update with real values (MUST DO BEFORE TESTING!)
+    /**
+     * The position, in meters, of the center of rotation for the pitch motor
+     * relative to the center of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
+    public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
+        new Translation3d(0, 0, 0),
+        new Rotation3d(0, 0, 0));
+  }
+
   /**
    * General Robot Constants that don't fall under a subsystem
    */
@@ -113,26 +131,12 @@ public final class Constants {
   }
 
   public static class constShooter {
-    public static final double PITCH_GEAR_RATIO = 57;
-
-    // TODO: Update with real values (MUST DO BEFORE TESTING!)
-    /**
-     * The position, in meters, of the center of rotation for the pitch motor
-     * relative to the center of the robot (Robot Coordinates).
-     * 
-     * @see <a href=
-     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
-     *      Coordinate System</a>
-     */
-    public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
-        new Translation3d(0, 0, 0),
-        new Rotation3d(0, 0, 0));
   }
 
   public static class constTurret {
     public static final double GEAR_RATIO = 39;
+    public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
-    // TODO: Update with real values (MUST DO BEFORE TESTING!)
     /**
      * The position, in meters, of the center of the turret relative to the center
      * of the robot (Robot Coordinates).
@@ -142,7 +146,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
-        new Translation3d(0, 0, 0),
+        new Translation3d(0, 0, Units.inchesToMeters(14.5)),
         new Rotation3d(0, 0, 0));
   }
 

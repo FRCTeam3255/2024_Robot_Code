@@ -20,7 +20,7 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
-import frc.robot.RobotPreferences.prefShooter;
+import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
@@ -33,6 +33,7 @@ import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Vision;
@@ -49,14 +50,15 @@ public class RobotContainer implements Logged {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   // Subsystems
-  private final Drivetrain subDrivetrain = new Drivetrain();
-  private final Shooter subShooter = new Shooter();
-  private final Intake subIntake = new Intake();
-  private final Vision subVision = new Vision();
   private final Climber subClimber = new Climber();
+  private final Drivetrain subDrivetrain = new Drivetrain();
+  private final Intake subIntake = new Intake();
+  private final LEDs subLEDs = new LEDs();
+  private final Pitch subPitch = new Pitch();
+  private final Shooter subShooter = new Shooter();
   private final Turret subTurret = new Turret();
   private final Transfer subTransfer = new Transfer();
-  private final LEDs subLEDs = new LEDs();
+  private final Vision subVision = new Vision();
 
   public RobotContainer() {
     // Set out log file to be in its own folder
@@ -92,9 +94,9 @@ public class RobotContainer implements Logged {
     conDriver.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     conDriver.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     conDriver.btn_North.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorForwardVelocity, climberPref.climberMotorForwardFeedForward));
+        new Climb(subClimber, climberPref.climberMotorForwardSpeed));
     conDriver.btn_South.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorReverseVelocity, climberPref.climberMotorReverseFeedForward));
+        new Climb(subClimber, climberPref.climberMotorReverseSpeed));
 
     // Defaults to Field-Relative, is Robot-Relative while held
     conDriver.btn_LeftBumper
@@ -105,19 +107,17 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings() {
     conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
     conOperator.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
+        .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
-    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(1.0)));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.setPitchVoltage(-1.0)));
+    conOperator.btn_Y.onTrue(Commands.runOnce(() -> subPitch.setPitchVoltage(1.0)));
+    conOperator.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchVoltage(-1.0)));
 
     conOperator.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
     conOperator.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
 
-    conOperator.btn_B.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)))
-        .onFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
-    conOperator.btn_X.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)))
-        .onFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
+    conOperator.btn_B.onTrue(Commands.runOnce(() -> setLockSpeaker()));
+    conOperator.btn_X.onTrue(Commands.runOnce(() -> subTurret.setTurretAngle(0)));
+
   }
 
   public Command getAutonomousCommand() {

@@ -16,10 +16,10 @@ import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Pitch;
 
 public class LockPitch extends Command {
-  Shooter subShooter;
+  Pitch subPitch;
   Drivetrain subDrivetrain;
 
   LockedLocation lockedLocation = LockedLocation.NONE;
@@ -33,18 +33,17 @@ public class LockPitch extends Command {
   Pose3d ampPose;
   Pose2d robotPose = new Pose2d();
 
-  public LockPitch(Shooter Shooter, Drivetrain subDrivetrain) {
-    this.subShooter = Shooter;
+  public LockPitch(Pitch subPitch, Drivetrain subDrivetrain) {
+    this.subPitch = subPitch;
     this.subDrivetrain = subDrivetrain;
 
-    // TODO: move pitch motor out of shooter subsystem; this will cause issues as-is
-    addRequirements(subShooter);
+    addRequirements(subPitch);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    desiredAngle = Rotation2d.fromDegrees(subShooter.getPitchAngle());
+    desiredAngle = Rotation2d.fromDegrees(subPitch.getPitchAngle());
 
     fieldPoses = FieldConstants.GET_FIELD_POSITIONS();
   }
@@ -54,16 +53,16 @@ public class LockPitch extends Command {
   public void execute() {
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedAngle = subShooter.getDesiredAngleToLock(robotPose, fieldPoses,
+    Optional<Rotation2d> calculatedAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
         RobotContainer.getLockedLocation());
 
     if (calculatedAngle.isPresent()) {
       desiredAngle = calculatedAngle.get();
     }
-    // Otherwise, try to go to the last calculated angle
 
-    if (subShooter.isAnglePossible(desiredAngle.getDegrees())) {
-      subShooter.setPitchAngle(desiredAngle.getDegrees());
+    // Otherwise, try to go to the last calculated angle
+    if (subPitch.isAnglePossible(desiredAngle.getDegrees())) {
+      subPitch.setPitchAngle(desiredAngle.getDegrees());
     }
   }
 
