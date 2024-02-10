@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -26,7 +27,7 @@ import frc.robot.RobotPreferences.prefPitch;
 public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
-
+  CurrentLimitsConfigs pitchCurrentLimitConfig;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
 
@@ -48,6 +49,13 @@ public class Pitch extends SubsystemBase {
 
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefPitch.pitchForwardLimit.getValue();
+    // change stator to supply
+    // add new robot constant for current limit
+    pitchCurrentLimitConfig.withSupplyCurrentLimit(constPitch.CURRENT_LIMIT_CEILING_AMPS);
+    pitchCurrentLimitConfig.withSupplyCurrentLimitEnable(prefPitch.enablePitchSupplyCurrentLimit.getValue());
+
+    pitchCurrentLimitConfig.withSupplyCurrentThreshold(prefPitch.pitchSupplyCurrentThreshold.getValue());
+    pitchCurrentLimitConfig.withSupplyTimeThreshold(prefPitch.pitchWithSupplyTimeThreshold.getValue());
 
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue();
@@ -56,6 +64,7 @@ public class Pitch extends SubsystemBase {
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
 
     pitchMotor.getConfigurator().apply(pitchConfig);
+    pitchMotor.getConfigurator().apply(pitchCurrentLimitConfig);
     pitchMotor.setInverted(prefPitch.pitchInvert.getValue());
   }
 
