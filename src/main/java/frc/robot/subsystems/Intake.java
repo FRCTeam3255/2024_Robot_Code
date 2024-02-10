@@ -61,14 +61,14 @@ public class Intake extends SubsystemBase {
   }
 
   private double getRollerVelocity() {
-    return rollerMotor.getVelocity().getValueAsDouble();
+    return rollerMotor.get();
   }
 
   @Override
   public void periodic() {
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake/Left/Velocity RPS", getRollerVelocity());
+    SmartDashboard.putNumber("Intake/roller/Velocity RPS", getRollerVelocity());
 
   }
 }
