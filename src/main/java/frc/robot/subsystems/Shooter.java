@@ -6,43 +6,30 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.constShooter;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
 
 public class Shooter extends SubsystemBase {
   TalonFX leftMotor;
   TalonFX rightMotor;
-  TalonFX pitchMotor;
 
   TalonFXConfiguration leftConfig;
   TalonFXConfiguration rightConfig;
-  TalonFXConfiguration pitchConfig;
 
   VelocityVoltage velocityRequest;
-  PositionVoltage positionRequest;
-  VoltageOut voltageRequest;
 
   public Shooter() {
     leftMotor = new TalonFX(mapShooter.SHOOTER_LEFT_MOTOR_CAN, "rio");
     rightMotor = new TalonFX(mapShooter.SHOOTER_RIGHT_MOTOR_CAN, "rio");
-    pitchMotor = new TalonFX(mapShooter.SHOOTER_PITCH_MOTOR_CAN, "rio");
 
     leftConfig = new TalonFXConfiguration();
     rightConfig = new TalonFXConfiguration();
-    pitchConfig = new TalonFXConfiguration();
 
     velocityRequest = new VelocityVoltage(0).withSlot(0);
-    positionRequest = new PositionVoltage(0).withSlot(0);
-    voltageRequest = new VoltageOut(0);
 
     configure();
   }
@@ -61,17 +48,11 @@ public class Shooter extends SubsystemBase {
     rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue();
     rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue();
 
-    pitchConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
-    pitchConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
-    pitchConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
-    pitchConfig.Feedback.SensorToMechanismRatio = constShooter.PITCH_GEAR_RATIO;
-
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
-    pitchMotor.getConfigurator().apply(pitchConfig);
 
-    leftMotor.setInverted(false);
-    rightMotor.setInverted(true);
+    leftMotor.setInverted(prefShooter.leftShooterInvert.getValue());
+    rightMotor.setInverted(prefShooter.rightShooterInvert.getValue());
 
   }
 
@@ -99,70 +80,47 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * Sets the angle of the pitch motor
-   * 
-   * @param angle The angle to set the pitch motor to. <b> Units: </b> Degrees
+   * @return The current velocity of the left shooter motor. <b> Units: </b>
+   *         Rotations per second
    */
-  public void setPitchAngle(double angle) {
-    pitchMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  public double getLeftShooterVelocity() {
+    return leftMotor.getVelocity().getValueAsDouble();
   }
 
   /**
-   * Sets the current angle of the pitch motor to read as the given value
-   * 
-   * @param angle The angle to set the pitch motor to. <b> Units: </b> Degrees
+   * @return The current velocity of the right shooter motor. <b> Units: </b>
+   *         Rotations per second
    */
-  public void setPitchSensorAngle(double angle) {
-    pitchMotor.setPosition(Units.degreesToRotations(angle));
+  public double getRightShooterVelocity() {
+    return rightMotor.getVelocity().getValueAsDouble();
   }
 
   /**
-   * Sets the voltage of the pitch motor
-   * 
-   * @param voltage The voltage to set the pitch motor to. <b> Units: </b>
-   *                Volts
+   * @param desiredVelocity What velocity you are checking. <b> Units: </b>
+   *                        Rotations per second
+   * @param tolerance       The tolerance of when you would consider the motor to
+   *                        be at velocity <b> Units: </b> Rotations per second
+   * @return If the left shooter motor is at the velocity
    */
-  public void setPitchVoltage(double voltage) {
-    pitchMotor.setControl(voltageRequest.withOutput(voltage));
+  public boolean isLeftShooterAtVelocity(double desiredVelocity, double tolerance) {
+    return (Math.abs(getLeftShooterVelocity() - desiredVelocity)) <= tolerance;
   }
 
   /**
-   * Sets the pitch motor to neutral.
+   * @param desiredVelocity What velocity you are checking. <b> Units: </b>
+   *                        Rotations per second
+   * @param tolerance       The tolerance of when you would consider the motor to
+   *                        be at velocity <b> Units: </b> Rotations per second
+   * @return If the right shooter motor is at the velocity
    */
-  public void setPitchNeutralOutput() {
-    pitchMotor.setControl(new NeutralOut());
-  }
-
-  /**
-   * @return The current applied (output) voltage. <b> Units: </b> Volts
-   */
-  public double getPitchVoltage() {
-    return pitchMotor.getMotorVoltage().getValueAsDouble();
-  }
-
-  /**
-   * @return The current velocity of the pitch motor. <b> Units: </b> Degrees per
-   *         second
-   */
-  public double getPitchVelocity() {
-    return Units.rotationsToDegrees(pitchMotor.getVelocity().getValueAsDouble());
-  }
-
-  /**
-   * @return The current angle of the pitch motor. <b> Units: </b> Degrees
-   */
-  public double getPitchAngle() {
-    return Units.rotationsToDegrees(pitchMotor.getPosition().getValueAsDouble());
+  public boolean isRightShooterAtVelocity(double desiredVelocity, double tolerance) {
+    return (Math.abs(getRightShooterVelocity() - desiredVelocity)) <= tolerance;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter/Left/Velocity RPS", leftMotor.getVelocity().getValue());
-    SmartDashboard.putNumber("Shooter/Right/Velocity RPS", rightMotor.getVelocity().getValue());
-    SmartDashboard.putNumber("Shooter/Pitch/Velocity DPS", getPitchVelocity());
-    SmartDashboard.putNumber("Shooter/Pitch/Voltage", getPitchVoltage());
-    SmartDashboard.putNumber("Shooter/Pitch/Angle", getPitchAngle());
-
+    SmartDashboard.putNumber("Shooter/Left/Velocity RPS", getLeftShooterVelocity());
+    SmartDashboard.putNumber("Shooter/Right/Velocity RPS", getRightShooterVelocity());
   }
 }

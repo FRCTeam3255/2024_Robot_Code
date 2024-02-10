@@ -5,7 +5,10 @@
 package frc.robot;
 
 import monologue.Monologue;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -24,7 +27,11 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     Monologue.updateAll();
     CommandScheduler.getInstance().run();
+
+    // Logging to SmartDashboard
     RobotContainer.logPDHValues();
+    SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
+    SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
   }
 
   @Override
@@ -33,6 +40,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    FieldConstants.ALLIANCE = DriverStation.getAlliance();
   }
 
   @Override
