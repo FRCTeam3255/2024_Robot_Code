@@ -14,7 +14,6 @@ public class TransferGamePiece extends Command {
 
   public TransferGamePiece(Transfer givenTransfer) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalFeeder = givenTransfer;
     globalTransfer = givenTransfer;
 
   }
