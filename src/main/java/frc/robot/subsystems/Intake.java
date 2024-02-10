@@ -82,6 +82,8 @@ public class Intake extends SubsystemBase {
 
   private double getRollerPercentOutput() {
     return rollerMotor.get();
+  }
+
   /**
    * Sets the angle of the pivot motor
    * 
@@ -95,7 +97,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake/ Roller Percent Output", getRollerPercentOutput());
+    SmartDashboard.putNumber("Intake/Roller Percent Output", getRollerPercentOutput());
 
   }
 }
