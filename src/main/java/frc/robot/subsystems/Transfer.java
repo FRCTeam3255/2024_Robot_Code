@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTransfer;
@@ -85,8 +86,19 @@ public class Transfer extends SubsystemBase {
     transferMotor.setControl(new NeutralOut());
   }
 
+  private double getTransferMotorVelocity() {
+    return transferMotor.getVelocity().getValueAsDouble();
+  }
+
+  private double getFeederMotorVelocity() {
+    return feederMotor.getMotorOutputPercent();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Transfer/Left/Velocity RPS", getFeederMotorVelocity());
+    SmartDashboard.putNumber("Transfer/Right/Velocity RPS", getTransferMotorVelocity());
   }
+
 }
