@@ -98,6 +98,6 @@ public class Intake extends SubsystemBase {
 
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake/Roller Percent Output", getRollerPercentOutput());
-
+    SmartDashboard.putNumber("Intake/Pivot Angle", pivotMotor.getPosition().getValue());
   }
 }
