@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Roller Percent Output", getRollerPercentOutput());
+    SmartDashboard.putNumber("Intake/ Roller Percent Output", getRollerPercentOutput());
 
   }
 }
