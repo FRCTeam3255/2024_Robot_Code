@@ -40,7 +40,7 @@ public class Turret extends SubsystemBase {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
     turretConfig = new TalonFXConfiguration();
-    absoluteEncoderOffset = prefTurret.turretAbsoluteEncoderOffset.getValue();
+    absoluteEncoderOffset = constTurret.ABS_ENCODER_OFFSET;
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
@@ -90,7 +90,7 @@ public class Turret extends SubsystemBase {
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition(getAbsoluteEncoder());
+    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -getAbsoluteEncoder() : getAbsoluteEncoder());
   }
 
   // "Get" Methods

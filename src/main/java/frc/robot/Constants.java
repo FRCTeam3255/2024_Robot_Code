@@ -138,6 +138,9 @@ public final class Constants {
     public static final double GEAR_RATIO = 39;
     public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
+    public static final double ABS_ENCODER_OFFSET = 0.812425;
+    public static final boolean ABS_ENCODER_INVERT = true;
+
     /**
      * The position, in meters, of the center of the turret relative to the center
      * of the robot (Robot Coordinates).
