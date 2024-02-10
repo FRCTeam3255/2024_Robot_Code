@@ -41,6 +41,7 @@ public class Pitch extends SubsystemBase {
   }
 
   public void configure() {
+    pitchConfig.Slot0.kV = prefPitch.pitchV.getValue();
     pitchConfig.Slot0.kP = prefPitch.pitchP.getValue();
     pitchConfig.Slot0.kI = prefPitch.pitchI.getValue();
     pitchConfig.Slot0.kD = prefPitch.pitchD.getValue();
@@ -133,8 +134,7 @@ public class Pitch extends SubsystemBase {
    * Calculates the desired angle needed to lock onto the robot's current locked
    * location.
    * 
-   * Returns empty if there is nothing set to be locked onto OR the desired angle
-   * is EXACTLY 0.0 degrees
+   * Returns empty if there is nothing set to be locked onto
    * 
    * @param robotPose      The current pose of the robot
    * @param fieldPoses     The poses of the field elements, matching your alliance
@@ -145,49 +145,33 @@ public class Pitch extends SubsystemBase {
    */
   public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
       LockedLocation lockedLocation) {
-    double distX = 0;
-    double distY = 0;
-    double distZ = 0;
 
-    double distXY = 0;
-
-    Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
-    Pose3d speakerPose = fieldPoses[0];
-    Pose3d ampPose = fieldPoses[1];
-
-    Rotation2d desiredAngle = new Rotation2d();
+    Pose3d targetPose;
 
     switch (lockedLocation) {
       default:
-        break;
+        return Optional.empty();
 
       case SPEAKER:
-        distX = Math.abs(speakerPose.getX() - pitchPose.getX());
-        distY = Math.abs(speakerPose.getY() - pitchPose.getY());
-        distZ = Math.abs(speakerPose.getZ() - pitchPose.getZ());
-
-        // Distance Formula
-        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-
-        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
+        targetPose = fieldPoses[0];
         break;
 
       case AMP:
-        distX = Math.abs(ampPose.getX() - pitchPose.getX());
-        distY = Math.abs(ampPose.getY() - pitchPose.getY());
-        distZ = Math.abs(ampPose.getZ() - pitchPose.getZ());
-
-        // Distance Formula
-        distXY = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-
-        desiredAngle = Rotation2d.fromDegrees(Units.radiansToDegrees(Math.atan2(distXY, distZ)));
-        break;
-
-      case NONE:
+        targetPose = fieldPoses[1];
         break;
     }
 
-    return (desiredAngle.equals(new Rotation2d())) ? Optional.empty() : Optional.of(desiredAngle);
+    Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
+
+    Rotation2d desiredAngle = new Rotation2d();
+
+    double distX = Math.abs(targetPose.getX() - pitchPose.getX());
+    double distY = Math.abs(targetPose.getY() - pitchPose.getY());
+    double distZ = Math.abs(targetPose.getZ() - pitchPose.getZ());
+
+    desiredAngle = new Rotation2d(Math.hypot(distX, distY), distZ);
+
+    return Optional.of(desiredAngle);
   }
 
   @Override

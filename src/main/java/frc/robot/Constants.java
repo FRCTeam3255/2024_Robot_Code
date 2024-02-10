@@ -147,7 +147,10 @@ public final class Constants {
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
         new Translation3d(0, 0, Units.inchesToMeters(14.5)),
-        new Rotation3d(0, 0, 0));
+        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+
+    // TODO: figure out why its 180 because it makes no sense and theres probably a
+    // bug somewhere
   }
 
   public static class constVision {
