@@ -115,6 +115,35 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
+    public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("ïntakePivotP", 24);
+    public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("ïntakePivotI", 0);
+    public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("ïntakePivotD", 0);
+    /**
+     * Enable or disable the intake pivot forward limit
+     */
+    public static final SN_BooleanPreference intakePivotForwardLimitEnable = new SN_BooleanPreference(
+        "intakePivotForwardLimitEnable", true);
+    /**
+     * <p>
+     * The maximum soft limit of the intake pivot
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference intakePivotForwardLimit = new SN_DoublePreference("intakePivotForwardLimit",
+        Units.degreesToRotations(45));
+    /**
+     * Enable or disable the intake pivot forward limit
+     */
+    public static final SN_BooleanPreference intakePivotReverseLimitEnable = new SN_BooleanPreference(
+        "intakePivotReverseLimitEnable", true);
+    /**
+     * <p>
+     * The minimum soft limit of the intake pivot
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference intakePivotReverseLimit = new SN_DoublePreference("intakePivotReverseLimit",
+        Units.degreesToRotations(-45));
     /**
      * <b> Units: </b> Percent Output
      */
@@ -123,7 +152,22 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1.0);
+    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1);
+
+    /**
+     * The intake's pivot motor position when we are intaking
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference intakeIntakingPosition = new SN_DoublePreference(
+        "intakeIntakingPosition", 10);
+
+    /**
+     * The intake's pivot motor position when it is stowed
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference intakeStowPosition = new SN_DoublePreference(
+        "intakeStowPosition", 0);
+
   }
 
   public static final class prefPitch {
