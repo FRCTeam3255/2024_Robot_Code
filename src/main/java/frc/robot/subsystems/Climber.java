@@ -6,17 +6,22 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import frc.robot.Constants.constClimber;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
 import frc.robot.RobotPreferences.climberPref;
 
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VoltageOut;
 
 public class Climber extends SubsystemBase {
   TalonFX climberMotor;
 
   TalonFXConfiguration climberConfig;
+
+  final VoltageOut climberMotorReq = new VoltageOut(0);
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
@@ -37,12 +42,20 @@ public class Climber extends SubsystemBase {
 
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMotorReverseLimit.getValue();
+
+    climberConfig.MotorOutput.NeutralMode = constClimber.PITCH_NEUTRAL_MODE_VALUE;
     climberMotor.getConfigurator().apply(climberConfig);
+
+    climberMotor.setControl(climberMotorReq.withOutput(12));
   }
 
   public void setClimberMotorSpeed(double motorSpeed) {
 
     climberMotor.set(motorSpeed);
+  }
+
+  public double getPosition() {
+    return climberMotor.getPosition().getValue();
   }
 
   public void setNeutralOutput() {
@@ -51,6 +64,8 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Climber position(Rotations)", getPosition());
+    SmartDashboard.putString("climber motor encoder", "DutyCycle");
     // This method will be called once per scheduler run
   }
 
