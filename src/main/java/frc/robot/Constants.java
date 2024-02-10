@@ -34,7 +34,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public static class constClimber {
-    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+    public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
   }
 
   public static class constControllers {

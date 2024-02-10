@@ -43,10 +43,9 @@ public class Climber extends SubsystemBase {
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMotorReverseLimit.getValue();
 
-    climberConfig.MotorOutput.NeutralMode = constClimber.PITCH_NEUTRAL_MODE_VALUE;
+    climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
     climberMotor.getConfigurator().apply(climberConfig);
 
-    climberMotor.setControl(climberMotorReq.withOutput(12));
   }
 
   public void setClimberMotorSpeed(double motorSpeed) {
