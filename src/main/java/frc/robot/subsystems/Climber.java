@@ -14,14 +14,11 @@ import frc.robot.RobotMap.mapClimber;
 import frc.robot.RobotPreferences.climberPref;
 
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VoltageOut;
 
 public class Climber extends SubsystemBase {
   TalonFX climberMotor;
 
   TalonFXConfiguration climberConfig;
-
-  final VoltageOut climberMotorReq = new VoltageOut(0);
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
