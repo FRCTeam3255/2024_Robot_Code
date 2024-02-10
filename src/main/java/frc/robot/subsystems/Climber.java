@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -13,22 +12,16 @@ import frc.robot.RobotMap.mapClimber;
 import frc.robot.RobotPreferences.climberPref;
 
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 
 public class Climber extends SubsystemBase {
-  // needs to be able to turn and set limts
   TalonFX climberMotor;
 
   TalonFXConfiguration climberConfig;
-
-  VelocityVoltage velocityRequest;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
 
     climberConfig = new TalonFXConfiguration();
-
-    velocityRequest = new VelocityVoltage(0).withSlot(0);
     configure();
   }
 
@@ -40,16 +33,16 @@ public class Climber extends SubsystemBase {
     climberConfig.Slot0.kD = climberPref.climberD.getValue();
 
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMotorFowardLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMotorForwardLimit.getValue();
 
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMoterReverseLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMotorReverseLimit.getValue();
     climberMotor.getConfigurator().apply(climberConfig);
   }
 
-  public void setClimberMotorSpeed(double motorVelocity, double motorFeedForward) {
+  public void setClimberMotorSpeed(double motorSpeed) {
 
-    climberMotor.setControl(velocityRequest.withVelocity(motorVelocity).withFeedForward(motorFeedForward));
+    climberMotor.set(motorSpeed);
   }
 
   public void setNeutralOutput() {

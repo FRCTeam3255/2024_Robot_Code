@@ -4,32 +4,41 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.constTurret;
+import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
 
 public class Turret extends SubsystemBase {
   TalonFX turretMotor;
-
   DutyCycleEncoder absoluteEncoder;
-
   TalonFXConfiguration turretConfig;
-
   double absoluteEncoderOffset;
-
   PositionVoltage positionRequest;
+  VoltageOut voltageRequest;
 
   public Turret() {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
     turretConfig = new TalonFXConfiguration();
     absoluteEncoderOffset = prefTurret.turretAbsoluteEncoderOffset.getValue();
+
+    positionRequest = new PositionVoltage(0);
+    voltageRequest = new VoltageOut(0);
 
     configure();
   }
@@ -45,17 +54,41 @@ public class Turret extends SubsystemBase {
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefTurret.turretReverseLimit.getValue();
 
+    turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
+    turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
+
     turretMotor.getConfigurator().apply(turretConfig);
+    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+  }
+  // "Set" Methods
+
+  /**
+   * Sets the physical angle of the turret
+   * 
+   * @param angle The angle to set the turret to. <b> Units: </b> Degrees
+   */
+  public void setTurretAngle(double angle) {
+    turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   /**
-   * Sets the position of the turret
+   * Sets the voltage of the turret motor
    * 
-   * @param position The position to set the turret to. <b> Units: </b> Degrees
+   * @param voltage The voltage to set the turret motor to. <b> Units: </b>
+   *                Volts
    */
-  public void setTurretPosition(double position) {
-    turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(position)));
+  public void setTurretVoltage(double voltage) {
+    turretMotor.setControl(voltageRequest.withOutput(voltage));
   }
+
+  /**
+   * Reset the turret encoder motor to absolute encoder's value
+   */
+  public void resetTurretToAbsolutePosition() {
+    turretMotor.setPosition(getAbsoluteEncoder());
+  }
+
+  // "Get" Methods
 
   /**
    * Get the raw position of the turret encoder (without offset)
@@ -80,14 +113,93 @@ public class Turret extends SubsystemBase {
   }
 
   /**
-   * Reset the turret encoder motor to absolute encoder's value
+   * @return The current angle of the turret. <b> Units: </b> Degrees
    */
-  public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition(getAbsoluteEncoder());
+  public double getAngle() {
+    return Units.rotationsToDegrees(turretMotor.getPosition().getValueAsDouble());
+  }
+
+  /**
+   * <p>
+   * Calculates the desired angle needed to lock onto the robot's current locked
+   * location. This requires the positive direction of the turret's rotation and
+   * the robot's rotation to be <a href =
+   * "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#rotation-conventions">
+   * Robot Oriented (Counter-Clockwise). </a>
+   * </p>
+   * 
+   * Returns empty if there is nothing set to be locked onto OR the desired angle
+   * is EXACTLY 0.0 degrees
+   * 
+   * @param robotPose      The current pose of the robot
+   * @param fieldPoses     The poses of the field elements, matching your alliance
+   *                       color
+   * @param lockedLocation The location that we are locked onto
+   * 
+   * @return The desired angle required to reach the current locked location
+   */
+  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
+      LockedLocation lockedLocation) {
+    double distX = 0;
+    double distY = 0;
+
+    final Transform2d robotToTurret = new Transform2d(
+        constTurret.ROBOT_TO_TURRET.getX(),
+        constTurret.ROBOT_TO_TURRET.getY(),
+        constTurret.ROBOT_TO_TURRET.getRotation().toRotation2d());
+
+    Pose2d turretPose = robotPose.transformBy(robotToTurret);
+    Pose3d speakerPose = fieldPoses[0];
+    Pose3d ampPose = fieldPoses[1];
+
+    Rotation2d desiredAngle = new Rotation2d();
+
+    switch (lockedLocation) {
+      default:
+        break;
+
+      case NONE:
+        break;
+
+      case SPEAKER:
+        distX = turretPose.getX() - speakerPose.getX();
+        distY = turretPose.getY() - speakerPose.getY();
+
+        // I can't explain this negative sign but it works man (probably something to do
+        // with CCW and CC)
+        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) - 90);
+        // I also can't explain the unary minus but see above
+        desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
+
+        break;
+      case AMP:
+        distX = turretPose.getX() - ampPose.getX();
+        distY = turretPose.getY() - ampPose.getY();
+
+        desiredAngle = Rotation2d.fromDegrees((-Units.radiansToDegrees(Math.atan2(distX, distY))) + 90);
+        desiredAngle = desiredAngle.rotateBy(turretPose.getRotation().unaryMinus());
+
+        break;
+    }
+
+    return (desiredAngle.equals(new Rotation2d())) ? Optional.empty() : Optional.of(desiredAngle);
+    // I HAVE NO CLUE IF IM DOING THIS PROPERLY SOMEONE PLEASE SEND HELP
+    // I WILL ALSO ACCEPT TEA OR MONEY
+  }
+
+  /**
+   * @param angle The angle to check. <b> Units: </b> Degrees
+   * @return If the given angle is possible for the turret to reach
+   */
+  public boolean isAnglePossible(double angle) {
+    return (angle <= Units.rotationsToDegrees(prefTurret.turretForwardLimit.getValue())
+        && angle >= Units.rotationsToDegrees(prefTurret.turretReverseLimit.getValue()));
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Turret/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
+    SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
+    SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
   }
 }

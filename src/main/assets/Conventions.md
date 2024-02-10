@@ -1,4 +1,5 @@
 # Naming Conventions
+These are general conventions and do not need to be exactly followed. Follow these conventions when it makes sense to. We have 6 weeks to build a robot; if it works it works 🤷‍♂️
 
 ## General
 - Classes should be UpperCamelCase

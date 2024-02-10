@@ -4,22 +4,17 @@
 
 package frc.robot.commands;
 
-import com.frcteam3255.preferences.SN_DoublePreference;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Climber;
+import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.subsystems.Transfer;
 
-public class Climb extends Command {
+public class TransferGamePiece extends Command {
+  /** Creates a new TransferGamePiece. */
+  Transfer globalFeeder;
 
-  Climber globalClimber;
-  SN_DoublePreference globalSpeed;
-
-  /** Creates a new Climb. */
-  public Climb(Climber givenClimber, SN_DoublePreference givenSpeed) {
-    globalSpeed = givenSpeed;
-    globalClimber = givenClimber;
-
+  public TransferGamePiece(Transfer givenTransfer) {
     // Use addRequirements() here to declare subsystem dependencies.
+    globalFeeder = givenTransfer;
   }
 
   // Called when the command is initially scheduled.
@@ -30,14 +25,15 @@ public class Climb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalClimber.setClimberMotorSpeed(globalSpeed.getValue());
-
+    globalFeeder.setFeederMotorSpeed(prefTransfer.transferFeederMotorSpeed.getValue());
+    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalClimber.setNeutralOutput();
+    globalFeeder.setFeederNeutralOutput();
+    globalFeeder.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.
