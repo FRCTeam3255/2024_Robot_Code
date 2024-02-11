@@ -276,8 +276,6 @@ public class RobotPreferences {
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
         "transferGamePieceCollectedBelowAmps", 19);
-    public static final SN_DoublePreference transferGamePieceCollectedAboveAmps = new SN_DoublePreference(
-        "transferGamePieceCollectedAboveAmps", 10);
     public static final SN_BooleanPreference enableStatorCurrentLimit = new SN_BooleanPreference(
         "enableStatorCurrentLimit", false);
     public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",

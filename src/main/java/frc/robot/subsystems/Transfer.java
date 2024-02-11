@@ -41,8 +41,7 @@ public class Transfer extends SubsystemBase {
     double current = transferMotor.getStatorCurrent().getValue();
     double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
     double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
-    double aboveCurrent = prefTransfer.transferGamePieceCollectedAboveAmps.getValue();
-    if (current < belowCurrent && current > aboveCurrent
+    if (current < belowCurrent
         && Math.abs(transferMotor.getVelocity().getValue()) > Math.abs(desiredVelocity)) {
       return true;
     } else {
