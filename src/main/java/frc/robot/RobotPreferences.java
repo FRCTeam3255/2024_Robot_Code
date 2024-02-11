@@ -188,7 +188,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Volts
      */
-    public static final SN_DoublePreference pitchZeroingVoltage = new SN_DoublePreference("pitchZeroingVoltage", -0.5);
+    public static final SN_DoublePreference pitchZeroingVoltage = new SN_DoublePreference("pitchZeroingVoltage", -1);
 
     /**
      * <p>
