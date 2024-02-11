@@ -41,8 +41,8 @@ public class Transfer extends SubsystemBase {
     double current = transferMotor.getStatorCurrent().getValue();
     double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
     double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
-    if (current < belowCurrent
-        && Math.abs(transferMotor.getVelocity().getValue()) > Math.abs(desiredVelocity)) {
+    if (current > belowCurrent
+        && Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity)) {
       return true;
     } else {
       return false;
@@ -52,7 +52,6 @@ public class Transfer extends SubsystemBase {
   /** Creates a new Transfer. */
   public void configure() {
     transferMotor.setInverted(prefTransfer.transferMotorInverted.getValue());
-
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
     transferCurrentLimitConfigs.withStatorCurrentLimitEnable(false);
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);

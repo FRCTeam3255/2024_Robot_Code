@@ -118,7 +118,7 @@ public class RobotContainer implements Logged {
     controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
     controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    controller.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
+    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
   }
 
   public Command getAutonomousCommand() {

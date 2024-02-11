@@ -268,14 +268,14 @@ public class RobotPreferences {
 
   public static final class prefTransfer {
     public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
-        "feederMotorSpeed", .5);
+        "feederMotorSpeed", .2);
     public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", 0); // TODO: CHECK VELOCITY AS WELL
+        "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
-        "transferGamePieceCollectedBelowAmps", 19);
+        "transferGamePieceCollectedBelowAmps", 15);
     public static final SN_BooleanPreference enableStatorCurrentLimit = new SN_BooleanPreference(
         "enableStatorCurrentLimit", false);
     public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",
