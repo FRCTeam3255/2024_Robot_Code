@@ -19,7 +19,7 @@ import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
-  TalonFX pivotMotor;
+  // TalonFX pivotMotor;
   CANSparkMax leftCenteringMotor;
   CANSparkMax rightCenteringMotor;
 
@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
-    pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
+    // pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
     leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     pivotConfig = new TalonFXConfiguration();
@@ -48,7 +48,7 @@ public class Intake extends SubsystemBase {
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.intakePivotReverseLimit.getValue();
 
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
-    pivotMotor.getConfigurator().apply(pivotConfig);
+    // pivotMotor.getConfigurator().apply(pivotConfig);
     leftCenteringMotor.restoreFactoryDefaults();
     rightCenteringMotor.restoreFactoryDefaults();
 
@@ -89,15 +89,16 @@ public class Intake extends SubsystemBase {
    * 
    * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
    */
-  public void setPivotMotorAngle(double angle) {
-    pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
-  }
+  // public void setPivotMotorAngle(double angle) {
+  // pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  // }
 
   @Override
   public void periodic() {
 
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake/Roller Percent Output", getRollerPercentOutput());
-    SmartDashboard.putNumber("Intake/Pivot Angle", pivotMotor.getPosition().getValue());
+    // SmartDashboard.putNumber("Intake/Pivot Angle",
+    // pivotMotor.getPosition().getValue());
   }
 }

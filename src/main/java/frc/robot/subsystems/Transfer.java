@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -41,21 +40,21 @@ public class Transfer extends SubsystemBase {
   public boolean isGamePieceCollected() {
     double current = transferMotor.getStatorCurrent().getValue();
     double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
-    return true;
-    // line 33 is temp NOT DONE
+    double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
+    if (current > belowCurrent
+        && Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /** Creates a new Transfer. */
   public void configure() {
     transferMotor.setInverted(prefTransfer.transferMotorInverted.getValue());
-
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
     transferCurrentLimitConfigs.withStatorCurrentLimitEnable(false);
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
-
-    feederMotor.configFactoryDefault();
-    feederMotor.setInverted(prefTransfer.transferFeederInverted.getValue());
-    feederMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void setCurrentLimiting(boolean status) {
@@ -99,6 +98,9 @@ public class Transfer extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
+    SmartDashboard.putNumber("Transfer/Stator Current", transferMotor.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
+
   }
 
 }
