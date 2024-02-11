@@ -180,7 +180,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchWithSupplyTimeThreshold = new SN_DoublePreference(
         "pitchWithSupplyTimeThreshold", 0);
     public static final SN_BooleanPreference pitchInvert = new SN_BooleanPreference("pitchInvert", true);
-    public static final SN_BooleanPreference enablePitchSupplyCurrentLimit = new SN_BooleanPreference("pitchInvert",
+    public static final SN_BooleanPreference enablePitchSupplyCurrentLimit = new SN_BooleanPreference(
+        "enablePitchSupplyCurrentLimit",
         true);
     /**
      * <b>Units:</b> Degrees
