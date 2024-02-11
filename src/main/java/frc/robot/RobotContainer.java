@@ -103,10 +103,22 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings() {
-    conOperator.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
-    conOperator.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
-    conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
+    conOperator.btn_North.whileTrue(new Shoot(subShooter, subLEDs, prefShooter.speakerLeftShooterVelocity,
+        prefShooter.speakerLeftShooterFeedForward, prefShooter.speakerRightShooterVelocity,
+        prefShooter.speakerRightShooterFeedForward, prefShooter.speakerPitchAngle));
+
+    conOperator.btn_East.whileTrue(
+        new Shoot(subShooter, subLEDs, prefShooter.ampLeftShooterVelocity, prefShooter.ampLeftShooterFeedForward,
+            prefShooter.ampRightShooterVelocity, prefShooter.ampRightShooterFeedForward, prefShooter.ampPitchAngle));
+
+    conOperator.btn_West.whileTrue(
+        new Shoot(subShooter, subLEDs, prefShooter.trapLeftShooterVelocity, prefShooter.trapLeftShooterFeedForward,
+            prefShooter.trapRightShooterVelocity, prefShooter.trapRightShooterFeedForward, prefShooter.trapPitchAngle));
+
+    // conOperator.btn_RightBumper
+    // .onTrue(Commands.runOnce(() ->
+    // subShooter.setPitchAngle(prefShooter.pitchAngle.getValue())));
+    // conOperator.btn_A.onTrue(Commands.runOnce(() -> subShooter.configure()));
 
     conOperator.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
 

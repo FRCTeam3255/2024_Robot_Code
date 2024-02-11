@@ -159,11 +159,6 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Meters per second
      */
-    public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity",
-        SN_Math.rotationsToMeters(60, 1, 0));
-    public static final SN_DoublePreference leftShooterFeedForward = new SN_DoublePreference("leftShooterFeedForward",
-        0);
-
     public static final SN_DoublePreference speakerLeftShooterVelocity = new SN_DoublePreference(
         "speakerLeftShooterVelocity",
         67);
@@ -172,24 +167,19 @@ public class RobotPreferences {
         33);
 
     public static final SN_DoublePreference ampLeftShooterVelocity = new SN_DoublePreference("ampLeftShooterVelocity",
-        40);
+        30);
     public static final SN_DoublePreference ampLeftShooterFeedForward = new SN_DoublePreference(
         "ampLeftShooterFeedForward",
-        20);
+        15);
 
     public static final SN_DoublePreference trapLeftShooterVelocity = new SN_DoublePreference("trapLeftShooterVelocity",
-        40);
+        15);
     public static final SN_DoublePreference trapLeftShooterFeedForward = new SN_DoublePreference(
         "trapLeftShooterFeedForward",
-        20);
+        7);
     /**
      * <b>Units:</b> Meters per second
      */
-    public static final SN_DoublePreference rightShooterVelocity = new SN_DoublePreference("rightShooterVelocity",
-        SN_Math.rotationsToMeters(70, 1, 0));
-    public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
-        0);
-
     public static final SN_DoublePreference speakerRightShooterVelocity = new SN_DoublePreference(
         "speakerRightShooterVelocity",
         67);
@@ -197,28 +187,26 @@ public class RobotPreferences {
         "speakerRightShooterFeedForward", 33);
 
     public static final SN_DoublePreference ampRightShooterVelocity = new SN_DoublePreference("ampRightShooterVelocity",
-        40);
+        30);
     public static final SN_DoublePreference ampRightShooterFeedForward = new SN_DoublePreference(
         "ampRightShooterFeedForward",
-        20);
+        15);
 
     public static final SN_DoublePreference trapRightShooterVelocity = new SN_DoublePreference(
         "trapRightShooterVelocity",
-        40);
+        15);
     public static final SN_DoublePreference trapRightShooterFeedForward = new SN_DoublePreference(
         "trapRightShooterFeedForward",
-        20);
+        7);
     /**
      * 
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAngle = new SN_DoublePreference("pitchAngle", 10);
-
     public static final SN_DoublePreference speakerPitchAngle = new SN_DoublePreference("speakerPitchAngle", 40);
 
-    public static final SN_DoublePreference ampPitchAngle = new SN_DoublePreference("ampPitchAngle", 20);
+    public static final SN_DoublePreference ampPitchAngle = new SN_DoublePreference("ampPitchAngle", 52);
 
-    public static final SN_DoublePreference trapPitchAngle = new SN_DoublePreference("trapPitchAngle", 20);
+    public static final SN_DoublePreference trapPitchAngle = new SN_DoublePreference("trapPitchAngle", 10);
 
     /**
      * <p>
