@@ -27,14 +27,12 @@ import frc.robot.RobotPreferences.prefPitch;
 public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
-  CurrentLimitsConfigs pitchCurrentLimitConfig;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
 
   public Pitch() {
     pitchMotor = new TalonFX(mapPitch.PITCH_MOTOR_CAN, "rio");
     pitchConfig = new TalonFXConfiguration();
-    pitchCurrentLimitConfig = new CurrentLimitsConfigs();
     positionRequest = new PositionVoltage(0).withSlot(0);
     voltageRequest = new VoltageOut(0);
 
@@ -51,21 +49,18 @@ public class Pitch extends SubsystemBase {
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefPitch.pitchForwardLimit.getValue();
     // change stator to supply
     // add new robot constant for current limit
-    pitchCurrentLimitConfig.withSupplyCurrentLimit(prefPitch.currentLimitCeilingAmps.getValue());
-    pitchCurrentLimitConfig.withSupplyCurrentLimitEnable(prefPitch.enablePitchSupplyCurrentLimit.getValue());
-
-    pitchCurrentLimitConfig.withSupplyCurrentThreshold(prefPitch.pitchSupplyCurrentThreshold.getValue());
-    pitchCurrentLimitConfig.withSupplyTimeThreshold(prefPitch.pitchWithSupplyTimeThreshold.getValue());
 
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue();
 
     pitchConfig.Feedback.SensorToMechanismRatio = constPitch.PITCH_GEAR_RATIO;
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
-
+    pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = prefPitch.enablePitchSupplyCurrentLimit.getValue();
+    pitchConfig.CurrentLimits.SupplyCurrentLimit = prefPitch.currentLimitCeilingAmps.getValue();
+    pitchConfig.CurrentLimits.SupplyCurrentThreshold = prefPitch.pitchSupplyCurrentThreshold.getValue();
+    pitchConfig.CurrentLimits.SupplyTimeThreshold = prefPitch.pitchWithSupplyTimeThreshold.getValue();
     pitchMotor.getConfigurator().apply(pitchConfig);
-    pitchMotor.getConfigurator().apply(pitchCurrentLimitConfig);
-    pitchMotor.setInverted(prefPitch.pitchInvert.getValue());
+
   }
 
   // -- Set --
