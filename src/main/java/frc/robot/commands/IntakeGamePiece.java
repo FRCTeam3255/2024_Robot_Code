@@ -30,14 +30,10 @@ public class IntakeGamePiece extends Command {
   public void execute() {
     subIntake.setPivotMotorAngle(prefIntake.intakeIntakingPosition.getValue());
 
-    if (subTransfer.isGamePieceCollected() == true) {
-      subTransfer.setTransferNeutralOutput();
-      subIntake.setNeutralMode();
-    } else {
-      subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(),
-          prefIntake.intakeCenteringSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
-    }
+    subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(),
+        prefIntake.intakeCenteringSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
+
     subTransfer.setFeederMotorSpeed(0.1);
   }
 
@@ -48,11 +44,13 @@ public class IntakeGamePiece extends Command {
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return subTransfer.isGamePieceCollected();
+
   }
 }
