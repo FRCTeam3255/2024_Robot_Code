@@ -29,6 +29,7 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.ZeroPitch;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -193,4 +194,15 @@ public class RobotContainer implements Logged {
     return lockedLocation;
   }
 
+  /**
+   * Returns the command to zero the pitch. This will make the pitch move itself
+   * downwards until it sees a current spike and cancel any incoming commands that
+   * require the pitch motor. If the zeroing does not end within 3 seconds, it
+   * will interrupt itself.
+   * 
+   * @return The command to zero the pitch
+   */
+  public Command zeroPitch() {
+    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+  }
 }
