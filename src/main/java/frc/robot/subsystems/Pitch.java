@@ -51,7 +51,7 @@ public class Pitch extends SubsystemBase {
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefPitch.pitchForwardLimit.getValue();
     // change stator to supply
     // add new robot constant for current limit
-    pitchCurrentLimitConfig.withSupplyCurrentLimit(constPitch.CURRENT_LIMIT_CEILING_AMPS);
+    pitchCurrentLimitConfig.withSupplyCurrentLimit(prefPitch.currentLimitCeilingAmps.getValue());
     pitchCurrentLimitConfig.withSupplyCurrentLimitEnable(prefPitch.enablePitchSupplyCurrentLimit.getValue());
 
     pitchCurrentLimitConfig.withSupplyCurrentThreshold(prefPitch.pitchSupplyCurrentThreshold.getValue());

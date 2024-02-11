@@ -177,6 +177,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
     public static final SN_DoublePreference pitchSupplyCurrentThreshold = new SN_DoublePreference(
         "pitchSupplyCurrentThreshold", 0);
+    public static final SN_DoublePreference currentLimitCeilingAmps = new SN_DoublePreference("currentLimitCeilingAmps",
+        0.3);
     public static final SN_DoublePreference pitchWithSupplyTimeThreshold = new SN_DoublePreference(
         "pitchWithSupplyTimeThreshold", 0);
     public static final SN_BooleanPreference pitchInvert = new SN_BooleanPreference("pitchInvert", true);

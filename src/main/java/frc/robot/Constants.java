@@ -95,7 +95,7 @@ public final class Constants {
   public static class constPitch {
     public static final double PITCH_GEAR_RATIO = 57;
     public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
-    public static final double CURRENT_LIMIT_CEILING_AMPS = 40;
+
     // TODO: Update with real values (MUST DO BEFORE TESTING!)
     /**
      * The position, in meters, of the center of rotation for the pitch motor
