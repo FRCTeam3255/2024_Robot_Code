@@ -112,13 +112,10 @@ public class RobotContainer implements Logged {
     controller.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
-    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockSpeaker()));
-    controller.btn_X.onTrue(Commands.runOnce(() -> setLockNone()));
-
     controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
     controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
+    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret));
   }
 
   public Command getAutonomousCommand() {
@@ -166,25 +163,8 @@ public class RobotContainer implements Logged {
 
   // --- Locking Logic ---
 
-  /**
-   * Set the locking location to the speaker.
-   */
-  public static void setLockSpeaker() {
-    lockedLocation = LockedLocation.SPEAKER;
-  }
-
-  /**
-   * Set the locking location to the amp.
-   */
-  public static void setLockAmp() {
-    lockedLocation = LockedLocation.AMP;
-  }
-
-  /**
-   * Set the locking location to no field elements.
-   */
-  public static void setLockNone() {
-    lockedLocation = LockedLocation.NONE;
+  public static void setLockedLocation(LockedLocation location) {
+    lockedLocation = location;
   }
 
   /**
