@@ -19,8 +19,6 @@ public class IntakeGamePiece extends Command {
   Transfer subTransfer;
   Turret subTurret;
 
-  LockedLocation prevLocation;
-
   public IntakeGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
@@ -32,8 +30,6 @@ public class IntakeGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    prevLocation = RobotContainer.getLockedLocation();
-    RobotContainer.setLockedLocation(LockedLocation.NONE);
 
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
   }
@@ -57,8 +53,6 @@ public class IntakeGamePiece extends Command {
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
-
-    RobotContainer.setLockedLocation(prevLocation);
   }
 
   // Returns true when the command should end.
