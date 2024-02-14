@@ -55,10 +55,10 @@ public class Pitch extends SubsystemBase {
 
     pitchConfig.Feedback.SensorToMechanismRatio = constPitch.PITCH_GEAR_RATIO;
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
-    pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = prefPitch.enablePitchSupplyCurrentLimit.getValue();
+    pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = prefPitch.pitchSupplyCurrentLimitEnable.getValue();
     pitchConfig.CurrentLimits.SupplyCurrentLimit = prefPitch.currentLimitCeilingAmps.getValue();
     pitchConfig.CurrentLimits.SupplyCurrentThreshold = prefPitch.pitchSupplyCurrentThreshold.getValue();
-    pitchConfig.CurrentLimits.SupplyTimeThreshold = prefPitch.pitchWithSupplyTimeThreshold.getValue();
+    pitchConfig.CurrentLimits.SupplyTimeThreshold = prefPitch.pitchSupplyTimeTreshold.getValue();
     pitchMotor.getConfigurator().apply(pitchConfig);
 
   }

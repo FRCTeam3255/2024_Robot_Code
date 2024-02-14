@@ -179,11 +179,11 @@ public class RobotPreferences {
         "pitchSupplyCurrentThreshold", 0);
     public static final SN_DoublePreference currentLimitCeilingAmps = new SN_DoublePreference("currentLimitCeilingAmps",
         0.3);
-    public static final SN_DoublePreference pitchWithSupplyTimeThreshold = new SN_DoublePreference(
-        "pitchWithSupplyTimeThreshold", 0);
+    public static final SN_DoublePreference pitchSupplyTimeTreshold = new SN_DoublePreference(
+        "pitchSupplyTimeThreshold", 0);
     public static final SN_BooleanPreference pitchInvert = new SN_BooleanPreference("pitchInvert", true);
-    public static final SN_BooleanPreference enablePitchSupplyCurrentLimit = new SN_BooleanPreference(
-        "enablePitchSupplyCurrentLimit",
+    public static final SN_BooleanPreference pitchSupplyCurrentLimitEnable = new SN_BooleanPreference(
+        "pitchSupplyCurrentLimitEnable",
         true);
     /**
      * <b>Units:</b> Degrees
