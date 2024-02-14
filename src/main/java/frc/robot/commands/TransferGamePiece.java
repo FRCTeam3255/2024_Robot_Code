@@ -10,13 +10,11 @@ import frc.robot.subsystems.Transfer;
 
 public class TransferGamePiece extends Command {
   /** Creates a new TransferGamePiece. */
-  Transfer globalFeeder;
+  Transfer globalTransfer;
 
   public TransferGamePiece(Transfer givenTransfer) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalFeeder = givenTransfer;
-
-    // globalTransfer = givenTransfer;
+    globalTransfer = givenTransfer;
 
   }
 
@@ -28,15 +26,15 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalFeeder.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
-    globalFeeder.setTransferMotorSpeed(prefTransfer.transferMoterSpeed.getValue());
+    globalTransfer.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
+    globalTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalFeeder.setFeederNeutralOutput();
-    globalFeeder.setTransferNeutralOutput();
+    globalTransfer.setFeederNeutralOutput();
+    globalTransfer.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.

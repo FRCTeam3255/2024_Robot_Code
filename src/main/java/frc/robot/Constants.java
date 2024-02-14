@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.led.ColorFlowAnimation;
-import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -35,6 +34,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public static class constClimber {
+    public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
   }
 
   public static class constControllers {
@@ -92,6 +92,24 @@ public final class Constants {
         Direction.Forward);
   }
 
+  public static class constPitch {
+    public static final double PITCH_GEAR_RATIO = 57;
+    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+
+    // TODO: Update with real values (MUST DO BEFORE TESTING!)
+    /**
+     * The position, in meters, of the center of rotation for the pitch motor
+     * relative to the center of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
+    public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
+        new Translation3d(0, 0, 0),
+        new Rotation3d(0, 0, 0));
+  }
+
   /**
    * General Robot Constants that don't fall under a subsystem
    */
@@ -102,38 +120,82 @@ public final class Constants {
     public static final double MAX_VOLTAGE = 12;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
+    // Updated by Alice to match Comp bot Feb. 2nd
     public static final String[] PDH_DEVICES = {
-        "Swerve/FL Steer", "Swerve/FL Drive",
+        "Swerve/FL Steer", "Swerve/FL Drive", // 00, 01
         null, null, null, null, null, null,
-        "Swerve/FR Steer", "Swerve/FR Drive",
-        "Swerve/BR Steer", "Swerve/BR Drive",
+        "Swerve/FR Steer", "Swerve/FR Drive", // 08, 09
+        "Swerve/BR Drive", "Swerve/BR Steer", // 10, 11
         null, null, null, null, null, "Swerve/BL Steer",
         "Swerve/BL Drive", "Ethernet Switch",
         "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
   }
 
   public static class constShooter {
-    public static final double PITCH_GEAR_RATIO = 1;
+  }
+
+  public static class constTurret {
+    public static final double GEAR_RATIO = 39;
+    public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+
+    public static final double ABS_ENCODER_OFFSET = 0.812425;
+    public static final boolean ABS_ENCODER_INVERT = true;
+
+    /**
+     * The position, in meters, of the center of the turret relative to the center
+     * of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
+    public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
+        new Translation3d(0, 0, Units.inchesToMeters(14.5)),
+        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+
+    // TODO: figure out why its 180 because it makes no sense and theres probably a
+    // bug somewhere
   }
 
   public static class constVision {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 
-    // TODO: Update when we have the CAD
+    /**
+     * The position, in meters, of the center of the camera lens relative to the
+     * center of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(0.3183, Units.inchesToMeters(-10), 0.209),
-        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-30)));
+        new Translation3d(Units.inchesToMeters(-12.125), Units.inchesToMeters(-8.625), Units.inchesToMeters(21.75)),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-45)));
 
+    /**
+     * The position, in meters, of the center of the camera lens relative to the
+     * center of the robot (Robot Coordinates).
+     * 
+     * @see <a href=
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+     *      Coordinate System</a>
+     */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(0.3183, Units.inchesToMeters(10), 0.209),
-        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(30)));
-
+        new Translation3d(Units.inchesToMeters(-12.125), Units.inchesToMeters(8.625), Units.inchesToMeters(21.75)),
+        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(45)));
   }
 
   public static class constTransfer {
     public static final double CURRENT_LIMIT_CEILING_AMPS = 40;
     public static final double CURRENT_LIMIT_AFTER_SEC = 10;
     public static final double CURRENT_LIMIT_FLOOR_AMPS = 8;
+  }
+
+  /**
+   * Locations that the robot can attempt to lock onto.
+   */
+  public enum LockedLocation {
+    NONE, SPEAKER, AMP
   }
 }
