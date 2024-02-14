@@ -5,24 +5,33 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Transfer;
+import frc.robot.subsystems.Turret;
 
 public class IntakeGamePiece extends Command {
   Intake subIntake;
   Transfer subTransfer;
+  Turret subTurret;
 
-  public IntakeGamePiece(Intake subIntake, Transfer subTransfer) {
+  public IntakeGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.subTurret = subTurret;
+
+    addRequirements(subIntake, subTransfer, subTurret);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,7 +53,6 @@ public class IntakeGamePiece extends Command {
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
-
   }
 
   // Returns true when the command should end.
