@@ -21,6 +21,7 @@ import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
 import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
@@ -110,15 +111,15 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_North.whileTrue(new Shoot(subShooter, subLEDs, prefShooter.speakerLeftShooterVelocity,
         prefShooter.speakerLeftShooterFeedForward, prefShooter.speakerRightShooterVelocity,
-        prefShooter.speakerRightShooterFeedForward, prefShooter.speakerPitchAngle));
+        prefShooter.speakerRightShooterFeedForward));
 
     controller.btn_East.whileTrue(
         new Shoot(subShooter, subLEDs, prefShooter.ampLeftShooterVelocity, prefShooter.ampLeftShooterFeedForward,
-            prefShooter.ampRightShooterVelocity, prefShooter.ampRightShooterFeedForward, prefShooter.ampPitchAngle));
+            prefShooter.ampRightShooterVelocity, prefShooter.ampRightShooterFeedForward));
 
     controller.btn_West.whileTrue(
         new Shoot(subShooter, subLEDs, prefShooter.trapLeftShooterVelocity, prefShooter.trapLeftShooterFeedForward,
-            prefShooter.trapRightShooterVelocity, prefShooter.trapRightShooterFeedForward, prefShooter.trapPitchAngle));
+            prefShooter.trapRightShooterVelocity, prefShooter.trapRightShooterFeedForward));
 
     controller.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));

@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.frcteam3255.preferences.SN_DoublePreference;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefShooter;
@@ -17,18 +19,16 @@ public class Shoot extends Command {
   SN_DoublePreference leftShooterFeedForward;
   SN_DoublePreference rightShooterVelocity;
   SN_DoublePreference rightShooterFeedForward;
-  SN_DoublePreference ShooterPitchAngle;
 
   public Shoot(Shooter subShooter, LEDs subLEDs, SN_DoublePreference givenLeftShooterVelocity,
       SN_DoublePreference givenLeftShooterFeedForward, SN_DoublePreference givenRightShooterVelocity,
-      SN_DoublePreference givenRightShooterFeedForward, SN_DoublePreference givenShooterPitchAngle) {
+      SN_DoublePreference givenRightShooterFeedForward) {
     this.subShooter = subShooter;
     this.subLEDs = subLEDs;
     this.leftShooterVelocity = givenLeftShooterVelocity;
     this.leftShooterFeedForward = givenLeftShooterFeedForward;
     this.rightShooterVelocity = givenRightShooterVelocity;
     this.rightShooterFeedForward = givenRightShooterFeedForward;
-    this.ShooterPitchAngle = givenShooterPitchAngle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subShooter);
   }

@@ -17,7 +17,6 @@ public class ZeroPitch extends Command {
 
   public ZeroPitch(Pitch subPitch) {
     this.subPitch = subPitch;
-
     addRequirements(subPitch);
   }
 
