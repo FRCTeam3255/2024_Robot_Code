@@ -65,6 +65,13 @@ public class Pitch extends SubsystemBase {
 
   // -- Set --
 
+  public void setPitchSoftwareLimits(boolean reverse, boolean forward) {
+    pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    pitchMotor.getConfigurator().apply(pitchConfig);
+    pitchMotor.setInverted(prefPitch.pitchInvert.getValue());
+  }
+
   /**
    * Sets the angle of the pitch motor
    * 

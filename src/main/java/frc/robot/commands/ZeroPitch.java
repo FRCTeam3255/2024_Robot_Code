@@ -24,6 +24,8 @@ public class ZeroPitch extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subPitch.setPitchSoftwareLimits(false, true);
+
     subPitch.setPitchVoltage(0);
     zeroingTimestamp = 0;
   }
@@ -37,6 +39,8 @@ public class ZeroPitch extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subPitch.setPitchSoftwareLimits(true, true);
+
     // Stop all movement
     subPitch.setPitchVoltage(0);
 
@@ -62,8 +66,8 @@ public class ZeroPitch extends Command {
       return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefPitch.pitchZeroedTime.getValue();
     }
 
-    // If the above wasn't true, we have gained too much velocity so we need to
-    // restart the timer
+    // If the above wasn't true, we have gained too much velocity, so we aren't at 0
+    // & need to restart the timer
     zeroingTimestamp = 0;
     return false;
   }

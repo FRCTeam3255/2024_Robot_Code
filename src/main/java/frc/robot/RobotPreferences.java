@@ -196,7 +196,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Volts
      */
-    public static final SN_DoublePreference pitchZeroingVoltage = new SN_DoublePreference("pitchZeroingVoltage", -0.5);
+    public static final SN_DoublePreference pitchZeroingVoltage = new SN_DoublePreference("pitchZeroingVoltage", -1);
 
     /**
      * <p>
@@ -275,23 +275,22 @@ public class RobotPreferences {
   }
 
   public static final class prefTransfer {
-    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", 1.0);
-
+    public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
+        "feederMotorSpeed", .2);
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
+    public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
+        "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL
+    public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
+        "transferFeedForwardVelocity", .25);
+    public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
+        "transferGamePieceCollectedBelowAmps", 15);
+    public static final SN_BooleanPreference enableStatorCurrentLimit = new SN_BooleanPreference(
+        "enableStatorCurrentLimit", false);
     public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",
         true);
     public static final SN_BooleanPreference transferFeederInverted = new SN_BooleanPreference("transferFeederInverted",
         true);
 
-    /**
-     * <b>Units:</b> Percent Output
-     */
-    public static final SN_DoublePreference transferFeederMotorSpeed = new SN_DoublePreference(
-        "transferFeederMotorSpeed", 1.0);
-    public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance",
-        14000);
-    public static final SN_DoublePreference transferFeedForward = new SN_DoublePreference(
-        "transferFeedForward", .25);
   }
 
   public static final class prefTurret {
@@ -316,8 +315,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
 
-    public static final SN_DoublePreference turretDebugAngle = new SN_DoublePreference("turretDebugAngle", 90);
     public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
+
+    // -- Angles --
+    public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
   }
 
   public static final class prefVision {
@@ -341,4 +342,5 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
   }
+
 }

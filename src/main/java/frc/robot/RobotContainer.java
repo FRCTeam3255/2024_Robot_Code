@@ -29,6 +29,7 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.ZeroPitch;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -111,13 +112,10 @@ public class RobotContainer implements Logged {
     controller.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
-    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockSpeaker()));
-    controller.btn_X.onTrue(Commands.runOnce(() -> setLockNone()));
-
     controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
     controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    controller.btn_Back.whileTrue(new IntakeGamePiece(subIntake, subTransfer));
+    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret));
   }
 
   public Command getAutonomousCommand() {
@@ -165,25 +163,8 @@ public class RobotContainer implements Logged {
 
   // --- Locking Logic ---
 
-  /**
-   * Set the locking location to the speaker.
-   */
-  public static void setLockSpeaker() {
-    lockedLocation = LockedLocation.SPEAKER;
-  }
-
-  /**
-   * Set the locking location to the amp.
-   */
-  public static void setLockAmp() {
-    lockedLocation = LockedLocation.AMP;
-  }
-
-  /**
-   * Set the locking location to no field elements.
-   */
-  public static void setLockNone() {
-    lockedLocation = LockedLocation.NONE;
+  public static void setLockedLocation(LockedLocation location) {
+    lockedLocation = location;
   }
 
   /**
@@ -193,4 +174,15 @@ public class RobotContainer implements Logged {
     return lockedLocation;
   }
 
+  /**
+   * Returns the command to zero the pitch. This will make the pitch move itself
+   * downwards until it sees a current spike and cancel any incoming commands that
+   * require the pitch motor. If the zeroing does not end within 3 seconds, it
+   * will interrupt itself.
+   * 
+   * @return The command to zero the pitch
+   */
+  public Command zeroPitch() {
+    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+  }
 }
