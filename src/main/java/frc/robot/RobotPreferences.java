@@ -27,10 +27,10 @@ public class RobotPreferences {
         "climberMotorForwardLimit", 10);
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
         "climberMotorReverseLimit", -5);
-    public static final SN_DoublePreference climberMotorForwardSpeed = new SN_DoublePreference(
-        "climberMotorForwardSpeed", 1);
-    public static final SN_DoublePreference climberMotorReverseSpeed = new SN_DoublePreference(
-        "climberMotorReverseSpeed", -1);
+    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
+        "climberMotorUpSpeed", 1);
+    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
+        "climberMotorDownSpeed", -1);
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
     public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);

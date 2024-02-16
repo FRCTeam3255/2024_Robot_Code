@@ -95,12 +95,14 @@ public class RobotContainer implements Logged {
 
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
-    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_LeftTrigger.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorForwardSpeed));
-    controller.btn_RightTrigger.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorReverseSpeed));
 
+    controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+
+    controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
+    controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
     // Defaults to Field-Relative, is Robot-Relative while held
     controller.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
@@ -108,14 +110,10 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
-    controller.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
-
-    controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
-
-    controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
+    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subTransfer));
     controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret));
+    controller.btn_RightBumper.controller.btn_LeftBumper.controller.btn_North.whileTrue(new Panic(subLEDs));
+
   }
 
   public Command getAutonomousCommand() {
