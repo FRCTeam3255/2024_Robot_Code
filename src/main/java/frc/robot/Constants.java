@@ -85,6 +85,9 @@ public final class Constants {
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
+    public static final int[] INTAKE_GAME_PIECE_COLLECTED = { 240, 186, 36 };
+    public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(76, 22, 105, 0, 0.95, LED_NUMBER,
+        Direction.Forward);
 
     public static final ColorFlowAnimation AMPLIFY_ANIMATION = new ColorFlowAnimation(160, 10, 247, 0, 0.95, LED_NUMBER,
         Direction.Forward);

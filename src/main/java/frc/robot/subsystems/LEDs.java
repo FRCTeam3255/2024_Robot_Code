@@ -45,6 +45,7 @@ public class LEDs extends SubsystemBase {
 
   public void clearAnimation() {
     CANdle.clearAnimation(0);
+    CANdle.setLEDs(0, 0, 0);
   }
 
   @Override
