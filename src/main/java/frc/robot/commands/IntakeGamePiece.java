@@ -7,10 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
@@ -18,12 +20,13 @@ public class IntakeGamePiece extends Command {
   Intake subIntake;
   Transfer subTransfer;
   Turret subTurret;
+  LEDs subLEDs;
 
-  public IntakeGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret) {
+  public IntakeGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret, LEDs subLEDs) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-
+    this.subLEDs = subLEDs;
     addRequirements(subIntake, subTransfer, subTurret);
   }
 
@@ -53,6 +56,8 @@ public class IntakeGamePiece extends Command {
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
+    subLEDs.setLEDs(constLEDs.INTAKE_GAME_PIECE_COLLECTED);
+
   }
 
   // Returns true when the command should end.

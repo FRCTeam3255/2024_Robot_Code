@@ -28,6 +28,7 @@ import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
+import frc.robot.commands.Panic;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.subsystems.Climber;
@@ -115,7 +116,9 @@ public class RobotContainer implements Logged {
     controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
     controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret));
+    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs));
+
+    controller.btn_North.whileTrue(new Panic(subLEDs));
   }
 
   public Command getAutonomousCommand() {
