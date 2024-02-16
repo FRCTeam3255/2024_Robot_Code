@@ -96,9 +96,9 @@ public class RobotContainer implements Logged {
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_North.whileTrue(
+    controller.btn_LeftTrigger.whileTrue(
         new Climb(subClimber, climberPref.climberMotorForwardSpeed));
-    controller.btn_South.whileTrue(
+    controller.btn_RightTrigger.whileTrue(
         new Climb(subClimber, climberPref.climberMotorReverseSpeed));
 
     // Defaults to Field-Relative, is Robot-Relative while held
