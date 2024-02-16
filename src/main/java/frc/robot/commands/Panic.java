@@ -31,6 +31,8 @@ public class Panic extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subLEDs.clearAnimation();
+
   }
 
   // Returns true when the command should end.
