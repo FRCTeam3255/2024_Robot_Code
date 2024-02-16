@@ -35,6 +35,7 @@ public class IntakeGamePiece extends Command {
   public void initialize() {
 
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
+    subLEDs.clearAnimation();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -56,7 +57,10 @@ public class IntakeGamePiece extends Command {
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
-    subLEDs.setLEDs(constLEDs.INTAKE_GAME_PIECE_COLLECTED);
+    if (!interrupted) {
+
+      subLEDs.setLEDs(constLEDs.INTAKE_GAME_PIECE_COLLECTED);
+    }
 
   }
 
