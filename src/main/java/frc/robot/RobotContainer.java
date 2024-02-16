@@ -91,6 +91,7 @@ public class RobotContainer implements Logged {
     configureOperatorBindings(conOperator);
 
     subDrivetrain.resetModulesToAbsolute();
+
     subTurret.resetTurretToAbsolutePosition();
   }
 
@@ -124,8 +125,19 @@ public class RobotContainer implements Logged {
     controller.btn_RightBumper
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
-    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockSpeaker()));
-    controller.btn_X.onTrue(Commands.runOnce(() -> setLockNone()));
+    controller.btn_A.onTrue(Commands.runOnce(() -> setLockSpeaker()))
+        .onTrue(new Shoot(subShooter, subLEDs, prefShooter.speakerLeftShooterVelocity,
+            prefShooter.speakerLeftShooterFeedForward, prefShooter.speakerRightShooterVelocity,
+            prefShooter.speakerRightShooterFeedForward));
+
+    controller.btn_X.onTrue(Commands.runOnce(() -> setLockSub()))
+        .onTrue(
+            new Shoot(subShooter, subLEDs, prefShooter.ampLeftShooterVelocity, prefShooter.ampLeftShooterFeedForward,
+                prefShooter.ampRightShooterVelocity, prefShooter.ampRightShooterFeedForward));
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockTrap()))
+        .onTrue(
+            new Shoot(subShooter, subLEDs, prefShooter.trapLeftShooterVelocity, prefShooter.trapLeftShooterFeedForward,
+                prefShooter.trapRightShooterVelocity, prefShooter.trapRightShooterFeedForward));
 
     controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
 
@@ -193,9 +205,16 @@ public class RobotContainer implements Logged {
   }
 
   /**
+   * Set the locking location to the trap.
+   */
+  private static void setLockTrap() {
+    lockedLocation = LockedLocation.TRAP;
+  }
+
+  /**
    * Set the locking location to no field elements.
    */
-  public static void setLockNone() {
+  public static void setLockSub() {
     lockedLocation = LockedLocation.NONE;
   }
 
