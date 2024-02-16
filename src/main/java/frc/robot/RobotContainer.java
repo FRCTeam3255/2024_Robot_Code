@@ -7,6 +7,7 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -112,8 +113,21 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subTransfer));
-    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret));
-    controller.btn_RightBumper.controller.btn_LeftBumper.controller.btn_North.whileTrue(new Panic(subLEDs));
+    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs));
+    controller.btn_RightBumper
+        .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
+    controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
+    controller.btn_North.whileTrue(new Panic(subLEDs));
+    // controller.btn_East.this is AMP set point
+    // controller.btn_South.whileTrue(new IntakeGamePiece());
+    // controller.btn_West
+    // controller.btn_Y.onTrue(Commands.runOnce(() ->
+    // setLockedLocation(LockedLocation.AMP))); this is trap
+    controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)));
+    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)));
+    // controller.btn_X.onTrue(Commands.runOnce(() ->
+    // setLockedLocation(LockedLocation.AMP))); this is subwoofer
+    // controller.btn
 
   }
 
