@@ -285,19 +285,19 @@ public class RobotPreferences {
         67);
     public static final SN_DoublePreference speakerLeftShooterFeedForward = new SN_DoublePreference(
         "speakerLeftShooterFeedForward",
-        33);
+        0);
 
     public static final SN_DoublePreference ampLeftShooterVelocity = new SN_DoublePreference("ampLeftShooterVelocity",
         30);
     public static final SN_DoublePreference ampLeftShooterFeedForward = new SN_DoublePreference(
         "ampLeftShooterFeedForward",
-        15);
+        0);
 
     public static final SN_DoublePreference trapLeftShooterVelocity = new SN_DoublePreference("trapLeftShooterVelocity",
         15);
     public static final SN_DoublePreference trapLeftShooterFeedForward = new SN_DoublePreference(
         "trapLeftShooterFeedForward",
-        7);
+        0);
     /**
      * <b>Units:</b> Meters per second
      */
@@ -305,25 +305,25 @@ public class RobotPreferences {
         "speakerRightShooterVelocity",
         67);
     public static final SN_DoublePreference speakerRightShooterFeedForward = new SN_DoublePreference(
-        "speakerRightShooterFeedForward", 33);
+        "speakerRightShooterFeedForward", 0);
 
     public static final SN_DoublePreference ampRightShooterVelocity = new SN_DoublePreference("ampRightShooterVelocity",
         30);
     public static final SN_DoublePreference ampRightShooterFeedForward = new SN_DoublePreference(
         "ampRightShooterFeedForward",
-        15);
+        0);
 
     public static final SN_DoublePreference trapRightShooterVelocity = new SN_DoublePreference(
         "trapRightShooterVelocity",
-        15);
+        5);
     public static final SN_DoublePreference trapRightShooterFeedForward = new SN_DoublePreference(
         "trapRightShooterFeedForward",
-        7);
+        0);
   }
 
   public static final class prefTransfer {
     public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
-        "feederMotorSpeed", .2);
+        "feederMotorSpeed", -.2);
     public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL

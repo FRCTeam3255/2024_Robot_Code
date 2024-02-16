@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.frcteam3255.preferences.SN_DoublePreference;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefShooter;
@@ -42,19 +43,22 @@ public class Shoot extends Command {
   @Override
   public void execute() {
     subShooter.setShootingVelocities(
-        prefShooter.leftShooterVelocity.getValue(),
-        prefShooter.leftShooterFeedForward.getValue(),
-        prefShooter.rightShooterVelocity.getValue(),
-        prefShooter.rightShooterFeedForward.getValue());
+        this.leftShooterVelocity.getValue(),
+        this.leftShooterFeedForward.getValue(),
+        this.rightShooterVelocity.getValue(),
+        this.rightShooterFeedForward.getValue());
 
     // Set LEDs when shooters are up to speed
     if (subShooter.isLeftShooterAtVelocity(leftShooterVelocity.getValue(),
         prefShooter.shooterUpToSpeedTolerance.getValue())
         && subShooter.isRightShooterAtVelocity(rightShooterVelocity.getValue(),
             prefShooter.shooterUpToSpeedTolerance.getValue())) {
+      SmartDashboard.putBoolean("At velocity", true);
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
     } else {
       subLEDs.clearAnimation();
+      SmartDashboard.putBoolean("At velocity", false);
+
     }
   }
 
@@ -62,6 +66,9 @@ public class Shoot extends Command {
   @Override
   public void end(boolean interrupted) {
     subShooter.setShootingNeutralOutput();
+    subLEDs.clearAnimation();
+    SmartDashboard.putBoolean("At velocity", false);
+
   }
 
   // Returns true when the command should end.
