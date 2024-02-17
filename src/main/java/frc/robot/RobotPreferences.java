@@ -317,7 +317,7 @@ public class RobotPreferences {
      * turret speed
      */
     public static final SN_DoublePreference turretPercentageSpeed = new SN_DoublePreference("turretPercentageSpeed",
-        0.1); // TODO: Find an actual safe value
+        0.15);
   }
 
   public static final class prefVision {

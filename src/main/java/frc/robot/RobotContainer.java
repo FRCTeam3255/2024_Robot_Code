@@ -52,8 +52,7 @@ public class RobotContainer implements Logged {
 
   // Controllers
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
-  // TODO: Change this back to final
-  private static SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
+  private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   // Subsystems
   private final Climber subClimber = new Climber();
@@ -116,6 +115,7 @@ public class RobotContainer implements Logged {
     controller.btn_RightBumper
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
     controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
+
     controller.btn_North.whileTrue(new Panic(subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
     // controller.btn_East.this is AMP set point
@@ -196,11 +196,5 @@ public class RobotContainer implements Logged {
    */
   public Command zeroPitch() {
     return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
-  }
-
-  // just for testing purposes
-  // TODO: delete this later
-  public static double getOperatorJoystickRightX() {
-    return conOperator.axis_RightX.getAsDouble();
   }
 }

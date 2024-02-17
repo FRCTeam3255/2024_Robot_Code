@@ -32,7 +32,6 @@ public class Robot extends TimedRobot {
     RobotContainer.logPDHValues();
     SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
-    SmartDashboard.putNumber("RightJoystickX", RobotContainer.getOperatorJoystickRightX()); // TOOD: delete later
   }
 
   @Override
