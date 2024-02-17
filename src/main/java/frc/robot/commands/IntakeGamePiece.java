@@ -41,7 +41,7 @@ public class IntakeGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // subIntake.setPivotMotorAngle(prefIntake.intakeIntakingPosition.getValue());
+    subIntake.setPivotMotorAngle(prefIntake.intakeIntakingPosition.getValue());
 
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(),
         prefIntake.intakeCenteringSpeed.getValue());
@@ -53,7 +53,7 @@ public class IntakeGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // subIntake.setPivotMotorAngle(prefIntake.intakeStowPosition.getValue());
+    subIntake.setPivotMotorAngle(prefIntake.intakeStowPosition.getValue());
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
