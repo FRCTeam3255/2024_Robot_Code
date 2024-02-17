@@ -76,6 +76,17 @@ public class Turret extends SubsystemBase {
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
+  public void setTurretSoftwareLimits(boolean reverse, boolean forward) {
+    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    turretMotor.getConfigurator().apply(turretConfig);
+    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+  }
+
+  public void setTurretSensorAngle(double angle) {
+    turretMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
   /**
    * Sets the voltage of the turret motor
    * 
@@ -111,6 +122,10 @@ public class Turret extends SubsystemBase {
    */
   public double getRawAbsoluteEncoder() {
     return absoluteEncoder.getAbsolutePosition();
+  }
+
+  public double getTurretVelocity() {
+    return Units.rotationsToDegrees(turretMotor.getVelocity().getValueAsDouble());
   }
 
   /**
