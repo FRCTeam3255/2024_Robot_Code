@@ -302,6 +302,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-80));
+    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", -1);
 
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
@@ -311,6 +312,9 @@ public class RobotPreferences {
 
     // -- Angles --
     public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
+    public static final SN_DoublePreference turretZeroedVelocity = new SN_DoublePreference("turretZeroedVelocity",
+        0.01);
+    public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
   }
 
   public static final class prefVision {
