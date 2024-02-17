@@ -24,7 +24,7 @@ public class ZeroTurret extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subTurret.setTurretSoftwareLimits(false, true);
+    subTurret.setTurretSoftwareLimits(true, false);
 
     subTurret.setTurretVoltage(0);
     zeroingTimestamp = 0;

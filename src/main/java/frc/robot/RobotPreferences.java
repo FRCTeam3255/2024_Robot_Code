@@ -302,7 +302,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-80));
-    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", -1);
+    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
