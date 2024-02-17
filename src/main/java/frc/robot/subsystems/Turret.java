@@ -98,6 +98,15 @@ public class Turret extends SubsystemBase {
   }
 
   /**
+   * Sets the speed of the turet motor
+   * 
+   * @param speed The speed to set the turret motor to (-1 to 1)
+   */
+  public void setTurretSpeed(double speed) {
+    turretMotor.set(speed);
+  }
+
+  /**
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
