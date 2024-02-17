@@ -31,6 +31,10 @@ public class LEDs extends SubsystemBase {
     CANdle.setLEDs(rgb[0], rgb[1], rgb[2]);
   }
 
+  public void setIndividualLEDs() {
+
+  }
+
   /**
    * Types of Animations available:
    * ColorFlowAnimation, FireAnimation, LarsonAnimation, RainbowAnimation,

@@ -128,6 +128,8 @@ public class RobotContainer implements Logged {
     // setLockedLocation(LockedLocation.AMP))); this is subwoofer
     // controller.btn
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
+
+    controller.btn_Back.whileTrue().whileFalse(Commands.runOnce(() -> subLEDs.setLEDs(constLEDs.BLANK_COLOR)));
   }
 
   public Command getAutonomousCommand() {
