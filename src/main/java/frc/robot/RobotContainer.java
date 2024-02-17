@@ -29,6 +29,7 @@ import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
+import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
@@ -114,7 +115,9 @@ public class RobotContainer implements Logged {
     controller.btn_RightBumper
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
     controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
+
     controller.btn_North.whileTrue(new Panic(subLEDs));
+    controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
     // controller.btn_East.this is AMP set point
     // controller.btn_South.whileTrue(new IntakeGamePiece());
     // controller.btn_West

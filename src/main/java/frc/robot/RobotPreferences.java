@@ -311,6 +311,13 @@ public class RobotPreferences {
 
     // -- Angles --
     public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
+
+    /**
+     * Takes a percentage of the controller joystick input to set as the manual
+     * turret speed
+     */
+    public static final SN_DoublePreference turretPercentageSpeed = new SN_DoublePreference("turretPercentageSpeed",
+        0.15);
   }
 
   public static final class prefVision {
