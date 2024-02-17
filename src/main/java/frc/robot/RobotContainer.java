@@ -96,7 +96,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
 
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
@@ -106,9 +105,7 @@ public class RobotContainer implements Logged {
     controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
     controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
     // Defaults to Field-Relative, is Robot-Relative while held
-    controller.btn_LeftBumper
-        .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -127,7 +124,7 @@ public class RobotContainer implements Logged {
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SUBWOOFER)));
     // setLockedLocation(LockedLocation.AMP))); this is subwoofer
     // controller.btn
-
+    controller.btn_Start.onTrue(new ZeroPitch(subPitch));
   }
 
   public Command getAutonomousCommand() {
