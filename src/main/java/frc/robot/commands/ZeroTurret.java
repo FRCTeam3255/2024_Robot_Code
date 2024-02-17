@@ -46,7 +46,7 @@ public class ZeroTurret extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subTurret.setTurretSensorAngle(0);
+      subTurret.setTurretSensorAngle(prefTurret.turretSensorAngle.getValue());
     }
   }
 
