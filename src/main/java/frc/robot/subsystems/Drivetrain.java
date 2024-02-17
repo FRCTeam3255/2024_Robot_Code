@@ -6,13 +6,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
-import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;

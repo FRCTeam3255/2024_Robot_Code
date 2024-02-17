@@ -81,7 +81,7 @@ public final class Constants {
     public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.CounterClockwise_Positive;
 
     public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
-    public static final NeutralModeValue STEER_NEUTRAL_MODE = NeutralModeValue.Brake;
+    public static final NeutralModeValue STEER_NEUTRAL_MODE = NeutralModeValue.Coast;
 
     // Physically measured from center to center of the wheels
     public static final double TRACK_WIDTH = Units.inchesToMeters(23.75); // Distance between Left & Right Wheels
