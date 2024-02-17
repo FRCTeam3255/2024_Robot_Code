@@ -54,7 +54,7 @@ public class RobotContainer implements Logged {
   // Subsystems
   private final Climber subClimber = new Climber();
   private final Drivetrain subDrivetrain = new Drivetrain();
-  private final Intake subIntake = new Intake();
+  // private final Intake subIntake = new Intake();
   private final LEDs subLEDs = new LEDs();
   private final Pitch subPitch = new Pitch();
   private final Shooter subShooter = new Shooter();
@@ -63,28 +63,19 @@ public class RobotContainer implements Logged {
   private final Vision subVision = new Vision();
 
   public RobotContainer() {
-    // Set out log file to be in its own folder
-    if (Robot.isSimulation()) {
-      DataLogManager.start("src/main");
-    } else {
-      DataLogManager.start();
-    }
-    // Log data that is being put to shuffleboard
-    DataLogManager.logNetworkTables(true);
-    // Log the DS data and joysticks
-    DriverStation.startDataLog(DataLogManager.getLog(), true);
-    DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
-
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
     // The Left Y and X Axes are swapped because from behind the glass, the X Axis
     // is actually in front of you
     subDrivetrain
-        .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
+        .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
+            isPracticeBot()));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+    //
+    // subVision));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -113,13 +104,15 @@ public class RobotContainer implements Logged {
         .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
 
     controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
+    controller.btn_B.onTrue(Commands.runOnce((() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER))));
 
     controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret));
+    // controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake,
+    // subTransfer, subTurret));
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Line Test");
+    return new PathPlannerAuto("New Auto");
   }
 
   // --- Custom Methods ---

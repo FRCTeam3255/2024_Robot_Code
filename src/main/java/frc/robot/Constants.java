@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.RobotPreferences.prefDrivetrain;
 
 /*
  * | Unit Type | Preferred Unit to Use |
@@ -50,31 +51,43 @@ public final class Constants {
       public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.245117;
       public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.083252;
 
-      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L3;
+      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I.FALCON.L3;
 
     }
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.322754;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.045410;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.192871;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.314941;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.155762;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.034424;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.099854;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.088623;
 
-    public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I_L3;
+    /**
+     * <p>
+     * Translational speed while manually driving on the Competition Robot.
+     * </p>
+     * <b>Units:</b> Meters Per Second
+     */
+    public static final double DRIVE_SPEED = Units.feetToMeters(15.1);
+
+    public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
+        SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
+        SN_SwerveConstants.MK4I.KRAKEN.L3.wheelCircumference,
+        SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
+        DRIVE_SPEED);
 
     public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
     public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.CounterClockwise_Positive;
 
     public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
-    public static final NeutralModeValue STEER_NEUTRAL_MODE = NeutralModeValue.Coast;
+    public static final NeutralModeValue STEER_NEUTRAL_MODE = NeutralModeValue.Brake;
 
     // Physically measured from center to center of the wheels
     public static final double TRACK_WIDTH = Units.inchesToMeters(23.75); // Distance between Left & Right Wheels
     public static final double WHEELBASE = Units.inchesToMeters(23.75); // Distance between Front & Back Wheels
 
-    public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = true;
+    public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = false;
   }
 
   public static class constIntake {
@@ -120,14 +133,16 @@ public final class Constants {
     public static final double MAX_VOLTAGE = 12;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
-    // Updated by Alice to match Comp bot Feb. 2nd
+    /**
+     * Updated by Alice to match Comp bot Feb. 15
+     */
     public static final String[] PDH_DEVICES = {
         "Swerve/FL Steer", "Swerve/FL Drive", // 00, 01
         null, null, null, null, null, null,
         "Swerve/FR Steer", "Swerve/FR Drive", // 08, 09
         "Swerve/BR Drive", "Swerve/BR Steer", // 10, 11
-        null, null, null, null, null, "Swerve/BL Steer",
-        "Swerve/BL Drive", "Ethernet Switch",
+        null, null, null, null, null, "Swerve/BL Steer", // 17
+        "Swerve/BL Drive", "Ethernet Switch", // 18, 19
         "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
   }
 

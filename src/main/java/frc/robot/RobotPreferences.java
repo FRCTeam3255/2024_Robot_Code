@@ -41,24 +41,33 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.0);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.5);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
-    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 100);
+    public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 0); // 100 ???
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
-    public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 0.14414076246334312);
+    public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 0.0); // 0.14414076246334312
 
-    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv", 0.1);
+    // The reciprocal of the theoretical max free speed. Why? I dont know man i just
+    // followed a random discord help thread
+    // TODO: update comment when i have more braincells
+    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv", 1 / 17.1);
 
     // This PID is implemented on the Drivetrain subsystem
-    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0);
+    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0.5);
     public static final SN_DoublePreference autoDriveI = new SN_DoublePreference("autoDriveI", 0);
     public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0);
 
     public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 0);
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
+
+    // CREDIT: 6995 <3
+    // 12 volts / (5676rpm *2pi radPerRev / 60 spm / 12.8 revsPerWheelRev)
+    public static final SN_DoublePreference steerKs = new SN_DoublePreference("steerKs",
+        // (12.0 / (5676 * (2 * Math.PI) / 60 / 12.8)));
+        0);
 
     /**
      * <b>Units:</b> Percentage from 0 to 1
@@ -68,32 +77,20 @@ public class RobotPreferences {
 
     /**
      * <p>
-     * Translational speed while manually driving.
+     * Translational speed while manually driving on the Practice Robot.
      * </p>
      * <b>Units:</b> Meters Per Second
      */
-    public static final SN_DoublePreference driveSpeed = new SN_DoublePreference("driveSpeed",
-        SN_SwerveConstants.MK4I_L3.maxSpeedMeters);
+    public static final SN_DoublePreference pracDriveSpeed = new SN_DoublePreference("pracDriveSpeed",
+        SN_SwerveConstants.MK4I.FALCON.L3.maxSpeedMeters);
 
     /**
      * <p>
      * Rotational speed while manually driving
-     * MAX: 943.751 DPS (Due to gearing and robot size)
      * </p>
      * <b>Units:</b> Degrees per second
      */
     public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 540);
-
-    /**
-     * <b>Units:</b> Feet
-     */
-    public static final SN_DoublePreference autoMaxSpeed = new SN_DoublePreference(
-        "autoMaxSpeed", 8);
-    /**
-     * <b>Units:</b> Feet
-     */
-    public static final SN_DoublePreference autoMaxAccel = new SN_DoublePreference(
-        "autoMaxAccel", 6);
 
     /**
      * <p>
