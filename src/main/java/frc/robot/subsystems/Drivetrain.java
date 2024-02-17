@@ -13,6 +13,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -109,6 +110,20 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     SN_SwerveModule.driveConfiguration = driveConfiguration;
     SN_SwerveModule.steerConfiguration = steerConfiguration;
     super.configure();
+  }
+
+  public void setDefenseMode() {
+    SwerveModuleState[] desiredStates = {
+        new SwerveModuleState(0, constDrivetrain.MODULE_0_DEFENSE_ANGLE),
+        new SwerveModuleState(0, constDrivetrain.MODULE_1_DEFENSE_ANGLE),
+        new SwerveModuleState(0, constDrivetrain.MODULE_2_DEFENSE_ANGLE),
+        new SwerveModuleState(0, constDrivetrain.MODULE_3_DEFENSE_ANGLE) };
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constDrivetrain.SWERVE_CONSTANTS.maxSpeedMeters);
+
+    for (SN_SwerveModule mod : modules) {
+      mod.setModuleState(desiredStates[mod.moduleNumber], true);
+    }
   }
 
   /**

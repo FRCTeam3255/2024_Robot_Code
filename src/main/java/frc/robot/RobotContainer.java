@@ -105,6 +105,7 @@ public class RobotContainer implements Logged {
 
     controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
     controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
+    controller.btn_RightBumper.whileTrue(Commands.runOnce(() -> subDrivetrain.setDefenseMode()));
     // Defaults to Field-Relative, is Robot-Relative while held
 
   }
