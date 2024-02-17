@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // Logging to SmartDashboard
-    RobotContainer.logPDHValues();
+    m_robotContainer.logPDHValues();
     SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
   }

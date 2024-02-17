@@ -46,7 +46,7 @@ public class RobotContainer implements Logged {
   // Misc
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.IS_PRACTICE_BOT_DIO);
   private static LockedLocation lockedLocation = LockedLocation.NONE;
-  private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
+  private static PowerDistribution PDH;
 
   // Controllers
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -64,6 +64,7 @@ public class RobotContainer implements Logged {
   private final Vision subVision = new Vision();
 
   public RobotContainer() {
+    PDH = new PowerDistribution(1, ModuleType.kRev);
     // Set out log file to be in its own folder
     if (Robot.isSimulation()) {
       DataLogManager.start("src/main");
@@ -174,7 +175,7 @@ public class RobotContainer implements Logged {
    * Updates the values supplied to the PDH to SmartDashboard. Should be called
    * periodically.
    */
-  public static void logPDHValues() {
+  public void logPDHValues() {
     SmartDashboard.putNumber("PDH/Input Voltage", PDH.getVoltage());
     SmartDashboard.putBoolean("PDH/Is Switchable Channel Powered", PDH.getSwitchableChannel());
     SmartDashboard.putNumber("PDH/Total Current", PDH.getTotalCurrent());

@@ -123,10 +123,10 @@ public final class Constants {
     // Updated by Alice to match Comp bot Feb. 2nd
     public static final String[] PDH_DEVICES = {
         "Swerve/FL Steer", "Swerve/FL Drive", // 00, 01
-        null, null, null, null, null, null,
+        "Port 02", "Shooter/L", "Shooter/R", "port 05", "port 06", "port 07",
         "Swerve/FR Steer", "Swerve/FR Drive", // 08, 09
         "Swerve/BR Drive", "Swerve/BR Steer", // 10, 11
-        null, null, null, null, null, "Swerve/BL Steer",
+        "port 12", "port 13", "port 14", "port 15", "port 16", "Swerve/BL Steer",
         "Swerve/BL Drive", "Ethernet Switch",
         "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
   }
