@@ -118,6 +118,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("ïntakePivotP", 24);
     public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("ïntakePivotI", 0);
     public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("ïntakePivotD", 0);
+
     /**
      * Enable or disable the intake pivot forward limit
      */
@@ -148,12 +149,13 @@ public class RobotPreferences {
      * <b> Units: </b> Percent Output
      */
     public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 1);
-
+    public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
     /**
      * <b> Units: </b> Percent Output
      */
     public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1);
-
+    public static final SN_DoublePreference intakeSpitOutCenteringSpeed = new SN_DoublePreference(
+        "intakeSpitOutCenteringSpeed", -1);
     /**
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
@@ -270,6 +272,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
         "feederMotorSpeed", .2);
     public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
+    public static final SN_DoublePreference feederSpitOutMotorSpeed = new SN_DoublePreference(
+        "feederSpitOutMotorSpeed", -.2);
+    public static final SN_DoublePreference transferSpitOutMotorSpeed = new SN_DoublePreference(
+        "transferSpitOutMotorSpeed", -.5);
+
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
