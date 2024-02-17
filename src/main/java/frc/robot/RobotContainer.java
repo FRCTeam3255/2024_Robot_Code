@@ -46,7 +46,7 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer implements Logged {
   // Misc
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.IS_PRACTICE_BOT_DIO);
-  private static LockedLocation lockedLocation = LockedLocation.NONE;
+  private static LockedLocation lockedLocation = LockedLocation.SUBWOOFER;
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   // Controllers
@@ -121,11 +121,10 @@ public class RobotContainer implements Logged {
     // controller.btn_East.this is AMP set point
     // controller.btn_South.whileTrue(new IntakeGamePiece());
     // controller.btn_West
-    // controller.btn_Y.onTrue(Commands.runOnce(() ->
-    // setLockedLocation(LockedLocation.AMP))); this is trap
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)));
     controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)));
     controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)));
-    // controller.btn_X.onTrue(Commands.runOnce(() ->
+    controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SUBWOOFER)));
     // setLockedLocation(LockedLocation.AMP))); this is subwoofer
     // controller.btn
 
