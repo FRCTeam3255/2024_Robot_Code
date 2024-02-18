@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constDrivetrain;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
@@ -17,27 +18,32 @@ public class Drive extends Command {
   DoubleSupplier xAxis, yAxis, rotationAxis;
   boolean isOpenLoop;
 
+  boolean isPracticeBot;
+  double driveSpeed;
+
   public Drive(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis) {
+      DoubleSupplier rotationAxis, boolean isPracticeBot) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
+    this.isPracticeBot = isPracticeBot;
 
-    isOpenLoop = true;
+    isOpenLoop = false;
 
     addRequirements(this.subDrivetrain);
   }
 
   @Override
   public void initialize() {
+    driveSpeed = (isPracticeBot) ? constDrivetrain.pracBot.DRIVE_SPEED : constDrivetrain.DRIVE_SPEED;
   }
 
   @Override
   public void execute() {
     // Get Joystick inputs
-    double xVelocity = xAxis.getAsDouble() * prefDrivetrain.driveSpeed.getValue();
-    double yVelocity = -yAxis.getAsDouble() * prefDrivetrain.driveSpeed.getValue();
+    double xVelocity = xAxis.getAsDouble() * driveSpeed;
+    double yVelocity = -yAxis.getAsDouble() * driveSpeed;
     double rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
 
     subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);

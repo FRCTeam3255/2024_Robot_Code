@@ -5,7 +5,7 @@
 package frc.robot;
 
 import monologue.Monologue;
-
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +21,18 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     Monologue.setupMonologue(m_robotContainer, "Monologue", false, false);
+
+    // Set out log file to be in its own folder
+    if (Robot.isSimulation()) {
+      DataLogManager.start("src/main");
+    } else {
+      DataLogManager.start();
+    }
+    // Log data that is being put to shuffleboard
+    DataLogManager.logNetworkTables(true);
+    // Log the DS data and joysticks
+    DriverStation.startDataLog(DataLogManager.getLog(), true);
+    DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
   }
 
   @Override
