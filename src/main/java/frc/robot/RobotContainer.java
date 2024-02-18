@@ -7,6 +7,7 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,10 +27,14 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
+import frc.robot.commands.ManualTurretMovement;
+import frc.robot.commands.Panic;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
+import frc.robot.commands.ZeroTurret;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -44,7 +49,7 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer implements Logged {
   // Misc
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.IS_PRACTICE_BOT_DIO);
-  private static LockedLocation lockedLocation = LockedLocation.NONE;
+  private static LockedLocation lockedLocation = LockedLocation.SUBWOOFER;
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   // Controllers
@@ -84,30 +89,38 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
-    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_North.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorForwardSpeed));
-    controller.btn_South.whileTrue(
-        new Climb(subClimber, climberPref.climberMotorReverseSpeed));
 
+    controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+
+    controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
+    controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
     // Defaults to Field-Relative, is Robot-Relative while held
-    controller.btn_LeftBumper
-        .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs));
+    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subTransfer));
+    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs));
     controller.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAngle.getValue())));
+        .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
+    controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
+    controller.btn_Back.onTrue(new ZeroTurret(subTurret));
+    controller.btn_North.whileTrue(new Panic(subLEDs));
+    controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+    // controller.btn_East.this is AMP set point
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
+    // controller.btn_West
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)));
+    controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)));
+    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)));
+    controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SUBWOOFER)));
+    // setLockedLocation(LockedLocation.AMP))); this is subwoofer
+    // controller.btn
 
-    controller.btn_A.onTrue(Commands.runOnce(() -> subPitch.setPitchAngle(0)));
-    controller.btn_B.onTrue(Commands.runOnce((() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER))));
-
-    controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake,
-        subTransfer, subTurret));
+    controller.btn_Start.onTrue(new ZeroPitch(subPitch));
   }
 
   public Command getAutonomousCommand() {

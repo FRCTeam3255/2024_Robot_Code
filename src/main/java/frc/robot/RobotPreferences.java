@@ -27,10 +27,10 @@ public class RobotPreferences {
         "climberMotorForwardLimit", 10);
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
         "climberMotorReverseLimit", -5);
-    public static final SN_DoublePreference climberMotorForwardSpeed = new SN_DoublePreference(
-        "climberMotorForwardSpeed", 1);
-    public static final SN_DoublePreference climberMotorReverseSpeed = new SN_DoublePreference(
-        "climberMotorReverseSpeed", -1);
+    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
+        "climberMotorUpSpeed", 1);
+    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
+        "climberMotorDownSpeed", -1);
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
     public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
@@ -101,6 +101,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("ïntakePivotP", 24);
     public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("ïntakePivotI", 0);
     public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("ïntakePivotD", 0);
+
     /**
      * Enable or disable the intake pivot forward limit
      */
@@ -131,12 +132,13 @@ public class RobotPreferences {
      * <b> Units: </b> Percent Output
      */
     public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 1);
-
+    public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
     /**
      * <b> Units: </b> Percent Output
      */
     public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1);
-
+    public static final SN_DoublePreference intakeSpitOutCenteringSpeed = new SN_DoublePreference(
+        "intakeSpitOutCenteringSpeed", -1);
     /**
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
@@ -253,6 +255,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
         "feederMotorSpeed", .2);
     public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
+    public static final SN_DoublePreference feederSpitOutMotorSpeed = new SN_DoublePreference(
+        "feederSpitOutMotorSpeed", -.2);
+    public static final SN_DoublePreference transferSpitOutMotorSpeed = new SN_DoublePreference(
+        "transferSpitOutMotorSpeed", -.5);
+
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
@@ -285,15 +292,27 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-80));
+    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
 
     public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
-
+    public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
+        90);
     // -- Angles --
     public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
+
+    /**
+     * Takes a percentage of the controller joystick input to set as the manual
+     * turret speed
+     */
+    public static final SN_DoublePreference turretPercentageSpeed = new SN_DoublePreference("turretPercentageSpeed",
+        0.15);
+    public static final SN_DoublePreference turretZeroedVelocity = new SN_DoublePreference("turretZeroedVelocity",
+        0.01);
+    public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
   }
 
   public static final class prefVision {
