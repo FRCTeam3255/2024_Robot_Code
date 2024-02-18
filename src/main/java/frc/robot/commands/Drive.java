@@ -36,7 +36,7 @@ public class Drive extends Command {
 
   @Override
   public void initialize() {
-    driveSpeed = (isPracticeBot) ? prefDrivetrain.pracDriveSpeed.getValue() : constDrivetrain.DRIVE_SPEED;
+    driveSpeed = (isPracticeBot) ? constDrivetrain.pracBot.DRIVE_SPEED : constDrivetrain.DRIVE_SPEED;
   }
 
   @Override

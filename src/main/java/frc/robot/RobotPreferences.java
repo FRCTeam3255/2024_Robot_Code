@@ -1,10 +1,10 @@
 package frc.robot;
 
-import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants.constDrivetrain;
 
 /*
  * | Unit Type | Preferred Unit to Use |
@@ -47,12 +47,13 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 100);
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
-    public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 0.0); // 0.14414076246334312
+    public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 0.14414076246334312);
+    public static final SN_DoublePreference steerKs = new SN_DoublePreference("steerKs",
+        0);
 
-    // The reciprocal of the theoretical max free speed. Why? I dont know man i just
-    // followed a random discord help thread
-    // TODO: update comment when i have more braincells
-    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv", 1 / 17.1);
+    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv",
+        1 / (RobotContainer.isPracticeBot() ? constDrivetrain.pracBot.THEORETICAL_MAX_DRIVE_SPEED
+            : constDrivetrain.THEORETICAL_MAX_DRIVE_SPEED));
 
     // This PID is implemented on the Drivetrain subsystem
     public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0.5);
@@ -63,24 +64,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
-    // TODO: get value
-    public static final SN_DoublePreference steerKs = new SN_DoublePreference("steerKs",
-        0);
-
     /**
      * <b>Units:</b> Percentage from 0 to 1
      */
     public static final SN_DoublePreference minimumSteerSpeedPercent = new SN_DoublePreference(
         "minimumSteerSpeedPercent", 0.01);
-
-    /**
-     * <p>
-     * Translational speed while manually driving on the Practice Robot.
-     * </p>
-     * <b>Units:</b> Meters Per Second
-     */
-    public static final SN_DoublePreference pracDriveSpeed = new SN_DoublePreference("pracDriveSpeed",
-        SN_SwerveConstants.MK4I.FALCON.L3.maxSpeedMeters);
 
     /**
      * <p>

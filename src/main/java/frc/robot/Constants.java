@@ -51,7 +51,29 @@ public final class Constants {
       public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.245117;
       public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.083252;
 
-      public static final SN_SwerveConstants SWERVE_CONSTANTS = SN_SwerveConstants.MK4I.FALCON.L3;
+      /**
+       * <p>
+       * Observed maximum translational speed while manually driving on the
+       * Practice Robot.
+       * </p>
+       * <b>Units:</b> Meters Per Second
+       */
+      public static final double DRIVE_SPEED = Units.feetToMeters(15.1);
+
+      /**
+       * <p>
+       * Theoretical maximum translational speed while manually driving on the
+       * Practice Robot.
+       * </p>
+       * <b>Units:</b> Meters Per Second
+       */
+      public static final double THEORETICAL_MAX_DRIVE_SPEED = SN_SwerveConstants.MK4I.FALCON.L3.maxSpeedMeters;
+
+      public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
+          SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
+          SN_SwerveConstants.MK4I.KRAKEN.L3.wheelCircumference,
+          SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
+          DRIVE_SPEED);
 
     }
 
@@ -64,11 +86,21 @@ public final class Constants {
 
     /**
      * <p>
-     * Translational speed while manually driving on the Competition Robot.
+     * Observed maximum translational speed while manually driving on the
+     * Competition Robot.
      * </p>
      * <b>Units:</b> Meters Per Second
      */
     public static final double DRIVE_SPEED = Units.feetToMeters(15.1);
+
+    /**
+     * <p>
+     * Theoretical maximum translational speed while manually driving on the
+     * Competition Robot.
+     * </p>
+     * <b>Units:</b> Meters Per Second
+     */
+    public static final double THEORETICAL_MAX_DRIVE_SPEED = SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters;
 
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
