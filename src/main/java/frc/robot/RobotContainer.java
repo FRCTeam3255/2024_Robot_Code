@@ -50,10 +50,8 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer implements Logged {
   // Misc
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.IS_PRACTICE_BOT_DIO);
-  private static LockedLocation lockedLocation = LockedLocation.SUBWOOFER;
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
   private static LockedLocation lockedLocation = LockedLocation.NONE;
-  private static PowerDistribution PDH;
 
   // Controllers
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -211,6 +209,7 @@ public class RobotContainer implements Logged {
    */
   public static void setLockSub() {
     lockedLocation = LockedLocation.NONE;
+  }
 
   public static void setLockedLocation(LockedLocation location) {
     lockedLocation = location;
