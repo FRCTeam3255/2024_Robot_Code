@@ -27,6 +27,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualTurretMovement;
@@ -120,7 +121,7 @@ public class RobotContainer implements Logged {
     controller.btn_North.whileTrue(new Panic(subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
     // controller.btn_East.this is AMP set point
-    // controller.btn_South.whileTrue(new IntakeGamePiece());
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
     // controller.btn_West
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)));
     controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)));
@@ -128,6 +129,7 @@ public class RobotContainer implements Logged {
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SUBWOOFER)));
     // setLockedLocation(LockedLocation.AMP))); this is subwoofer
     // controller.btn
+
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
   }
 
