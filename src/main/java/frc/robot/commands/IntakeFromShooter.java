@@ -35,8 +35,8 @@ public class IntakeFromShooter extends Command {
         prefShooter.leftShooterIntakeFeedForward.getValue(),
         prefShooter.rightShooterIntakeVelocity.getValue(),
         prefShooter.rightShooterIntakeFeedForward.getValue());
-    globalTransfer.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
-    globalTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
+    globalTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeMotorSpeed.getValue());
+    globalTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeMotorSpeed.getValue());
 
   }
 
