@@ -313,6 +313,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretZeroedVelocity = new SN_DoublePreference("turretZeroedVelocity",
         0.01);
     public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
+    public static final SN_BooleanPreference turretSupplyCurrentLimitEnable = new SN_BooleanPreference(
+        "turretSupplyCurrentLimitEnable", true);
+
   }
 
   public static final class prefVision {

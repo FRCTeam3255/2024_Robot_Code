@@ -52,7 +52,7 @@ public class Turret extends SubsystemBase {
     turretConfig.Slot0.kP = prefTurret.turretP.getValue();
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
-
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretSupplyCurrentLimitEnable.getValue();
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
 
