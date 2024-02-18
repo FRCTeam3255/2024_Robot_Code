@@ -102,6 +102,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue();
     driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
 
+    steerConfiguration.Slot0.kS = prefDrivetrain.steerKs.getValue();
     steerConfiguration.Slot0.kP = prefDrivetrain.steerP.getValue();
     steerConfiguration.Slot0.kI = prefDrivetrain.steerI.getValue();
     steerConfiguration.Slot0.kD = prefDrivetrain.steerD.getValue();

@@ -1,10 +1,10 @@
 package frc.robot;
 
-import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants.constDrivetrain;
 
 /*
  * | Unit Type | Preferred Unit to Use |
@@ -41,18 +41,22 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.0);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.21);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
     public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 100);
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0.0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 0.14414076246334312);
+    public static final SN_DoublePreference steerKs = new SN_DoublePreference("steerKs",
+        0);
 
-    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv", 0.1);
+    public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv",
+        1 / (RobotContainer.isPracticeBot() ? constDrivetrain.pracBot.THEORETICAL_MAX_DRIVE_SPEED
+            : constDrivetrain.THEORETICAL_MAX_DRIVE_SPEED));
 
     // This PID is implemented on the Drivetrain subsystem
-    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0);
+    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0.5);
     public static final SN_DoublePreference autoDriveI = new SN_DoublePreference("autoDriveI", 0);
     public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0);
 
@@ -68,32 +72,11 @@ public class RobotPreferences {
 
     /**
      * <p>
-     * Translational speed while manually driving.
-     * </p>
-     * <b>Units:</b> Meters Per Second
-     */
-    public static final SN_DoublePreference driveSpeed = new SN_DoublePreference("driveSpeed",
-        SN_SwerveConstants.MK4I_L3.maxSpeedMeters);
-
-    /**
-     * <p>
      * Rotational speed while manually driving
-     * MAX: 943.751 DPS (Due to gearing and robot size)
      * </p>
      * <b>Units:</b> Degrees per second
      */
     public static final SN_DoublePreference turnSpeed = new SN_DoublePreference("turnSpeed", 540);
-
-    /**
-     * <b>Units:</b> Feet
-     */
-    public static final SN_DoublePreference autoMaxSpeed = new SN_DoublePreference(
-        "autoMaxSpeed", 8);
-    /**
-     * <b>Units:</b> Feet
-     */
-    public static final SN_DoublePreference autoMaxAccel = new SN_DoublePreference(
-        "autoMaxAccel", 6);
 
     /**
      * <p>
