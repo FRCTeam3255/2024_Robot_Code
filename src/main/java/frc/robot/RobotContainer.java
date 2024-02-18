@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
@@ -73,7 +76,15 @@ public class RobotContainer implements Logged {
     // The Left Y and X Axes are swapped because from behind the glass, the X Axis
     // is actually in front of you
     subDrivetrain
-        .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
+        .setDefaultCommand(new Drive(
+            subDrivetrain,
+            conDriver.axis_LeftY,
+            conDriver.axis_LeftX,
+            conDriver.axis_RightX,
+            conDriver.btn_North,
+            conDriver.btn_East,
+            conDriver.btn_South,
+            conDriver.btn_West,
             isPracticeBot()));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
@@ -89,7 +100,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
@@ -97,8 +107,6 @@ public class RobotContainer implements Logged {
 
     controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
     controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
-    // Defaults to Field-Relative, is Robot-Relative while held
-
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
