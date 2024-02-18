@@ -54,7 +54,7 @@ public class RobotContainer implements Logged {
   // Subsystems
   private final Climber subClimber = new Climber();
   private final Drivetrain subDrivetrain = new Drivetrain();
-  // private final Intake subIntake = new Intake();
+  private final Intake subIntake = new Intake();
   private final LEDs subLEDs = new LEDs();
   private final Pitch subPitch = new Pitch();
   private final Shooter subShooter = new Shooter();
@@ -73,9 +73,8 @@ public class RobotContainer implements Logged {
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
-    // subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-    //
-    // subVision));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+        subVision));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -107,8 +106,8 @@ public class RobotContainer implements Logged {
     controller.btn_B.onTrue(Commands.runOnce((() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER))));
 
     controller.btn_LeftBumper.whileTrue(new TransferGamePiece(subTransfer));
-    // controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake,
-    // subTransfer, subTurret));
+    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake,
+        subTransfer, subTurret));
   }
 
   public Command getAutonomousCommand() {
