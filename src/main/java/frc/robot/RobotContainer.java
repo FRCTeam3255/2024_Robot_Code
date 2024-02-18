@@ -24,6 +24,7 @@ import frc.robot.RobotPreferences.climberPref;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeFromShooter;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
@@ -119,7 +120,7 @@ public class RobotContainer implements Logged {
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SUBWOOFER)));
     // setLockedLocation(LockedLocation.AMP))); this is subwoofer
     // controller.btn
-
+    controller.btn_LeftStick.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
   }
 
