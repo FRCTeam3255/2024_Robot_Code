@@ -294,6 +294,7 @@ public class RobotPreferences {
         Units.degreesToRotations(-80));
     public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
+    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0.3);
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
@@ -304,6 +305,16 @@ public class RobotPreferences {
     // -- Angles --
     public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
 
+    public static final SN_DoublePreference turretSupplyTimeTreshold = new SN_DoublePreference(
+        "turretSupplyTimeThreshold", 0);
+    public static final SN_BooleanPreference turretSupplyCurrentLimitEnable = new SN_BooleanPreference(
+        "turretSupplyCurrentLimitEnable",
+        true);
+    public static final SN_DoublePreference turretSupplyCurrentThreshold = new SN_DoublePreference(
+        "turretSupplyCurrentThreshold", 0);
+    public static final SN_DoublePreference turretCurrentLimitCeilingAmps = new SN_DoublePreference(
+        "turretCurrentLimitCeilingAmps",
+        0.3);
     /**
      * Takes a percentage of the controller joystick input to set as the manual
      * turret speed
@@ -313,9 +324,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretZeroedVelocity = new SN_DoublePreference("turretZeroedVelocity",
         0.01);
     public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
-    public static final SN_BooleanPreference turretSupplyCurrentLimitEnable = new SN_BooleanPreference(
-        "turretSupplyCurrentLimitEnable", true);
-
   }
 
   public static final class prefVision {
