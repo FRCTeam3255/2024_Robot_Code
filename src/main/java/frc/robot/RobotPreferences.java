@@ -249,6 +249,19 @@ public class RobotPreferences {
         70);
     public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
         0);
+
+    public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
+        "leftShooterIntakeVelocity",
+        -10);
+    public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
+        "rightShooterIntakeVelocity",
+        -10);
+    public static final SN_DoublePreference rightShooterIntakeFeedForward = new SN_DoublePreference(
+        "rightShooterIntakeFeedForward",
+        0);
+    public static final SN_DoublePreference leftShooterIntakeFeedForward = new SN_DoublePreference(
+        "rightShooterIntakeFeedForward",
+        0);
   }
 
   public static final class prefTransfer {
@@ -259,6 +272,10 @@ public class RobotPreferences {
         "feederSpitOutMotorSpeed", -.2);
     public static final SN_DoublePreference transferSpitOutMotorSpeed = new SN_DoublePreference(
         "transferSpitOutMotorSpeed", -.5);
+    public static final SN_DoublePreference feederIntakeMotorSpeed = new SN_DoublePreference(
+        "feederIntakeMotorSpeed", -.2);
+    public static final SN_DoublePreference transferIntakeMotorSpeed = new SN_DoublePreference(
+        "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL
