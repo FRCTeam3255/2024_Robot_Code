@@ -49,10 +49,11 @@ public class Turret extends SubsystemBase {
   }
 
   public void configure() {
+    turretConfig.Slot0.kV = prefTurret.turretV.getValue();
     turretConfig.Slot0.kP = prefTurret.turretP.getValue();
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
-    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretSupplyCurrentLimitEnable.getValue();
+
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
 
@@ -62,8 +63,12 @@ public class Turret extends SubsystemBase {
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
-    turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretSupplyCurrentLimitEnable.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimitCeilingAmps.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretSupplyCurrentThreshold.getValue();
+    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretSupplyTimeTreshold.getValue();
+    turretMotor.getConfigurator().apply(turretConfig);
   }
   // "Set" Methods
 
