@@ -5,12 +5,14 @@
 package frc.robot;
 
 import com.ctre.phoenix.led.ColorFlowAnimation;
+import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -120,6 +122,11 @@ public final class Constants {
     public static final double WHEELBASE = Units.inchesToMeters(23.75); // Distance between Front & Back Wheels
 
     public static final boolean AUTO_FLIP_WITH_ALLIANCE_COLOR = false;
+
+    public static final Rotation2d MODULE_0_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
+    public static final Rotation2d MODULE_1_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
+    public static final Rotation2d MODULE_2_DEFENSE_ANGLE = Rotation2d.fromDegrees(135);
+    public static final Rotation2d MODULE_3_DEFENSE_ANGLE = Rotation2d.fromDegrees(45);
   }
 
   public static class constIntake {
@@ -135,11 +142,11 @@ public final class Constants {
 
     public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(76, 22, 105, 0, 0.95, LED_NUMBER,
         Direction.Forward);
-
     public static final ColorFlowAnimation AMPLIFY_ANIMATION = new ColorFlowAnimation(160, 10, 247, 0, 0.95, LED_NUMBER,
         Direction.Forward);
     public static final ColorFlowAnimation CO_OP_ANIMATION = new ColorFlowAnimation(255, 247, 3, 0, 0.95, LED_NUMBER,
         Direction.Forward);
+    public static final RainbowAnimation DEFENSE_MODE_ANIMATION = new RainbowAnimation(1.0, 0.9, LED_NUMBER);
   }
 
   public static class constPitch {
