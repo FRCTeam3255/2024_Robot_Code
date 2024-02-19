@@ -23,6 +23,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.commands.AddVisionMeasurement;
+import frc.robot.commands.AutoPlacementLEDs;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.LockPitch;
@@ -128,8 +129,6 @@ public class RobotContainer implements Logged {
     // setLockedLocation(LockedLocation.AMP))); this is subwoofer
     // controller.btn
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
-
-    controller.btn_Back.whileTrue().whileFalse(Commands.runOnce(() -> subLEDs.setLEDs(constLEDs.BLANK_COLOR)));
   }
 
   public Command getAutonomousCommand() {
@@ -198,5 +197,14 @@ public class RobotContainer implements Logged {
    */
   public Command zeroPitch() {
     return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+  }
+
+  public Command setAutoPlacementLEDs() {
+    // values only for testing
+    SmartDashboard.putNumber("Current Drivetrain X", subDrivetrain.getPose().getX());
+    SmartDashboard.putNumber("Current Drivetrain Y", subDrivetrain.getPose().getY());
+    SmartDashboard.putNumber("Current Drivetrain Rotation", subDrivetrain.getPose().getRotation().getDegrees());
+
+    return new AutoPlacementLEDs(subLEDs, subDrivetrain, 0, 0, 0); // idkhowtogetstartingautovaluesahhhhh
   }
 }

@@ -86,7 +86,9 @@ public final class Constants {
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
     public static final int[] INTAKE_GAME_PIECE_COLLECTED = { 240, 186, 36 };
-    public static final int[] BLANK_COLOR = { 0, 0, 0 };
+    public static final int[] RED_COLOR = { 255, 0, 0 };
+    public static final int[] BLUE_COLOR = { 0, 0, 255 };
+    public static final int[] GREEN_COLOR = { 0, 255, 0 };
 
     public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(76, 22, 105, 0, 0.95, LED_NUMBER,
         Direction.Forward);

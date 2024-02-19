@@ -27,16 +27,27 @@ public class LEDs extends SubsystemBase {
     CANdle.configBrightnessScalar(constLEDs.LED_BRIGHTNESS);
   }
 
+  /**
+   * Set all the LEDs to a single color
+   * 
+   * @param rgb How much red, green, and blue the color has
+   */
   public void setLEDs(int[] rgb) {
     CANdle.setLEDs(rgb[0], rgb[1], rgb[2]);
   }
 
-  public void setIndividualLEDs() {
-
+  /**
+   * Sets a certain LED to a desired color
+   * 
+   * @param rgb      How much red, green, and blue the color has
+   * @param LEDIndex The index number of the specific LED to control
+   */
+  public void setIndividualLED(int[] rgb, int LEDIndex) {
+    CANdle.setLEDs(rgb[0], rgb[1], rgb[2], 0, LEDIndex, 1);
   }
 
   /**
-   * Types of Animations available:
+   * <b>Types of Animations available:</b>
    * ColorFlowAnimation, FireAnimation, LarsonAnimation, RainbowAnimation,
    * RgbFadeAnimation, SingleFadeAnimation, StrobeAnimation, TwinkleAnimation,
    * TwinkleOffAnimation
@@ -47,6 +58,9 @@ public class LEDs extends SubsystemBase {
     CANdle.animate(animation, 0);
   }
 
+  /**
+   * Clears the LEDs of the current animation or color
+   */
   public void clearAnimation() {
     CANdle.clearAnimation(0);
     CANdle.setLEDs(0, 0, 0);

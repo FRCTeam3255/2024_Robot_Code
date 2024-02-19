@@ -340,6 +340,22 @@ public class RobotPreferences {
         "visionStdDevsHeading", Units.metersToFeet(0.9));
 
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
+
+    /**
+     * The translational tolerance of how off we want to be to count as correct
+     * (when placing the robot on the starting position in auto)
+     * <b>Units:</b> TODO: idk i need to check
+     */
+    public static final SN_DoublePreference translationalAutoPlacementTolerance = new SN_DoublePreference(
+        "translationalAutoPlacementTolerance", 1);
+
+    /**
+     * The rotational tolerance of how off we want to be to count as correct
+     * (when placing the robot on the starting position in auto)
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference rotationalAutoPlacementTolerance = new SN_DoublePreference(
+        "translationalAutoPlacementTolerance", 1);
   }
 
 }
