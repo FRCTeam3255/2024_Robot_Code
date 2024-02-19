@@ -123,7 +123,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constDrivetrain.SWERVE_CONSTANTS.maxSpeedMeters);
 
     for (SN_SwerveModule mod : modules) {
-      mod.setModuleState(desiredStates[mod.moduleNumber], true);
+      mod.setModuleState(desiredStates[mod.moduleNumber], true, true);
     }
   }
 
