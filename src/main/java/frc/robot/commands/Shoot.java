@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constLEDs;
-import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Shooter;
 
@@ -17,7 +16,7 @@ public class Shoot extends Command {
   public Shoot(Shooter subShooter, LEDs subLEDs) {
     this.subShooter = subShooter;
     this.subLEDs = subLEDs;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subShooter);
   }
 
   // Called when the command is initially scheduled.
