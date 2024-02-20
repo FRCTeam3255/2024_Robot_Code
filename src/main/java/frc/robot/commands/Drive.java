@@ -18,17 +18,18 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  Trigger northTrigger, eastTrigger, southTrigger, westTrigger;
-  boolean isOpenLoop;
+  boolean isPracticeBot, isOpenLoop;
+  Trigger slowMode, northTrigger, eastTrigger, southTrigger, westTrigger;
 
-  boolean isPracticeBot;
-  double driveSpeed;
+  double driveSpeed, xVelocity, yVelocity, rVelocity, slowMultiplier;
+  Translation2d translationVelocity;
 
   public Drive(
       Drivetrain subDrivetrain,
       DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis,
+      Trigger slowMode,
       Trigger northTrigger,
       Trigger eastTrigger,
       Trigger southTrigger,
@@ -39,6 +40,7 @@ public class Drive extends Command {
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
+    this.slowMode = slowMode;
     this.isPracticeBot = isPracticeBot;
 
     this.northTrigger = northTrigger;
@@ -58,10 +60,13 @@ public class Drive extends Command {
 
   @Override
   public void execute() {
-    // Get Joystick inputs
-    double xVelocity = xAxis.getAsDouble() * driveSpeed;
-    double yVelocity = -yAxis.getAsDouble() * driveSpeed;
-    double rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
+    // Get inputs
+    slowMultiplier = (slowMode.getAsBoolean()) ? prefDrivetrain.slowModeMultiplier.getValue() : 1;
+    xVelocity = xAxis.getAsDouble() * driveSpeed;
+    yVelocity = -yAxis.getAsDouble() * driveSpeed;
+    rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
+
+    translationVelocity = new Translation2d(xVelocity, yVelocity).times(slowMultiplier);
 
     // If the Driver is providing a rotation manually, don't snap
     if (rVelocity != 0.0) {
@@ -78,7 +83,7 @@ public class Drive extends Command {
       }
     }
 
-    subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);
+    subDrivetrain.drive(translationVelocity, rVelocity, isOpenLoop);
   }
 
   @Override

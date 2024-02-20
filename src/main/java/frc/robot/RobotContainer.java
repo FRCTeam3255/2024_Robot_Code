@@ -81,6 +81,7 @@ public class RobotContainer implements Logged {
             conDriver.axis_LeftY,
             conDriver.axis_LeftX,
             conDriver.axis_RightX,
+            conDriver.btn_LeftBumper,
             conDriver.btn_North,
             conDriver.btn_East,
             conDriver.btn_South,

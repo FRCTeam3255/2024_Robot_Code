@@ -78,6 +78,11 @@ public class RobotPreferences {
         "minimumSteerSpeedPercent", 0.01);
 
     /**
+     * Value to multiply with the translation velocity when slow mode is enabled
+     */
+    public static final SN_DoublePreference slowModeMultiplier = new SN_DoublePreference("slowModeMultiplier", .2);
+
+    /**
      * <p>
      * Rotational speed while manually driving
      * </p>
