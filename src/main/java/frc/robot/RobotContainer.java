@@ -129,11 +129,13 @@ public class RobotContainer implements Logged {
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
-    // TODO: current implementation uses a constant velocity for the trap. do we
-    // want this?
-    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)).alongWith(
+    // Trap Preset
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
-            prefShooter.rightShooterTrapVelocity.getValue()))));
+            prefShooter.rightShooterTrapVelocity.getValue())))
+        .alongWith(
+            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue())))
+        .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue()))));
 
     // TODO: current implementation uses a constant velocity for the amp. we do NOT
     // want this (we already have a preset for that)

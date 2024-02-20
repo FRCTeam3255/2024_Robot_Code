@@ -209,6 +209,11 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 10);
 
+    public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 18);
+    public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle", 18);
+
+    public static final SN_DoublePreference pitchCenterAngle = new SN_DoublePreference("pitchCenterAngle", 16);
+
     /**
      * <b>Units:</b> Degrees
      */
@@ -255,7 +260,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference rightShooterSpeakerVelocity = new SN_DoublePreference(
         "rightShooterSpeakerVelocity",
-        70);
+        45);
 
     /**
      * Intaking from the shooter Velocity
@@ -288,26 +293,26 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterAmpVelocity = new SN_DoublePreference(
-        "leftShooterAmpVelocity", 10);
+        "leftShooterAmpVelocity", 60);
     /**
      * Preset: Shooting while touching the amp velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterAmpVelocity = new SN_DoublePreference(
-        "rightShooterAmpVelocity", 10);
+        "rightShooterAmpVelocity", 45);
 
     /**
      * Preset: Shooting while touching the trap velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterTrapVelocity = new SN_DoublePreference(
-        "leftShooterTrapVelocity", 10);
+        "leftShooterTrapVelocity", 60);
     /**
      * Preset: Shooting while touching the trap velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterTrapVelocity = new SN_DoublePreference(
-        "rightShooterTrapVelocity", 10);
+        "rightShooterTrapVelocity", 45);
 
   }
 
@@ -380,6 +385,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
     public static final SN_DoublePreference turretSubPresetPos = new SN_DoublePreference("turretSubPresetPos", 0);
     public static final SN_DoublePreference turretAmpPresetPos = new SN_DoublePreference("turretAmpPresetPos", 0);
+    public static final SN_DoublePreference turretTrapPresetPos = new SN_DoublePreference("turretTrapPresetPos", 0);
 
   }
 
