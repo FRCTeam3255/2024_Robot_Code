@@ -214,37 +214,14 @@ public class RobotContainer implements Logged {
     SmartDashboard.putNumber("Current Drivetrain Rotation", subDrivetrain.getPose().getRotation().getDegrees());
 
     subLEDs.setLEDBrightness(0.4);
+    subLEDs.clearAnimation();
 
     // Checking Rotation
     if (Math.abs(desiredStartingRotation
         - subDrivetrain.getPose().getRotation().getDegrees()) <= prefVision.rotationalAutoPlacementTolerance
             .getValue()) {
       rotationCorrect = true;
-      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 0);
-      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 3);
-      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 4);
-      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 7);
-    } else {
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 0);
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 3);
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 4);
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 7);
     }
-    // else if (desiredStartingRotation < 0) {
-    // if (desiredStartingRotation + 180 >
-    // subDrivetrain.getPose().getRotation().getDegrees()) {
-    // rotationLEDColor = constLEDs.BLUE_COLOR;
-    // } else {
-    // rotationLEDColor = constLEDs.RED_COLOR;
-    // }
-    // } else {
-    // if (desiredStartingRotation - 180 <
-    // subDrivetrain.getPose().getRotation().getDegrees()) {
-    // rotationLEDColor = constLEDs.RED_COLOR;
-    // } else {
-    // rotationLEDColor = constLEDs.BLUE_COLOR;
-    // }
-    // }
 
     // Checking Translation
     if (Math.abs(desiredStartingPositionX
@@ -253,20 +230,21 @@ public class RobotContainer implements Logged {
         Math.abs(desiredStartingPositionY
             - subDrivetrain.getPose().getY()) <= prefVision.translationalAutoPlacementTolerance.getValue()) {
       translationCorrect = true;
+    }
+
+    // Light up in Shang Chi color if both translation and rotation are correct
+    if (rotationCorrect && translationCorrect) {
+      subLEDs.setLEDs(constLEDs.AUTO_ALIGNED_COLOR);
+    } else if (rotationCorrect) {
+      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 0);
+      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 3);
+      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 4);
+      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 7);
+    } else if (translationCorrect) {
       subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 1);
       subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 2);
       subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 5);
       subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 6);
-    } else {
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 1);
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 2);
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 5);
-      subLEDs.setIndividualLED(constLEDs.BLANK_COLOR, 6);
-    }
-
-    // Light up in Shang Chi color if both translation and rotation are correct
-    if (translationCorrect && rotationCorrect) {
-      subLEDs.setLEDs(constLEDs.AUTO_ALIGNED_COLOR);
     }
   }
 }
