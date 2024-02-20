@@ -150,8 +150,14 @@ public final class Constants {
   }
 
   public static class constPitch {
-    public static final double PITCH_GEAR_RATIO = 57;
-    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+    public static final class pracBot {
+      public static final double PITCH_GEAR_RATIO = 57;
+      public static final boolean INVERT = true;
+    }
+
+    public static final double PITCH_GEAR_RATIO = 186.666;
+    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Coast;
+    public static final boolean INVERT = false;
 
     // TODO: Update with real values (MUST DO BEFORE TESTING!)
     /**
@@ -194,11 +200,16 @@ public final class Constants {
   }
 
   public static class constTurret {
+    public static class pracBot {
+      public static final double ABS_ENCODER_OFFSET = 0.812425;
+      public static final boolean ABS_ENCODER_INVERT = false;
+    }
+
     public static final double GEAR_RATIO = 39;
     public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
-    public static final double ABS_ENCODER_OFFSET = 0.812425;
-    public static final boolean ABS_ENCODER_INVERT = true;
+    public static final double ABS_ENCODER_OFFSET = 0.010725;
+    public static final boolean ABS_ENCODER_INVERT = false;
 
     /**
      * The position, in meters, of the center of the turret relative to the center
