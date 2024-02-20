@@ -5,6 +5,9 @@
 package frc.robot;
 
 import monologue.Monologue;
+
+import com.frcteam3255.preferences.SN_Preferences;
+
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,6 +36,9 @@ public class Robot extends TimedRobot {
     // Log the DS data and joysticks
     DriverStation.startDataLog(DataLogManager.getLog(), true);
     DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
+
+    // TODO: REMOVE. THIS DISABLES ALL PREFERENCES
+    SN_Preferences.useDefaults();
   }
 
   @Override
