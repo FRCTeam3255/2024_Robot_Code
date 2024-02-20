@@ -7,10 +7,7 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,8 +17,9 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.climberPref;
-import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefClimber;
+import frc.robot.RobotPreferences.prefShooter;
+import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFromShooter;
@@ -50,7 +48,7 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer implements Logged {
   // Misc
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.IS_PRACTICE_BOT_DIO);
-  private static LockedLocation lockedLocation = LockedLocation.SUBWOOFER;
+  private static LockedLocation lockedLocation = LockedLocation.NONE;
   private static PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
   // Controllers
@@ -81,6 +79,7 @@ public class RobotContainer implements Logged {
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
+    subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -96,8 +95,8 @@ public class RobotContainer implements Logged {
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
 
-    controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
-    controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
+    controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorUpSpeed));
+    controller.btn_RightTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorDownSpeed));
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION)))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
@@ -106,25 +105,54 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subTransfer));
+    controller.btn_RightTrigger
+        .whileTrue(new TransferGamePiece(subTransfer));
     controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs));
+
     controller.btn_RightBumper
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
     controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
+
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
-    controller.btn_North.whileTrue(new Panic(subLEDs));
-    controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
-    // controller.btn_East.this is AMP set point
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
-    // controller.btn_West
-    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)));
-    controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)));
-    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)));
-    controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SUBWOOFER)));
-    // setLockedLocation(LockedLocation.AMP))); this is subwoofer
-    // controller.btn
-    controller.btn_LeftStick.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
+
+    controller.btn_North.whileTrue(new Panic(subLEDs));
+    // Amp Preset
+    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
+            prefShooter.rightShooterAmpVelocity.getValue()))
+            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue())))));
+
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
+    controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+
+    // TODO: current implementation uses a constant velocity for the trap. do we
+    // want this?
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)).alongWith(
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
+            prefShooter.rightShooterTrapVelocity.getValue()))));
+
+    // TODO: current implementation uses a constant velocity for the amp. we do NOT
+    // want this (we already have a preset for that)
+    controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)).alongWith(
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
+            prefShooter.rightShooterAmpVelocity.getValue()))));
+
+    // TODO: current implementation uses a constant velocity for the speaker. do we
+    // want this?
+    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+            prefShooter.rightShooterSpeakerVelocity.getValue()))));
+
+    // Subwoofer Preset
+    controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+            prefShooter.rightShooterSubVelocity.getValue())))
+        .alongWith(
+            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue()))));
+
+    // TODO: ADD TO CONTROLLER MAP GRAPHIC
+    controller.btn_LeftStick.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
   }
 
   public Command getAutonomousCommand() {

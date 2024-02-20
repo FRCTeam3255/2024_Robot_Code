@@ -28,17 +28,10 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subShooter.setShootingVelocities(
-        prefShooter.leftShooterVelocity.getValue(),
-        prefShooter.leftShooterFeedForward.getValue(),
-        prefShooter.rightShooterVelocity.getValue(),
-        prefShooter.rightShooterFeedForward.getValue());
+    subShooter.getUpToSpeed();
 
     // Set LEDs when shooters are up to speed
-    if (subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
-        prefShooter.shooterUpToSpeedTolerance.getValue())
-        && subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
-            prefShooter.shooterUpToSpeedTolerance.getValue())) {
+    if (subShooter.areBothShootersUpToSpeed()) {
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
     } else {
       subLEDs.clearAnimation();

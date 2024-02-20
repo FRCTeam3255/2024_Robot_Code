@@ -14,13 +14,21 @@ import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
 
 public class Shooter extends SubsystemBase {
-  TalonFX leftMotor;
-  TalonFX rightMotor;
-
-  TalonFXConfiguration leftConfig;
-  TalonFXConfiguration rightConfig;
-
+  TalonFX leftMotor, rightMotor;
+  TalonFXConfiguration leftConfig, rightConfig;
   VelocityVoltage velocityRequest;
+  double leftFF, rightFF;
+
+  /**
+   * <b> Units: </b>
+   * Rotations per second
+   */
+  double desiredLeftVelocity = 0;
+  /**
+   * <b> Units: </b>
+   * Rotations per second
+   */
+  double desiredRightVelocity = 0;
 
   public Shooter() {
     leftMotor = new TalonFX(mapShooter.SHOOTER_LEFT_MOTOR_CAN, "rio");
@@ -41,12 +49,14 @@ public class Shooter extends SubsystemBase {
     leftConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
+    leftFF = prefShooter.leftShooterFeedForward.getValue();
 
     rightConfig.Slot0.kS = prefShooter.rightShooterS.getValue();
     rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue();
     rightConfig.Slot0.kP = prefShooter.rightShooterP.getValue();
     rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue();
     rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue();
+    rightFF = prefShooter.rightShooterFeedForward.getValue();
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
@@ -57,18 +67,12 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * Sets the velocity of both shooting motors.
-   * 
-   * @param leftVelocity  The velocity to set to the left motor. <b> Units: </b>
-   *                      Rotations per second
-   * @param leftFF        The Feed Forward of the left motor
-   * @param rightVelocity The velocity to set to the right motor. <b> Units: </b>
-   *                      Rotations per second
-   * @param rightFF       The Feed Forward of the right motor
+   * Sets both shooting motors to try to get to their previously-assigned desired
+   * speeds.
    */
-  public void setShootingVelocities(double leftVelocity, double leftFF, double rightVelocity, double rightFF) {
-    leftMotor.setControl(velocityRequest.withVelocity(leftVelocity).withFeedForward(leftFF));
-    rightMotor.setControl(velocityRequest.withVelocity(rightVelocity).withFeedForward(rightFF));
+  public void getUpToSpeed() {
+    leftMotor.setControl(velocityRequest.withVelocity(desiredLeftVelocity).withFeedForward(leftFF));
+    rightMotor.setControl(velocityRequest.withVelocity(desiredRightVelocity).withFeedForward(rightFF));
   }
 
   /**
@@ -96,25 +100,44 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * @param desiredVelocity What velocity you are checking. <b> Units: </b>
-   *                        Rotations per second
-   * @param tolerance       The tolerance of when you would consider the motor to
-   *                        be at velocity <b> Units: </b> Rotations per second
-   * @return If the left shooter motor is at the velocity
+   * @return If the left shooter motor is at its desired velocity
    */
-  public boolean isLeftShooterAtVelocity(double desiredVelocity, double tolerance) {
-    return (Math.abs(getLeftShooterVelocity() - desiredVelocity)) <= tolerance;
+  public boolean isLeftShooterUpToSpeed() {
+    return (Math.abs(getLeftShooterVelocity() - desiredLeftVelocity)) <= prefShooter.shooterUpToSpeedTolerance
+        .getValue();
   }
 
   /**
-   * @param desiredVelocity What velocity you are checking. <b> Units: </b>
-   *                        Rotations per second
-   * @param tolerance       The tolerance of when you would consider the motor to
-   *                        be at velocity <b> Units: </b> Rotations per second
-   * @return If the right shooter motor is at the velocity
+   * @return If the right shooter motor is at its desired velocity
    */
-  public boolean isRightShooterAtVelocity(double desiredVelocity, double tolerance) {
-    return (Math.abs(getRightShooterVelocity() - desiredVelocity)) <= tolerance;
+  public boolean isRightShooterUpToSpeed() {
+    return (Math.abs(getRightShooterVelocity() - desiredRightVelocity)) <= prefShooter.shooterUpToSpeedTolerance
+        .getValue();
+  }
+
+  /**
+   * @return If both motors are at their desired velocities
+   */
+  public boolean areBothShootersUpToSpeed() {
+    return isLeftShooterUpToSpeed()
+        && isRightShooterUpToSpeed();
+  }
+
+  public void setLeftDesiredVelocity(double desiredVelocity) {
+    desiredLeftVelocity = desiredVelocity;
+  }
+
+  public void setRightDesiredVelocity(double desiredVelocity) {
+    desiredRightVelocity = desiredVelocity;
+  }
+
+  /**
+   * @param desiredLeftVelocity  <b> Units: </b> Rotations per second
+   * @param desiredRightVelocity <b> Units: </b> Rotations per second
+   */
+  public void setDesiredVelocities(double desiredLeftVelocity, double desiredRightVelocity) {
+    setLeftDesiredVelocity(desiredLeftVelocity);
+    setRightDesiredVelocity(desiredRightVelocity);
   }
 
   @Override

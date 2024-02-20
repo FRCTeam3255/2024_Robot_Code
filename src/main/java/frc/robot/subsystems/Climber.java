@@ -11,7 +11,7 @@ import frc.robot.Constants.constClimber;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
-import frc.robot.RobotPreferences.climberPref;
+import frc.robot.RobotPreferences.prefClimber;
 
 import com.ctre.phoenix6.controls.NeutralOut;
 
@@ -28,17 +28,17 @@ public class Climber extends SubsystemBase {
   }
 
   public void configure() {
-    climberConfig.Slot0.kS = climberPref.climberS.getValue();
-    climberConfig.Slot0.kV = climberPref.climberV.getValue();
-    climberConfig.Slot0.kP = climberPref.climberP.getValue();
-    climberConfig.Slot0.kI = climberPref.climberI.getValue();
-    climberConfig.Slot0.kD = climberPref.climberD.getValue();
+    climberConfig.Slot0.kS = prefClimber.climberS.getValue();
+    climberConfig.Slot0.kV = prefClimber.climberV.getValue();
+    climberConfig.Slot0.kP = prefClimber.climberP.getValue();
+    climberConfig.Slot0.kI = prefClimber.climberI.getValue();
+    climberConfig.Slot0.kD = prefClimber.climberD.getValue();
 
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = climberPref.climberMotorForwardLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMotorForwardLimit.getValue();
 
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = climberPref.climberMotorReverseLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMotorReverseLimit.getValue();
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
     climberMotor.getConfigurator().apply(climberConfig);

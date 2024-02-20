@@ -255,6 +255,6 @@ public final class Constants {
    * Locations that the robot can attempt to lock onto.
    */
   public enum LockedLocation {
-    SUBWOOFER, SPEAKER, AMP, TRAP
+    NONE, SPEAKER, AMP, TRAP
   }
 }

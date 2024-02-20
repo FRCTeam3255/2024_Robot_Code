@@ -30,14 +30,12 @@ public class IntakeFromShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalShooter.setShootingVelocities(
-        prefShooter.leftShooterIntakeVelocity.getValue(),
-        prefShooter.leftShooterIntakeFeedForward.getValue(),
-        prefShooter.rightShooterIntakeVelocity.getValue(),
-        prefShooter.rightShooterIntakeFeedForward.getValue());
+    globalShooter.setDesiredVelocities(prefShooter.leftShooterIntakeVelocity.getValue(),
+        prefShooter.rightShooterIntakeVelocity.getValue());
+    globalShooter.getUpToSpeed();
+
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeMotorSpeed.getValue());
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeMotorSpeed.getValue());
-
   }
 
   // Called once the command ends or is interrupted.
@@ -46,7 +44,6 @@ public class IntakeFromShooter extends Command {
     globalTransfer.setFeederNeutralOutput();
     globalTransfer.setTransferNeutralOutput();
     globalShooter.setShootingNeutralOutput();
-
   }
 
   // Returns true when the command should end.
