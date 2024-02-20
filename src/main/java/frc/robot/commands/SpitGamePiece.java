@@ -33,8 +33,7 @@ public class SpitGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalIntake.setIntakeMotorsSpeed(prefIntake.intakeSpitOutSpeed.getValue(),
-        prefIntake.intakeSpitOutCenteringSpeed.getValue());
+    globalIntake.setIntakeMotorsSpeed(prefIntake.intakeSpitOutSpeed.getValue());
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutMotorSpeed.getValue());
 
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutMotorSpeed.getValue());

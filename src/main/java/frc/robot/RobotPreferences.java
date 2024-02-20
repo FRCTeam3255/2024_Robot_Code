@@ -135,11 +135,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
     /**
      * <b> Units: </b> Percent Output
-     */
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1);
-    public static final SN_DoublePreference intakeSpitOutCenteringSpeed = new SN_DoublePreference(
-        "intakeSpitOutCenteringSpeed", -1);
-    /**
+     *
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
      */
