@@ -81,7 +81,7 @@ public final class Constants {
   }
 
   public static class constLEDs {
-    public static final int LED_NUMBER = 150;
+    public static final int LED_NUMBER = 170;
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
@@ -89,6 +89,8 @@ public final class Constants {
     public static final int[] RED_COLOR = { 255, 0, 0 };
     public static final int[] BLUE_COLOR = { 0, 0, 255 };
     public static final int[] GREEN_COLOR = { 0, 255, 0 };
+    public static final int[] BLANK_COLOR = { 0, 0, 0 };
+    public static final int[] AUTO_ALIGNED_COLOR = { 207, 82, 4 };
 
     public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(76, 22, 105, 0, 0.95, LED_NUMBER,
         Direction.Forward);

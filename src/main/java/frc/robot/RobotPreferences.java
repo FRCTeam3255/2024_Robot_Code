@@ -347,7 +347,7 @@ public class RobotPreferences {
      * <b>Units:</b> TODO: idk i need to check
      */
     public static final SN_DoublePreference translationalAutoPlacementTolerance = new SN_DoublePreference(
-        "translationalAutoPlacementTolerance", 1);
+        "translationalAutoPlacementTolerance", 0.15);
 
     /**
      * The rotational tolerance of how off we want to be to count as correct
@@ -355,7 +355,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference rotationalAutoPlacementTolerance = new SN_DoublePreference(
-        "translationalAutoPlacementTolerance", 1);
+        "translationalAutoPlacementTolerance", 2);
   }
 
 }

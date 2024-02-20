@@ -58,6 +58,10 @@ public class LEDs extends SubsystemBase {
     CANdle.animate(animation, 0);
   }
 
+  public void setLEDBrightness(double brightness) {
+    CANdle.configBrightnessScalar(brightness);
+  }
+
   /**
    * Clears the LEDs of the current animation or color
    */
