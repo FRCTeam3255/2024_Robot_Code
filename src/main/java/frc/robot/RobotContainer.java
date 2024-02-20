@@ -92,6 +92,8 @@ public class RobotContainer implements Logged {
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
 
+    // View controls at:
+    // src\main\assets\controllerMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
 
