@@ -174,16 +174,16 @@ public final class Constants {
 
     // @formatter:off
     /**
-     * Updated by Alice to match Comp bot Feb. 15
+     * Updated by Alice to match Comp bot Feb. 19
      */
     public static final String[] PDH_DEVICES = {
         /*  0 */ "Swerve/FL Steer",
         /*  1 */ "Swerve/FL Drive",
-        /*  2 */ null,
-        /*  3 */ null,
-        /*  4 */ null,
-        /*  5 */ null,
-        /*  6 */ null,
+        /*  2 */ "Shooter/Right",
+        /*  3 */ "Transfer/Feeder",
+        /*  4 */ "Shooter/Pitch",
+        /*  5 */ "Transfer/Transfer",
+        /*  6 */ "Shooter/Left",
         /*  7 */ null,
         /*  8 */ "Swerve/FR Steer",
         /*  9 */ "Swerve/FR Drive",
@@ -193,7 +193,7 @@ public final class Constants {
         /* 13 */ null,
         /* 14 */ null,
         /* 15 */ null,
-        /* 16 */ null,
+        /* 16 */ "Turret",
         /* 17 */ "Swerve/BL Steer",
         /* 18 */ "Swerve/BL Drive",
         /* 19 */ "Ethernet Switch",
