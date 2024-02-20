@@ -18,6 +18,7 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefClimber;
+import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.commands.AddVisionMeasurement;
@@ -118,10 +119,12 @@ public class RobotContainer implements Logged {
 
     controller.btn_North.whileTrue(new Panic(subLEDs));
     // Amp Preset
-    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
-            prefShooter.rightShooterAmpVelocity.getValue()))
-            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue())))));
+    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
+                prefShooter.rightShooterAmpVelocity.getValue()))
+                .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue())))
+                .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue())))));
 
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
@@ -145,11 +148,13 @@ public class RobotContainer implements Logged {
             prefShooter.rightShooterSpeakerVelocity.getValue()))));
 
     // Subwoofer Preset
-    controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-            prefShooter.rightShooterSubVelocity.getValue())))
+    controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(
-            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue()))));
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+                prefShooter.rightShooterSubVelocity.getValue())))
+        .alongWith(
+            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue())))
+        .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue()))));
 
     // TODO: ADD TO CONTROLLER MAP GRAPHIC
     controller.btn_LeftStick.whileTrue(new IntakeFromShooter(subShooter, subTransfer));

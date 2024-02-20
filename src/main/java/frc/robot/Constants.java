@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
+import com.frcteam3255.preferences.SN_BooleanPreference;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -197,6 +198,13 @@ public final class Constants {
   }
 
   public static class constShooter {
+    public static final class pracBot {
+      public static final boolean LEFT_INVERT = true;
+      public static final boolean RIGHT_INVERT = false;
+    }
+
+    public static final boolean LEFT_INVERT = true;
+    public static final boolean RIGHT_INVERT = false;
   }
 
   public static class constTurret {

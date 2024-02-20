@@ -10,6 +10,8 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.constShooter;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
 
@@ -18,6 +20,8 @@ public class Shooter extends SubsystemBase {
   TalonFXConfiguration leftConfig, rightConfig;
   VelocityVoltage velocityRequest;
   double leftFF, rightFF;
+
+  boolean leftInvert, rightInvert;
 
   /**
    * <b> Units: </b>
@@ -36,6 +40,12 @@ public class Shooter extends SubsystemBase {
 
     leftConfig = new TalonFXConfiguration();
     rightConfig = new TalonFXConfiguration();
+
+    leftInvert = (RobotContainer.isPracticeBot()) ? constShooter.pracBot.LEFT_INVERT
+        : constShooter.LEFT_INVERT;
+
+    rightInvert = (RobotContainer.isPracticeBot()) ? constShooter.pracBot.RIGHT_INVERT
+        : constShooter.RIGHT_INVERT;
 
     velocityRequest = new VelocityVoltage(0).withSlot(0);
 
@@ -61,9 +71,8 @@ public class Shooter extends SubsystemBase {
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
 
-    leftMotor.setInverted(prefShooter.leftShooterInvert.getValue());
-    rightMotor.setInverted(prefShooter.rightShooterInvert.getValue());
-
+    leftMotor.setInverted(leftInvert);
+    rightMotor.setInverted(rightInvert);
   }
 
   /**
