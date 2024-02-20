@@ -20,8 +20,6 @@ import frc.robot.RobotPreferences.prefIntake;
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
   // TalonFX pivotMotor;
-  CANSparkMax leftCenteringMotor;
-  CANSparkMax rightCenteringMotor;
 
   TalonFXConfiguration pivotConfig;
   PositionVoltage positionRequest;
@@ -29,8 +27,6 @@ public class Intake extends SubsystemBase {
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
     // pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
-    leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
-    rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     pivotConfig = new TalonFXConfiguration();
 
     configure();
@@ -49,11 +45,6 @@ public class Intake extends SubsystemBase {
 
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
     // pivotMotor.getConfigurator().apply(pivotConfig);
-    leftCenteringMotor.restoreFactoryDefaults();
-    rightCenteringMotor.restoreFactoryDefaults();
-
-    leftCenteringMotor.setInverted(true);
-    rightCenteringMotor.setInverted(false);
   }
 
   /**
@@ -65,10 +56,8 @@ public class Intake extends SubsystemBase {
    * @param centeringSpeed This is applied to both centering motors. <b> Units:
    *                       </b> Speed from -1.0 to 1.0.
    */
-  public void setIntakeMotorsSpeed(double intakeSpeed, double centeringSpeed) {
+  public void setIntakeMotorsSpeed(double intakeSpeed) {
     rollerMotor.set(intakeSpeed);
-    leftCenteringMotor.set(centeringSpeed);
-    rightCenteringMotor.set(centeringSpeed);
   }
 
   /**
@@ -76,8 +65,6 @@ public class Intake extends SubsystemBase {
    */
   public void setNeutralMode() {
     rollerMotor.setControl(new NeutralOut());
-    leftCenteringMotor.set(0);
-    rightCenteringMotor.set(0);
   }
 
   private double getRollerPercentOutput() {
