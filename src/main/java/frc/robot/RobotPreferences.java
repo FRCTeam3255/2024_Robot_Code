@@ -7,14 +7,16 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.constDrivetrain;
 
 /*
- * | Unit Type | Preferred Unit to Use |
- * | ---------- | ------------ |
- * | Distance | Meters |
- * | Distance per Time | Meters per Second |
- * | Angle | Degrees |
- * | Angle per Time | Degrees per Second |
- * | Time | Seconds |
- * 
+ * @formatter:off
+ * | Unit Type         | Preferred Unit to Use |
+ * |-------------------|-----------------------|
+ * | Distance          | Meters                |
+ * | Distance per Time | Meters per Second     |
+ * | Angle             | Degrees               |
+ * | Angle per Time    | Degrees per Second    |
+ * | Time              | Seconds               |
+ * @formatter:on
+ *
  * If the unit does not fall under any of these types, 
  * add a JavaDoc for that variable specifying it's unit. 
  * Avoid specifying units in the variable name.
