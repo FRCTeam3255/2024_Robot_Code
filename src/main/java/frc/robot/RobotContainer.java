@@ -20,7 +20,7 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.climberPref;
+import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
@@ -96,8 +96,8 @@ public class RobotContainer implements Logged {
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
 
-    controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
-    controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
+    controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorUpSpeed));
+    controller.btn_RightTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorDownSpeed));
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION)))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
