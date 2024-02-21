@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DutyCycle;
+
 // Contains all ports on our robot
 
 public class RobotMap {
@@ -54,6 +56,7 @@ public class RobotMap {
     public static final int INTAKE_LEFT_CENTERING_MOTOR_CAN = 21;
     public static final int INTAKE_RIGHT_CENTERING_MOTOR_CAN = 22;
     public static final int INTAKE_PIVOT_MOTOR_CAN = 23;
+    public static final DutyCycle INTAKE_ABSOLUTE_ENCODER = null;
   }
 
   public static class mapLEDs {

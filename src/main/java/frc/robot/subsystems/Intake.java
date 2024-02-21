@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +23,7 @@ public class Intake extends SubsystemBase {
   TalonFX pivotMotor;
   CANSparkMax leftCenteringMotor;
   CANSparkMax rightCenteringMotor;
+  DutyCycleEncoder absoluteEncoder;
 
   TalonFXConfiguration pivotConfig;
   PositionVoltage positionRequest;
@@ -31,6 +33,7 @@ public class Intake extends SubsystemBase {
     pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
     leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
+    absoluteEncoder = new DutyCycleEncoder(mapIntake.INTAKE_ABSOLUTE_ENCODER);
     pivotConfig = new TalonFXConfiguration();
 
     configure();
