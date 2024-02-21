@@ -183,10 +183,6 @@ public class Turret extends SubsystemBase {
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
-
-      case AMP:
-        targetPose = fieldPoses[1];
-        break;
     }
 
     Pose2d turretPose = robotPose.transformBy(robotToTurret);

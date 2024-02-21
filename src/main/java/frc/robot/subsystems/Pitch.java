@@ -172,10 +172,6 @@ public class Pitch extends SubsystemBase {
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
-
-      case AMP:
-        targetPose = fieldPoses[1];
-        break;
     }
 
     Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);

@@ -121,36 +121,21 @@ public class RobotContainer implements Logged {
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
 
     controller.btn_North.whileTrue(new Panic(subLEDs));
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
+    controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+
+    // Lock Speaker
+    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+            prefShooter.rightShooterSpeakerVelocity.getValue()))));
+
     // Amp Preset
-    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
                 prefShooter.rightShooterAmpVelocity.getValue()))
                 .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue())))
                 .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue())))));
-
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
-    controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
-
-    // Trap Preset
-    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
-            prefShooter.rightShooterTrapVelocity.getValue())))
-        .alongWith(
-            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue())))
-        .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue()))));
-
-    // TODO: current implementation uses a constant velocity for the amp. we do NOT
-    // want this (we already have a preset for that)
-    controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)).alongWith(
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
-            prefShooter.rightShooterAmpVelocity.getValue()))));
-
-    // TODO: current implementation uses a constant velocity for the speaker. do we
-    // want this?
-    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue()))));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -161,7 +146,15 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue())))
         .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue()))));
 
-    // TODO: ADD TO CONTROLLER MAP GRAPHIC
+    // Trap Preset
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
+            prefShooter.rightShooterTrapVelocity.getValue())))
+        .alongWith(
+            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue())))
+        .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue()))));
+
+    // TODO: ADD TO CONTROLLER MAP GRAPHIC. Is this where we want this control?
     controller.btn_LeftStick.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
   }
 
