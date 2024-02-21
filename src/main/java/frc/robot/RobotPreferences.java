@@ -147,11 +147,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
     /**
      * <b> Units: </b> Percent Output
-     */
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1);
-    public static final SN_DoublePreference intakeSpitOutCenteringSpeed = new SN_DoublePreference(
-        "intakeSpitOutCenteringSpeed", -1);
-    /**
+     *
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
      */
@@ -172,7 +168,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 70);
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
-    public static final SN_BooleanPreference pitchInvert = new SN_BooleanPreference("pitchInvert", true);
 
     /**
      * <b>Units:</b> Degrees
@@ -211,7 +206,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
-        Units.degreesToRotations(52));
+        Units.degreesToRotations(56));
     /**
      * <p>
      * The minimum soft limit of the pitch motor
@@ -261,6 +256,19 @@ public class RobotPreferences {
         70);
     public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
         0);
+
+    public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
+        "leftShooterIntakeVelocity",
+        -10);
+    public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
+        "rightShooterIntakeVelocity",
+        -10);
+    public static final SN_DoublePreference rightShooterIntakeFeedForward = new SN_DoublePreference(
+        "rightShooterIntakeFeedForward",
+        0);
+    public static final SN_DoublePreference leftShooterIntakeFeedForward = new SN_DoublePreference(
+        "rightShooterIntakeFeedForward",
+        0);
   }
 
   public static final class prefTransfer {
@@ -271,6 +279,10 @@ public class RobotPreferences {
         "feederSpitOutMotorSpeed", -.2);
     public static final SN_DoublePreference transferSpitOutMotorSpeed = new SN_DoublePreference(
         "transferSpitOutMotorSpeed", -.5);
+    public static final SN_DoublePreference feederIntakeMotorSpeed = new SN_DoublePreference(
+        "feederIntakeMotorSpeed", -.2);
+    public static final SN_DoublePreference transferIntakeMotorSpeed = new SN_DoublePreference(
+        "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
         "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL
@@ -295,7 +307,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit",
-        Units.degreesToRotations(80));
+        Units.degreesToRotations(87));
     /**
      * <p>
      * The minimum soft limit of the turret
@@ -303,7 +315,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
-        Units.degreesToRotations(-80));
+        Units.degreesToRotations(-87));
     public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
