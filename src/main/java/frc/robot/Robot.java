@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    SN_Preferences.useDefaults();
     m_robotContainer = new RobotContainer();
     Monologue.setupMonologue(m_robotContainer, "Monologue", false, false);
 
@@ -36,9 +37,6 @@ public class Robot extends TimedRobot {
     // Log the DS data and joysticks
     DriverStation.startDataLog(DataLogManager.getLog(), true);
     DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
-
-    // TODO: REMOVE. THIS DISABLES ALL PREFERENCES
-    SN_Preferences.useDefaults();
   }
 
   @Override

@@ -8,6 +8,8 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -53,20 +55,15 @@ public class Shooter extends SubsystemBase {
   }
 
   public void configure() {
-
-    leftConfig.Slot0.kS = prefShooter.leftShooterS.getValue();
     leftConfig.Slot0.kV = prefShooter.leftShooterV.getValue();
     leftConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
-    leftFF = prefShooter.leftShooterFeedForward.getValue();
 
-    rightConfig.Slot0.kS = prefShooter.rightShooterS.getValue();
     rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue();
     rightConfig.Slot0.kP = prefShooter.rightShooterP.getValue();
     rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue();
     rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue();
-    rightFF = prefShooter.rightShooterFeedForward.getValue();
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
@@ -153,6 +150,10 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter/Left/Velocity RPS", getLeftShooterVelocity());
+    SmartDashboard.putNumber("Shooter/Left/Desired Velocity RPS", desiredLeftVelocity);
+
     SmartDashboard.putNumber("Shooter/Right/Velocity RPS", getRightShooterVelocity());
+    SmartDashboard.putNumber("Shooter/Right/Desired Velocity RPS", desiredRightVelocity);
+
   }
 }

@@ -78,7 +78,7 @@ public class RobotContainer implements Logged {
         .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
             isPracticeBot()));
 
-    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
+    // subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
@@ -92,7 +92,7 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    Pose2d poseToRemove = new Pose2d(0, 0, new Rotation2d(0));
+    Pose2d poseToRemove = new Pose2d(5.88, 6.13, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(poseToRemove)));
     // controller.btn_South.onTrue(Commands.runOnce(() ->

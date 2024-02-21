@@ -8,25 +8,20 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
-  // TalonFX pivotMotor;
 
   TalonFXConfiguration pivotConfig;
   PositionVoltage positionRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
-    // pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
     pivotConfig = new TalonFXConfiguration();
 
     configure();
