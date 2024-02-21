@@ -331,7 +331,7 @@ public class RobotPreferences {
         "turretSupplyCurrentThreshold", 5);
     public static final SN_DoublePreference turretCurrentLimitCeilingAmps = new SN_DoublePreference(
         "turretCurrentLimitCeilingAmps",
-        1);
+        .1);
     /**
      * Takes a percentage of the controller joystick input to set as the manual
      * turret speed
