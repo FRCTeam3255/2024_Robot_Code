@@ -7,14 +7,16 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.constDrivetrain;
 
 /*
- * | Unit Type | Preferred Unit to Use |
- * | ---------- | ------------ |
- * | Distance | Meters |
- * | Distance per Time | Meters per Second |
- * | Angle | Degrees |
- * | Angle per Time | Degrees per Second |
- * | Time | Seconds |
- * 
+ * @formatter:off
+ * | Unit Type         | Preferred Unit to Use |
+ * |-------------------|-----------------------|
+ * | Distance          | Meters                |
+ * | Distance per Time | Meters per Second     |
+ * | Angle             | Degrees               |
+ * | Angle per Time    | Degrees per Second    |
+ * | Time              | Seconds               |
+ * @formatter:on
+ *
  * If the unit does not fall under any of these types, 
  * add a JavaDoc for that variable specifying it's unit. 
  * Avoid specifying units in the variable name.
@@ -273,7 +275,7 @@ public class RobotPreferences {
         "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", 45); // TODO: CHECK VELOCITY AS WELL
+        "transferNoteVelocityTolerance", 45);
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
@@ -288,6 +290,11 @@ public class RobotPreferences {
   }
 
   public static final class prefTurret {
+    // -- PID & Configs--
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
+    public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
+    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
+
     /**
      * <p>
      * The maximum soft limit of the turret
@@ -304,27 +311,29 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-87));
-    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
-
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
-    public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
-    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
 
     public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
-    public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
-        90);
+
+    // -- Zeroing --
+    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
+    public static final SN_DoublePreference turretZeroedVelocity = new SN_DoublePreference("turretZeroedVelocity",
+        0.01);
+    public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
+
     // -- Angles --
     public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
 
+    public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
+        90);
+
+    // -- Other --
     /**
      * Takes a percentage of the controller joystick input to set as the manual
      * turret speed
      */
     public static final SN_DoublePreference turretPercentageSpeed = new SN_DoublePreference("turretPercentageSpeed",
         0.15);
-    public static final SN_DoublePreference turretZeroedVelocity = new SN_DoublePreference("turretZeroedVelocity",
-        0.01);
-    public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
+
   }
 
   public static final class prefVision {
