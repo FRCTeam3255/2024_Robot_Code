@@ -41,7 +41,7 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.21);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.05); // 0.21
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
@@ -152,10 +152,11 @@ public class RobotPreferences {
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchV = new SN_DoublePreference("pitchV", 0.3);
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 70);
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 90); // Original: 70. With 0 G, P
+                                                                                            // is 500
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
+    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
 
     /**
      * <b>Units:</b> Degrees
@@ -207,7 +208,7 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 10);
+    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 50);
 
     public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 18);
     public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle", 18);
@@ -293,13 +294,13 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterAmpVelocity = new SN_DoublePreference(
-        "leftShooterAmpVelocity", 60);
+        "leftShooterAmpVelocity", 7.5);
     /**
      * Preset: Shooting while touching the amp velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterAmpVelocity = new SN_DoublePreference(
-        "rightShooterAmpVelocity", 45);
+        "rightShooterAmpVelocity", 7.5);
 
     /**
      * Preset: Shooting while touching the trap velocity

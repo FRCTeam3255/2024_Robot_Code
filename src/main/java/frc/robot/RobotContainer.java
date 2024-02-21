@@ -7,6 +7,8 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -90,11 +92,12 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-
+    Pose2d poseToRemove = new Pose2d(0, 0, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(poseToRemove)));
+    // controller.btn_South.onTrue(Commands.runOnce(() ->
+    // subDrivetrain.resetYaw()));
+    // controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
 
     controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorUpSpeed));
     controller.btn_RightTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorDownSpeed));
