@@ -322,16 +322,16 @@ public class RobotPreferences {
     // -- Angles --
     public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
 
-    public static final SN_DoublePreference turretSupplyTimeTreshold = new SN_DoublePreference(
-        "turretSupplyTimeThreshold", 0);
-    public static final SN_BooleanPreference turretSupplyCurrentLimitEnable = new SN_BooleanPreference(
+    public static final SN_DoublePreference turretStatorTimeTreshold = new SN_DoublePreference(
+        "turretSupplyTimeThreshold", 0.01);
+    public static final SN_BooleanPreference turretStatorCurrentLimitEnable = new SN_BooleanPreference(
         "turretSupplyCurrentLimitEnable",
         true);
-    public static final SN_DoublePreference turretSupplyCurrentThreshold = new SN_DoublePreference(
-        "turretSupplyCurrentThreshold", 0);
+    public static final SN_DoublePreference turretStatorCurrentThreshold = new SN_DoublePreference(
+        "turretSupplyCurrentThreshold", 5);
     public static final SN_DoublePreference turretCurrentLimitCeilingAmps = new SN_DoublePreference(
         "turretCurrentLimitCeilingAmps",
-        0.3);
+        1);
     /**
      * Takes a percentage of the controller joystick input to set as the manual
      * turret speed

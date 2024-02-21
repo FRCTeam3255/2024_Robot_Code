@@ -54,20 +54,20 @@ public class Turret extends SubsystemBase {
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
 
-    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
 
-    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefTurret.turretReverseLimit.getValue();
 
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
-    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretSupplyCurrentLimitEnable.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretStatorCurrentLimitEnable.getValue();
     turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimitCeilingAmps.getValue();
-    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretSupplyCurrentThreshold.getValue();
-    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretSupplyTimeTreshold.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretStatorCurrentThreshold.getValue();
+    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretStatorTimeTreshold.getValue();
     turretMotor.getConfigurator().apply(turretConfig);
   }
   // "Set" Methods
@@ -109,6 +109,10 @@ public class Turret extends SubsystemBase {
    */
   public void setTurretSpeed(double speed) {
     turretMotor.set(speed);
+  }
+
+  public double getTurretCurrent() {
+    return turretMotor.getSupplyCurrent().getValueAsDouble();
   }
 
   /**
@@ -211,5 +215,6 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("Turret/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
+    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
   }
 }
