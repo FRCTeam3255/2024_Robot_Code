@@ -100,9 +100,9 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
-    public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("ïntakePivotP", 24);
-    public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("ïntakePivotI", 0);
-    public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("ïntakePivotD", 0);
+    public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("intakePivotP", 24);
+    public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("intakePivotI", 0);
+    public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("intakePivotD", 0);
 
     /**
      * Enable or disable the intake pivot forward limit
