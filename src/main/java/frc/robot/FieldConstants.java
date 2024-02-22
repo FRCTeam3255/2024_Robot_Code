@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
@@ -30,7 +31,25 @@ public class FieldConstants {
     }
     return new Pose3d[] { blueConstants.SPEAKER, blueConstants.AMP, redConstants.SPEAKER,
         redConstants.AMP };
-  }
+  };
+
+  /**
+   * Boolean that controls when the path will be mirrored for the red
+   * alliance. This will flip the path being followed to the red side of the
+   * field.
+   * THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+   * 
+   * @return If we are currently on Red alliance. Will return false if no alliance
+   *         is found
+   */
+  public static boolean isRedAlliance() {
+
+    var alliance = FieldConstants.ALLIANCE;
+    if (alliance.isPresent()) {
+      return alliance.get() == DriverStation.Alliance.Red;
+    }
+    return false;
+  };
 
   private static final class blueConstants {
     // TODO: add trap positions?

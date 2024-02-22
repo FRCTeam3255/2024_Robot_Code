@@ -36,6 +36,7 @@ import frc.robot.commands.Panic;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
+import frc.robot.commands.autos.WingAuto;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -128,7 +129,7 @@ public class RobotContainer implements Logged {
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("New Auto");
+    return new WingAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret);
   }
 
   // --- Custom Methods ---
