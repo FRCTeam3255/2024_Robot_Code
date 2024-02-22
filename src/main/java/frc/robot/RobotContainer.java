@@ -59,15 +59,15 @@ public class RobotContainer implements Logged {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   // Subsystems
-  private final Climber subClimber = new Climber();
-  private final Drivetrain subDrivetrain = new Drivetrain();
-  private final Intake subIntake = new Intake();
-  private final LEDs subLEDs = new LEDs();
-  private final Pitch subPitch = new Pitch();
-  private final Shooter subShooter = new Shooter();
-  private final Turret subTurret = new Turret();
-  private final Transfer subTransfer = new Transfer();
-  private final Vision subVision = new Vision();
+  private final static Climber subClimber = new Climber();
+  private final static Drivetrain subDrivetrain = new Drivetrain();
+  private final static Intake subIntake = new Intake();
+  private final static LEDs subLEDs = new LEDs();
+  private final static Pitch subPitch = new Pitch();
+  private final static Shooter subShooter = new Shooter();
+  private final static Turret subTurret = new Turret();
+  private final static Transfer subTransfer = new Transfer();
+  private final static Vision subVision = new Vision();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -199,6 +199,15 @@ public class RobotContainer implements Logged {
         SmartDashboard.putNumber("PDH/" + Constants.constRobot.PDH_DEVICES[i] + " Current", PDH.getCurrent(i));
       }
     }
+  }
+
+  /**
+   * Sets all applicable subsystem's last desired location to their current
+   * location
+   */
+  public void clearSubsystemMovements() {
+    Commands.runOnce(() -> subPitch.setPitchAngle(subPitch.getPitchAngle()));
+    Commands.runOnce(() -> subTurret.setTurretAngle(subTurret.getAngle()));
   }
 
   // --- Locking Logic ---
