@@ -220,7 +220,7 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 52);
+    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 51.5);
 
     public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 18);
     public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
@@ -304,13 +304,13 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterAmpVelocity = new SN_DoublePreference(
-        "leftShooterAmpVelocity", 7);
+        "leftShooterAmpVelocity", 6.7);
     /**
      * Preset: Shooting while touching the amp velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterAmpVelocity = new SN_DoublePreference(
-        "rightShooterAmpVelocity", 7);
+        "rightShooterAmpVelocity", 6.7);
 
     /**
      * Preset: Shooting into the trap velocity
