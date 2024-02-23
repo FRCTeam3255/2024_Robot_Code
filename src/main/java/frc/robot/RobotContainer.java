@@ -68,7 +68,7 @@ public class RobotContainer implements Logged {
 
   double desiredStartingPositionX = 0; // placeholders for now, find a way to get the actual starting auto position
   double desiredStartingPositionY = 0;
-  double desiredStartingRotation = -10;
+  double desiredStartingRotation = -20;
 
   public RobotContainer() {
     // Set out log file to be in its own folder
@@ -221,6 +221,32 @@ public class RobotContainer implements Logged {
         - subDrivetrain.getPose().getRotation().getDegrees()) <= prefVision.rotationalAutoPlacementTolerance
             .getValue()) {
       rotationCorrect = true;
+    } else if (desiredStartingRotation < 0) {
+      if (subDrivetrain.getPose().getRotation().getDegrees() > desiredStartingRotation &&
+          subDrivetrain.getPose().getRotation().getDegrees() < desiredStartingRotation + 180) {
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 0);
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 3);
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 4);
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 7);
+      } else {
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 0);
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 3);
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 4);
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 7);
+      }
+    } else if (desiredStartingRotation >= 0) {
+      if (subDrivetrain.getPose().getRotation().getDegrees() < desiredStartingRotation &&
+          subDrivetrain.getPose().getRotation().getDegrees() > desiredStartingRotation - 180) {
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 0);
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 3);
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 4);
+        subLEDs.setIndividualLED(constLEDs.RED_COLOR, 7);
+      } else {
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 0);
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 3);
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 4);
+        subLEDs.setIndividualLED(constLEDs.BLUE_COLOR, 7);
+      }
     }
 
     // Checking Translation
