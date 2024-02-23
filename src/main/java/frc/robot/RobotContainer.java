@@ -83,10 +83,10 @@ public class RobotContainer implements Logged {
             conDriver.axis_LeftX,
             conDriver.axis_RightX,
             conDriver.btn_LeftBumper,
-            conDriver.btn_North,
-            conDriver.btn_East,
-            conDriver.btn_South,
-            conDriver.btn_West,
+            conDriver.btn_Y,
+            conDriver.btn_B,
+            conDriver.btn_A,
+            conDriver.btn_X,
             isPracticeBot()));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));

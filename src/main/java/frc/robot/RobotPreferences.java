@@ -43,7 +43,7 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.21);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.05);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
@@ -67,7 +67,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
     // Teleop Snapping to Rotation (Yaw)
-    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 0.001);
+    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 2);
     public static final SN_DoublePreference yawSnapI = new SN_DoublePreference("yawSnapI", 0);
     public static final SN_DoublePreference yawSnapD = new SN_DoublePreference("yawSnapD", 0);
 
