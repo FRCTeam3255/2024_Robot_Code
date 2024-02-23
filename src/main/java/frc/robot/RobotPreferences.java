@@ -7,14 +7,16 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.constDrivetrain;
 
 /*
- * | Unit Type | Preferred Unit to Use |
- * | ---------- | ------------ |
- * | Distance | Meters |
- * | Distance per Time | Meters per Second |
- * | Angle | Degrees |
- * | Angle per Time | Degrees per Second |
- * | Time | Seconds |
- * 
+ * @formatter:off
+ * | Unit Type         | Preferred Unit to Use |
+ * |-------------------|-----------------------|
+ * | Distance          | Meters                |
+ * | Distance per Time | Meters per Second     |
+ * | Angle             | Degrees               |
+ * | Angle per Time    | Degrees per Second    |
+ * | Time              | Seconds               |
+ * @formatter:on
+ *
  * If the unit does not fall under any of these types, 
  * add a JavaDoc for that variable specifying it's unit. 
  * Avoid specifying units in the variable name.
@@ -41,7 +43,7 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.21);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.05);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
@@ -64,11 +66,21 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
+    // Teleop Snapping to Rotation (Yaw)
+    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 2);
+    public static final SN_DoublePreference yawSnapI = new SN_DoublePreference("yawSnapI", 0);
+    public static final SN_DoublePreference yawSnapD = new SN_DoublePreference("yawSnapD", 0);
+
     /**
      * <b>Units:</b> Percentage from 0 to 1
      */
     public static final SN_DoublePreference minimumSteerSpeedPercent = new SN_DoublePreference(
         "minimumSteerSpeedPercent", 0.01);
+
+    /**
+     * Value to multiply with the translation velocity when slow mode is enabled
+     */
+    public static final SN_DoublePreference slowModeMultiplier = new SN_DoublePreference("slowModeMultiplier", .2);
 
     /**
      * <p>
@@ -135,11 +147,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
     /**
      * <b> Units: </b> Percent Output
-     */
-    public static final SN_DoublePreference intakeCenteringSpeed = new SN_DoublePreference("intakeCenteringSpeed", 1);
-    public static final SN_DoublePreference intakeSpitOutCenteringSpeed = new SN_DoublePreference(
-        "intakeSpitOutCenteringSpeed", -1);
-    /**
+     *
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
      */
@@ -160,7 +168,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 70);
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
-    public static final SN_BooleanPreference pitchInvert = new SN_BooleanPreference("pitchInvert", true);
 
     /**
      * <b>Units:</b> Degrees
@@ -199,7 +206,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
-        Units.degreesToRotations(52));
+        Units.degreesToRotations(56));
     /**
      * <p>
      * The minimum soft limit of the pitch motor
@@ -300,7 +307,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit",
-        Units.degreesToRotations(80));
+        Units.degreesToRotations(87));
     /**
      * <p>
      * The minimum soft limit of the turret
@@ -308,7 +315,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
-        Units.degreesToRotations(-80));
+        Units.degreesToRotations(-87));
     public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
     public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);

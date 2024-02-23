@@ -10,9 +10,12 @@ import com.frcteam3255.components.swerve.SN_SwerveModule;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -29,6 +32,7 @@ import monologue.Annotations.Log;
 public class Drivetrain extends SN_SuperSwerve implements Logged {
   private static TalonFXConfiguration driveConfiguration = new TalonFXConfiguration();
   private static TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
+  private static PIDController yawSnappingController;
 
   // Struct logging - Allows for logging data that SmartDashboard alone can't log,
   // but must be called on the variable's creation
@@ -93,7 +97,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         new ReplanningConfig(),
         constDrivetrain.AUTO_FLIP_WITH_ALLIANCE_COLOR,
         Robot.isSimulation());
-
   }
 
   @Override
@@ -110,6 +113,11 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
     SN_SwerveModule.driveConfiguration = driveConfiguration;
     SN_SwerveModule.steerConfiguration = steerConfiguration;
+
+    yawSnappingController = new PIDController(
+        prefDrivetrain.yawSnapP.getValue(),
+        prefDrivetrain.yawSnapI.getValue(),
+        prefDrivetrain.yawSnapD.getValue());
     super.configure();
   }
 
@@ -150,6 +158,20 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    */
   public void addVisionMeasurement(Pose2d estimatedPose, double timestamp) {
     swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp);
+  }
+
+  /**
+   * @param desiredYaw The desired yaw to snap to
+   * @return The desired velocity needed to snap. <b>Units:</b> Radians per Second
+   */
+  public double getVelocityToSnap(Rotation2d desiredYaw) {
+    double yawSetpoint = yawSnappingController.calculate(getRotation().getRadians(), desiredYaw.getRadians());
+
+    // limit the PID output to our maximum rotational speed
+    yawSetpoint = MathUtil.clamp(yawSetpoint, -Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()),
+        Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()));
+
+    return yawSetpoint;
   }
 
   @Override

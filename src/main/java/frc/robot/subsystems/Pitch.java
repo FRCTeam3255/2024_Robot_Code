@@ -11,6 +11,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constPitch;
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap.mapPitch;
 import frc.robot.RobotPreferences.prefPitch;
 
@@ -29,6 +31,8 @@ public class Pitch extends SubsystemBase {
 
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
+  boolean INVERT_MOTOR;
+  double GEAR_RATIO;
 
   public Pitch() {
     pitchMotor = new TalonFX(mapPitch.PITCH_MOTOR_CAN, "rio");
@@ -36,6 +40,12 @@ public class Pitch extends SubsystemBase {
 
     positionRequest = new PositionVoltage(0).withSlot(0);
     voltageRequest = new VoltageOut(0);
+
+    INVERT_MOTOR = (RobotContainer.isPracticeBot()) ? constPitch.pracBot.INVERT
+        : constPitch.INVERT;
+
+    GEAR_RATIO = (RobotContainer.isPracticeBot()) ? constPitch.pracBot.PITCH_GEAR_RATIO
+        : constPitch.PITCH_GEAR_RATIO;
 
     configure();
   }
@@ -52,11 +62,11 @@ public class Pitch extends SubsystemBase {
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue();
 
-    pitchConfig.Feedback.SensorToMechanismRatio = constPitch.PITCH_GEAR_RATIO;
+    pitchConfig.Feedback.SensorToMechanismRatio = GEAR_RATIO;
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
 
     pitchMotor.getConfigurator().apply(pitchConfig);
-    pitchMotor.setInverted(prefPitch.pitchInvert.getValue());
+    pitchMotor.setInverted(INVERT_MOTOR);
   }
 
   // -- Set --
@@ -65,7 +75,7 @@ public class Pitch extends SubsystemBase {
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
     pitchMotor.getConfigurator().apply(pitchConfig);
-    pitchMotor.setInverted(prefPitch.pitchInvert.getValue());
+    pitchMotor.setInverted(INVERT_MOTOR);
   }
 
   /**
