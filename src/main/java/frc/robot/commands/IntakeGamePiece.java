@@ -43,8 +43,7 @@ public class IntakeGamePiece extends Command {
   public void execute() {
     subIntake.setPivotMotorAngle(prefIntake.intakeIntakingPosition.getValue());
 
-    subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue(),
-        prefIntake.intakeCenteringSpeed.getValue());
+    subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
 
     subTransfer.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());

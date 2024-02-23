@@ -73,10 +73,8 @@ public class Intake extends SubsystemBase {
    * @param centeringSpeed This is applied to both centering motors. <b> Units:
    *                       </b> Speed from -1.0 to 1.0.
    */
-  public void setIntakeMotorsSpeed(double intakeSpeed, double centeringSpeed) {
+  public void setIntakeMotorsSpeed(double intakeSpeed) {
     rollerMotor.set(intakeSpeed);
-    leftCenteringMotor.set(centeringSpeed);
-    rightCenteringMotor.set(centeringSpeed);
   }
 
   /**
@@ -84,8 +82,6 @@ public class Intake extends SubsystemBase {
    */
   public void setNeutralMode() {
     rollerMotor.setControl(new NeutralOut());
-    leftCenteringMotor.set(0);
-    rightCenteringMotor.set(0);
   }
 
   private double getRollerPercentOutput() {

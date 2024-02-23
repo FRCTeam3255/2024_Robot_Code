@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
@@ -30,6 +31,7 @@ public class Turret extends SubsystemBase {
   double absoluteEncoderOffset;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
+  boolean invertAbsEncoder;
 
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
@@ -40,7 +42,11 @@ public class Turret extends SubsystemBase {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
     turretConfig = new TalonFXConfiguration();
-    absoluteEncoderOffset = constTurret.ABS_ENCODER_OFFSET;
+
+    absoluteEncoderOffset = (RobotContainer.isPracticeBot()) ? constTurret.pracBot.ABS_ENCODER_OFFSET
+        : constTurret.ABS_ENCODER_OFFSET;
+    invertAbsEncoder = (RobotContainer.isPracticeBot()) ? constTurret.pracBot.ABS_ENCODER_INVERT
+        : constTurret.ABS_ENCODER_INVERT;
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
@@ -63,7 +69,7 @@ public class Turret extends SubsystemBase {
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
     turretMotor.getConfigurator().apply(turretConfig);
-    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+    turretMotor.setInverted(invertAbsEncoder);
   }
   // "Set" Methods
 
