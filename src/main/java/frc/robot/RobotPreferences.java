@@ -231,7 +231,7 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 18);
+    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 45);
 
   }
 
@@ -291,13 +291,13 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterSubVelocity = new SN_DoublePreference(
-        "leftShooterSubVelocity", 60);
+        "leftShooterSubVelocity", 35);
     /**
      * Preset: Shooting while touching the subwoofer velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterSubVelocity = new SN_DoublePreference(
-        "rightShooterSubVelocity", 45);
+        "rightShooterSubVelocity", 35);
 
     /**
      * Preset: Shooting while touching the amp velocity

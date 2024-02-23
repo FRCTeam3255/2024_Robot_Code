@@ -106,7 +106,7 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    Pose2d poseToRemove = new Pose2d(5.88, 6.13, new Rotation2d(0));
+    Pose2d poseToRemove = new Pose2d(1.35, 5.50, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(poseToRemove)));
     // controller.btn_South.onTrue(Commands.runOnce(() ->
@@ -132,7 +132,8 @@ public class RobotContainer implements Logged {
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
 
-    controller.btn_North.whileTrue(new Panic(subLEDs));
+    controller.btn_North.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
+    controller.btn_East.whileTrue(new Panic(subLEDs));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
@@ -142,7 +143,7 @@ public class RobotContainer implements Logged {
             prefShooter.rightShooterSpeakerVelocity.getValue()))));
 
     // Amp Preset
-    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+    controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
                 prefShooter.rightShooterAmpVelocity.getValue()))
@@ -166,8 +167,6 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue())))
         .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue()))));
 
-    // TODO: ADD TO CONTROLLER MAP GRAPHIC. Is this where we want this control?
-    controller.btn_LeftStick.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
   }
 
   public Command getAutonomousCommand() {
