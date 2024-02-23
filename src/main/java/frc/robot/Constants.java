@@ -20,14 +20,16 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.RobotPreferences.prefDrivetrain;
 
 /*
- * | Unit Type | Preferred Unit to Use |
- * | ---------- | ------------ |
- * | Distance | Meters |
- * | Distance per Time | Meters per Second |
- * | Angle | Degrees |
- * | Angle per Time | Degrees per Second |
- * | Time | Seconds |
- * 
+ * @formatter:off
+ * | Unit Type         | Preferred Unit to Use |
+ * |-------------------|-----------------------|
+ * | Distance          | Meters                |
+ * | Distance per Time | Meters per Second     |
+ * | Angle             | Degrees               |
+ * | Angle per Time    | Degrees per Second    |
+ * | Time              | Seconds               |
+ * @formatter:on
+ *
  * If the unit does not fall under any of these types, 
  * add a JavaDoc for that variable specifying it's unit. 
  * Avoid specifying units in the variable name.
@@ -183,17 +185,36 @@ public final class Constants {
     public static final double MAX_VOLTAGE = 12;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
+    // @formatter:off
     /**
-     * Updated by Alice to match Comp bot Feb. 15
+     * Updated by Alice to match Comp bot Feb. 19
      */
     public static final String[] PDH_DEVICES = {
-        "Swerve/FL Steer", "Swerve/FL Drive", // 00, 01
-        null, null, null, null, null, null,
-        "Swerve/FR Steer", "Swerve/FR Drive", // 08, 09
-        "Swerve/BR Drive", "Swerve/BR Steer", // 10, 11
-        null, null, null, null, null, "Swerve/BL Steer", // 17
-        "Swerve/BL Drive", "Ethernet Switch", // 18, 19
-        "Swerve CANCoders & Pigeon", "RoboRIO", "Radio Power Module", "Beelink" };
+        /*  0 */ "Swerve/FL Steer",
+        /*  1 */ "Swerve/FL Drive",
+        /*  2 */ "Shooter/Right",
+        /*  3 */ "Transfer/Feeder",
+        /*  4 */ "Shooter/Pitch",
+        /*  5 */ "Transfer/Transfer",
+        /*  6 */ "Shooter/Left",
+        /*  7 */ null,
+        /*  8 */ "Swerve/FR Steer",
+        /*  9 */ "Swerve/FR Drive",
+        /* 10 */ "Swerve/BR Drive",
+        /* 11 */ "Swerve/BR Steer",
+        /* 12 */ null,
+        /* 13 */ null,
+        /* 14 */ null,
+        /* 15 */ null,
+        /* 16 */ "Turret",
+        /* 17 */ "Swerve/BL Steer",
+        /* 18 */ "Swerve/BL Drive",
+        /* 19 */ "Ethernet Switch",
+        /* 20 */ "Swerve CANCoders & Pigeon",
+        /* 21 */ "RoboRIO",
+        /* 22 */ "Radio Power Module",
+        /* 23 */ "Beelink" };
+    // @formatter:on
   }
 
   public static class constShooter {
