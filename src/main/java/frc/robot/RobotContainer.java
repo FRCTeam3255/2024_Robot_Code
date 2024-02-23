@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
@@ -75,7 +78,16 @@ public class RobotContainer implements Logged {
     // The Left Y and X Axes are swapped because from behind the glass, the X Axis
     // is actually in front of you
     subDrivetrain
-        .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
+        .setDefaultCommand(new Drive(
+            subDrivetrain,
+            conDriver.axis_LeftY,
+            conDriver.axis_LeftX,
+            conDriver.axis_RightX,
+            conDriver.btn_LeftBumper,
+            conDriver.btn_Y,
+            conDriver.btn_B,
+            conDriver.btn_A,
+            conDriver.btn_X,
             isPracticeBot()));
 
     // subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
@@ -84,6 +96,8 @@ public class RobotContainer implements Logged {
         subVision));
     subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
 
+    // View controls at:
+    // src\main\assets\controllerMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
 
@@ -104,8 +118,6 @@ public class RobotContainer implements Logged {
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION)))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
-    // Defaults to Field-Relative, is Robot-Relative while held
-
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
