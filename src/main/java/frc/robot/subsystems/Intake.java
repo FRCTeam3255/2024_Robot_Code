@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.constIntake;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
 
@@ -24,9 +26,11 @@ public class Intake extends SubsystemBase {
   CANSparkMax leftCenteringMotor;
   CANSparkMax rightCenteringMotor;
   DutyCycleEncoder absoluteEncoder;
+  double absoluteEncoderOffset;
 
   TalonFXConfiguration pivotConfig;
   PositionVoltage positionRequest;
+  VoltageOut voltageRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
@@ -35,6 +39,7 @@ public class Intake extends SubsystemBase {
     rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     absoluteEncoder = new DutyCycleEncoder(mapIntake.INTAKE_ABSOLUTE_ENCODER);
     pivotConfig = new TalonFXConfiguration();
+    absoluteEncoderOffset = constIntake.ABS_ENCODER_OFFSET;
 
     configure();
   }
@@ -86,6 +91,7 @@ public class Intake extends SubsystemBase {
   private double getRollerPercentOutput() {
     return rollerMotor.get();
   }
+  // "Set" Methods
 
   /**
    * Sets the angle of the pivot motor
@@ -94,6 +100,56 @@ public class Intake extends SubsystemBase {
    */
   public void setPivotMotorAngle(double angle) {
     pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  }
+
+  public void setIntakeSoftwareLimits(boolean reverse, boolean forward) {
+    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    pivotMotor.getConfigurator().apply(pivotConfig);
+    pivotMotor.setInverted(prefIntake.intakeInverted.getValue());
+  }
+
+  public void setIntakeSensorAngle(double angle) {
+    pivotMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
+  public void setPivotMotorVoltage(double voltage) {
+    pivotMotor.setControl(voltageRequest.withOutput(voltage));
+  }
+
+  /**
+   * Reset the intake encoder motor to absolute encoder's value
+   */
+  public void resetIntakeToAbsolutePosition() {
+    pivotMotor.setPosition((constIntake.ABS_ENCODER_INVERT) ? -getAbsoluteEncoder() : getAbsoluteEncoder());
+  }
+
+  // "Get" Methods
+
+  /**
+   * Get the raw position of the intake encoder (without offset)
+   * 
+   * @return Position in rotations (no offset)
+   */
+  public double getRawAbsoluteEncoder() {
+    return absoluteEncoder.getAbsolutePosition();
+  }
+
+  public double getIntakeVelocity() {
+    return Units.rotationsToDegrees(pivotMotor.getVelocity().getValueAsDouble());
+  }
+
+  /**
+   * Get the current position of the intake encoder (with offset applied)
+   * 
+   * @return Position in rotations (with offset)
+   */
+  public double getAbsoluteEncoder() {
+    double rotations = getRawAbsoluteEncoder();
+
+    rotations -= absoluteEncoderOffset;
+
+    return rotations;
   }
 
   @Override

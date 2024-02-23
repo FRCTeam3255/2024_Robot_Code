@@ -102,6 +102,14 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("ïntakePivotI", 0);
     public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("ïntakePivotD", 0);
 
+    public static final SN_BooleanPreference intakeInverted = new SN_BooleanPreference("intakeInverted", false);
+    public static final SN_DoublePreference intakeZeroingVoltage = new SN_DoublePreference("intakeZeroingVoltage", 1);
+    public static final SN_DoublePreference intakeSensorZeroedAngle = new SN_DoublePreference("intakeSensorZeroedAngle",
+        90);
+    public static final SN_DoublePreference intakeZeroedVelocity = new SN_DoublePreference("intakeZeroedVelocity",
+        0.01);
+    public static final SN_DoublePreference intakeZeroedTime = new SN_DoublePreference("intakeZeroedTime", 0.25);
+
     /**
      * Enable or disable the intake pivot forward limit
      */
