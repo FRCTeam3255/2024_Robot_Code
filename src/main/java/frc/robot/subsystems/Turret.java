@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -60,10 +61,10 @@ public class Turret extends SubsystemBase {
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
 
-    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
 
-    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefTurret.turretReverseLimit.getValue();
 
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
@@ -126,7 +127,9 @@ public class Turret extends SubsystemBase {
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -getAbsoluteEncoder() : getAbsoluteEncoder());
+    double rotations = getAbsoluteEncoder();
+
+    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -rotations : rotations);
   }
 
   // "Get" Methods

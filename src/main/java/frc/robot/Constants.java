@@ -229,7 +229,7 @@ public final class Constants {
     public static final double GEAR_RATIO = 39;
     public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
-    public static final double ABS_ENCODER_OFFSET = 0.010725;
+    public static final double ABS_ENCODER_OFFSET = 0.011712;
     public static final boolean ABS_ENCODER_INVERT = false;
 
     /**
