@@ -18,6 +18,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 public class Climber extends SubsystemBase {
   TalonFX climberMotor;
 
+  double absoluteEncoderOffset;
   TalonFXConfiguration climberConfig;
 
   public Climber() {
@@ -56,6 +57,34 @@ public class Climber extends SubsystemBase {
 
   public void setNeutralOutput() {
     climberMotor.setControl(new NeutralOut());
+  }
+
+  public void setClimberSoftwareLimits(boolean reverse, boolean forward) {
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    climberMotor.getConfigurator().apply(climberConfig);
+    climberMotor.setInverted(climberPref.climberInverted.getValue());
+  }
+
+  public void setClimberVoltage(double voltage) {
+    climberMotor.setControl(voltageRequest.withOutput(voltage));
+  }
+
+  public double getAbsoluteEncoder() {
+    double rotations = getAbsoluteEncoder();
+
+    rotations -= absoluteEncoderOffset;
+
+    return rotations;
+  }
+
+  // public void resetClimberToAbsolutePosition() {
+  // climberMotor.setPosition((constClimber.ABS_ENCODER_INVERT) ?
+  // -getAbsoluteEncoder() : getAbsoluteEncoder());
+  // }
+
+  public double getClimberVelocity() {
+    return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
   }
 
   @Override

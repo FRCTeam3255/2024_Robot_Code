@@ -44,6 +44,9 @@ public final class Constants {
 
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
+
+    public static final double ABS_ENCODER_OFFSET = 0.010725;
+    public static final boolean ABS_ENCODER_INVERT = false;
   }
 
   public static class constDrivetrain {
