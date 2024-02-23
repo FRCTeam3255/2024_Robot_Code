@@ -232,7 +232,7 @@ public class RobotPreferences {
         "shooterUpToSpeedTolerance", 3);
 
     /**
-     * <b>Units:</b> Meters per second
+     * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity",
         60);
