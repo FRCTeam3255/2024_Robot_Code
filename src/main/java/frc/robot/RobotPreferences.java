@@ -25,6 +25,12 @@ import frc.robot.Constants.constDrivetrain;
  */
 public class RobotPreferences {
   public static final class prefClimber {
+    public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
+    public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
+    public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
+    public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
+
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
         "climberMotorForwardLimit", 10);
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
@@ -33,11 +39,6 @@ public class RobotPreferences {
         "climberMotorUpSpeed", 1);
     public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
         "climberMotorDownSpeed", -1);
-    public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
-    public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
-    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
-    public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
-    public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
   }
 
@@ -84,19 +85,19 @@ public class RobotPreferences {
      * <p>
      * Pose estimator standard deviation for encoder & gyro data
      * </p>
-     * <b>Units:</b> Feet
+     * <b>Units:</b> Meters
      */
     public static final SN_DoublePreference measurementStdDevsPosition = new SN_DoublePreference(
-        "measurementStdDevsPosition", Units.metersToFeet(0.1));
+        "measurementStdDevsPosition", 0.1);
 
     /**
      * <p>
      * Pose estimator standard deviation for encoder & gyro data
      * </p>
-     * <b>Units:</b> Degrees
+     * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference measurementStdDevsHeading = new SN_DoublePreference(
-        "measurementStdDevsHeading", Units.metersToFeet(0.1));
+        "measurementStdDevsHeading", Units.degreesToRadians(1));
   }
 
   public static final class prefIntake {
@@ -117,6 +118,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference intakePivotForwardLimit = new SN_DoublePreference("intakePivotForwardLimit",
         Units.degreesToRotations(45));
+
     /**
      * Enable or disable the intake pivot forward limit
      */
@@ -134,10 +136,12 @@ public class RobotPreferences {
      * <b> Units: </b> Percent Output
      */
     public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 1);
-    public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
     /**
      * <b> Units: </b> Percent Output
-     *
+     */
+    public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
+
+    /**
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
      */
@@ -280,8 +284,8 @@ public class RobotPreferences {
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
         "transferGamePieceCollectedBelowAmps", 15);
-    public static final SN_BooleanPreference enableStatorCurrentLimit = new SN_BooleanPreference(
-        "enableStatorCurrentLimit", false);
+    public static final SN_BooleanPreference transferStatorLimitEnable = new SN_BooleanPreference(
+        "transferStatorLimitEnable", false);
     public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",
         true);
     public static final SN_BooleanPreference transferFeederInverted = new SN_BooleanPreference("transferFeederInverted",
@@ -341,19 +345,19 @@ public class RobotPreferences {
      * <p>
      * Pose estimator standard deviation for vision data
      * <p>
-     * <b>Units:</b> Feet
+     * <b>Units:</b> Meters
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
-        "visionStdDevsPosition", Units.metersToFeet(0.9));
+        "visionStdDevsPosition", 0.9);
 
     /**
      * <p>
      * Pose estimator standard deviation for vision data
      * </p>
-     * <b>Units:</b> Degrees
+     * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
-        "visionStdDevsHeading", Units.metersToFeet(0.9));
+        "visionStdDevsHeading", Units.degreesToRadians(10));
 
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
   }
