@@ -217,8 +217,8 @@ public class RobotContainer implements Logged {
    * location
    */
   public void clearSubsystemMovements() {
-    Commands.runOnce(() -> subPitch.setPitchAngle(subPitch.getPitchAngle()));
-    Commands.runOnce(() -> subTurret.setTurretAngle(subTurret.getAngle()));
+    subPitch.setPitchAngle(subPitch.getPitchAngle());
+    subTurret.setTurretAngle(subTurret.getAngle());
   }
 
   // --- Locking Logic ---
