@@ -28,7 +28,7 @@ import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeFromShooter;
+import frc.robot.commands.IntakeFromSource;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
@@ -83,7 +83,7 @@ public class RobotContainer implements Logged {
             conDriver.axis_LeftY,
             conDriver.axis_LeftX,
             conDriver.axis_RightX,
-            conDriver.btn_LeftBumper,
+            conDriver.btn_RightBumper,
             conDriver.btn_Y,
             conDriver.btn_B,
             conDriver.btn_A,
@@ -108,14 +108,14 @@ public class RobotContainer implements Logged {
   private void configureDriverBindings(SN_XboxController controller) {
     Pose2d poseToRemove = new Pose2d(1.35, 5.50, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(poseToRemove)));
+    controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(poseToRemove)));
     // controller.btn_South.onTrue(Commands.runOnce(() ->
     // subDrivetrain.resetYaw()));
     // controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
 
     controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorUpSpeed));
     controller.btn_RightTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorDownSpeed));
-    controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
+    controller.btn_LeftBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION)))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
   }
@@ -132,7 +132,7 @@ public class RobotContainer implements Logged {
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
 
-    controller.btn_North.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
     controller.btn_East.whileTrue(new Panic(subLEDs));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));

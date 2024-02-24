@@ -31,6 +31,8 @@ public class Climber extends SubsystemBase {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
     absoluteEncoder = new DutyCycleEncoder(mapClimber.CLIMBER_ABSOLUTE_ENCODER_DIO);
     climberConfig = new TalonFXConfiguration();
+
+    absoluteEncoderOffset = constClimber.ABS_ENCODER_OFFSET;
     configure();
   }
 
@@ -41,15 +43,15 @@ public class Climber extends SubsystemBase {
     climberConfig.Slot0.kI = prefClimber.climberI.getValue();
     climberConfig.Slot0.kD = prefClimber.climberD.getValue();
 
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMotorForwardLimit.getValue();
 
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMotorReverseLimit.getValue();
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
-    climberConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     climberMotor.getConfigurator().apply(climberConfig);
+    climberMotor.setInverted(prefClimber.climberInverted.getValue());
 
   }
 

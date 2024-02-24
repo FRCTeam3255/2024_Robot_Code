@@ -42,6 +42,7 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
+    public static final double ABS_ENCODER_OFFSET = 0.928814;
   }
 
   public static class constControllers {
@@ -172,7 +173,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
-        new Translation3d(-Units.inchesToMeters(3.5), 0, Units.inchesToMeters(14.03125)),
+        new Translation3d(-0, 0, 0),
         new Rotation3d(0, 0, 0));
   }
 
