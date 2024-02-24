@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.climberPref;
+import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.subsystems.Climber;
 
 public class ZeroClimber extends Command {
@@ -33,7 +33,7 @@ public class ZeroClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subClimber.setClimberVoltage(climberPref.climberZeroingVoltage.getValue());
+    subClimber.setClimberVoltage(prefClimber.climberZeroingVoltage.getValue());
   }
 
   // Called once the command ends or is interrupted.
@@ -45,13 +45,13 @@ public class ZeroClimber extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(subClimber.getClimberVelocity()) <= Math.abs(climberPref.climberZeroingVoltage.getValue())) {
+    if (Math.abs(subClimber.getClimberVelocity()) <= Math.abs(prefClimber.climberZeroingVoltage.getValue())) {
       if (zeroingTimestamp == 0) {
         zeroingTimestamp = Timer.getFPGATimestamp();
         return false;
       }
 
-      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= climberPref.climberZeroingVoltage.getValue();
+      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefClimber.climberZeroingVoltage.getValue();
     }
     zeroingTimestamp = 0;
     return false;
