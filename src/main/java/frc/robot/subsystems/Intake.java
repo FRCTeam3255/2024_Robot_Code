@@ -23,8 +23,6 @@ import frc.robot.RobotPreferences.prefIntake;
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
   TalonFX pivotMotor;
-  CANSparkMax leftCenteringMotor;
-  CANSparkMax rightCenteringMotor;
   DutyCycleEncoder absoluteEncoder;
   double absoluteEncoderOffset;
 
@@ -35,8 +33,6 @@ public class Intake extends SubsystemBase {
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
     pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
-    leftCenteringMotor = new CANSparkMax(mapIntake.INTAKE_LEFT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
-    rightCenteringMotor = new CANSparkMax(mapIntake.INTAKE_RIGHT_CENTERING_MOTOR_CAN, MotorType.kBrushless);
     absoluteEncoder = new DutyCycleEncoder(mapIntake.INTAKE_ABSOLUTE_ENCODER);
     pivotConfig = new TalonFXConfiguration();
     absoluteEncoderOffset = constIntake.ABS_ENCODER_OFFSET;
