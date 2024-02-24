@@ -27,7 +27,7 @@ public class Climber extends SubsystemBase {
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
-
+    absoluteEncoder = new DutyCycleEncoder(mapClimber.CLIMBER_ABSOLUTE_ENCODER_DIO);
     climberConfig = new TalonFXConfiguration();
     configure();
   }
