@@ -26,13 +26,18 @@ import frc.robot.Constants.constDrivetrain;
 public class RobotPreferences {
   public static final class prefClimber {
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
-    public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
-    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 250);
     public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
     public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
+    /**
+     * <b>Units:</b> Degrees
+     */
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 60);
+        "climberMotorForwardLimit", 85);
+    /**
+     * <b>Units:</b> Degrees
+     */
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
         "climberMotorReverseLimit", 0);
     public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
@@ -113,37 +118,6 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
-    public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("intakePivotP", 24);
-    public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("intakePivotI", 0);
-    public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("intakePivotD", 0);
-
-    /**
-     * Enable or disable the intake pivot forward limit
-     */
-    public static final SN_BooleanPreference intakePivotForwardLimitEnable = new SN_BooleanPreference(
-        "intakePivotForwardLimitEnable", true);
-    /**
-     * <p>
-     * The maximum soft limit of the intake pivot
-     * </p>
-     * <b>Units:</b> Rotations
-     */
-    public static final SN_DoublePreference intakePivotForwardLimit = new SN_DoublePreference("intakePivotForwardLimit",
-        Units.degreesToRotations(45));
-
-    /**
-     * Enable or disable the intake pivot forward limit
-     */
-    public static final SN_BooleanPreference intakePivotReverseLimitEnable = new SN_BooleanPreference(
-        "intakePivotReverseLimitEnable", true);
-    /**
-     * <p>
-     * The minimum soft limit of the intake pivot
-     * </p>
-     * <b>Units:</b> Rotations
-     */
-    public static final SN_DoublePreference intakePivotReverseLimit = new SN_DoublePreference("intakePivotReverseLimit",
-        Units.degreesToRotations(-45));
     /**
      * <b> Units: </b> Percent Output
      */
@@ -158,7 +132,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference intakeIntakingPosition = new SN_DoublePreference(
-        "intakeIntakingPosition", 62);
+        "intakeIntakingPosition", prefClimber.climberMotorForwardLimit.getValue() - 1);
 
   }
 

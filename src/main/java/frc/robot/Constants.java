@@ -42,6 +42,7 @@ public final class Constants {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
     public static final double ABS_ENCODER_OFFSET = 0.928814;
+    public static final double GEAR_RATIO = 220.5;
   }
 
   public static class constControllers {

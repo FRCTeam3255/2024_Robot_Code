@@ -36,23 +36,28 @@ public class Climber extends SubsystemBase {
     climberConfig = new TalonFXConfiguration();
 
     absoluteEncoderOffset = constClimber.ABS_ENCODER_OFFSET;
+
+    positionRequest = new PositionVoltage(0);
+    voltageRequest = new VoltageOut(0);
     configure();
   }
 
   public void configure() {
     climberConfig.Slot0.kS = prefClimber.climberS.getValue();
-    climberConfig.Slot0.kV = prefClimber.climberV.getValue();
     climberConfig.Slot0.kP = prefClimber.climberP.getValue();
     climberConfig.Slot0.kI = prefClimber.climberI.getValue();
     climberConfig.Slot0.kD = prefClimber.climberD.getValue();
 
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMotorForwardLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
+        .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
 
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMotorReverseLimit.getValue();
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units
+        .degreesToRotations(prefClimber.climberMotorReverseLimit.getValue());
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
+    climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
     climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
 
@@ -62,8 +67,11 @@ public class Climber extends SubsystemBase {
     climberMotor.set(motorSpeed);
   }
 
+  /**
+   * @return <b>Units:</b> Degrees
+   */
   public double getPosition() {
-    return climberMotor.getPosition().getValue();
+    return Units.rotationsToDegrees(climberMotor.getPosition().getValueAsDouble());
   }
 
   public void setNeutralOutput() {
@@ -114,7 +122,7 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Climber/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
-    SmartDashboard.putNumber("Climber/Motor Position (Rotations)", getPosition());
+    SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
     // This method will be called once per scheduler run
   }
