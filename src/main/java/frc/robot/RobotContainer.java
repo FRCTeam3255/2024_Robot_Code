@@ -66,7 +66,9 @@ public class RobotContainer implements Logged {
   private final Transfer subTransfer = new Transfer();
   private final Vision subVision = new Vision();
 
-  double desiredStartingPositionX = 0; // placeholders for now, find a way to get the actual starting auto position
+  // TODO: placeholders for now, find a way to get the actual starting auto
+  // position
+  double desiredStartingPositionX = 0;
   double desiredStartingPositionY = 0;
   double desiredStartingRotation = 70;
   int[] rotationColor;
@@ -213,9 +215,12 @@ public class RobotContainer implements Logged {
     boolean YCorrect = false;
 
     // values only for testing
-    SmartDashboard.putNumber("Current Drivetrain X", subDrivetrain.getPose().getX());
-    SmartDashboard.putNumber("Current Drivetrain Y", subDrivetrain.getPose().getY());
-    SmartDashboard.putNumber("Current Drivetrain Rotation", subDrivetrain.getPose().getRotation().getDegrees());
+    // SmartDashboard.putNumber("Current Drivetrain X",
+    // subDrivetrain.getPose().getX());
+    // SmartDashboard.putNumber("Current Drivetrain Y",
+    // subDrivetrain.getPose().getY());
+    // SmartDashboard.putNumber("Current Drivetrain Rotation",
+    // subDrivetrain.getPose().getRotation().getDegrees());
 
     subLEDs.setLEDBrightness(0.4);
     subLEDs.clearAnimation();

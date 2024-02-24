@@ -47,17 +47,6 @@ public class LEDs extends SubsystemBase {
   }
 
   /**
-   * Sets a block of LEDs to a desired color
-   * 
-   * @param rgb              How much red, green, and blue the color has
-   * @param LEDStartingIndex The index number of the starting LED to control
-   * @param LEDCount         The number of LEDs to apply the color to
-   */
-  public void setSpecificLEDs(int[] rgb, int LEDStartingIndex, int LEDCount) {
-    CANdle.setLEDs(rgb[0], rgb[1], rgb[2], 0, LEDStartingIndex, LEDCount);
-  }
-
-  /**
    * <b>Types of Animations available:</b>
    * ColorFlowAnimation, FireAnimation, LarsonAnimation, RainbowAnimation,
    * RgbFadeAnimation, SingleFadeAnimation, StrobeAnimation, TwinkleAnimation,
