@@ -10,7 +10,6 @@ import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -85,11 +84,11 @@ public class Transfer extends SubsystemBase {
     transferMotor.setControl(new NeutralOut());
   }
 
-  private double getTransferMotorPercentOutput() {
+  public double getTransferMotorPercentOutput() {
     return transferMotor.get();
   }
 
-  private double getFeederMotorPercentOutput() {
+  public double getFeederMotorPercentOutput() {
     return feederMotor.getMotorOutputPercent();
   }
 
