@@ -55,7 +55,6 @@ public class IntakeGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subClimber.setPivotMotorAngle(prefIntake.intakeStowPosition.getValue());
     subIntake.setNeutralMode();
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
