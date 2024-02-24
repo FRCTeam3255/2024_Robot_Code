@@ -42,10 +42,7 @@ public class TransferGamePiece extends Command {
   @Override
   public void execute() {
 
-    if (subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
-        prefShooter.shooterUpToSpeedTolerance.getValue())
-        && subShooter.isRightShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
-            prefShooter.shooterUpToSpeedTolerance.getValue())
+    if (subShooter.areBothShootersUpToSpeed()
         && subPitch.isPitchAtGoalAngle()
         && subTurret.isTurretAtGoalAngle()) {
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
