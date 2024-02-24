@@ -34,7 +34,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
         "climberMotorDownSpeed", -1);
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", false);
-
+    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
+    // TODO: add value to a defualt to climberZeoringVoltage
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
     public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
