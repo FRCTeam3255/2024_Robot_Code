@@ -9,7 +9,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Constants.constClimber;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +16,6 @@ import frc.robot.RobotMap.mapClimber;
 import frc.robot.RobotPreferences.climberPref;
 
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 
 public class Climber extends SubsystemBase {
@@ -27,7 +25,6 @@ public class Climber extends SubsystemBase {
   VoltageOut voltageRequest;
   TalonFXConfiguration climberConfig;
   DutyCycleEncoder absoluteEncoder;
-  VoltageOut voltageRequest;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
