@@ -9,8 +9,6 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,11 +51,7 @@ public class Intake extends SubsystemBase {
 
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
     pivotMotor.getConfigurator().apply(pivotConfig);
-    leftCenteringMotor.restoreFactoryDefaults();
-    rightCenteringMotor.restoreFactoryDefaults();
 
-    leftCenteringMotor.setInverted(true);
-    rightCenteringMotor.setInverted(false);
   }
 
   /**
