@@ -99,11 +99,11 @@ public class Climber extends SubsystemBase {
   }
 
   /**
-   * Sets the angle of the pivot motor
+   * Sets the angle of the climber motor
    * 
-   * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
+   * @param angle The angle to set the climber motor to. <b> Units: </b> Degrees
    */
-  public void setPivotMotorAngle(double angle) {
+  public void setClimberAngle(double angle) {
     climberMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
@@ -111,10 +111,8 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Climber/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
-    SmartDashboard.putNumber("Climber/Motor position(Rotations)", getPosition());
-    SmartDashboard.putNumber("Climber/Motor percent output", climberMotor.get());
-    SmartDashboard.putNumber("Intake/Pivot Angle",
-        climberMotor.getPosition().getValue());
+    SmartDashboard.putNumber("Climber/Motor Position (Rotations)", getPosition());
+    SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
     // This method will be called once per scheduler run
   }
 

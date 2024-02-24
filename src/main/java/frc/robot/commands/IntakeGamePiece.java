@@ -44,7 +44,7 @@ public class IntakeGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subClimber.setPivotMotorAngle(prefIntake.intakeIntakingPosition.getValue());
+    subClimber.setClimberAngle(prefIntake.intakeIntakingPosition.getValue());
 
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());

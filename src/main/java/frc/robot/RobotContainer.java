@@ -24,6 +24,7 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.climberPref;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
@@ -123,10 +124,11 @@ public class RobotContainer implements Logged {
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
     controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
-    controller.btn_North.whileTrue(new Panic(subLEDs));
+    // controller.btn_North.whileTrue(new Panic(subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
     // controller.btn_East.this is AMP set point
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
+    controller.btn_North.onTrue(Commands.runOnce(() -> subClimber.setClimberAngle(20)));
+    controller.btn_South.onTrue(Commands.runOnce(() -> subClimber.setClimberAngle(40)));
     // controller.btn_West
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)));
     controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)));
