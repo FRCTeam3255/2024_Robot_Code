@@ -67,7 +67,7 @@ public class Climber extends SubsystemBase {
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
     climberMotor.getConfigurator().apply(climberConfig);
-    // climberMotor.setInverted(climberPref.climberInverted.getValue());
+    climberMotor.setInverted(climberPref.climberInverted.getValue());
   }
 
   public void setClimberVoltage(double voltage) {
