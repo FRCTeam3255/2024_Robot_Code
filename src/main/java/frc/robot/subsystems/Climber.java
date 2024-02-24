@@ -79,7 +79,7 @@ public class Climber extends SubsystemBase {
   }
 
   public double getAbsoluteEncoder() {
-    double rotations = getAbsoluteEncoder();
+    double rotations = getRawAbsoluteEncoder();
 
     rotations -= absoluteEncoderOffset;
 
