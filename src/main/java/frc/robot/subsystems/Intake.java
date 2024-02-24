@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -21,7 +20,6 @@ public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
 
   TalonFXConfiguration pivotConfig;
-  PositionVoltage positionRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");

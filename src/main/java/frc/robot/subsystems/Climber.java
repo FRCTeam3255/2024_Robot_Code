@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
+import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.climberPref;
 
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 
 public class Climber extends SubsystemBase {
@@ -24,13 +26,15 @@ public class Climber extends SubsystemBase {
   VoltageOut voltageRequest;
   TalonFXConfiguration climberConfig;
   DutyCycleEncoder absoluteEncoder;
+
   TalonFX pivotMotor;
+  PositionVoltage positionRequest;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
     absoluteEncoder = new DutyCycleEncoder(mapClimber.CLIMBER_ABSOLUTE_ENCODER_DIO);
     climberConfig = new TalonFXConfiguration();
-    // pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio"); //fix
+    pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
 
     configure();
   }
@@ -50,7 +54,6 @@ public class Climber extends SubsystemBase {
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
     climberMotor.getConfigurator().apply(climberConfig);
-    // pivotMotor.getConfigurator().apply(pivotConfig); //fix
 
   }
 
@@ -103,9 +106,9 @@ public class Climber extends SubsystemBase {
    * 
    * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
    */
-  // public void setPivotMotorAngle(double angle) {
-  // pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
-  // }
+  public void setPivotMotorAngle(double angle) {
+    pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  }
 
   @Override
   public void periodic() {
