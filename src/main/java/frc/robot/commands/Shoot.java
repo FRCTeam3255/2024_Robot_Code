@@ -47,16 +47,12 @@ public class Shoot extends Command {
     if (subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
         prefShooter.shooterUpToSpeedTolerance.getValue())
         && subShooter.isRightShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
-            prefShooter.shooterUpToSpeedTolerance.getValue())
-        && subPitch.isPitchAtGoalAngle()
-        && subTurret.isTurretAtGoalAngle()) {
+            prefShooter.shooterUpToSpeedTolerance.getValue())) {
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
-      subTransfer.setFeederMotorSpeed(
-          prefTransfer.feederMotorSpeed.getValue());
 
     } else {
-      subLEDs.setLEDsToAnimation(constLEDs.SHOOTER_ANIMATION);
-      subTransfer.setFeederNeutralOutput();
+      subLEDs.clearAnimation();
+
     }
   }
 

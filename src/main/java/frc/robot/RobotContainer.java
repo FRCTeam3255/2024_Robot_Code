@@ -117,7 +117,7 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_RightTrigger.whileTrue(new Shoot(subShooter, subLEDs, subTransfer, subPitch, subTurret));
+    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subLEDs, subTurret, subTransfer, subPitch));
     controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs));
     controller.btn_RightBumper
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));

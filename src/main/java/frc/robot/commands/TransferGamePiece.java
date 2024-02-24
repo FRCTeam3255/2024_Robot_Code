@@ -5,16 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constLEDs;
+import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
+import frc.robot.subsystems.Turret;
 
 public class TransferGamePiece extends Command {
   /** Creates a new TransferGamePiece. */
   Transfer globalTransfer;
+  Turret subTurret;
+  Shooter subShooter;
+  Pitch subPitch;
+  LEDs subLEDs;
 
-  public TransferGamePiece(Transfer givenTransfer) {
+  public TransferGamePiece(Shooter subShooter, LEDs subLEDs, Turret subTurret,
+      Transfer globalTransfer, Pitch subPitch) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalTransfer = givenTransfer;
+    this.globalTransfer = globalTransfer;
+    this.subShooter = subShooter;
+    this.subLEDs = subLEDs;
+    this.subPitch = subPitch;
+    this.subTurret = subTurret;
 
   }
 
@@ -28,6 +43,22 @@ public class TransferGamePiece extends Command {
   public void execute() {
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
+
+    if (subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
+        prefShooter.shooterUpToSpeedTolerance.getValue())
+        && subShooter.isRightShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
+            prefShooter.shooterUpToSpeedTolerance.getValue())
+        && subPitch.isPitchAtGoalAngle()
+        && subTurret.isTurretAtGoalAngle()) {
+      subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
+      globalTransfer.setFeederMotorSpeed(
+          prefTransfer.feederMotorSpeed.getValue());
+
+    } else {
+      subLEDs.setLEDsToAnimation(constLEDs.SHOOTER_ANIMATION);
+      globalTransfer.setFeederNeutralOutput();
+    }
+
   }
 
   // Called once the command ends or is interrupted.
