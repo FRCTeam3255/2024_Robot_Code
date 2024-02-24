@@ -14,6 +14,7 @@ public class RobotMap {
   // MOTORS: 30 -> 39
   public static class mapClimber {
     public static final int CLIMBER_MOTOR_CAN = 30;
+    public static final int CLIMBER_ABSOLUTE_ENCODER_DIO = 2;
   }
 
   // MOTORS: 50 -> 59
@@ -51,8 +52,6 @@ public class RobotMap {
   // MOTORS: 20 -> 29
   public static class mapIntake {
     public static final int INTAKE_ROLLER_MOTOR_CAN = 20;
-    public static final int INTAKE_LEFT_CENTERING_MOTOR_CAN = 21;
-    public static final int INTAKE_RIGHT_CENTERING_MOTOR_CAN = 22;
     public static final int INTAKE_PIVOT_MOTOR_CAN = 23;
   }
 

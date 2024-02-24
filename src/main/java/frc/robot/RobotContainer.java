@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
@@ -25,15 +28,18 @@ import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeFromShooter;
 import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
+import frc.robot.commands.ZeroTurret;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Logged;
@@ -76,29 +82,30 @@ public class RobotContainer implements Logged {
   int[] YTranslationColor;
 
   public RobotContainer() {
-    // Set out log file to be in its own folder
-    if (Robot.isSimulation()) {
-      DataLogManager.start("src/main");
-    } else {
-      DataLogManager.start();
-    }
-    // Log data that is being put to shuffleboard
-    DataLogManager.logNetworkTables(true);
-    // Log the DS data and joysticks
-    DriverStation.startDataLog(DataLogManager.getLog(), true);
-    DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
-
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
     // The Left Y and X Axes are swapped because from behind the glass, the X Axis
     // is actually in front of you
     subDrivetrain
-        .setDefaultCommand(new Drive(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
+        .setDefaultCommand(new Drive(
+            subDrivetrain,
+            conDriver.axis_LeftY,
+            conDriver.axis_LeftX,
+            conDriver.axis_RightX,
+            conDriver.btn_LeftBumper,
+            conDriver.btn_Y,
+            conDriver.btn_B,
+            conDriver.btn_A,
+            conDriver.btn_X,
+            isPracticeBot()));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
+        subVision));
 
+    // View controls at:
+    // src\main\assets\controllerMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
 
@@ -108,7 +115,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_East.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
@@ -116,8 +122,9 @@ public class RobotContainer implements Logged {
 
     controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorUpSpeed));
     controller.btn_RightTrigger.whileTrue(new Climb(subClimber, climberPref.climberMotorDownSpeed));
-    // Defaults to Field-Relative, is Robot-Relative while held
-
+    controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
+        .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION)))
+        .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -126,11 +133,11 @@ public class RobotContainer implements Logged {
     controller.btn_RightBumper
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
     controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
-
+    controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_North.whileTrue(new Panic(subLEDs));
     controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
     // controller.btn_East.this is AMP set point
-    // controller.btn_South.whileTrue(new IntakeGamePiece());
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
     // controller.btn_West
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.TRAP)));
     controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.AMP)));
@@ -138,11 +145,12 @@ public class RobotContainer implements Logged {
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SUBWOOFER)));
     // setLockedLocation(LockedLocation.AMP))); this is subwoofer
     // controller.btn
+    controller.btn_LeftStick.whileTrue(new IntakeFromShooter(subShooter, subTransfer));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Line Test");
+    return new PathPlannerAuto("New Auto");
   }
 
   // --- Custom Methods ---

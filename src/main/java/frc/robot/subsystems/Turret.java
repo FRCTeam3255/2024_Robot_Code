@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
@@ -30,6 +32,7 @@ public class Turret extends SubsystemBase {
   double absoluteEncoderOffset;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
+  boolean invertAbsEncoder;
 
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
@@ -40,7 +43,11 @@ public class Turret extends SubsystemBase {
     turretMotor = new TalonFX(mapTurret.TURRET_MOTOR_CAN);
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
     turretConfig = new TalonFXConfiguration();
-    absoluteEncoderOffset = constTurret.ABS_ENCODER_OFFSET;
+
+    absoluteEncoderOffset = (RobotContainer.isPracticeBot()) ? constTurret.pracBot.ABS_ENCODER_OFFSET
+        : constTurret.ABS_ENCODER_OFFSET;
+    invertAbsEncoder = (RobotContainer.isPracticeBot()) ? constTurret.pracBot.ABS_ENCODER_INVERT
+        : constTurret.ABS_ENCODER_INVERT;
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
@@ -49,6 +56,7 @@ public class Turret extends SubsystemBase {
   }
 
   public void configure() {
+    turretConfig.Slot0.kV = prefTurret.turretV.getValue();
     turretConfig.Slot0.kP = prefTurret.turretP.getValue();
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
@@ -62,8 +70,13 @@ public class Turret extends SubsystemBase {
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
-    turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretStatorCurrentLimitEnable.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimitCeilingAmps.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretStatorCurrentThreshold.getValue();
+    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretStatorTimeTreshold.getValue();
+    turretMotor.getConfigurator().apply(turretConfig);
+    turretMotor.setInverted(invertAbsEncoder);
   }
   // "Set" Methods
 
@@ -74,6 +87,17 @@ public class Turret extends SubsystemBase {
    */
   public void setTurretAngle(double angle) {
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  }
+
+  public void setTurretSoftwareLimits(boolean reverse, boolean forward) {
+    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    turretMotor.getConfigurator().apply(turretConfig);
+    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+  }
+
+  public void setTurretSensorAngle(double angle) {
+    turretMotor.setPosition(Units.degreesToRotations(angle));
   }
 
   /**
@@ -95,11 +119,17 @@ public class Turret extends SubsystemBase {
     turretMotor.set(speed);
   }
 
+  public double getTurretCurrent() {
+    return turretMotor.getSupplyCurrent().getValueAsDouble();
+  }
+
   /**
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -getAbsoluteEncoder() : getAbsoluteEncoder());
+    double rotations = getAbsoluteEncoder();
+
+    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -rotations : rotations);
   }
 
   // "Get" Methods
@@ -111,6 +141,10 @@ public class Turret extends SubsystemBase {
    */
   public double getRawAbsoluteEncoder() {
     return absoluteEncoder.getAbsolutePosition();
+  }
+
+  public double getTurretVelocity() {
+    return Units.rotationsToDegrees(turretMotor.getVelocity().getValueAsDouble());
   }
 
   /**
@@ -191,5 +225,6 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("Turret/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
+    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
   }
 }
