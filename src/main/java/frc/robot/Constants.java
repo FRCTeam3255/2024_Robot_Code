@@ -89,6 +89,8 @@ public final class Constants {
     public static final int[] RED_COLOR = { 255, 0, 0 };
     public static final int[] BLUE_COLOR = { 0, 0, 255 };
     public static final int[] GREEN_COLOR = { 0, 255, 0 };
+    public static final int[] YELLOW_COLOR = { 255, 255, 0 };
+    public static final int[] PURPLE_COLOR = { 156, 5, 250 };
     public static final int[] BLANK_COLOR = { 0, 0, 0 };
     public static final int[] AUTO_ALIGNED_COLOR = { 207, 82, 4 };
 
