@@ -150,6 +150,8 @@ public final class Constants {
     public static final ColorFlowAnimation CO_OP_ANIMATION = new ColorFlowAnimation(255, 247, 3, 0, 0.95, LED_NUMBER,
         Direction.Forward);
     public static final RainbowAnimation DEFENSE_MODE_ANIMATION = new RainbowAnimation(1.0, 0.9, LED_NUMBER);
+    public static final ColorFlowAnimation SHOOTER_ANIMATION = new ColorFlowAnimation(255, 0, 0, 0, 0.95, LED_NUMBER,
+        Direction.Forward);
   }
 
   public static class constPitch {

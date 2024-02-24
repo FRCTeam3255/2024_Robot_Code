@@ -33,7 +33,7 @@ public class Turret extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
   boolean invertAbsEncoder;
-
+  double desiredTurretAngle;
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
       constTurret.ROBOT_TO_TURRET.getY(),
@@ -87,6 +87,7 @@ public class Turret extends SubsystemBase {
    */
   public void setTurretAngle(double angle) {
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+    desiredTurretAngle = angle;
   }
 
   public void setTurretSoftwareLimits(boolean reverse, boolean forward) {
@@ -123,6 +124,15 @@ public class Turret extends SubsystemBase {
     return turretMotor.getSupplyCurrent().getValueAsDouble();
   }
 
+  public boolean isTurretAtGoalAngle() {
+    if (getTurretAngle() == desiredTurretAngle) {
+      return true;
+
+    } else {
+      return false;
+    }
+  }
+
   /**
    * Reset the turret encoder motor to absolute encoder's value
    */
@@ -132,6 +142,9 @@ public class Turret extends SubsystemBase {
     turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -rotations : rotations);
   }
 
+  public double getTurretAngle() {
+    return Units.rotationsToDegrees(turretMotor.getPosition().getValueAsDouble());
+  }
   // "Get" Methods
 
   /**

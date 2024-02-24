@@ -28,7 +28,7 @@ import frc.robot.RobotPreferences.prefPitch;
 public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
-
+  double desiredPitchAngle;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
   boolean INVERT_MOTOR;
@@ -85,6 +85,7 @@ public class Pitch extends SubsystemBase {
    */
   public void setPitchAngle(double angle) {
     pitchMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+    desiredPitchAngle = angle;
   }
 
   /**
@@ -111,6 +112,15 @@ public class Pitch extends SubsystemBase {
    */
   public void setPitchNeutralOutput() {
     pitchMotor.setControl(new NeutralOut());
+  }
+
+  public boolean isPitchAtGoalAngle() {
+    if (getPitchAngle() == desiredPitchAngle) {
+      return true;
+
+    } else {
+      return false;
+    }
   }
 
   // -- Get --
