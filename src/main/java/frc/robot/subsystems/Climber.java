@@ -24,11 +24,14 @@ public class Climber extends SubsystemBase {
   VoltageOut voltageRequest;
   TalonFXConfiguration climberConfig;
   DutyCycleEncoder absoluteEncoder;
+  TalonFX pivotMotor;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
     absoluteEncoder = new DutyCycleEncoder(mapClimber.CLIMBER_ABSOLUTE_ENCODER_DIO);
     climberConfig = new TalonFXConfiguration();
+    // pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio"); //fix
+
     configure();
   }
 
@@ -47,6 +50,7 @@ public class Climber extends SubsystemBase {
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
     climberMotor.getConfigurator().apply(climberConfig);
+    // pivotMotor.getConfigurator().apply(pivotConfig); //fix
 
   }
 
@@ -94,12 +98,23 @@ public class Climber extends SubsystemBase {
     return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
   }
 
+  /**
+   * Sets the angle of the pivot motor
+   * 
+   * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
+   */
+  // public void setPivotMotorAngle(double angle) {
+  // pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  // }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Climber/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Motor position(Rotations)", getPosition());
     SmartDashboard.putNumber("Climber/Motor percent output", climberMotor.get());
+    SmartDashboard.putNumber("Intake/Pivot Angle",
+        pivotMotor.getPosition().getValue());
     // This method will be called once per scheduler run
   }
 
