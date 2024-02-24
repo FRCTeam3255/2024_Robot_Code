@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
-import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.climberPref;
 
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -27,14 +26,12 @@ public class Climber extends SubsystemBase {
   TalonFXConfiguration climberConfig;
   DutyCycleEncoder absoluteEncoder;
 
-  TalonFX pivotMotor;
   PositionVoltage positionRequest;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
     absoluteEncoder = new DutyCycleEncoder(mapClimber.CLIMBER_ABSOLUTE_ENCODER_DIO);
     climberConfig = new TalonFXConfiguration();
-    pivotMotor = new TalonFX(mapIntake.INTAKE_PIVOT_MOTOR_CAN, "rio");
 
     configure();
   }
@@ -107,7 +104,7 @@ public class Climber extends SubsystemBase {
    * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
    */
   public void setPivotMotorAngle(double angle) {
-    pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+    climberMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   @Override
@@ -117,7 +114,7 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("Climber/Motor position(Rotations)", getPosition());
     SmartDashboard.putNumber("Climber/Motor percent output", climberMotor.get());
     SmartDashboard.putNumber("Intake/Pivot Angle",
-        pivotMotor.getPosition().getValue());
+        climberMotor.getPosition().getValue());
     // This method will be called once per scheduler run
   }
 
