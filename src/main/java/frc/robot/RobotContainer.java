@@ -106,9 +106,9 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    Pose2d poseToRemove = new Pose2d(1.35, 5.50, new Rotation2d(0));
+    Pose2d subwooferRobotPose = new Pose2d(1.35, 5.50, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(poseToRemove)));
+    controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
     // controller.btn_South.onTrue(Commands.runOnce(() ->
     // subDrivetrain.resetYaw()));
     // controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
