@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+
 import frc.robot.Constants.constClimber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,19 +36,19 @@ public class Climber extends SubsystemBase {
     climberConfig.Slot0.kI = prefClimber.climberI.getValue();
     climberConfig.Slot0.kD = prefClimber.climberD.getValue();
 
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMotorForwardLimit.getValue();
 
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMotorReverseLimit.getValue();
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
+    climberConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     climberMotor.getConfigurator().apply(climberConfig);
 
   }
 
   public void setClimberMotorSpeed(double motorSpeed) {
-
     climberMotor.set(motorSpeed);
   }
 

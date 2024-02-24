@@ -26,13 +26,13 @@ import frc.robot.Constants.constDrivetrain;
 public class RobotPreferences {
   public static final class prefClimber {
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 10);
+        "climberMotorForwardLimit", 63);
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", -5);
+        "climberMotorReverseLimit", 0);
     public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
-        "climberMotorUpSpeed", 1);
+        "climberMotorUpSpeed", 0.2);
     public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
-        "climberMotorDownSpeed", -1);
+        "climberMotorDownSpeed", -0.2);
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
     public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);

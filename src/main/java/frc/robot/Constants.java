@@ -84,10 +84,10 @@ public final class Constants {
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.155762;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.034424;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.099854;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.088623;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.158936;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.031250;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.397217;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.409424;
 
     /**
      * <p>
@@ -162,7 +162,6 @@ public final class Constants {
     public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Coast;
     public static final boolean INVERT = false;
 
-    // TODO: Update with real values (MUST DO BEFORE TESTING!)
     /**
      * The position, in meters, of the center of rotation for the pitch motor
      * relative to the center of the robot (Robot Coordinates).
@@ -172,7 +171,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
-        new Translation3d(0, 0, 0),
+        new Translation3d(-Units.inchesToMeters(3.5), 0, Units.inchesToMeters(14.03125)),
         new Rotation3d(0, 0, 0));
   }
 
