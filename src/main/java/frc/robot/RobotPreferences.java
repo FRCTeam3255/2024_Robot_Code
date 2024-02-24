@@ -32,19 +32,21 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 10);
+        "climberMotorForwardLimit", 60);
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", -5);
+        "climberMotorReverseLimit", 0);
     public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
-        "climberMotorUpSpeed", 1);
+        "climberMotorUpSpeed", 0.2);
     public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
-        "climberMotorDownSpeed", -1);
+        "climberMotorDownSpeed", -0.2);
+    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
+    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
 
   }
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.21);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.05); // 0.21
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
@@ -67,11 +69,21 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
+    // Teleop Snapping to Rotation (Yaw)
+    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 2);
+    public static final SN_DoublePreference yawSnapI = new SN_DoublePreference("yawSnapI", 0);
+    public static final SN_DoublePreference yawSnapD = new SN_DoublePreference("yawSnapD", 0);
+
     /**
      * <b>Units:</b> Percentage from 0 to 1
      */
     public static final SN_DoublePreference minimumSteerSpeedPercent = new SN_DoublePreference(
         "minimumSteerSpeedPercent", 0.01);
+
+    /**
+     * Value to multiply with the translation velocity when slow mode is enabled
+     */
+    public static final SN_DoublePreference slowModeMultiplier = new SN_DoublePreference("slowModeMultiplier", .2);
 
     /**
      * <p>
@@ -146,22 +158,16 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference intakeIntakingPosition = new SN_DoublePreference(
-        "intakeIntakingPosition", 10);
-
-    /**
-     * The intake's pivot motor position when it is stowed
-     * <b> Units: </b> Degrees
-     */
-    public static final SN_DoublePreference intakeStowPosition = new SN_DoublePreference(
-        "intakeStowPosition", 0);
+        "intakeIntakingPosition", 62);
 
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchV = new SN_DoublePreference("pitchV", 0.3);
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 70);
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 90); // Original: 70. With 0 G, P
+                                                                                            // is 500
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
+    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
 
     /**
      * <b>Units:</b> Degrees
@@ -209,22 +215,37 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference pitchReverseLimit = new SN_DoublePreference("pitchReverseLimit",
         Units.degreesToRotations(0));
+
+    /**
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 51.5);
+
+    public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 18);
+    public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
+        18);
+
+    public static final SN_DoublePreference pitchCenterAngle = new SN_DoublePreference("pitchCenterAngle", 16);
+
+    /**
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 45);
+
+    public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 42.6);
   }
 
   public static final class prefShooter {
-    public static final SN_DoublePreference leftShooterS = new SN_DoublePreference("leftShooterS", 0);
-    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", 0.12);
-    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.3);
+    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", 0.15);
+    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.4);
     public static final SN_DoublePreference leftShooterI = new SN_DoublePreference("leftShooterI", 0);
     public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0);
-    public static final SN_BooleanPreference leftShooterInvert = new SN_BooleanPreference("leftShooterInvert", true);
 
-    public static final SN_DoublePreference rightShooterS = new SN_DoublePreference("rightShooterS", 0);
-    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.12);
-    public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.3);
+    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.15); // 0.15 //
+                                                                                                            // (1/80)
+    public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.4);
     public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
     public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0);
-    public static final SN_BooleanPreference rightShooterInvert = new SN_BooleanPreference("rightShooterInvert", false);
 
     public static final SN_DoublePreference shooterVelocityVoltage = new SN_DoublePreference("shooterVelocityVoltage",
         0);
@@ -236,33 +257,60 @@ public class RobotPreferences {
         "shooterUpToSpeedTolerance", 3);
 
     /**
-     * <b>Units:</b> Rotations per second
+     * <b>Units:</b> Meters per second
      */
-    public static final SN_DoublePreference leftShooterVelocity = new SN_DoublePreference("leftShooterVelocity",
+    public static final SN_DoublePreference leftShooterSpeakerVelocity = new SN_DoublePreference(
+        "leftShooterSpeakerVelocity",
         60);
-    public static final SN_DoublePreference leftShooterFeedForward = new SN_DoublePreference("leftShooterFeedForward",
-        0);
 
     /**
+     * Velocity to shoot into the speaker (auto aim)
      * <b>Units:</b> Rotations per second
      */
-    public static final SN_DoublePreference rightShooterVelocity = new SN_DoublePreference("rightShooterVelocity",
-        70);
-    public static final SN_DoublePreference rightShooterFeedForward = new SN_DoublePreference("rightShooterFeedForward",
-        0);
+    public static final SN_DoublePreference rightShooterSpeakerVelocity = new SN_DoublePreference(
+        "rightShooterSpeakerVelocity",
+        45);
 
-    public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
-        "leftShooterIntakeVelocity",
-        -10);
-    public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
-        "rightShooterIntakeVelocity",
-        -10);
-    public static final SN_DoublePreference rightShooterIntakeFeedForward = new SN_DoublePreference(
-        "rightShooterIntakeFeedForward",
-        0);
-    public static final SN_DoublePreference leftShooterIntakeFeedForward = new SN_DoublePreference(
-        "rightShooterIntakeFeedForward",
-        0);
+    // -- PRESETS --
+    /**
+     * Preset: Shooting while touching the subwoofer velocity
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference leftShooterSubVelocity = new SN_DoublePreference(
+        "leftShooterSubVelocity", 35);
+    /**
+     * Preset: Shooting while touching the subwoofer velocity
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference rightShooterSubVelocity = new SN_DoublePreference(
+        "rightShooterSubVelocity", 35);
+
+    /**
+     * Preset: Shooting while touching the amp velocity
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference leftShooterAmpVelocity = new SN_DoublePreference(
+        "leftShooterAmpVelocity", 6.7);
+    /**
+     * Preset: Shooting while touching the amp velocity
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference rightShooterAmpVelocity = new SN_DoublePreference(
+        "rightShooterAmpVelocity", 6.7);
+
+    /**
+     * Preset: Shooting into the trap velocity
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference leftShooterTrapVelocity = new SN_DoublePreference(
+        "leftShooterTrapVelocity", 60);
+    /**
+     * Preset: Shooting into the trap velocity
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference rightShooterTrapVelocity = new SN_DoublePreference(
+        "rightShooterTrapVelocity", 45);
+
   }
 
   public static final class prefTransfer {
@@ -279,7 +327,7 @@ public class RobotPreferences {
         "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", 45);
+        "transferNoteVelocityTolerance", 45);"transferNoteVelocityTolerance",45);
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
@@ -306,7 +354,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit",
-        Units.degreesToRotations(87));
+        Units.degreesToRotations(65));
     /**
      * <p>
      * The minimum soft limit of the turret
@@ -314,9 +362,12 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
-        Units.degreesToRotations(-87));
+        Units.degreesToRotations(-72));
+    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
-    public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
+    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
+
+    public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", true);
 
     // -- Zeroing --
     public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
@@ -324,9 +375,16 @@ public class RobotPreferences {
         0.01);
     public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
 
-    // -- Angles --
-    public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
-
+    public static final SN_DoublePreference turretStatorTimeTreshold = new SN_DoublePreference(
+        "turretSupplyTimeThreshold", 0.01);
+    public static final SN_BooleanPreference turretStatorCurrentLimitEnable = new SN_BooleanPreference(
+        "turretSupplyCurrentLimitEnable",
+        true);
+    public static final SN_DoublePreference turretStatorCurrentThreshold = new SN_DoublePreference(
+        "turretSupplyCurrentThreshold", 5);
+    public static final SN_DoublePreference turretCurrentLimitCeilingAmps = new SN_DoublePreference(
+        "turretCurrentLimitCeilingAmps",
+        .1);
     public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
         90);
 
@@ -336,7 +394,13 @@ public class RobotPreferences {
      * turret speed
      */
     public static final SN_DoublePreference turretPercentageSpeed = new SN_DoublePreference("turretPercentageSpeed",
-        0.15);
+        -0.15);
+
+    // -- Angles --
+    public static final SN_DoublePreference turretIntakePos = new SN_DoublePreference("turretIntakePos", 0);
+    public static final SN_DoublePreference turretSubPresetPos = new SN_DoublePreference("turretSubPresetPos", 0);
+    public static final SN_DoublePreference turretAmpPresetPos = new SN_DoublePreference("turretAmpPresetPos", 0);
+    public static final SN_DoublePreference turretTrapPresetPos = new SN_DoublePreference("turretTrapPresetPos", 0);
 
   }
 

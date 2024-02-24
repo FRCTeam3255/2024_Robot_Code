@@ -84,11 +84,11 @@ public class Transfer extends SubsystemBase {
     transferMotor.setControl(new NeutralOut());
   }
 
-  private double getTransferMotorPercentOutput() {
+  public double getTransferMotorPercentOutput() {
     return transferMotor.get();
   }
 
-  private double getFeederMotorPercentOutput() {
+  public double getFeederMotorPercentOutput() {
     return feederMotor.getMotorOutputPercent();
   }
 

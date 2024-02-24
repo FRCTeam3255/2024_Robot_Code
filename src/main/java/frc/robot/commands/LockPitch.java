@@ -25,7 +25,7 @@ public class LockPitch extends Command {
   Pitch subPitch;
   Drivetrain subDrivetrain;
 
-  LockedLocation lockedLocation = LockedLocation.SUBWOOFER;
+  LockedLocation lockedLocation = LockedLocation.NONE;
 
   Rotation2d desiredAngle = new Rotation2d();
 
