@@ -256,6 +256,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
         "shooterUpToSpeedTolerance", 3);
 
+    public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
+        "leftShooterIntakeVelocity",
+        -10);
+    public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
+        "rightShooterIntakeVelocity",
+        -10);
+
     /**
      * <b>Units:</b> Meters per second
      */
@@ -327,7 +334,7 @@ public class RobotPreferences {
         "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", 45);"transferNoteVelocityTolerance",45);
+        "transferNoteVelocityTolerance", 45);
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
@@ -363,7 +370,6 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-72));
-    public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
     public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
 
