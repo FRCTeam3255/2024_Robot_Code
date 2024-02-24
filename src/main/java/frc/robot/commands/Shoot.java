@@ -18,9 +18,7 @@ public class Shoot extends Command {
   Shooter subShooter;
   LEDs subLEDs;
 
-  Pitch subPitch;
-
-  public Shoot(Shooter subShooter, LEDs subLEDs, Transfer subTransfer, Pitch subPitch, Turret subTurret) {
+  public Shoot(Shooter subShooter, LEDs subLEDs) {
     this.subShooter = subShooter;
     this.subLEDs = subLEDs;
 

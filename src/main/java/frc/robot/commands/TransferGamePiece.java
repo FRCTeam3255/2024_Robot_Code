@@ -41,8 +41,6 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalTransfer.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
-    globalTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
 
     if (subShooter.isLeftShooterAtVelocity(prefShooter.leftShooterVelocity.getValue(),
         prefShooter.shooterUpToSpeedTolerance.getValue())
@@ -53,6 +51,7 @@ public class TransferGamePiece extends Command {
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
       globalTransfer.setFeederMotorSpeed(
           prefTransfer.feederMotorSpeed.getValue());
+      globalTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
 
     } else {
       subLEDs.setLEDsToAnimation(constLEDs.SHOOTER_ANIMATION);
