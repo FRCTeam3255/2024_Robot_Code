@@ -156,13 +156,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeIntakingPosition = new SN_DoublePreference(
         "intakeIntakingPosition", 62);
 
-    /**
-     * The intake's pivot motor position when it is stowed
-     * <b> Units: </b> Degrees
-     */
-    public static final SN_DoublePreference intakeStowPosition = new SN_DoublePreference(
-        "intakeStowPosition", 0);
-
   }
 
   public static final class prefPitch {

@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +17,6 @@ public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
 
   TalonFXConfiguration pivotConfig;
-  PositionVoltage positionRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
@@ -39,7 +37,6 @@ public class Intake extends SubsystemBase {
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.intakePivotReverseLimit.getValue();
 
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
-    // pivotMotor.getConfigurator().apply(pivotConfig);
   }
 
   /**
@@ -66,21 +63,10 @@ public class Intake extends SubsystemBase {
     return rollerMotor.get();
   }
 
-  /**
-   * Sets the angle of the pivot motor
-   * 
-   * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
-   */
-  // public void setPivotMotorAngle(double angle) {
-  // pivotMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
-  // }
-
   @Override
   public void periodic() {
 
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake/Roller Percent Output", getRollerPercentOutput());
-    // SmartDashboard.putNumber("Intake/Pivot Angle",
-    // pivotMotor.getPosition().getValue());
   }
 }
