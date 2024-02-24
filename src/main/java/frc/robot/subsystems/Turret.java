@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -55,6 +56,7 @@ public class Turret extends SubsystemBase {
   }
 
   public void configure() {
+    turretConfig.Slot0.kV = prefTurret.turretV.getValue();
     turretConfig.Slot0.kP = prefTurret.turretP.getValue();
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
@@ -68,6 +70,11 @@ public class Turret extends SubsystemBase {
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
+    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretStatorCurrentLimitEnable.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimitCeilingAmps.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretStatorCurrentThreshold.getValue();
+    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretStatorTimeTreshold.getValue();
     turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(invertAbsEncoder);
   }
@@ -112,11 +119,17 @@ public class Turret extends SubsystemBase {
     turretMotor.set(speed);
   }
 
+  public double getTurretCurrent() {
+    return turretMotor.getSupplyCurrent().getValueAsDouble();
+  }
+
   /**
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -getAbsoluteEncoder() : getAbsoluteEncoder());
+    double rotations = getAbsoluteEncoder();
+
+    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -rotations : rotations);
   }
 
   // "Get" Methods
@@ -208,5 +221,6 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("Turret/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
+    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
   }
 }

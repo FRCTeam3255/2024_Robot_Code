@@ -32,7 +32,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
         "climberMotorUpSpeed", 0.2);
     public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
-        "climberMotorDownSpeed", -0.2);
+        "climberMotorDownSpeed", -1);
+    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", false);
+    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
     public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
@@ -374,6 +376,7 @@ public class RobotPreferences {
         Units.degreesToRotations(-87));
     public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
 
+    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
@@ -382,6 +385,16 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
         90);
 
+    public static final SN_DoublePreference turretStatorTimeTreshold = new SN_DoublePreference(
+        "turretSupplyTimeThreshold", 0.01);
+    public static final SN_BooleanPreference turretStatorCurrentLimitEnable = new SN_BooleanPreference(
+        "turretSupplyCurrentLimitEnable",
+        true);
+    public static final SN_DoublePreference turretStatorCurrentThreshold = new SN_DoublePreference(
+        "turretSupplyCurrentThreshold", 5);
+    public static final SN_DoublePreference turretCurrentLimitCeilingAmps = new SN_DoublePreference(
+        "turretCurrentLimitCeilingAmps",
+        .1);
     /**
      * Takes a percentage of the controller joystick input to set as the manual
      * turret speed
