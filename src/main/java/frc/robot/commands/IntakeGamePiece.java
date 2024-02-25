@@ -35,14 +35,14 @@ public class IntakeGamePiece extends Command {
   @Override
   public void initialize() {
 
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
     subLEDs.clearAnimation();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subClimber.setClimberAngle(prefIntake.intakeIntakingPosition.getValue());
+    subClimber.setClimberAngle(prefIntake.intakeIntakingAngle.getValue());
 
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
@@ -66,7 +66,7 @@ public class IntakeGamePiece extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.isGamePieceCollected();
+    return subTransfer.calcGamePieceCollected();
 
   }
 }

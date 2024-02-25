@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefShooter;
@@ -16,16 +17,16 @@ import frc.robot.subsystems.Turret;
 
 public class TransferGamePiece extends Command {
   /** Creates a new TransferGamePiece. */
-  Transfer globalTransfer;
+  Transfer subTransfer;
   Turret subTurret;
   Shooter subShooter;
   Pitch subPitch;
   LEDs subLEDs;
 
   public TransferGamePiece(Shooter subShooter, LEDs subLEDs, Turret subTurret,
-      Transfer globalTransfer, Pitch subPitch) {
+      Transfer subTransfer, Pitch subPitch) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.globalTransfer = globalTransfer;
+    this.subTransfer = subTransfer;
     this.subShooter = subShooter;
     this.subLEDs = subLEDs;
     this.subPitch = subPitch;
@@ -36,23 +37,27 @@ public class TransferGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subTransfer.setGamePieceCollected(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("DEBUG: PITCH", subPitch.isPitchAtGoalAngle());
+    SmartDashboard.putBoolean("DEBUG: TURRET", subTurret.isTurretAtGoalAngle());
+    SmartDashboard.putBoolean("DEBUG: SHOOTER", subShooter.areBothShootersUpToSpeed());
 
     if (subShooter.areBothShootersUpToSpeed()
         && subPitch.isPitchAtGoalAngle()
         && subTurret.isTurretAtGoalAngle()) {
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
-      globalTransfer.setFeederMotorSpeed(
+      subTransfer.setFeederMotorSpeed(
           prefTransfer.feederMotorSpeed.getValue());
-      globalTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
 
     } else {
       subLEDs.setLEDsToAnimation(constLEDs.SHOOTER_ANIMATION);
-      globalTransfer.setFeederNeutralOutput();
+      subTransfer.setFeederNeutralOutput();
     }
 
   }
@@ -60,8 +65,8 @@ public class TransferGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalTransfer.setFeederNeutralOutput();
-    globalTransfer.setTransferNeutralOutput();
+    subTransfer.setFeederNeutralOutput();
+    subTransfer.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.

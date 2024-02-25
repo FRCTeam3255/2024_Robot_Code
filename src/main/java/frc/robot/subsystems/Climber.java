@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
 import frc.robot.RobotPreferences.prefClimber;
+import frc.robot.RobotPreferences.prefIntake;
 
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -118,12 +119,33 @@ public class Climber extends SubsystemBase {
     climberMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
+  /**
+   * @return True if the intake is going to collide with the turret (should the
+   *         turret move)
+   */
+  public boolean collidesWithTurret() {
+    return !(getPosition() >= prefIntake.intakeIntakingAngle.getValue() - prefClimber.climberAtAngleTolerance.getValue()
+        || getPosition() <= prefIntake.intakeStowAngle.getValue() + prefClimber.climberAtAngleTolerance.getValue());
+  }
+
+  /**
+   * @return True if the intake is going to collide with the pitch (should the
+   *         pitch move)
+   */
+
+  public boolean collidesWithPitch() {
+    return !(getPosition() >= prefIntake.intakeIntakingAngle.getValue()
+        - prefClimber.climberAtAngleTolerance.getValue());
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Climber/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
+    SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret()); // This has no Climber/ on
+                                                                                          // purpose
     // This method will be called once per scheduler run
   }
 

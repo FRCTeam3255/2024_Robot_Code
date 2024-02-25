@@ -9,6 +9,7 @@ import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
@@ -19,6 +20,7 @@ public class IntakeFromSource extends Command {
   Transfer subTransfer;
   Pitch subPitch;
   Turret subTurret;
+  Climber subClimber;
 
   double lastDesiredSpeedLeft;
   double lastDesiredSpeedRight;
@@ -26,13 +28,15 @@ public class IntakeFromSource extends Command {
   double lastDesiredAngle;
 
   /** Creates a new ShooterIntake. */
-  public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret) {
+  public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret,
+      Climber subClimber) {
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subPitch = subPitch;
     this.subTurret = subTurret;
+    this.subClimber = subClimber;
 
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subShooter, subPitch, subTurret, subTransfer);
   }
 
   // Called when the command is initially scheduled.
@@ -50,9 +54,9 @@ public class IntakeFromSource extends Command {
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeMotorSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeMotorSpeed.getValue());
 
-    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue());
+    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), subClimber.collidesWithPitch());
 
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
 
   }
 
@@ -67,7 +71,7 @@ public class IntakeFromSource extends Command {
     subTransfer.setFeederNeutralOutput();
     subTransfer.setTransferNeutralOutput();
     subShooter.setDesiredVelocities(lastDesiredSpeedLeft, lastDesiredSpeedRight);
-    subPitch.setPitchAngle(lastDesiredPitch);
+    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
   }
 
   // Returns true when the command should end.

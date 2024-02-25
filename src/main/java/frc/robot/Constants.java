@@ -163,7 +163,7 @@ public final class Constants {
     }
 
     public static final double PITCH_GEAR_RATIO = 186.666;
-    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Coast;
+    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
     public static final boolean INVERT = false;
 
     /**

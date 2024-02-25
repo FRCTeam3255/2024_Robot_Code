@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
@@ -34,7 +35,6 @@ import frc.robot.commands.IntakeGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SpitGamePiece;
-import frc.robot.commands.Climb;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
@@ -91,8 +91,8 @@ public class RobotContainer implements Logged {
             conDriver.btn_X,
             isPracticeBot()));
 
-    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain));
-    subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain));
+    subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain, subClimber));
+    subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain, subClimber));
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
     subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
@@ -110,12 +110,21 @@ public class RobotContainer implements Logged {
     Pose2d subwooferRobotPose = new Pose2d(1.35, 5.50, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
-    // controller.btn_South.onTrue(Commands.runOnce(() ->
-    // subDrivetrain.resetYaw()));
-    // controller.btn_West.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
 
-    controller.btn_LeftTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorUpSpeed));
-    controller.btn_RightTrigger.whileTrue(new Climb(subClimber, prefClimber.climberMotorDownSpeed));
+    // Climb Up
+    controller.btn_LeftTrigger.whileTrue(
+        Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorUpSpeed.getValue()), subClimber)
+            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
+    controller.btn_LeftTrigger.onFalse(
+        Commands.run(() -> subClimber.setClimberMotorSpeed(0)));
+
+    // Climb Down
+    controller.btn_RightTrigger.whileTrue(
+        Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorDownSpeed.getValue()), subClimber)
+            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
+    controller.btn_RightTrigger.onFalse(
+        Commands.run(() -> subClimber.setClimberMotorSpeed(0)));
+
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION)))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
@@ -126,17 +135,17 @@ public class RobotContainer implements Logged {
     controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber));
     controller.btn_RightBumper
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
-    controller.btn_LeftBumper.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
+    controller.btn_West.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
 
-    controller.btn_LeftStick.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
+    controller.btn_LeftStick.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
 
-    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
     controller.btn_East.whileTrue(new Panic(subLEDs));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
-    controller.btn_West.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+    controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     // Lock Speaker
     controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
@@ -148,8 +157,11 @@ public class RobotContainer implements Logged {
         .alongWith(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
                 prefShooter.rightShooterAmpVelocity.getValue()))
-                .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue())))
-                .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue())))));
+                .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue(),
+                    subClimber.collidesWithTurret())))
+                .alongWith(Commands.runOnce(
+                    () -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue(),
+                        subClimber.collidesWithPitch())))));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -157,16 +169,22 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
                 prefShooter.rightShooterSubVelocity.getValue())))
         .alongWith(
-            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue())))
-        .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue()))));
+            Commands.runOnce(
+                () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue(),
+                    subClimber.collidesWithTurret())))
+        .alongWith(Commands.runOnce(
+            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(), subClimber.collidesWithPitch()))));
 
     // Trap Preset
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
             prefShooter.rightShooterTrapVelocity.getValue())))
         .alongWith(
-            Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue())))
-        .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue()))));
+            Commands.runOnce(
+                () -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue(),
+                    subClimber.collidesWithTurret())))
+        .alongWith(Commands.runOnce(
+            () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(), subClimber.collidesWithPitch()))));
 
   }
 
@@ -217,9 +235,8 @@ public class RobotContainer implements Logged {
    * Sets all applicable subsystem's last desired location to their current
    * location
    */
-  public void clearSubsystemMovements() {
-    subPitch.setPitchAngle(subPitch.getPitchAngle());
-    subTurret.setTurretAngle(subTurret.getAngle());
+  public Command clearSubsystemMovements() {
+    return new InstantCommand((() -> subTurret.setTurretNeutralOutput()));
   }
 
   // --- Locking Logic ---

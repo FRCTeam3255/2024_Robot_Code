@@ -80,9 +80,15 @@ public class Pitch extends SubsystemBase {
   /**
    * Sets the angle of the pitch motor
    * 
-   * @param angle The angle to set the pitch motor to. <b> Units: </b> Degrees
+   * @param angle        The angle to set the pitch motor to. <b> Units: </b>
+   *                     Degrees
+   * @param hasCollision If there is a collision with the pitch. If this is true,
+   *                     the pitch will not turn above 30 degrees
    */
-  public void setPitchAngle(double angle) {
+  public void setPitchAngle(double angle, boolean hasCollision) {
+    if (hasCollision && angle >= 30) {
+      angle = (angle >= 30) ? 30 : getPitchAngle();
+    }
     pitchMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
     desiredPitchAngle = angle;
   }
@@ -202,5 +208,6 @@ public class Pitch extends SubsystemBase {
     SmartDashboard.putNumber("Pitch/Velocity DPS", getPitchVelocity());
     SmartDashboard.putNumber("Pitch/Voltage", getPitchVoltage());
     SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
+    SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
   }
 }

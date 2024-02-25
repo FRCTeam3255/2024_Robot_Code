@@ -47,6 +47,12 @@ public class RobotPreferences {
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
     public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
 
+    /**
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference climberAtAngleTolerance = new SN_DoublePreference("climberAtAngleTolerance",
+        5);
+
   }
 
   public static final class prefDrivetrain {
@@ -128,11 +134,17 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
 
     /**
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference intakeStowAngle = new SN_DoublePreference(
+        "intakeStowAngle", 0);
+
+    /**
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference intakeIntakingPosition = new SN_DoublePreference(
-        "intakeIntakingPosition", prefClimber.climberMotorForwardLimit.getValue() - 1);
+    public static final SN_DoublePreference intakeIntakingAngle = new SN_DoublePreference(
+        "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 1);
 
   }
 
@@ -296,7 +308,7 @@ public class RobotPreferences {
 
   public static final class prefTransfer {
     public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
-        "feederMotorSpeed", .2);
+        "feederMotorSpeed", -1);
     public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
     public static final SN_DoublePreference feederSpitOutMotorSpeed = new SN_DoublePreference(
         "feederSpitOutMotorSpeed", -.2);
@@ -308,11 +320,11 @@ public class RobotPreferences {
         "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", 45);
+        "transferNoteVelocityTolerance", 2.2); // 2.2
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
-        "transferGamePieceCollectedBelowAmps", 15);
+        "transferGamePieceCollectedBelowAmps", 3);
     public static final SN_BooleanPreference transferStatorLimitEnable = new SN_BooleanPreference(
         "transferStatorLimitEnable", false);
     public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",
@@ -366,7 +378,7 @@ public class RobotPreferences {
         "turretCurrentLimitCeilingAmps",
         .1);
     public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
-        90);
+        66.621094);
 
     // -- Other --
     /**

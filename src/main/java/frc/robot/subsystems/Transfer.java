@@ -25,6 +25,8 @@ public class Transfer extends SubsystemBase {
 
   CurrentLimitsConfigs transferCurrentLimitConfigs;
 
+  private boolean hasGamePiece;
+
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
@@ -36,16 +38,29 @@ public class Transfer extends SubsystemBase {
     configure();
   }
 
-  public boolean isGamePieceCollected() {
+  public boolean calcGamePieceCollected() {
     double current = transferMotor.getStatorCurrent().getValue();
     double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
     double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
-    if (current > belowCurrent
-        && Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity)) {
-      return true;
+
+    // TODO: REMOVE DEBUG CHECKS
+    SmartDashboard.putBoolean("current > belowCurrent", current > belowCurrent);
+    SmartDashboard.putBoolean("velocity man",
+        Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity));
+    SmartDashboard.putNumber("EOIJGOIJAWFOIJAWAWOFIJ", feederMotor.getStatorCurrent());
+
+    if ((current > belowCurrent && Math.abs(feederMotor.getStatorCurrent()) > 5
+        && Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity)) || hasGamePiece == true) {
+      hasGamePiece = true;
     } else {
-      return false;
+      hasGamePiece = false;
     }
+
+    return hasGamePiece;
+  }
+
+  public void setGamePieceCollected(boolean isCollected) {
+    hasGamePiece = isCollected;
   }
 
   /** Creates a new Transfer. */
@@ -99,7 +114,8 @@ public class Transfer extends SubsystemBase {
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Stator Current", transferMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
-
+    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected()); // Key is intentional - shows in
+                                                                           // SmartDashboard
   }
 
 }

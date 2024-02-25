@@ -52,7 +52,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    m_robotContainer.clearSubsystemMovements();
   }
 
   @Override
@@ -68,6 +67,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.zeroPitch().schedule();
+    m_robotContainer.clearSubsystemMovements().schedule();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -88,6 +88,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.zeroPitch().schedule();
+    m_robotContainer.clearSubsystemMovements().schedule();
   }
 
   @Override
