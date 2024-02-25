@@ -158,7 +158,15 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAngle = new SN_DoublePreference("pitchAngle", 10);
+    public static final SN_DoublePreference pitchIsAtAngleTolerance = new SN_DoublePreference("pitchIsAtAngleTolerance",
+        1);
+
+    /**
+     * Maximum when the intake is up
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference pitchMaxIntake = new SN_DoublePreference("pitchMaxIntake",
+        25);
 
     /**
      * <p>
@@ -307,20 +315,20 @@ public class RobotPreferences {
   }
 
   public static final class prefTransfer {
-    public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
-        "feederMotorSpeed", -1);
-    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
+    public static final SN_DoublePreference feederShootMotorSpeed = new SN_DoublePreference(
+        "feederShootMotorSpeed", 1);
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", 0.2);
     public static final SN_DoublePreference feederSpitOutMotorSpeed = new SN_DoublePreference(
         "feederSpitOutMotorSpeed", -.2);
     public static final SN_DoublePreference transferSpitOutMotorSpeed = new SN_DoublePreference(
         "transferSpitOutMotorSpeed", -.5);
     public static final SN_DoublePreference feederIntakeMotorSpeed = new SN_DoublePreference(
-        "feederIntakeMotorSpeed", -.2);
+        "feederIntakeMotorSpeed", -1);
     public static final SN_DoublePreference transferIntakeMotorSpeed = new SN_DoublePreference(
         "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", 2.2); // 2.2
+        "transferNoteVelocityTolerance", -0.04);
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
@@ -336,9 +344,16 @@ public class RobotPreferences {
 
   public static final class prefTurret {
     // -- PID & Configs--
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
+    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 42);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
-    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
+    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
+
+    /**
+     * <b>Units:</b> Degreses
+     */
+    public static final SN_DoublePreference turretIsAtAngleTolerance = new SN_DoublePreference(
+        "turretIsAtAngleTolerance", 1);
 
     /**
      * <p>
@@ -356,8 +371,6 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-72));
-
-    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
 
     public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", true);
 

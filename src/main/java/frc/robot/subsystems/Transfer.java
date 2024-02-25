@@ -27,6 +27,9 @@ public class Transfer extends SubsystemBase {
 
   private boolean hasGamePiece;
 
+  double lastVelocity = 0;
+  double lastCurrent = 0;
+
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
@@ -40,22 +43,32 @@ public class Transfer extends SubsystemBase {
 
   public boolean calcGamePieceCollected() {
     double current = transferMotor.getStatorCurrent().getValue();
-    double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
-    double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
+    double currentTolerance = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
+
+    double curVelocity = transferMotor.getVelocity().getValue();
+    double velocityTolerance = prefTransfer.transferNoteVelocityTolerance.getValue();
 
     // TODO: REMOVE DEBUG CHECKS
-    SmartDashboard.putBoolean("current > belowCurrent", current > belowCurrent);
-    SmartDashboard.putBoolean("velocity man",
-        Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity));
-    SmartDashboard.putNumber("EOIJGOIJAWFOIJAWAWOFIJ", feederMotor.getStatorCurrent());
+    SmartDashboard.putBoolean("PAIN: current > belowCurrent bool", (current - lastCurrent) > (currentTolerance));
+    SmartDashboard.putBoolean("PAIN: velocity bool",
+        (curVelocity - lastVelocity) < (velocityTolerance));
 
-    if ((current > belowCurrent && Math.abs(feederMotor.getStatorCurrent()) > 5
-        && Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity)) || hasGamePiece == true) {
+    SmartDashboard.putNumber("PAIN: current > belowCurrent val", (current - lastCurrent));
+    SmartDashboard.putNumber("PAIN: velocity val",
+        (curVelocity - lastVelocity));
+
+    SmartDashboard.putNumber("AA: Transfer Current", current);
+    SmartDashboard.putNumber("AA: Transfer Vel", curVelocity);
+    SmartDashboard.putNumber("AA: Feeder Current", feederMotor.getStatorCurrent());
+
+    if ((feederMotor.getStatorCurrent() < -10) && (curVelocity < 0.8) && (current > 6) || hasGamePiece) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
     }
 
+    lastCurrent = current;
+    lastVelocity = curVelocity;
     return hasGamePiece;
   }
 

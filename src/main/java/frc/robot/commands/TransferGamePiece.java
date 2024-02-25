@@ -43,16 +43,12 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("DEBUG: PITCH", subPitch.isPitchAtGoalAngle());
-    SmartDashboard.putBoolean("DEBUG: TURRET", subTurret.isTurretAtGoalAngle());
-    SmartDashboard.putBoolean("DEBUG: SHOOTER", subShooter.areBothShootersUpToSpeed());
-
     if (subShooter.areBothShootersUpToSpeed()
         && subPitch.isPitchAtGoalAngle()
         && subTurret.isTurretAtGoalAngle()) {
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
       subTransfer.setFeederMotorSpeed(
-          prefTransfer.feederMotorSpeed.getValue());
+          prefTransfer.feederShootMotorSpeed.getValue());
       subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
 
     } else {

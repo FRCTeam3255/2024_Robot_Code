@@ -89,11 +89,11 @@ public class Turret extends SubsystemBase {
    *                     the turret will not turn
    */
   public void setTurretAngle(double angle, boolean hasCollision) {
+    desiredTurretAngle = angle;
     if (hasCollision) {
       angle = 0;
     }
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
-    desiredTurretAngle = angle;
   }
 
   public void setTurretSoftwareLimits(boolean reverse, boolean forward) {
@@ -131,7 +131,7 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean isTurretAtGoalAngle() {
-    if (getTurretAngle() == desiredTurretAngle) {
+    if (Math.abs(getTurretAngle() - desiredTurretAngle) <= prefTurret.turretIsAtAngleTolerance.getValue()) {
       return true;
 
     } else {

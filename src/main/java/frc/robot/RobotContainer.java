@@ -132,7 +132,8 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subLEDs, subTurret, subTransfer, subPitch));
-    controller.btn_LeftTrigger.whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber));
+    controller.btn_LeftTrigger
+        .whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber, subPitch));
     controller.btn_RightBumper
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
     controller.btn_West.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
@@ -144,7 +145,7 @@ public class RobotContainer implements Logged {
 
     controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
     controller.btn_East.whileTrue(new Panic(subLEDs));
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs));
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs, subPitch, subClimber));
     controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     // Lock Speaker
@@ -261,6 +262,7 @@ public class RobotContainer implements Logged {
    * @return The command to zero the pitch
    */
   public Command zeroPitch() {
-    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3)
+        .alongWith(new ZeroTurret(subTurret).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
   }
 }
