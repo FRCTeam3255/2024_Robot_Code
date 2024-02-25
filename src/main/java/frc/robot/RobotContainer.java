@@ -24,6 +24,7 @@ import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.commands.AddVisionMeasurement;
@@ -72,6 +73,15 @@ public class RobotContainer implements Logged {
   private final static Transfer subTransfer = new Transfer();
   private final static Vision subVision = new Vision();
 
+  // TODO: placeholders for now, find a way to get the actual starting auto
+  // position
+  double desiredStartingPositionX = 0;
+  double desiredStartingPositionY = 0;
+  double desiredStartingRotation = 70;
+  int[] rotationColor;
+  int[] XTranslationColor;
+  int[] YTranslationColor;
+
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
@@ -103,6 +113,7 @@ public class RobotContainer implements Logged {
 
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
+    subLEDs.clearAnimation();
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -243,5 +254,83 @@ public class RobotContainer implements Logged {
    */
   public Command zeroPitch() {
     return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+  }
+
+  public void setAutoPlacementLEDs() {
+    boolean rotationCorrect = false;
+    boolean XCorrect = false;
+    boolean YCorrect = false;
+
+    // values only for testing
+    // SmartDashboard.putNumber("Current Drivetrain X",
+    // subDrivetrain.getPose().getX());
+    // SmartDashboard.putNumber("Current Drivetrain Y",
+    // subDrivetrain.getPose().getY());
+    // SmartDashboard.putNumber("Current Drivetrain Rotation",
+    // subDrivetrain.getPose().getRotation().getDegrees());
+
+    subLEDs.setLEDBrightness(0.4);
+    subLEDs.clearAnimation();
+
+    // Checking Rotation
+    if (Math.abs(desiredStartingRotation
+        - subDrivetrain.getPose().getRotation().getDegrees()) <= prefVision.rotationalAutoPlacementTolerance
+            .getValue()) {
+      rotationCorrect = true;
+      rotationColor = constLEDs.GREEN_COLOR;
+    } else if (desiredStartingRotation < 0) {
+      if (subDrivetrain.getPose().getRotation().getDegrees() > desiredStartingRotation &&
+          subDrivetrain.getPose().getRotation().getDegrees() < desiredStartingRotation + 180) {
+        rotationColor = constLEDs.BLUE_COLOR;
+      } else {
+        rotationColor = constLEDs.RED_COLOR;
+      }
+    } else if (desiredStartingRotation >= 0) {
+      if (subDrivetrain.getPose().getRotation().getDegrees() < desiredStartingRotation &&
+          subDrivetrain.getPose().getRotation().getDegrees() > desiredStartingRotation - 180) {
+        rotationColor = constLEDs.RED_COLOR;
+      } else {
+        rotationColor = constLEDs.BLUE_COLOR;
+      }
+    }
+
+    // Checking X Translation
+    if (Math.abs(desiredStartingPositionX
+        - subDrivetrain.getPose().getX()) <= prefVision.translationalAutoPlacementTolerance.getValue()) {
+      XCorrect = true;
+      XTranslationColor = constLEDs.GREEN_COLOR;
+      subLEDs.setIndividualLED(constLEDs.GREEN_COLOR, 2);
+    } else if (subDrivetrain.getPose().getX() > desiredStartingPositionX) {
+      XTranslationColor = constLEDs.BLUE_COLOR;
+    } else if (subDrivetrain.getPose().getX() < desiredStartingPositionX) {
+      XTranslationColor = constLEDs.RED_COLOR;
+    }
+
+    // Checking Y Translation
+    if (Math.abs(desiredStartingPositionY
+        - subDrivetrain.getPose().getY()) <= prefVision.translationalAutoPlacementTolerance.getValue()) {
+      YCorrect = true;
+      YTranslationColor = constLEDs.GREEN_COLOR;
+    } else if (subDrivetrain.getPose().getY() > desiredStartingPositionY) {
+      YTranslationColor = constLEDs.PURPLE_COLOR;
+    } else if (subDrivetrain.getPose().getY() < desiredStartingPositionY) {
+      YTranslationColor = constLEDs.YELLOW_COLOR;
+    }
+
+    // Light up in Shang Chi color if both translation and rotation are correct
+    if (rotationCorrect && XCorrect && YCorrect) {
+      subLEDs.setLEDs(constLEDs.AUTO_ALIGNED_COLOR);
+    } else {
+      subLEDs.setIndividualLED(rotationColor, 0);
+      subLEDs.setIndividualLED(rotationColor, 3);
+      subLEDs.setIndividualLED(rotationColor, 4);
+      subLEDs.setIndividualLED(rotationColor, 7);
+
+      subLEDs.setIndividualLED(XTranslationColor, 1);
+      subLEDs.setIndividualLED(XTranslationColor, 2);
+
+      subLEDs.setIndividualLED(YTranslationColor, 5);
+      subLEDs.setIndividualLED(YTranslationColor, 6);
+    }
   }
 }
