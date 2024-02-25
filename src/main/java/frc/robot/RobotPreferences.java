@@ -377,7 +377,7 @@ public class RobotPreferences {
     /**
      * The translational tolerance of how off we want to be to count as correct
      * (when placing the robot on the starting position in auto)
-     * <b>Units:</b> TODO: idk i need to check
+     * <b>Units:</b> Meters
      */
     public static final SN_DoublePreference translationalAutoPlacementTolerance = new SN_DoublePreference(
         "translationalAutoPlacementTolerance", 0.15);
