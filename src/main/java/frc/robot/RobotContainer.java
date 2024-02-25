@@ -131,22 +131,23 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subLEDs, subTurret, subTransfer, subPitch));
     controller.btn_LeftTrigger
         .whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber, subPitch));
-    controller.btn_RightBumper
-        .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
-    controller.btn_West.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.CO_OP_ANIMATION)));
+    controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+
+    controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
+    controller.btn_East.whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION)));
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
+        subLEDs, subPitch, subClimber));
+
+    // TODO: WEST: RETRACT INTAKE
+
+    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subLEDs, subTurret, subTransfer, subPitch));
+    // TODO: RB : STOP SHOOTER
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
-
-    controller.btn_LeftStick.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
-
-    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
-    controller.btn_East.whileTrue(new Panic(subLEDs));
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subLEDs, subPitch, subClimber));
-    controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     // Lock Speaker
     controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
