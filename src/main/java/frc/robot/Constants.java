@@ -11,13 +11,13 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
+import com.frcteam3255.preferences.SN_BooleanPreference;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import frc.robot.RobotPreferences.prefDrivetrain;
 
 /*
  * @formatter:off
@@ -41,6 +41,7 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
+    public static final double ABS_ENCODER_OFFSET = 0.928814;
   }
 
   public static class constControllers {
@@ -84,10 +85,10 @@ public final class Constants {
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.155762;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.034424;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.099854;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.088623;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.158936;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.031250;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.397217;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.409424;
 
     /**
      * <p>
@@ -169,7 +170,6 @@ public final class Constants {
     public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Coast;
     public static final boolean INVERT = false;
 
-    // TODO: Update with real values (MUST DO BEFORE TESTING!)
     /**
      * The position, in meters, of the center of rotation for the pitch motor
      * relative to the center of the robot (Robot Coordinates).
@@ -179,7 +179,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
-        new Translation3d(0, 0, 0),
+        new Translation3d(-0, 0, 0),
         new Rotation3d(0, 0, 0));
   }
 
@@ -226,6 +226,13 @@ public final class Constants {
   }
 
   public static class constShooter {
+    public static final class pracBot {
+      public static final boolean LEFT_INVERT = true;
+      public static final boolean RIGHT_INVERT = false;
+    }
+
+    public static final boolean LEFT_INVERT = true;
+    public static final boolean RIGHT_INVERT = false;
   }
 
   public static class constTurret {
@@ -295,6 +302,6 @@ public final class Constants {
    * Locations that the robot can attempt to lock onto.
    */
   public enum LockedLocation {
-    SUBWOOFER, SPEAKER, AMP, TRAP
+    NONE, SPEAKER
   }
 }
