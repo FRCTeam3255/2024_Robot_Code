@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     FieldConstants.ALLIANCE = DriverStation.getAlliance();
+    m_robotContainer.setAutoPlacementLEDs();
   }
 
   @Override
