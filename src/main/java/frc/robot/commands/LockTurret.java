@@ -23,7 +23,7 @@ public class LockTurret extends Command {
   Turret subTurret;
   Drivetrain subDrivetrain;
 
-  LockedLocation lockedLocation = LockedLocation.SUBWOOFER;
+  LockedLocation lockedLocation = LockedLocation.NONE;
 
   Rotation2d desiredAngle = new Rotation2d();
 

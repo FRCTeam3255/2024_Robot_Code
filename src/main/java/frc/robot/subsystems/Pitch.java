@@ -11,7 +11,6 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -51,10 +50,10 @@ public class Pitch extends SubsystemBase {
   }
 
   public void configure() {
-    pitchConfig.Slot0.kV = prefPitch.pitchV.getValue();
     pitchConfig.Slot0.kP = prefPitch.pitchP.getValue();
     pitchConfig.Slot0.kI = prefPitch.pitchI.getValue();
     pitchConfig.Slot0.kD = prefPitch.pitchD.getValue();
+    pitchConfig.Slot0.kG = prefPitch.pitchG.getValue();
 
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefPitch.pitchForwardLimit.getValue();
@@ -171,10 +170,6 @@ public class Pitch extends SubsystemBase {
 
       case SPEAKER:
         targetPose = fieldPoses[0];
-        break;
-
-      case AMP:
-        targetPose = fieldPoses[1];
         break;
     }
 
