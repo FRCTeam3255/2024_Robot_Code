@@ -78,9 +78,6 @@ public class CenterThenWing extends SequentialCommandGroup implements AutoInterf
     this.subTurret = subTurret;
 
     addCommands(
-        Commands.runOnce(() -> subDrivetrain
-            .resetPoseToPose(getInitialPose().get())),
-
         // Shoot preloaded game piece
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),

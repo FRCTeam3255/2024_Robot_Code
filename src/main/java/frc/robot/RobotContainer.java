@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -296,6 +297,7 @@ public class RobotContainer implements Logged {
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
     startingPosition = autoChooser.getSelected().getInitialPose().get(); // hell yeah!!!!
+    subDrivetrain.resetPoseToPose(startingPosition);
 
     double desiredStartingPositionX = startingPosition.getX();
     double desiredStartingPositionY = startingPosition.getY();
