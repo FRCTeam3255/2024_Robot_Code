@@ -10,7 +10,6 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -30,11 +29,13 @@ public class Turret extends SubsystemBase {
   TalonFX turretMotor;
   DutyCycleEncoder absoluteEncoder;
   TalonFXConfiguration turretConfig;
-  double absoluteEncoderOffset;
+
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
-  boolean invertAbsEncoder;
-  double desiredTurretAngle;
+
+  double absoluteEncoderOffset, desiredTurretAngle;
+  boolean invertAbsEncoder, isPracticeBot;
+
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
       constTurret.ROBOT_TO_TURRET.getY(),
@@ -45,9 +46,10 @@ public class Turret extends SubsystemBase {
     absoluteEncoder = new DutyCycleEncoder(mapTurret.TURRET_ABSOLUTE_ENCODER_DIO);
     turretConfig = new TalonFXConfiguration();
 
-    absoluteEncoderOffset = (RobotContainer.isPracticeBot()) ? constTurret.pracBot.ABS_ENCODER_OFFSET
+    isPracticeBot = RobotContainer.isPracticeBot();
+    absoluteEncoderOffset = (isPracticeBot) ? constTurret.pracBot.ABS_ENCODER_OFFSET
         : constTurret.ABS_ENCODER_OFFSET;
-    invertAbsEncoder = (RobotContainer.isPracticeBot()) ? constTurret.pracBot.ABS_ENCODER_INVERT
+    invertAbsEncoder = (isPracticeBot) ? constTurret.pracBot.ABS_ENCODER_INVERT
         : constTurret.ABS_ENCODER_INVERT;
 
     positionRequest = new PositionVoltage(0);
@@ -149,7 +151,12 @@ public class Turret extends SubsystemBase {
   public void resetTurretToAbsolutePosition() {
     double rotations = getAbsoluteEncoder();
 
-    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -rotations : rotations);
+    if (rotations > 0.5) {
+      rotations = 1 - rotations;
+      rotations = -rotations;
+    }
+
+    turretMotor.setPosition((invertAbsEncoder) ? -rotations : rotations);
   }
 
   public double getTurretAngle() {
