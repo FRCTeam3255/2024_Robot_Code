@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 import com.frcteam3255.joystick.SN_XboxController;
@@ -13,7 +14,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -42,9 +45,12 @@ import frc.robot.commands.Panic;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
+import frc.robot.commands.autos.AutoInterface;
+import frc.robot.commands.autos.CenterThenWing;
 import frc.robot.commands.autos.WingAuto;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import monologue.Annotations.Log;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -75,11 +81,10 @@ public class RobotContainer implements Logged {
   private final static Transfer subTransfer = new Transfer();
   private final static Vision subVision = new Vision();
 
-  // TODO: placeholders for now, find a way to get the actual starting auto
-  // position
-  double desiredStartingPositionX = 0;
-  double desiredStartingPositionY = 0;
-  double desiredStartingRotation = 70;
+  SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
+
+  @Log.NT
+  Pose2d startingPosition = new Pose2d(0, 0, new Rotation2d(0));
   int[] rotationColor;
   int[] XTranslationColor;
   int[] YTranslationColor;
@@ -112,6 +117,7 @@ public class RobotContainer implements Logged {
     // src\main\assets\controllerMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureAutoSelector();
 
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
@@ -202,8 +208,17 @@ public class RobotContainer implements Logged {
 
   }
 
+  private void configureAutoSelector() {
+    autoChooser.setDefaultOption("Wing Auto",
+        new WingAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+    autoChooser.addOption("Centerline 1, 2, Then Wing",
+        new CenterThenWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+
+    SmartDashboard.putData(autoChooser);
+  }
+
   public Command getAutonomousCommand() {
-    return new WingAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret);
+    return autoChooser.getSelected().getAutonomousCommand();
   }
 
   // --- Custom Methods ---
@@ -279,7 +294,13 @@ public class RobotContainer implements Logged {
         .alongWith(new ZeroTurret(subTurret).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
   }
 
-  public void setAutoPlacementLEDs() {
+  public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
+    startingPosition = autoChooser.getSelected().getInitialPose().get(); // hell yeah!!!!
+
+    double desiredStartingPositionX = startingPosition.getX();
+    double desiredStartingPositionY = startingPosition.getY();
+    double desiredStartingRotation = startingPosition.getRotation().getDegrees();
+
     boolean rotationCorrect = false;
     boolean XCorrect = false;
     boolean YCorrect = false;
