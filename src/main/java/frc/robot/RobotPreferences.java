@@ -315,30 +315,55 @@ public class RobotPreferences {
   }
 
   public static final class prefTransfer {
-    public static final SN_DoublePreference feederShootMotorSpeed = new SN_DoublePreference(
-        "feederShootMotorSpeed", 1);
-    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", 0.2);
-    public static final SN_DoublePreference feederSpitOutMotorSpeed = new SN_DoublePreference(
-        "feederSpitOutMotorSpeed", -.2);
-    public static final SN_DoublePreference transferSpitOutMotorSpeed = new SN_DoublePreference(
-        "transferSpitOutMotorSpeed", -.5);
-    public static final SN_DoublePreference feederIntakeMotorSpeed = new SN_DoublePreference(
-        "feederIntakeMotorSpeed", -1);
-    public static final SN_DoublePreference transferIntakeMotorSpeed = new SN_DoublePreference(
-        "transferIntakeMotorSpeed", -.5);
-
-    public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", -0.04);
-    public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
-        "transferFeedForwardVelocity", .25);
-    public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
-        "transferGamePieceCollectedBelowAmps", 3);
+    // -- Configs --
     public static final SN_BooleanPreference transferStatorLimitEnable = new SN_BooleanPreference(
         "transferStatorLimitEnable", false);
-    public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",
+    public static final SN_BooleanPreference transferInverted = new SN_BooleanPreference("transferInverted",
         true);
-    public static final SN_BooleanPreference transferFeederInverted = new SN_BooleanPreference("transferFeederInverted",
-        true);
+    public static final SN_BooleanPreference feederInverted = new SN_BooleanPreference("feederInverted",
+        false);
+
+    // -- Speeds --
+
+    public static final SN_DoublePreference feederIntakeGroundSpeed = new SN_DoublePreference(
+        "feederIntakeGroundSpeed", -1);
+    public static final SN_DoublePreference transferIntakeGroundSpeed = new SN_DoublePreference(
+        "transferIntakeGroundSpeed", 0.2);
+
+    public static final SN_DoublePreference feederIntakeSourceSpeed = new SN_DoublePreference(
+        "feederIntakeSourceSpeed", -1);
+    public static final SN_DoublePreference transferIntakeSourceSpeed = new SN_DoublePreference(
+        "transferIntakeSourceSpeed", -.5);
+
+    public static final SN_DoublePreference feederSpitOutSpeed = new SN_DoublePreference(
+        "feederSpitOutSpeed", -.2);
+    public static final SN_DoublePreference transferSpitOutSpeed = new SN_DoublePreference(
+        "transferSpitOutSpeed", -.5);
+
+    public static final SN_DoublePreference feederShootSpeed = new SN_DoublePreference(
+        "feederShootSpeed", 1);
+    public static final SN_DoublePreference transferShootSpeed = new SN_DoublePreference("transferShootSpeed", 0.2);
+
+    // -- Game Piece Detection --
+    /**
+     * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
+     */
+    public static final SN_DoublePreference feederHasGamePieceCurrent = new SN_DoublePreference(
+        "feederHasGamePieceCurrent", -10);
+
+    /**
+     * The value that the transfer current must be <b>ABOVE</b> to have a Game
+     * Piece
+     */
+    public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
+        "transferHasGamePieceCurrent", 6);
+
+    /**
+     * The value that the transfer velocity must be <b>BELOW</b> to have a Game
+     * Piece
+     */
+    public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
+        "transferHasGamePieceVelocity", 0.8);
 
   }
 

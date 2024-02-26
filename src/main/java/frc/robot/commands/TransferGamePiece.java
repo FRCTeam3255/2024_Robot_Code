@@ -4,10 +4,8 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constLEDs;
-import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
@@ -32,6 +30,7 @@ public class TransferGamePiece extends Command {
     this.subPitch = subPitch;
     this.subTurret = subTurret;
 
+    addRequirements(subTransfer);
   }
 
   // Called when the command is initially scheduled.
@@ -46,14 +45,17 @@ public class TransferGamePiece extends Command {
     if (subShooter.areBothShootersUpToSpeed()
         && subPitch.isPitchAtGoalAngle()
         && subTurret.isTurretAtGoalAngle()) {
+
       subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
-      subTransfer.setFeederMotorSpeed(
-          prefTransfer.feederShootMotorSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
+
+      subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
 
     } else {
       subLEDs.setLEDsToAnimation(constLEDs.SHOOTER_ANIMATION);
+
       subTransfer.setFeederNeutralOutput();
+      subTransfer.setTransferNeutralOutput();
     }
 
   }

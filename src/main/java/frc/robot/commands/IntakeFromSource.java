@@ -51,8 +51,8 @@ public class IntakeFromSource extends Command {
         prefShooter.rightShooterIntakeVelocity.getValue());
     subShooter.getUpToSpeed();
 
-    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeMotorSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeMotorSpeed.getValue());
+    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
 
     subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), subClimber.collidesWithPitch());
 

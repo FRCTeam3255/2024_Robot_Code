@@ -32,7 +32,7 @@ import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFromSource;
-import frc.robot.commands.IntakeGamePiece;
+import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SpitGamePiece;
@@ -143,7 +143,7 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber, subPitch));
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber, subPitch));
     controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
