@@ -18,17 +18,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 public class Transfer extends SubsystemBase {
   TalonSRX feederMotor;
-
   TalonFX transferMotor;
-
   VelocityVoltage velocityRequest;
-
   CurrentLimitsConfigs transferCurrentLimitConfigs;
 
   private boolean hasGamePiece;
-
-  double lastVelocity = 0;
-  double lastCurrent = 0;
 
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
@@ -41,42 +35,6 @@ public class Transfer extends SubsystemBase {
     configure();
   }
 
-  public boolean calcGamePieceCollected() {
-    double current = transferMotor.getStatorCurrent().getValue();
-    double currentTolerance = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
-
-    double curVelocity = transferMotor.getVelocity().getValue();
-    double velocityTolerance = prefTransfer.transferNoteVelocityTolerance.getValue();
-
-    // TODO: REMOVE DEBUG CHECKS
-    SmartDashboard.putBoolean("PAIN: current > belowCurrent bool", (current - lastCurrent) > (currentTolerance));
-    SmartDashboard.putBoolean("PAIN: velocity bool",
-        (curVelocity - lastVelocity) < (velocityTolerance));
-
-    SmartDashboard.putNumber("PAIN: current > belowCurrent val", (current - lastCurrent));
-    SmartDashboard.putNumber("PAIN: velocity val",
-        (curVelocity - lastVelocity));
-
-    SmartDashboard.putNumber("AA: Transfer Current", current);
-    SmartDashboard.putNumber("AA: Transfer Vel", curVelocity);
-    SmartDashboard.putNumber("AA: Feeder Current", feederMotor.getStatorCurrent());
-
-    if ((feederMotor.getStatorCurrent() < -10) && (curVelocity < 0.8) && (current > 6) || hasGamePiece) {
-      hasGamePiece = true;
-    } else {
-      hasGamePiece = false;
-    }
-
-    lastCurrent = current;
-    lastVelocity = curVelocity;
-    return hasGamePiece;
-  }
-
-  public void setGamePieceCollected(boolean isCollected) {
-    hasGamePiece = isCollected;
-  }
-
-  /** Creates a new Transfer. */
   public void configure() {
     transferMotor.setInverted(prefTransfer.transferMotorInverted.getValue());
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
@@ -84,15 +42,32 @@ public class Transfer extends SubsystemBase {
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
   }
 
-  public void setCurrentLimiting(boolean status) {
-    // //
-    // https://v5.docs.ctr-electronics.com/en/stable/ch13_MC.html?highlight=Current%20limit#new-api-in-2020
-    // transferMotor
-    // .configStatorCurrentLimit(new StatorCurrentLimitConfiguration(status,
-    // constTransfer.CURRENT_LIMIT_FLOOR_AMPS,
-    // constTransfer.CURRENT_LIMIT_CEILING_AMPS,
-    // constTransfer.CURRENT_LIMIT_AFTER_SEC));
-    // isCurrentLimitingOn = status;
+  /**
+   * Calculates and sets the value of hasGamePiece based off of Transfer & Feeder
+   * Current & Velocity. If we already have a game piece, this return true without
+   * recalculating.
+   * 
+   * @return If we have a game piece.
+   */
+  public boolean calcGamePieceCollected() {
+    double transferCurrent = transferMotor.getStatorCurrent().getValue();
+    double feederCurrent = feederMotor.getStatorCurrent();
+    double transferVelocity = transferMotor.getVelocity().getValue();
+
+    if (hasGamePiece ||
+        (feederCurrent < prefTransfer.feederHasGamePieceCurrent.getValue())
+            && (transferCurrent > prefTransfer.transferHasGamePieceCurrent.getValue())
+            && (transferVelocity < prefTransfer.transferHasGamePieceVelocity.getValue())) {
+      hasGamePiece = true;
+    } else {
+      hasGamePiece = false;
+    }
+
+    return hasGamePiece;
+  }
+
+  public void setGamePieceCollected(boolean isCollected) {
+    hasGamePiece = isCollected;
   }
 
   public void setFeederMotorSpeed(double feederSpeed) {
@@ -122,13 +97,11 @@ public class Transfer extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Stator Current", transferMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected()); // Key is intentional - shows in
-                                                                           // SmartDashboard
+    // Key is intentional - shows in SmartDashboard
+    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected());
   }
-
 }
