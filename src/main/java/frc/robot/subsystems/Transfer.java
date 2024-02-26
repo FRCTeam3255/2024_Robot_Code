@@ -25,6 +25,11 @@ public class Transfer extends SubsystemBase {
 
   CurrentLimitsConfigs transferCurrentLimitConfigs;
 
+  private boolean hasGamePiece;
+
+  double lastVelocity = 0;
+  double lastCurrent = 0;
+
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
@@ -36,16 +41,39 @@ public class Transfer extends SubsystemBase {
     configure();
   }
 
-  public boolean isGamePieceCollected() {
+  public boolean calcGamePieceCollected() {
     double current = transferMotor.getStatorCurrent().getValue();
-    double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
-    double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
-    if (current > belowCurrent
-        && Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity)) {
-      return true;
+    double currentTolerance = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
+
+    double curVelocity = transferMotor.getVelocity().getValue();
+    double velocityTolerance = prefTransfer.transferNoteVelocityTolerance.getValue();
+
+    // TODO: REMOVE DEBUG CHECKS
+    SmartDashboard.putBoolean("PAIN: current > belowCurrent bool", (current - lastCurrent) > (currentTolerance));
+    SmartDashboard.putBoolean("PAIN: velocity bool",
+        (curVelocity - lastVelocity) < (velocityTolerance));
+
+    SmartDashboard.putNumber("PAIN: current > belowCurrent val", (current - lastCurrent));
+    SmartDashboard.putNumber("PAIN: velocity val",
+        (curVelocity - lastVelocity));
+
+    SmartDashboard.putNumber("AA: Transfer Current", current);
+    SmartDashboard.putNumber("AA: Transfer Vel", curVelocity);
+    SmartDashboard.putNumber("AA: Feeder Current", feederMotor.getStatorCurrent());
+
+    if ((feederMotor.getStatorCurrent() < -10) && (curVelocity < 0.8) && (current > 6) || hasGamePiece) {
+      hasGamePiece = true;
     } else {
-      return false;
+      hasGamePiece = false;
     }
+
+    lastCurrent = current;
+    lastVelocity = curVelocity;
+    return hasGamePiece;
+  }
+
+  public void setGamePieceCollected(boolean isCollected) {
+    hasGamePiece = isCollected;
   }
 
   /** Creates a new Transfer. */
@@ -99,7 +127,8 @@ public class Transfer extends SubsystemBase {
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Stator Current", transferMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
-
+    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected()); // Key is intentional - shows in
+                                                                           // SmartDashboard
   }
 
 }

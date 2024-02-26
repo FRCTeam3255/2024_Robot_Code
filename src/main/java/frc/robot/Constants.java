@@ -42,6 +42,7 @@ public final class Constants {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
     public static final double ABS_ENCODER_OFFSET = 0.928814;
+    public static final double GEAR_RATIO = 220.5;
   }
 
   public static class constControllers {
@@ -158,6 +159,8 @@ public final class Constants {
     public static final ColorFlowAnimation CO_OP_ANIMATION = new ColorFlowAnimation(255, 247, 3, 0, 0.95, LED_NUMBER,
         Direction.Forward);
     public static final RainbowAnimation DEFENSE_MODE_ANIMATION = new RainbowAnimation(1.0, 0.9, LED_NUMBER);
+    public static final ColorFlowAnimation SHOOTER_ANIMATION = new ColorFlowAnimation(255, 0, 0, 0, 0.95, LED_NUMBER,
+        Direction.Forward);
   }
 
   public static class constPitch {
@@ -167,7 +170,7 @@ public final class Constants {
     }
 
     public static final double PITCH_GEAR_RATIO = 186.666;
-    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Coast;
+    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
     public static final boolean INVERT = false;
 
     /**

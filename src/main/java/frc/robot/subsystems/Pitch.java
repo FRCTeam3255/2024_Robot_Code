@@ -27,7 +27,7 @@ import frc.robot.RobotPreferences.prefPitch;
 public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
-
+  double desiredPitchAngle;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
   boolean INVERT_MOTOR;
@@ -80,9 +80,16 @@ public class Pitch extends SubsystemBase {
   /**
    * Sets the angle of the pitch motor
    * 
-   * @param angle The angle to set the pitch motor to. <b> Units: </b> Degrees
+   * @param angle        The angle to set the pitch motor to. <b> Units: </b>
+   *                     Degrees
+   * @param hasCollision If there is a collision with the pitch. If this is true,
+   *                     the pitch will not turn above 30 degrees
    */
-  public void setPitchAngle(double angle) {
+  public void setPitchAngle(double angle, boolean hasCollision) {
+    desiredPitchAngle = angle;
+    if (hasCollision && angle >= prefPitch.pitchMaxIntake.getValue()) {
+      angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
+    }
     pitchMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
@@ -110,6 +117,14 @@ public class Pitch extends SubsystemBase {
    */
   public void setPitchNeutralOutput() {
     pitchMotor.setControl(new NeutralOut());
+  }
+
+  public boolean isPitchAtGoalAngle() {
+    if (Math.abs(getPitchAngle() - desiredPitchAngle) <= prefPitch.pitchIsAtAngleTolerance.getValue()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // -- Get --
@@ -192,5 +207,6 @@ public class Pitch extends SubsystemBase {
     SmartDashboard.putNumber("Pitch/Velocity DPS", getPitchVelocity());
     SmartDashboard.putNumber("Pitch/Voltage", getPitchVoltage());
     SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
+    SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
   }
 }

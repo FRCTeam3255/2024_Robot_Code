@@ -16,26 +16,12 @@ import frc.robot.RobotPreferences.prefIntake;
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
 
-  TalonFXConfiguration pivotConfig;
-
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
-    pivotConfig = new TalonFXConfiguration();
-
     configure();
   }
 
   public void configure() {
-    pivotConfig.Slot0.kP = prefIntake.intakePivotP.getValue();
-    pivotConfig.Slot0.kI = prefIntake.intakePivotI.getValue();
-    pivotConfig.Slot0.kD = prefIntake.intakePivotD.getValue();
-
-    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefIntake.intakePivotForwardLimit.getValue();
-
-    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.intakePivotReverseLimit.getValue();
-
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
   }
 

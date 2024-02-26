@@ -26,13 +26,18 @@ import frc.robot.Constants.constDrivetrain;
 public class RobotPreferences {
   public static final class prefClimber {
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
-    public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0.12);
-    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0.3);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 250);
     public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
     public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
+    /**
+     * <b>Units:</b> Degrees
+     */
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 60);
+        "climberMotorForwardLimit", 85);
+    /**
+     * <b>Units:</b> Degrees
+     */
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
         "climberMotorReverseLimit", 0);
     public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
@@ -41,6 +46,12 @@ public class RobotPreferences {
         "climberMotorDownSpeed", -0.2);
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
     public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
+
+    /**
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference climberAtAngleTolerance = new SN_DoublePreference("climberAtAngleTolerance",
+        5);
 
   }
 
@@ -113,37 +124,6 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
-    public static final SN_DoublePreference intakePivotP = new SN_DoublePreference("intakePivotP", 24);
-    public static final SN_DoublePreference intakePivotI = new SN_DoublePreference("intakePivotI", 0);
-    public static final SN_DoublePreference intakePivotD = new SN_DoublePreference("intakePivotD", 0);
-
-    /**
-     * Enable or disable the intake pivot forward limit
-     */
-    public static final SN_BooleanPreference intakePivotForwardLimitEnable = new SN_BooleanPreference(
-        "intakePivotForwardLimitEnable", true);
-    /**
-     * <p>
-     * The maximum soft limit of the intake pivot
-     * </p>
-     * <b>Units:</b> Rotations
-     */
-    public static final SN_DoublePreference intakePivotForwardLimit = new SN_DoublePreference("intakePivotForwardLimit",
-        Units.degreesToRotations(45));
-
-    /**
-     * Enable or disable the intake pivot forward limit
-     */
-    public static final SN_BooleanPreference intakePivotReverseLimitEnable = new SN_BooleanPreference(
-        "intakePivotReverseLimitEnable", true);
-    /**
-     * <p>
-     * The minimum soft limit of the intake pivot
-     * </p>
-     * <b>Units:</b> Rotations
-     */
-    public static final SN_DoublePreference intakePivotReverseLimit = new SN_DoublePreference("intakePivotReverseLimit",
-        Units.degreesToRotations(-45));
     /**
      * <b> Units: </b> Percent Output
      */
@@ -154,11 +134,17 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
 
     /**
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference intakeStowAngle = new SN_DoublePreference(
+        "intakeStowAngle", 0);
+
+    /**
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference intakeIntakingPosition = new SN_DoublePreference(
-        "intakeIntakingPosition", 62);
+    public static final SN_DoublePreference intakeIntakingAngle = new SN_DoublePreference(
+        "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 1);
 
   }
 
@@ -172,7 +158,15 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAngle = new SN_DoublePreference("pitchAngle", 10);
+    public static final SN_DoublePreference pitchIsAtAngleTolerance = new SN_DoublePreference("pitchIsAtAngleTolerance",
+        1);
+
+    /**
+     * Maximum when the intake is up
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference pitchMaxIntake = new SN_DoublePreference("pitchMaxIntake",
+        25);
 
     /**
      * <p>
@@ -321,24 +315,24 @@ public class RobotPreferences {
   }
 
   public static final class prefTransfer {
-    public static final SN_DoublePreference feederMotorSpeed = new SN_DoublePreference(
-        "feederMotorSpeed", .2);
-    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", .5);
+    public static final SN_DoublePreference feederShootMotorSpeed = new SN_DoublePreference(
+        "feederShootMotorSpeed", 1);
+    public static final SN_DoublePreference transferMotorSpeed = new SN_DoublePreference("transferMotorSpeed", 0.2);
     public static final SN_DoublePreference feederSpitOutMotorSpeed = new SN_DoublePreference(
         "feederSpitOutMotorSpeed", -.2);
     public static final SN_DoublePreference transferSpitOutMotorSpeed = new SN_DoublePreference(
         "transferSpitOutMotorSpeed", -.5);
     public static final SN_DoublePreference feederIntakeMotorSpeed = new SN_DoublePreference(
-        "feederIntakeMotorSpeed", -.2);
+        "feederIntakeMotorSpeed", -1);
     public static final SN_DoublePreference transferIntakeMotorSpeed = new SN_DoublePreference(
         "transferIntakeMotorSpeed", -.5);
 
     public static final SN_DoublePreference transferNoteVelocityTolerance = new SN_DoublePreference(
-        "transferNoteVelocityTolerance", 45);
+        "transferNoteVelocityTolerance", -0.04);
     public static final SN_DoublePreference transferFeedForwardVelocity = new SN_DoublePreference(
         "transferFeedForwardVelocity", .25);
     public static final SN_DoublePreference transferGamePieceCollectedBelowAmps = new SN_DoublePreference(
-        "transferGamePieceCollectedBelowAmps", 15);
+        "transferGamePieceCollectedBelowAmps", 3);
     public static final SN_BooleanPreference transferStatorLimitEnable = new SN_BooleanPreference(
         "transferStatorLimitEnable", false);
     public static final SN_BooleanPreference transferMotorInverted = new SN_BooleanPreference("transferMotorInverted",
@@ -350,9 +344,16 @@ public class RobotPreferences {
 
   public static final class prefTurret {
     // -- PID & Configs--
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 100);
+    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 42);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
-    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 1);
+    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
+
+    /**
+     * <b>Units:</b> Degreses
+     */
+    public static final SN_DoublePreference turretIsAtAngleTolerance = new SN_DoublePreference(
+        "turretIsAtAngleTolerance", 1);
 
     /**
      * <p>
@@ -370,8 +371,6 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-72));
-
-    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
 
     public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", true);
 
@@ -392,7 +391,7 @@ public class RobotPreferences {
         "turretCurrentLimitCeilingAmps",
         .1);
     public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
-        90);
+        66.621094);
 
     // -- Other --
     /**
