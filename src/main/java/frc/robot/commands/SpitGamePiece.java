@@ -46,9 +46,10 @@ public class SpitGamePiece extends Command {
   @Override
   public void execute() {
     globalIntake.setIntakeMotorsSpeed(prefIntake.intakeSpitOutSpeed.getValue());
-    globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutMotorSpeed.getValue());
 
-    globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutMotorSpeed.getValue());
+    globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
+    globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
+
     subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
 
   }

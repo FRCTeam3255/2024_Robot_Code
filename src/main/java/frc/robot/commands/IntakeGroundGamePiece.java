@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefIntake;
-import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
@@ -17,7 +16,7 @@ import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
-public class IntakeGamePiece extends Command {
+public class IntakeGroundGamePiece extends Command {
   Intake subIntake;
   Transfer subTransfer;
   Turret subTurret;
@@ -27,7 +26,8 @@ public class IntakeGamePiece extends Command {
 
   double lastDesiredPitch;
 
-  public IntakeGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret, LEDs subLEDs, Climber subClimber,
+  public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret, LEDs subLEDs,
+      Climber subClimber,
       Pitch subPitch) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
@@ -53,9 +53,9 @@ public class IntakeGamePiece extends Command {
     subClimber.setClimberAngle(prefIntake.intakeIntakingAngle.getValue());
 
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
 
-    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeMotorSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
+    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
 
     subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
   }
@@ -69,7 +69,6 @@ public class IntakeGamePiece extends Command {
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
 
     if (!interrupted) {
-
       subLEDs.setLEDs(constLEDs.INTAKE_GAME_PIECE_COLLECTED);
     }
 
@@ -79,6 +78,5 @@ public class IntakeGamePiece extends Command {
   @Override
   public boolean isFinished() {
     return subTransfer.calcGamePieceCollected();
-
   }
 }

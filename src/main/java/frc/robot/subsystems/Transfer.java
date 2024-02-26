@@ -29,16 +29,18 @@ public class Transfer extends SubsystemBase {
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
 
     transferCurrentLimitConfigs = new CurrentLimitsConfigs();
-    transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
 
     velocityRequest = new VelocityVoltage(0).withSlot(0);
     configure();
   }
 
   public void configure() {
-    transferMotor.setInverted(prefTransfer.transferMotorInverted.getValue());
+    transferMotor.setInverted(prefTransfer.transferInverted.getValue());
+    feederMotor.setInverted(prefTransfer.feederInverted.getValue());
+
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
-    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(false);
+    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(prefTransfer.transferStatorLimitEnable.getValue());
+
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
   }
 
