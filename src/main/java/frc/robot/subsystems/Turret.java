@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
 
@@ -33,7 +34,7 @@ public class Turret extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
 
-  double absoluteEncoderOffset, desiredTurretAngle;
+  double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
 
   final Transform2d robotToTurret = new Transform2d(
@@ -51,6 +52,8 @@ public class Turret extends SubsystemBase {
         : constTurret.ABS_ENCODER_OFFSET;
     invertAbsEncoder = (isPracticeBot) ? constTurret.pracBot.ABS_ENCODER_INVERT
         : constTurret.ABS_ENCODER_INVERT;
+    absEncoderRollover = (isPracticeBot) ? constTurret.pracBot.ABS_ENCODER_ROLLOVER
+        : constTurret.ABS_ENCODER_ROLLOVER;
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
@@ -151,7 +154,7 @@ public class Turret extends SubsystemBase {
   public void resetTurretToAbsolutePosition() {
     double rotations = getAbsoluteEncoder();
 
-    if (rotations > 0.5) {
+    if (rotations > absEncoderRollover) {
       rotations = 1 - rotations;
       rotations = -rotations;
     }
