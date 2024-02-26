@@ -10,97 +10,130 @@ import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public class Transfer extends SubsystemBase {
   TalonSRX feederMotor;
-
   TalonFX transferMotor;
-
-  VelocityVoltage velocityRequest;
-
   CurrentLimitsConfigs transferCurrentLimitConfigs;
+
+  private boolean hasGamePiece;
 
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
 
     transferCurrentLimitConfigs = new CurrentLimitsConfigs();
-    transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
 
-    velocityRequest = new VelocityVoltage(0).withSlot(0);
     configure();
   }
 
-  public boolean isGamePieceCollected() {
-    double current = transferMotor.getStatorCurrent().getValue();
-    double desiredVelocity = prefTransfer.transferNoteVelocityTolerance.getValue();
-    double belowCurrent = prefTransfer.transferGamePieceCollectedBelowAmps.getValue();
-    if (current > belowCurrent
-        && Math.abs(transferMotor.getVelocity().getValue()) < Math.abs(desiredVelocity)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /** Creates a new Transfer. */
   public void configure() {
-    transferMotor.setInverted(prefTransfer.transferMotorInverted.getValue());
+    transferMotor.setInverted(prefTransfer.transferInverted.getValue());
+    feederMotor.setInverted(prefTransfer.feederInverted.getValue());
+
     transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
-    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(false);
+    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(prefTransfer.transferStatorLimitEnable.getValue());
+
     transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
   }
 
-  public void setCurrentLimiting(boolean status) {
-    // //
-    // https://v5.docs.ctr-electronics.com/en/stable/ch13_MC.html?highlight=Current%20limit#new-api-in-2020
-    // transferMotor
-    // .configStatorCurrentLimit(new StatorCurrentLimitConfiguration(status,
-    // constTransfer.CURRENT_LIMIT_FLOOR_AMPS,
-    // constTransfer.CURRENT_LIMIT_CEILING_AMPS,
-    // constTransfer.CURRENT_LIMIT_AFTER_SEC));
-    // isCurrentLimitingOn = status;
+  /**
+   * Calculates and sets the value of hasGamePiece based off of Transfer & Feeder
+   * current & velocity. If we already have a game piece, this will return true
+   * without recalculating.
+   * 
+   * @return If we have a game piece.
+   */
+  public boolean calcGamePieceCollected() {
+    double transferCurrent = transferMotor.getStatorCurrent().getValue();
+    double feederCurrent = feederMotor.getStatorCurrent();
+    double transferVelocity = transferMotor.getVelocity().getValue();
+
+    if (hasGamePiece ||
+        (feederCurrent < prefTransfer.feederHasGamePieceCurrent.getValue())
+            && (transferCurrent > prefTransfer.transferHasGamePieceCurrent.getValue())
+            && (transferVelocity < prefTransfer.transferHasGamePieceVelocity.getValue())) {
+      hasGamePiece = true;
+    } else {
+      hasGamePiece = false;
+    }
+
+    return hasGamePiece;
   }
 
+  /**
+   * Set if we have a game piece without recalculating it based off of current
+   * 
+   * @param isCollected If we currently have a game piece.
+   */
+  public void setGamePieceCollected(boolean isCollected) {
+    hasGamePiece = isCollected;
+  }
+
+  /**
+   * Sets the current speed of the Feeder motor
+   * 
+   * @param feederSpeed The speed to set the Feeder motor to. <b> Units: </b>
+   *                    Percent Output (-1.0 -> 1.0)
+   */
   public void setFeederMotorSpeed(double feederSpeed) {
     feederMotor.set(ControlMode.PercentOutput, feederSpeed);
 
   }
 
+  /**
+   * Sets the current speed of the Transfer motor
+   * 
+   * @param transferSpeed The speed to set the Transfer motor to. <b> Units: </b>
+   *                      Percent Output (-1.0 -> 1.0)
+   */
   public void setTransferMotorSpeed(double transferSpeed) {
     transferMotor.set(transferSpeed);
   }
 
+  /**
+   * Sets the Feeder motor to neutral output.
+   */
   public void setFeederNeutralOutput() {
     feederMotor.neutralOutput();
   }
 
+  /**
+   * Sets the Transfer motor to neutral output.
+   */
   public void setTransferNeutralOutput() {
     transferMotor.setControl(new NeutralOut());
   }
 
-  private double getTransferMotorPercentOutput() {
+  /**
+   * Get the current percent-output for the Transfer motor
+   * 
+   * @return The percent output (-1.0 - > 1.0)
+   */
+  public double getTransferMotorPercentOutput() {
     return transferMotor.get();
   }
 
-  private double getFeederMotorPercentOutput() {
+  /**
+   * Get the current percent-output for the Feeder motor
+   * 
+   * @return The percent output (-1.0 - > 1.0)
+   */
+  public double getFeederMotorPercentOutput() {
     return feederMotor.getMotorOutputPercent();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Stator Current", transferMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
-
+    // Key is intentional - shows in SmartDashboard
+    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected());
   }
-
 }

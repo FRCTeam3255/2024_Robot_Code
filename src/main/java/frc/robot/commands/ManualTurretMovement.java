@@ -27,17 +27,21 @@ public class ManualTurretMovement extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subTurret.setTurretSoftwareLimits(false, false);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subTurret.setTurretSpeed(xAxis.getAsDouble() * prefTurret.turretPercentageSpeed.getValue());
+    subTurret.setTurretSpeed(-xAxis.getAsDouble() * prefTurret.turretPercentageSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subTurret.setTurretSoftwareLimits(true, true);
+
   }
 
   // Returns true when the command should end.

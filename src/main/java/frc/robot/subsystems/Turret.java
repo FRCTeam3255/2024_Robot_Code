@@ -6,9 +6,11 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -32,7 +34,7 @@ public class Turret extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
   boolean invertAbsEncoder;
-
+  double desiredTurretAngle;
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
       constTurret.ROBOT_TO_TURRET.getY(),
@@ -55,6 +57,7 @@ public class Turret extends SubsystemBase {
   }
 
   public void configure() {
+    turretConfig.Slot0.kV = prefTurret.turretV.getValue();
     turretConfig.Slot0.kP = prefTurret.turretP.getValue();
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
@@ -68,6 +71,11 @@ public class Turret extends SubsystemBase {
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
 
+    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretStatorCurrentLimitEnable.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimitCeilingAmps.getValue();
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretStatorCurrentThreshold.getValue();
+    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretStatorTimeTreshold.getValue();
     turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(invertAbsEncoder);
   }
@@ -76,9 +84,15 @@ public class Turret extends SubsystemBase {
   /**
    * Sets the physical angle of the turret
    * 
-   * @param angle The angle to set the turret to. <b> Units: </b> Degrees
+   * @param angle        The angle to set the turret to. <b> Units: </b> Degrees
+   * @param hasCollision If there is a collision with the turret. If this is true,
+   *                     the turret will not turn
    */
-  public void setTurretAngle(double angle) {
+  public void setTurretAngle(double angle, boolean hasCollision) {
+    desiredTurretAngle = angle;
+    if (hasCollision) {
+      angle = 0;
+    }
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
@@ -112,13 +126,35 @@ public class Turret extends SubsystemBase {
     turretMotor.set(speed);
   }
 
+  public double getTurretCurrent() {
+    return turretMotor.getSupplyCurrent().getValueAsDouble();
+  }
+
+  public boolean isTurretAtGoalAngle() {
+    if (Math.abs(getTurretAngle() - desiredTurretAngle) <= prefTurret.turretIsAtAngleTolerance.getValue()) {
+      return true;
+
+    } else {
+      return false;
+    }
+  }
+
+  public void setTurretNeutralOutput() {
+    turretMotor.setControl(new NeutralOut());
+  }
+
   /**
    * Reset the turret encoder motor to absolute encoder's value
    */
   public void resetTurretToAbsolutePosition() {
-    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -getAbsoluteEncoder() : getAbsoluteEncoder());
+    double rotations = getAbsoluteEncoder();
+
+    turretMotor.setPosition((constTurret.ABS_ENCODER_INVERT) ? -rotations : rotations);
   }
 
+  public double getTurretAngle() {
+    return Units.rotationsToDegrees(turretMotor.getPosition().getValueAsDouble());
+  }
   // "Get" Methods
 
   /**
@@ -183,10 +219,6 @@ public class Turret extends SubsystemBase {
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
-
-      case AMP:
-        targetPose = fieldPoses[1];
-        break;
     }
 
     Pose2d turretPose = robotPose.transformBy(robotToTurret);
@@ -212,5 +244,7 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("Turret/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
+    SmartDashboard.putNumber("Turret/Desired Angle (Degrees)", desiredTurretAngle);
+    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
   }
 }

@@ -5,36 +5,66 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
+import frc.robot.subsystems.Turret;
 
 public class TransferGamePiece extends Command {
   /** Creates a new TransferGamePiece. */
-  Transfer globalTransfer;
+  Transfer subTransfer;
+  Turret subTurret;
+  Shooter subShooter;
+  Pitch subPitch;
+  LEDs subLEDs;
 
-  public TransferGamePiece(Transfer givenTransfer) {
+  public TransferGamePiece(Shooter subShooter, LEDs subLEDs, Turret subTurret,
+      Transfer subTransfer, Pitch subPitch) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalTransfer = givenTransfer;
+    this.subTransfer = subTransfer;
+    this.subShooter = subShooter;
+    this.subLEDs = subLEDs;
+    this.subPitch = subPitch;
+    this.subTurret = subTurret;
 
+    addRequirements(subTransfer);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subTransfer.setGamePieceCollected(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalTransfer.setFeederMotorSpeed(prefTransfer.feederMotorSpeed.getValue());
-    globalTransfer.setTransferMotorSpeed(prefTransfer.transferMotorSpeed.getValue());
+    if (subShooter.areBothShootersUpToSpeed()
+        && subPitch.isPitchAtGoalAngle()
+        && subTurret.isTurretAtGoalAngle()) {
+
+      subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
+
+      subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
+
+    } else {
+      subLEDs.setLEDsToAnimation(constLEDs.SHOOTER_ANIMATION);
+
+      subTransfer.setFeederNeutralOutput();
+      subTransfer.setTransferNeutralOutput();
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalTransfer.setFeederNeutralOutput();
-    globalTransfer.setTransferNeutralOutput();
+    subTransfer.setFeederNeutralOutput();
+    subTransfer.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.

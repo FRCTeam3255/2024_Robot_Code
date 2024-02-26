@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    SN_Preferences.useDefaults();
     m_robotContainer = new RobotContainer();
     Monologue.setupMonologue(m_robotContainer, "Monologue", false, false);
 
@@ -36,9 +37,6 @@ public class Robot extends TimedRobot {
     // Log the DS data and joysticks
     DriverStation.startDataLog(DataLogManager.getLog(), true);
     DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
-
-    // TODO: REMOVE. THIS DISABLES ALL PREFERENCES
-    SN_Preferences.useDefaults();
   }
 
   @Override
@@ -59,6 +57,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     FieldConstants.ALLIANCE = DriverStation.getAlliance();
+    m_robotContainer.setAutoPlacementLEDs();
   }
 
   @Override
@@ -69,6 +68,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.zeroPitch().schedule();
+    m_robotContainer.clearSubsystemMovements().schedule();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.zeroPitch().schedule();
+    m_robotContainer.clearSubsystemMovements().schedule();
   }
 
   @Override

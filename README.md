@@ -20,3 +20,6 @@ Students have 6 weeks to construct a robot to compete in the season. Once the 6 
 competitions (depending on region) to qualify for the FIRST Championship in Houston, Texas.
 
 Interested in learning more about CRESCENDO? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
+
+## Controls
+![Controls](src/main/assets/controllerMap2024.png)
