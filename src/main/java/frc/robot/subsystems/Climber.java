@@ -37,7 +37,6 @@ public class Climber extends SubsystemBase {
     climberConfig = new TalonFXConfiguration();
 
     absoluteEncoderOffset = constClimber.ABS_ENCODER_OFFSET;
-    absEncoderRollover = constClimber.ABS_ENCODER_ROLLOVER;
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
@@ -105,13 +104,7 @@ public class Climber extends SubsystemBase {
 
   public void resetClimberToAbsolutePosition() {
     double rotations = getAbsoluteEncoder();
-
-    if (rotations > absEncoderRollover) {
-      rotations = 1 - rotations;
-      rotations = -rotations;
-    }
-
-    climberMotor.setPosition((constClimber.ABS_ENCODER_INVERT) ? -getAbsoluteEncoder() : getAbsoluteEncoder());
+    climberMotor.setPosition((constClimber.ABS_ENCODER_INVERT) ? -rotations : rotations);
   }
 
   public double getClimberVelocity() {

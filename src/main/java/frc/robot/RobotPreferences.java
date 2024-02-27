@@ -34,7 +34,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 85);
+        "climberMotorForwardLimit", 80);
     /**
      * <b>Units:</b> Degrees
      */
