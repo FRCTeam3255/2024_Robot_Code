@@ -25,25 +25,27 @@ import frc.robot.Constants.constDrivetrain;
  */
 public class RobotPreferences {
   public static final class prefClimber {
-    public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
-    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 250);
-    public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
-    public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
+    public static final SN_DoublePreference climberGtele = new SN_DoublePreference("climberGtele", 0);
+    public static final SN_DoublePreference climberPtele = new SN_DoublePreference("climberPtele", 250);
+    public static final SN_DoublePreference climberItele = new SN_DoublePreference("climberItele", 0);
+    public static final SN_DoublePreference climberDtele = new SN_DoublePreference("climberDtele", 0);
+
+    public static final SN_DoublePreference climberGClimb = new SN_DoublePreference("climberGClimb", 100);
+    public static final SN_DoublePreference climberPClimb = new SN_DoublePreference("climberPClimb", 250);
+    public static final SN_DoublePreference climberIClimb = new SN_DoublePreference("climberIClimb", 0);
+    public static final SN_DoublePreference climberDClimb = new SN_DoublePreference("climberDClimb", 0);
 
     /**
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 85);
+        "climberMotorForwardLimit", 100);
     /**
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
         "climberMotorReverseLimit", 0);
-    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
-        "climberMotorUpSpeed", 0.2);
-    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
-        "climberMotorDownSpeed", -0.2);
+
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
     public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
 
@@ -217,7 +219,7 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 18);
     public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
-        18);
+        55);
 
     public static final SN_DoublePreference pitchCenterAngle = new SN_DoublePreference("pitchCenterAngle", 16);
 
@@ -304,13 +306,13 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterTrapVelocity = new SN_DoublePreference(
-        "leftShooterTrapVelocity", 60);
+        "leftShooterTrapVelocity", 30);
     /**
      * Preset: Shooting into the trap velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterTrapVelocity = new SN_DoublePreference(
-        "rightShooterTrapVelocity", 45);
+        "rightShooterTrapVelocity", 22.5);
 
   }
 

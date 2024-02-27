@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.DoubleSupplier;
-
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -18,13 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefClimber;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
@@ -114,6 +111,7 @@ public class RobotContainer implements Logged {
 
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
+    subClimber.resetClimberToAbsolutePosition();
     subLEDs.clearAnimation();
   }
 
@@ -123,18 +121,18 @@ public class RobotContainer implements Logged {
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
 
     // Climb Up
-    controller.btn_LeftTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorUpSpeed.getValue()), subClimber)
-            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
-    controller.btn_LeftTrigger.onFalse(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(0)));
+    controller.btn_LeftTrigger.onTrue(
+        Commands.runOnce(() -> subClimber.setClimberAngle(0), subClimber)
+            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false)))
+            .alongWith(Commands
+                .runOnce(() -> subClimber.setClimbingConfigs(false))));
 
     // Climb Down
-    controller.btn_RightTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorDownSpeed.getValue()), subClimber)
-            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
-    controller.btn_RightTrigger.onFalse(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(0)));
+    controller.btn_RightTrigger.onTrue(
+        Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeIntakingAngle.getValue()), subClimber)
+            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false)))
+            .alongWith(Commands
+                .runOnce(() -> subClimber.setClimbingConfigs(true))));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION)))
@@ -143,7 +141,9 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber, subPitch));
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber, subPitch)
+            .alongWith(Commands
+                .runOnce(() -> subClimber.setClimbingConfigs(false))));
     controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
@@ -152,10 +152,21 @@ public class RobotContainer implements Logged {
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
         subLEDs, subPitch, subClimber));
 
-    // TODO: WEST: RETRACT INTAKE
+    controller.btn_West.onTrue(
+        Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)
+            .alongWith(Commands
+                .runOnce(() -> subClimber.setClimbingConfigs(false))));
 
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subLEDs, subTurret, subTransfer, subPitch));
-    // TODO: RB : STOP SHOOTER
+    controller.btn_RightBumper.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(0,
+                0))
+                .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0,
+                    subClimber.collidesWithTurret())))
+                .alongWith(Commands.runOnce(
+                    () -> subPitch.setPitchAngle(0,
+                        subClimber.collidesWithPitch())))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
@@ -274,8 +285,7 @@ public class RobotContainer implements Logged {
    * @return The command to zero the pitch
    */
   public Command zeroPitch() {
-    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3)
-        .alongWith(new ZeroTurret(subTurret).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
+    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
   }
 
   public void setAutoPlacementLEDs() {
