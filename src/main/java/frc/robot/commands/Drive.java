@@ -23,7 +23,7 @@ public class Drive extends Command {
   boolean isPracticeBot, isOpenLoop;
   Trigger slowMode, northTrigger, eastTrigger, southTrigger, westTrigger, sourceTrigger, trapTrigger;
 
-  double driveSpeed, xVelocity, yVelocity, rVelocity, slowMultiplier;
+  double driveSpeed, xVelocity, yVelocity, rVelocity, slowMultiplier, robotY;
   Translation2d translationVelocity;
   Rotation2d sourceAngle, leftStageAngle, rightStageAngle, centerStageAngle;
   Pose3d[] fieldPositions;
@@ -97,13 +97,22 @@ public class Drive extends Command {
       } else if (sourceTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(sourceAngle);
       } else if (trapTrigger.getAsBoolean()) {
-        // TRAP LOGIC!??!?!?!? no way
         String debugString = "Closest Chain: NONE";
-        // I wrote the math for this
-        // But i have no clue
-        // how to code it
-        // send help
+        // TODO: MAKE THIS USE MATH INSTEAD OF SCUFFING IT
         // https://www.desmos.com/calculator/l1ntqvcuv3
+
+        // Current implementation: This will snap to the left or right chain. If we want
+        // to snap to the center chain, just use cardinal directons
+        robotY = subDrivetrain.getPose().getY();
+        if (robotY > 4.114171028137207) { // TODO: MAKE CONSTANT (AFTER PHR)
+          rVelocity = subDrivetrain.getVelocityToSnap(leftStageAngle);
+          debugString = "Closest Chain: LEFT";
+
+        } else {
+          rVelocity = subDrivetrain.getVelocityToSnap(rightStageAngle);
+          debugString = "Closest Chain: RIGHT";
+
+        }
 
         System.out.println(debugString);
       }
