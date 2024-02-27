@@ -26,7 +26,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
-// Simple Wing autonomous.
 public class UpWing extends SequentialCommandGroup implements AutoInterface {
   Drivetrain subDrivetrain;
   Intake subIntake;

@@ -45,6 +45,8 @@ import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
+import frc.robot.commands.autos.CenterlineDash.LowerCenterline;
+import frc.robot.commands.autos.CenterlineDash.UpperCenterline;
 import frc.robot.commands.autos.WingOnly.DownWing;
 import frc.robot.commands.autos.WingOnly.UpWing;
 import frc.robot.subsystems.Climber;
@@ -228,8 +230,13 @@ public class RobotContainer implements Logged {
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("Wing Auto From Upper Sub",
         new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-    autoChooser.setDefaultOption("Wing Auto From Lower Sub",
+    autoChooser.addOption("Wing Auto From Lower Sub",
         new UpWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+
+    autoChooser.addOption("Centerline Auto from Lower Field",
+        new LowerCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+    autoChooser.addOption("Centerline Auto from Upper Field",
+        new UpperCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
 
     SmartDashboard.putData(autoChooser);
   }

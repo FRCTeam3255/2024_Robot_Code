@@ -148,6 +148,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeIntakingAngle = new SN_DoublePreference(
         "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 1);
 
+    /**
+     * The time that we wait to get a game piece in auto
+     * <b> Units: </b> Seconds
+     */
+    public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
+        0.5);
+
   }
 
   public static final class prefPitch {
