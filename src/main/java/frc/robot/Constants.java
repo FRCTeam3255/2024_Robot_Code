@@ -11,7 +11,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
-import com.frcteam3255.preferences.SN_BooleanPreference;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -41,7 +40,7 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.928814;
+    public static final double ABS_ENCODER_OFFSET = 0.066327;
     public static final double GEAR_RATIO = 220.5;
   }
 
@@ -138,7 +137,7 @@ public final class Constants {
   }
 
   public static class constLEDs {
-    public static final int LED_NUMBER = 150;
+    public static final int LED_NUMBER = 192;
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
@@ -150,7 +149,6 @@ public final class Constants {
     public static final int[] PURPLE_COLOR = { 156, 5, 250 };
     public static final int[] AUTO_ALIGNED_COLOR = { 207, 82, 4 };
     public static final int[] SPIT_OUT_GAME_PIECE = { 255, 60, 0 };
-
 
     public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(76, 22, 105, 0, 0.95, LED_NUMBER,
         Direction.Forward);
@@ -208,15 +206,15 @@ public final class Constants {
         /*  4 */ "Shooter/Pitch",
         /*  5 */ "Transfer/Transfer",
         /*  6 */ "Shooter/Left",
-        /*  7 */ null,
+        /*  7 */ "7 HAS NOTHING!",
         /*  8 */ "Swerve/FR Steer",
         /*  9 */ "Swerve/FR Drive",
         /* 10 */ "Swerve/BR Drive",
         /* 11 */ "Swerve/BR Steer",
-        /* 12 */ null,
-        /* 13 */ null,
-        /* 14 */ null,
-        /* 15 */ null,
+        /* 12 */ "12 HAS NOTHING!",
+        /* 13 */ "13 HAS NOTHING!",
+        /* 14 */ "14 HAS NOTHING!",
+        /* 15 */ "15 HAS NOTHING!",
         /* 16 */ "Turret",
         /* 17 */ "Swerve/BL Steer",
         /* 18 */ "Swerve/BL Drive",
@@ -242,6 +240,7 @@ public final class Constants {
     public static class pracBot {
       public static final double ABS_ENCODER_OFFSET = 0.812425;
       public static final boolean ABS_ENCODER_INVERT = false;
+      public static final double ABS_ENCODER_ROLLOVER = 0.5;
     }
 
     public static final double GEAR_RATIO = 39;
@@ -249,6 +248,14 @@ public final class Constants {
 
     public static final double ABS_ENCODER_OFFSET = 0.011712;
     public static final boolean ABS_ENCODER_INVERT = false;
+
+    /**
+     * The amount that the absolute encoder's rotation must surpass before we start
+     * calculating the angle as negative
+     * [0 -> 360] -> [-90, 90]
+     * Theres probably a better way to do this... but PHR is in 3 days
+     */
+    public static final double ABS_ENCODER_ROLLOVER = 0.5;
 
     /**
      * The position, in meters, of the center of the turret relative to the center
