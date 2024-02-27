@@ -44,10 +44,10 @@ public class Climber extends SubsystemBase {
   }
 
   public void configure() {
-    climberConfig.Slot0.kS = prefClimber.climberS.getValue();
-    climberConfig.Slot0.kP = prefClimber.climberP.getValue();
-    climberConfig.Slot0.kI = prefClimber.climberI.getValue();
-    climberConfig.Slot0.kD = prefClimber.climberD.getValue();
+    climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
+    climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
+    climberConfig.Slot0.kI = prefClimber.climberItele.getValue();
+    climberConfig.Slot0.kD = prefClimber.climberDtele.getValue();
 
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
@@ -59,6 +59,32 @@ public class Climber extends SubsystemBase {
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
     climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
+    climberMotor.getConfigurator().apply(climberConfig);
+    climberMotor.setInverted(prefClimber.climberInverted.getValue());
+
+  }
+
+  public void setClimbingConfigs(boolean isClimbing) {
+    if (isClimbing) {
+      climberConfig.Slot0.kG = prefClimber.climberGClimb.getValue();
+      climberConfig.Slot0.kP = prefClimber.climberPClimb.getValue();
+      climberConfig.Slot0.kI = prefClimber.climberIClimb.getValue();
+      climberConfig.Slot0.kD = prefClimber.climberDClimb.getValue();
+
+      climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
+          .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue() + 12);
+
+    } else {
+      climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
+      climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
+      climberConfig.Slot0.kI = prefClimber.climberItele.getValue();
+      climberConfig.Slot0.kD = prefClimber.climberDtele.getValue();
+
+      climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
+          .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
+
+    }
+
     climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
 

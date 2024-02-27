@@ -40,7 +40,7 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.094639;
+    public static final double ABS_ENCODER_OFFSET = 0.066327;
     public static final double GEAR_RATIO = 220.5;
   }
 
@@ -137,7 +137,7 @@ public final class Constants {
   }
 
   public static class constLEDs {
-    public static final int LED_NUMBER = 150;
+    public static final int LED_NUMBER = 192;
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
@@ -206,15 +206,15 @@ public final class Constants {
         /*  4 */ "Shooter/Pitch",
         /*  5 */ "Transfer/Transfer",
         /*  6 */ "Shooter/Left",
-        /*  7 */ null,
+        /*  7 */ "7 HAS NOTHING!",
         /*  8 */ "Swerve/FR Steer",
         /*  9 */ "Swerve/FR Drive",
         /* 10 */ "Swerve/BR Drive",
         /* 11 */ "Swerve/BR Steer",
-        /* 12 */ null,
-        /* 13 */ null,
-        /* 14 */ null,
-        /* 15 */ null,
+        /* 12 */ "12 HAS NOTHING!",
+        /* 13 */ "13 HAS NOTHING!",
+        /* 14 */ "14 HAS NOTHING!",
+        /* 15 */ "15 HAS NOTHING!",
         /* 16 */ "Turret",
         /* 17 */ "Swerve/BL Steer",
         /* 18 */ "Swerve/BL Drive",
