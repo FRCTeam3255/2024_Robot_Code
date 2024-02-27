@@ -97,7 +97,6 @@ public class Drive extends Command {
       } else if (sourceTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(sourceAngle);
       } else if (trapTrigger.getAsBoolean()) {
-        String debugString = "Closest Chain: NONE";
         // TODO: MAKE THIS USE MATH INSTEAD OF SCUFFING IT
         // https://www.desmos.com/calculator/l1ntqvcuv3
 
@@ -106,15 +105,9 @@ public class Drive extends Command {
         robotY = subDrivetrain.getPose().getY();
         if (robotY > 4.114171028137207) { // TODO: MAKE CONSTANT (AFTER PHR)
           rVelocity = subDrivetrain.getVelocityToSnap(leftStageAngle);
-          debugString = "Closest Chain: LEFT";
-
         } else {
           rVelocity = subDrivetrain.getVelocityToSnap(rightStageAngle);
-          debugString = "Closest Chain: RIGHT";
-
         }
-
-        System.out.println(debugString);
       }
     }
 
