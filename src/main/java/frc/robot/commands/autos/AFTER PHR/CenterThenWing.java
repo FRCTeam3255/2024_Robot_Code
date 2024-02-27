@@ -2,8 +2,6 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.autos;
-
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -17,6 +15,7 @@ import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.autos.AutoInterface;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -26,6 +25,8 @@ import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
 public class CenterThenWing extends SequentialCommandGroup implements AutoInterface {
+  /* 
+  
   Drivetrain subDrivetrain;
   Intake subIntake;
   LEDs subLEDs;
@@ -42,6 +43,7 @@ public class CenterThenWing extends SequentialCommandGroup implements AutoInterf
   SequentialCommandGroup C1sC2 = new SequentialCommandGroup(
       Commands.runOnce(() -> lastGamePiece = 4),
       AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("D C1sUntilC5s.1")),
+      Commands.waitSeconds(10),
       AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("D C1sUntilC5s.2")));
   // TODO: THIS DOESNT WORK :(
 
@@ -65,53 +67,61 @@ public class CenterThenWing extends SequentialCommandGroup implements AutoInterf
    * 
    * @formatter:on
    */
-  int lastGamePiece = 0;
-
-  public CenterThenWing(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret) {
-    this.subDrivetrain = subDrivetrain;
-    this.subIntake = subIntake;
-    this.subLEDs = subLEDs;
-    this.subPitch = subPitch;
-    this.subShooter = subShooter;
-    this.subTransfer = subTransfer;
-    this.subTurret = subTurret;
-
-    addCommands(
-        // Shoot preloaded game piece
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
-
-        // -- ATTEMPT TO SCORE C1 AND C2 --
-        // Drive to C1
-        AutoBuilder.followPath(PC1),
-
-        // Check if we got C1.
-        // If yes, drive to score C1 in the speaker and then drive to collect c2
-        C1sC2.unless(() -> !subTransfer.calcGamePieceCollected()),
-
-        // If no, drive to collect C2 from C1
-        AutoBuilder.followPath(C1C2).unless(() -> lastGamePiece == 4),
-
-        // Either way we have ended up at C2. For simplicity, lets just assume we get it
-        // and drive to score it in the speaker.
-        AutoBuilder.followPath(C2s),
-
-        // -- WING TIME! --
-        // Run the W1aW2aW3s routine.
-        // Auto ends.
-        AutoBuilder.followPath(scoreWing)
-
-    );
-  }
+  /*
+   * int lastGamePiece = 0;
+   * 
+   * public CenterThenWing(Drivetrain subDrivetrain, Intake subIntake, LEDs
+   * subLEDs, Pitch subPitch, Shooter subShooter,
+   * Transfer subTransfer, Turret subTurret) {
+   * this.subDrivetrain = subDrivetrain;
+   * this.subIntake = subIntake;
+   * this.subLEDs = subLEDs;
+   * this.subPitch = subPitch;
+   * this.subShooter = subShooter;
+   * this.subTransfer = subTransfer;
+   * this.subTurret = subTurret;
+   * 
+   * addCommands(
+   * // Shoot preloaded game piece
+   * Commands.runOnce(() ->
+   * RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+   * new Shoot(subShooter, subLEDs).until(() ->
+   * !subTransfer.calcGamePieceCollected()),
+   * 
+   * // -- ATTEMPT TO SCORE C1 AND C2 --
+   * // Drive to C1
+   * AutoBuilder.followPath(PC1),
+   * 
+   * // Check if we got C1.
+   * // If yes, drive to score C1 in the speaker and then drive to collect c2
+   * C1sC2.unless(() -> !subTransfer.calcGamePieceCollected()),
+   * 
+   * // If no, drive to collect C2 from C1
+   * AutoBuilder.followPath(C1C2).unless(() -> lastGamePiece == 4),
+   * 
+   * // Either way we have ended up at C2. For simplicity, lets just assume we get
+   * it
+   * // and drive to score it in the speaker.
+   * AutoBuilder.followPath(C2s),
+   * 
+   * // -- WING TIME! --
+   * // Run the W1aW2aW3s routine.
+   * // Auto ends.
+   * AutoBuilder.followPath(scoreWing)
+   * 
+   * );
+   * }
+   */
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> (FieldConstants.isRedAlliance())
-        ? PC1Flipped.getStartingDifferentialPose()
-        : PC1.getStartingDifferentialPose();
+    // return () -> (FieldConstants.isRedAlliance())
+    // ? PC1Flipped.getStartingDifferentialPose()
+    // : PC1.getStartingDifferentialPose();
+    return null;
   }
 
   public Command getAutonomousCommand() {
     return this;
   }
+
 }

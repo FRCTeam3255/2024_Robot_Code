@@ -27,10 +27,7 @@
   "NetworkTables": {
     "transitory": {
       "Monologue": {
-        "open": true,
-        "subDrivetrain": {
-          "open": true
-        }
+        "open": true
       },
       "SmartDashboard": {
         "open": true

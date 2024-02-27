@@ -5,10 +5,9 @@
 package frc.robot;
 
 import java.util.Optional;
-import java.util.function.DoubleSupplier;
 
 import com.frcteam3255.joystick.SN_XboxController;
-import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -46,8 +45,8 @@ import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
-import frc.robot.commands.autos.CenterThenWing;
-import frc.robot.commands.autos.WingAuto;
+import frc.robot.commands.autos.WingOnly.DownWing;
+import frc.robot.commands.autos.WingOnly.UpWing;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Annotations.Log;
@@ -112,6 +111,10 @@ public class RobotContainer implements Logged {
     subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
         subVision));
     subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
+
+    // Register Autonomous Named Commands
+    NamedCommands.registerCommand("IntakeGamePiece",
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subLEDs, subClimber, subPitch));
 
     // View controls at:
     // src\main\assets\controllerMap2024.png
@@ -223,10 +226,10 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("Wing Auto",
-        new WingAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-    autoChooser.addOption("Centerline 1, 2, Then Wing",
-        new CenterThenWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+    autoChooser.setDefaultOption("Wing Auto From Upper Sub",
+        new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+    autoChooser.setDefaultOption("Wing Auto From Lower Sub",
+        new UpWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
 
     SmartDashboard.putData(autoChooser);
   }
@@ -303,7 +306,7 @@ public class RobotContainer implements Logged {
    * 
    * @return The command to zero the pitch
    */
-  public Command zeroPitch() {
+  public static Command zeroPitch() {
     return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
   }
 
