@@ -5,14 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.constLEDs;
-import frc.robot.RobotPreferences.prefShooter;
-
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Transfer;
-import frc.robot.subsystems.Turret;
 
 public class Shoot extends Command {
   Shooter subShooter;
@@ -20,7 +14,6 @@ public class Shoot extends Command {
 
   public Shoot(Shooter subShooter, LEDs subLEDs) {
     this.subShooter = subShooter;
-    this.subLEDs = subLEDs;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subShooter);
@@ -38,10 +31,6 @@ public class Shoot extends Command {
 
     // Set LEDs when shooters are up to speed
     if (subShooter.areBothShootersUpToSpeed()) {
-      subLEDs.setLEDs(constLEDs.SHOOTER_UP_TO_SPEED_COLOR);
-
-    } else {
-      subLEDs.clearAnimation();
 
     }
   }

@@ -11,6 +11,7 @@ import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -38,16 +39,22 @@ public class AddVisionMeasurement extends Command {
     ARresult = subVision.getPoseFromARCamera();
     OVresult = subVision.getPoseFromOVCamera();
 
-    if (ARresult.isPresent() && !RobotState.isAutonomous()) {
+    if (ARresult.isPresent()) {
       estimatedPose = ARresult.get().estimatedPose.toPose2d();
       timestamp = ARresult.get().timestampSeconds;
-      subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+      if (estimatedPose.getX() < 5.847097873687744 || estimatedPose.getX() > 10.699200630187988) {
+        subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+        subVision.arPose = estimatedPose;
+      }
     }
 
-    if (OVresult.isPresent() && !RobotState.isAutonomous()) {
+    if (OVresult.isPresent()) {
       estimatedPose = OVresult.get().estimatedPose.toPose2d();
       timestamp = OVresult.get().timestampSeconds;
-      subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+      if (estimatedPose.getX() < 5.847097873687744 || estimatedPose.getX() > 10.699200630187988) {
+        subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+        subVision.ovPose = estimatedPose;
+      }
     }
   }
 

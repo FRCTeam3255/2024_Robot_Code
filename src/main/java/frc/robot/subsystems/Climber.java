@@ -171,9 +171,7 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("Climber/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
-    SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret()); // This has no Climber/ on
-                                                                                          // purpose
-    // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret());
   }
 
 }
