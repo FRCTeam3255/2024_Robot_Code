@@ -55,6 +55,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberAtAngleTolerance = new SN_DoublePreference("climberAtAngleTolerance",
         5);
 
+    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
+        "climberMotorUpSpeed", 0.2);
+    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
+        "climberMotorDownSpeed", -0.2);
+
   }
 
   public static final class prefDrivetrain {
@@ -96,7 +101,7 @@ public class RobotPreferences {
     /**
      * Value to multiply with the translation velocity when slow mode is enabled
      */
-    public static final SN_DoublePreference slowModeMultiplier = new SN_DoublePreference("slowModeMultiplier", .2);
+    public static final SN_DoublePreference slowModeMultiplier = new SN_DoublePreference("slowModeMultiplier", .5);
 
     /**
      * <p>
@@ -122,7 +127,7 @@ public class RobotPreferences {
      * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference measurementStdDevsHeading = new SN_DoublePreference(
-        "measurementStdDevsHeading", Units.degreesToRadians(1));
+        "measurementStdDevsHeading", 10);
   }
 
   public static final class prefIntake {
@@ -158,8 +163,9 @@ public class RobotPreferences {
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 90); // Original: 70. With 0 G, P
-                                                                                            // is 500
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 100); // Original: 70. With 0 G,
+                                                                                             // P
+                                                                                             // is 500
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
     public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
@@ -384,10 +390,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
 
     /**
-     * <b>Units:</b> Degreses
+     * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference turretIsAtAngleTolerance = new SN_DoublePreference(
-        "turretIsAtAngleTolerance", 1);
+        "turretIsAtAngleTolerance", 2);
 
     /**
      * <p>
@@ -451,7 +457,7 @@ public class RobotPreferences {
      * <b>Units:</b> Meters
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
-        "visionStdDevsPosition", 0.9);
+        "visionStdDevsPosition", 5);
 
     /**
      * <p>
@@ -460,7 +466,7 @@ public class RobotPreferences {
      * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
-        "visionStdDevsHeading", Units.degreesToRadians(10));
+        "visionStdDevsHeading", 500);
 
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
 

@@ -30,7 +30,7 @@ public class TransferGamePiece extends Command {
     this.subPitch = subPitch;
     this.subTurret = subTurret;
 
-    addRequirements(subTransfer);
+    addRequirements(subTransfer, subLEDs);
   }
 
   // Called when the command is initially scheduled.
