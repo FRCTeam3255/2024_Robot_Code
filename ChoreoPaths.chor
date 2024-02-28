@@ -406,8 +406,21 @@
             "defaultControlIntervalCount": 40,
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
-            "eventMarkers": [],
-            "isTrajectoryStale": true
+            "eventMarkers": [
+                {
+                    "name": "IntakeW1",
+                    "target": 2,
+                    "targetTimestamp": 1.8494470033219528,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                }
+            ],
+            "isTrajectoryStale": false
         },
         "D C1UntilC5": {
             "waypoints": [
@@ -1151,8 +1164,57 @@
             "defaultControlIntervalCount": 40,
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
-            "eventMarkers": [],
-            "isTrajectoryStale": true
+            "eventMarkers": [
+                {
+                    "name": "IntakeW2",
+                    "target": 1,
+                    "targetTimestamp": 0.817387222238145,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW3",
+                    "target": 3,
+                    "targetTimestamp": 1.9541264946507784,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW4",
+                    "target": 5,
+                    "targetTimestamp": 3.1272982004161722,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW5",
+                    "target": 7,
+                    "targetTimestamp": 4.30194414950554,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                }
+            ],
+            "isTrajectoryStale": false
         },
         "D C1sUntilC5s": {
             "waypoints": [
@@ -3699,8 +3761,57 @@
             "defaultControlIntervalCount": 40,
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
-            "eventMarkers": [],
-            "isTrajectoryStale": true
+            "eventMarkers": [
+                {
+                    "name": "IntakeW2",
+                    "target": 3,
+                    "targetTimestamp": 2.803790725269928,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW3",
+                    "target": 8,
+                    "targetTimestamp": 5.89640983841337,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW4",
+                    "target": 13,
+                    "targetTimestamp": 9.514668967317922,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW5",
+                    "target": 18,
+                    "targetTimestamp": 13.195322036890937,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                }
+            ],
+            "isTrajectoryStale": false
         },
         "U PsC5": {
             "waypoints": [
@@ -4075,8 +4186,21 @@
             "defaultControlIntervalCount": 40,
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
-            "eventMarkers": [],
-            "isTrajectoryStale": true
+            "eventMarkers": [
+                {
+                    "name": "IntakeW5",
+                    "target": 1,
+                    "targetTimestamp": 2.069791264941427,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                }
+            ],
+            "isTrajectoryStale": false
         },
         "U C5UntilC1": {
             "waypoints": [
@@ -4820,8 +4944,57 @@
             "defaultControlIntervalCount": 40,
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
-            "eventMarkers": [],
-            "isTrajectoryStale": true
+            "eventMarkers": [
+                {
+                    "name": "IntakeW1",
+                    "target": 1,
+                    "targetTimestamp": 0.8109446058791848,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW2",
+                    "target": 3,
+                    "targetTimestamp": 1.9855905549685526,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW3",
+                    "target": 5,
+                    "targetTimestamp": 3.1666791204168816,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW4",
+                    "target": 7,
+                    "targetTimestamp": 4.3034183928295136,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                }
+            ],
+            "isTrajectoryStale": false
         },
         "U C5sUntilC1s": {
             "waypoints": [
@@ -7231,8 +7404,57 @@
             "defaultControlIntervalCount": 40,
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
-            "eventMarkers": [],
-            "isTrajectoryStale": true
+            "eventMarkers": [
+                {
+                    "name": "IntakeW4",
+                    "target": 3,
+                    "targetTimestamp": 3.355318615847471,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW3",
+                    "target": 8,
+                    "targetTimestamp": 6.932260466291644,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW2",
+                    "target": 13,
+                    "targetTimestamp": 10.030959994521142,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                },
+                {
+                    "name": "IntakeW1",
+                    "target": 17,
+                    "targetTimestamp": 13.152860230733163,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": "IntakeGamePiece"
+                        }
+                    }
+                }
+            ],
+            "isTrajectoryStale": false
         },
         "PsW1sW2sW3s": {
             "waypoints": [
@@ -7712,7 +7934,7 @@
                     }
                 }
             ],
-            "isTrajectoryStale": true
+            "isTrajectoryStale": false
         },
         "PsW3sW2sW1s": {
             "waypoints": [
@@ -8186,7 +8408,7 @@
                     }
                 }
             ],
-            "isTrajectoryStale": true
+            "isTrajectoryStale": false
         },
         "box": {
             "waypoints": [
@@ -8229,6 +8451,15 @@
                 {
                     "x": 0,
                     "y": 0,
+                    "heading": 0,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 40
+                },
+                {
+                    "x": 0.26613104343414307,
+                    "y": 5.536739349365234,
                     "heading": 0,
                     "isInitialGuess": false,
                     "translationConstrained": true,

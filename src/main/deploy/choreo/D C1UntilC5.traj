@@ -514,5 +514,46 @@
       "timestamp": 4.665645492715725
     }
   ],
-  "eventMarkers": []
+  "eventMarkers": [
+    {
+      "name": "IntakeW2",
+      "timestamp": 0.817387222238145,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeGamePiece"
+        }
+      }
+    },
+    {
+      "name": "IntakeW3",
+      "timestamp": 1.9541264946507784,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeGamePiece"
+        }
+      }
+    },
+    {
+      "name": "IntakeW4",
+      "timestamp": 3.1272982004161722,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeGamePiece"
+        }
+      }
+    },
+    {
+      "name": "IntakeW5",
+      "timestamp": 4.30194414950554,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeGamePiece"
+        }
+      }
+    }
+  ]
 }

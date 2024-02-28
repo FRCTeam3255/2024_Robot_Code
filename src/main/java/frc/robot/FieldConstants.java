@@ -62,7 +62,7 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the blue speaker, in meters
      */
-    private static final Pose3d SPEAKER = new Pose3d(0, 5.547, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER = new Pose3d(0, 5.619077205657959, 1.552, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the blue amp, in meters.
@@ -82,7 +82,7 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the red speaker, in meters
      */
-    private static final Pose3d SPEAKER = new Pose3d(16.5410515, 5.547, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER = new Pose3d(16.5410515, 5.619077205657959, 1.552, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the red amp, in meters

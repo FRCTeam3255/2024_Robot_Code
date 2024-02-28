@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -231,7 +232,9 @@ public class Turret extends SubsystemBase {
         break;
     }
 
-    Pose2d turretPose = robotPose.transformBy(robotToTurret);
+    Rotation2d rotation = robotPose.getRotation().plus(robotToTurret.getRotation().unaryMinus());
+    Translation2d translation = robotPose.getTranslation().plus(robotToTurret.getTranslation());
+    Pose2d turretPose = new Pose2d(translation, rotation);
 
     Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
     Rotation2d desiredAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());

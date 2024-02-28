@@ -39,12 +39,12 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 100);
+        "climberMotorForwardLimit", 87);
     /**
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", 0);
+        "climberMotorReverseLimit", 1);
 
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
     public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
@@ -64,7 +64,7 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.05); // 0.21
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.21);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
@@ -75,8 +75,7 @@ public class RobotPreferences {
         0);
 
     public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv",
-        1 / (RobotContainer.isPracticeBot() ? constDrivetrain.pracBot.THEORETICAL_MAX_DRIVE_SPEED
-            : constDrivetrain.THEORETICAL_MAX_DRIVE_SPEED));
+        (1 / 15.1));
 
     // This PID is implemented on the Drivetrain subsystem
     public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0.5);

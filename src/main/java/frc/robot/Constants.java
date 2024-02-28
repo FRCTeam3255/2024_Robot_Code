@@ -40,7 +40,7 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.233070;
+    public static final double ABS_ENCODER_OFFSET = 0.046801;
     public static final double GEAR_RATIO = 327.6;
   }
 
@@ -266,7 +266,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
-        new Translation3d(0, 0, Units.inchesToMeters(14.5)),
+        new Translation3d(Units.inchesToMeters(1), 0, 0),
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
 
     // TODO: figure out why its 180 because it makes no sense and theres probably a
