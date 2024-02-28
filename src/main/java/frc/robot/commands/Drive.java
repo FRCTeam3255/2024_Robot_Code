@@ -60,10 +60,14 @@ public class Drive extends Command {
 
   @Override
   public void execute() {
-    // Get inputs
-    slowMultiplier = (slowMode.getAsBoolean()) ? prefDrivetrain.slowModeMultiplier.getValue() : 1;
-    xVelocity = (xAxis.getAsDouble() * driveSpeed);
-    yVelocity = (-yAxis.getAsDouble() * driveSpeed);
+    if (slowMode.getAsBoolean()) {
+      slowMultiplier = prefDrivetrain.slowModeMultiplier.getValue();
+    } else {
+      slowMultiplier = 1;
+    }
+
+    xVelocity = (xAxis.getAsDouble() * driveSpeed) * slowMultiplier;
+    yVelocity = (-yAxis.getAsDouble() * driveSpeed) * slowMultiplier;
     rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
 
     translationVelocity = new Translation2d(xVelocity, yVelocity).times(slowMultiplier);
