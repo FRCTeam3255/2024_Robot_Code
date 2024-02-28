@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.autos.WingOnly;
+package frc.robot.commands.autos.Simple;
 
 import java.util.function.Supplier;
 
@@ -26,7 +26,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
-public class DownWing extends SequentialCommandGroup implements AutoInterface {
+public class BOX extends SequentialCommandGroup implements AutoInterface {
   Drivetrain subDrivetrain;
   Intake subIntake;
   LEDs subLEDs;
@@ -35,11 +35,11 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
   Transfer subTransfer;
   Turret subTurret;
 
-  PathPlannerPath PsW1sW2sW3s = PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.1");
-  PathPlannerPath PsW1sW2sW3sFlipped = PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.1").flipPath();
+  PathPlannerPath box = PathPlannerPath.fromChoreoTrajectory("box");
+  PathPlannerPath boxFlipped = PathPlannerPath.fromChoreoTrajectory("box").flipPath();
   Pose2d startingPosition;
 
-  public DownWing(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
+  public BOX(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
@@ -48,31 +48,17 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-
     startingPosition = getInitialPose().get();
 
     addCommands(
         Commands.runOnce(() -> subDrivetrain.resetPoseToPose(startingPosition)),
-
-        // Shoot preloaded game piece
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
-
-        RobotContainer.zeroPitch(), // I have no clue if this will work.. i think autobuilder will override it
-        AutoBuilder.followPath(PsW1sW2sW3s),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
-
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.2")),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
-
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.3")),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()));
+        AutoBuilder.followPath(box));
   }
 
   public Supplier<Pose2d> getInitialPose() {
     return () -> (FieldConstants.isRedAlliance())
-        ? PsW1sW2sW3sFlipped.getStartingDifferentialPose()
-        : PsW1sW2sW3s.getStartingDifferentialPose();
+        ? boxFlipped.getStartingDifferentialPose()
+        : box.getStartingDifferentialPose();
   }
 
   public Command getAutonomousCommand() {

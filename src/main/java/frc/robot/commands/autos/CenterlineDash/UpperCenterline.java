@@ -38,6 +38,7 @@ public class UpperCenterline extends SequentialCommandGroup implements AutoInter
 
   PathPlannerPath initPath = PathPlannerPath.fromChoreoTrajectory("D PsC1");
   PathPlannerPath initPathFlipped = PathPlannerPath.fromChoreoTrajectory("D PsC1").flipPath();
+  Pose2d startingPosition;
 
   /**
    * @formatter:off
@@ -64,7 +65,11 @@ public class UpperCenterline extends SequentialCommandGroup implements AutoInter
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
 
+    startingPosition = getInitialPose().get();
+
     addCommands(
+        Commands.runOnce(() -> subDrivetrain.resetPoseToPose(startingPosition)),
+
         // Shoot preloaded game piece
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),

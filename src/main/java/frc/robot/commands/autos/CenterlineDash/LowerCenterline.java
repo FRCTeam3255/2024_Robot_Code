@@ -39,6 +39,8 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
   PathPlannerPath initPath = PathPlannerPath.fromChoreoTrajectory("U PsC5");
   PathPlannerPath initPathFlipped = PathPlannerPath.fromChoreoTrajectory("U PsC5").flipPath();
 
+  Pose2d startingPosition;
+
   /**
    * @formatter:off
    * 
@@ -64,7 +66,10 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
 
+    startingPosition = getInitialPose().get();
+
     addCommands(
+        Commands.runOnce(() -> subDrivetrain.resetPoseToPose(startingPosition)),
         // Shoot preloaded game piece
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),

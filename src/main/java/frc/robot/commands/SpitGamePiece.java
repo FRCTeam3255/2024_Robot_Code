@@ -5,12 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Transfer;
 
@@ -18,21 +16,18 @@ public class SpitGamePiece extends Command {
   /** Creates a new SpitGamePiece. */
   Intake globalIntake;
   Transfer globalTransfer;
-  LEDs globalLEDs;
   Pitch subPitch;
   Climber subClimber;
 
   double lastDesiredPitch;
 
-  public SpitGamePiece(Intake subIntake, Transfer subTransfer, LEDs subLEDs, Pitch subPitch, Climber subClimber) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public SpitGamePiece(Intake subIntake, Transfer subTransfer, Pitch subPitch, Climber subClimber) {
     globalIntake = subIntake;
     globalTransfer = subTransfer;
-    globalLEDs = subLEDs;
     this.subPitch = subPitch;
     this.subClimber = subClimber;
 
-    addRequirements(globalIntake, globalTransfer, subPitch, subLEDs);
+    addRequirements(globalIntake, globalTransfer, subPitch);
   }
 
   // Called when the command is initially scheduled.
@@ -61,18 +56,11 @@ public class SpitGamePiece extends Command {
     globalTransfer.setTransferNeutralOutput();
     globalTransfer.setFeederNeutralOutput();
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
-
-    if (!interrupted) {
-
-      globalLEDs.setLEDs(constLEDs.SPIT_OUT_GAME_PIECE);
-    }
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
     return false;
   }
 }

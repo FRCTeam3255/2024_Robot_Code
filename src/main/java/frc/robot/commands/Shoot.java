@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constLEDs;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Shooter;
 
@@ -28,11 +29,6 @@ public class Shoot extends Command {
   @Override
   public void execute() {
     subShooter.getUpToSpeed();
-
-    // Set LEDs when shooters are up to speed
-    if (subShooter.areBothShootersUpToSpeed()) {
-
-    }
   }
 
   // Called once the command ends or is interrupted.

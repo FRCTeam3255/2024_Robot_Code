@@ -5,56 +5,57 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.Constants.constLEDs;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
-public class TransferGamePiece extends Command {
-  /** Creates a new TransferGamePiece. */
-  Transfer subTransfer;
-  Turret subTurret;
+public class SetLEDS extends Command {
+  LEDs subLEDs;
   Shooter subShooter;
+  Turret subTurret;
   Pitch subPitch;
+  Transfer subTransfer;
 
-  public TransferGamePiece(Shooter subShooter, Turret subTurret,
-      Transfer subTransfer, Pitch subPitch) {
-    this.subTransfer = subTransfer;
+  public SetLEDS(LEDs subLEDs, Shooter subShooter, Turret subTurret, Pitch subPitch, Transfer subTransfer) {
+    this.subLEDs = subLEDs;
     this.subShooter = subShooter;
-    this.subPitch = subPitch;
     this.subTurret = subTurret;
+    this.subPitch = subPitch;
+    this.subTransfer = subTransfer;
 
-    addRequirements(subTransfer);
+    addRequirements(subLEDs);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subTransfer.setGamePieceCollected(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subShooter.areBothShootersUpToSpeed()
-        && subPitch.isPitchAtGoalAngle()
-        && subTurret.isTurretAtGoalAngle()) {
+    // If we have a game piece, set to game piece colors
+    if (subTransfer.calcGamePieceCollected()) {
+      // Set LEDs when we are ready to shoot
+      if (subShooter.areBothShootersUpToSpeed()
+          && subPitch.isPitchAtGoalAngle()
+          && subTurret.isTurretAtGoalAngle()) {
 
-      subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
-    } else {
-      subTransfer.setFeederNeutralOutput();
-      subTransfer.setTransferNeutralOutput();
+        subLEDs.setLEDs(constLEDs.GREEN_COLOR);
+        return;
+      }
+      subLEDs.setLEDs(constLEDs.INTAKE_GAME_PIECE_COLLECTED);
+      return;
     }
-
+    subLEDs.clearAnimation();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subTransfer.setFeederNeutralOutput();
-    subTransfer.setTransferNeutralOutput();
   }
 
   // Returns true when the command should end.

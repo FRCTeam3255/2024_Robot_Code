@@ -37,6 +37,7 @@ public class UpWing extends SequentialCommandGroup implements AutoInterface {
 
   PathPlannerPath PsW3sW2sW1s = PathPlannerPath.fromChoreoTrajectory("PsW3sW2sW1s.1");
   PathPlannerPath PsW3sW2sW1sFlipped = PathPlannerPath.fromChoreoTrajectory("PsW3sW2sW1s.1").flipPath();
+  Pose2d startingPosition;
 
   public UpWing(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret) {
@@ -48,7 +49,11 @@ public class UpWing extends SequentialCommandGroup implements AutoInterface {
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
 
+    startingPosition = getInitialPose().get();
+
     addCommands(
+        Commands.runOnce(() -> subDrivetrain.resetPoseToPose(startingPosition)),
+
         // Shoot preloaded game piece
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),

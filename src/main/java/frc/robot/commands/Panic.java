@@ -12,7 +12,6 @@ public class Panic extends Command {
   LEDs subLEDs;
 
   public Panic(LEDs subLEDs) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.subLEDs = subLEDs;
     addRequirements(subLEDs);
   }
