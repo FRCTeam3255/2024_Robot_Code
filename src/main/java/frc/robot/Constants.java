@@ -277,6 +277,7 @@ public final class Constants {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 
+    // Camera Positions Updated by Alice Feb. 27th
     /**
      * The position, in meters, of the center of the camera lens relative to the
      * center of the robot (Robot Coordinates).

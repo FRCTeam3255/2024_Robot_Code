@@ -444,7 +444,7 @@ public class RobotPreferences {
      * <b>Units:</b> Meters
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
-        "visionStdDevsPosition", 0.9);
+        "visionStdDevsPosition", 0.3);
 
     /**
      * <p>
@@ -453,7 +453,7 @@ public class RobotPreferences {
      * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
-        "visionStdDevsHeading", Units.degreesToRadians(10));
+        "visionStdDevsHeading", 0.3 * Math.PI);
 
     public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
 
