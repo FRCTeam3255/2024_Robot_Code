@@ -40,7 +40,7 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.066327;
+    public static final double ABS_ENCODER_OFFSET = 0.083989;
     public static final double GEAR_RATIO = 220.5;
   }
 
@@ -277,7 +277,6 @@ public final class Constants {
     public static final String AR_NAME = "Global_Shutter_Camera";
     public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
 
-    // Camera Positions Updated by Alice Feb. 27th
     /**
      * The position, in meters, of the center of the camera lens relative to the
      * center of the robot (Robot Coordinates).

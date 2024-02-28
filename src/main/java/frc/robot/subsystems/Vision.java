@@ -47,10 +47,15 @@ public class Vision extends SubsystemBase {
         ARCamera,
         constVision.ROBOT_TO_AR);
 
+    ARCameraPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
     OVCameraPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         OVCamera,
         constVision.ROBOT_TO_OV);
+
+    OVCameraPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
   }
 
   public Optional<EstimatedRobotPose> getPoseFromARCamera() {
