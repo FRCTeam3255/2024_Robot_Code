@@ -32,7 +32,7 @@ public class SpitGamePiece extends Command {
     this.subPitch = subPitch;
     this.subClimber = subClimber;
 
-    addRequirements(globalIntake, globalTransfer, subPitch);
+    addRequirements(globalIntake, globalTransfer, subPitch, subLEDs);
   }
 
   // Called when the command is initially scheduled.

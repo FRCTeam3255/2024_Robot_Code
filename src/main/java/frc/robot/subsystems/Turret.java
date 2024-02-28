@@ -256,5 +256,6 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
     SmartDashboard.putNumber("Turret/Desired Angle (Degrees)", desiredTurretAngle);
     SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
+    SmartDashboard.putBoolean("Turret/Is At Desired Angle", isTurretAtGoalAngle());
   }
 }

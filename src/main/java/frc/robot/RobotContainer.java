@@ -102,8 +102,6 @@ public class RobotContainer implements Logged {
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain, subClimber));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain, subClimber));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain,
-        subVision));
     subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
 
     // View controls at:
@@ -366,5 +364,9 @@ public class RobotContainer implements Logged {
       subLEDs.setIndividualLED(YTranslationColor, 5);
       subLEDs.setIndividualLED(YTranslationColor, 6);
     }
+  }
+
+  public static Command AddVisionMeasurement() {
+    return new AddVisionMeasurement(subDrivetrain, subVision).ignoringDisable(true);
   }
 }

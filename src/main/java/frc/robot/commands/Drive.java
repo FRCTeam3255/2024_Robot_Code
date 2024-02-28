@@ -76,8 +76,8 @@ public class Drive extends Command {
   public void execute() {
     // Get inputs
     slowMultiplier = (slowMode.getAsBoolean()) ? prefDrivetrain.slowModeMultiplier.getValue() : 1;
-    xVelocity = xAxis.getAsDouble() * driveSpeed;
-    yVelocity = -yAxis.getAsDouble() * driveSpeed;
+    xVelocity = (xAxis.getAsDouble() * driveSpeed);
+    yVelocity = (-yAxis.getAsDouble() * driveSpeed);
     rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
 
     translationVelocity = new Translation2d(xVelocity, yVelocity).times(slowMultiplier);
