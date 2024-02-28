@@ -86,10 +86,10 @@ public class Pitch extends SubsystemBase {
    *                     the pitch will not turn above 30 degrees
    */
   public void setPitchAngle(double angle, boolean hasCollision) {
-    desiredPitchAngle = angle;
     if (hasCollision && angle >= prefPitch.pitchMaxIntake.getValue()) {
       angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
     }
+    desiredPitchAngle = angle;
     pitchMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
@@ -208,5 +208,7 @@ public class Pitch extends SubsystemBase {
     SmartDashboard.putNumber("Pitch/Voltage", getPitchVoltage());
     SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
     SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
+
+    SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());
   }
 }

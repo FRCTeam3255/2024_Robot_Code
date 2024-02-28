@@ -13,15 +13,23 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Vision extends SubsystemBase {
+public class Vision extends SubsystemBase implements Logged {
   PhotonPoseEstimator ARCameraPoseEstimator;
   PhotonPoseEstimator OVCameraPoseEstimator;
   AprilTagFieldLayout aprilTagFieldLayout;
   PhotonCamera ARCamera;
   PhotonCamera OVCamera;
+
+  @Log.NT
+  public Pose2d arPose;
+  @Log.NT
+  public Pose2d ovPose;
 
   public Vision() {
     try {

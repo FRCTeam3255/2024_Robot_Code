@@ -14,6 +14,7 @@ public class Panic extends Command {
   public Panic(LEDs subLEDs) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subLEDs = subLEDs;
+    addRequirements(subLEDs);
   }
 
   // Called when the command is initially scheduled.

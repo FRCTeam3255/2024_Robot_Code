@@ -42,13 +42,19 @@ public class AddVisionMeasurement extends Command {
     if (ARresult.isPresent()) {
       estimatedPose = ARresult.get().estimatedPose.toPose2d();
       timestamp = ARresult.get().timestampSeconds;
-      subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+      if (estimatedPose.getX() < 5.847097873687744 || estimatedPose.getX() > 10.699200630187988) {
+        subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+        subVision.arPose = estimatedPose;
+      }
     }
 
     if (OVresult.isPresent()) {
       estimatedPose = OVresult.get().estimatedPose.toPose2d();
       timestamp = OVresult.get().timestampSeconds;
-      subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+      if (estimatedPose.getX() < 5.847097873687744 || estimatedPose.getX() > 10.699200630187988) {
+        subDrivetrain.addVisionMeasurement(estimatedPose, timestamp);
+        subVision.ovPose = estimatedPose;
+      }
     }
   }
 

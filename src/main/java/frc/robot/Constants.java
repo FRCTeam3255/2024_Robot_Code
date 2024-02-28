@@ -40,7 +40,7 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.083989;
+    public static final double ABS_ENCODER_OFFSET = 0.063389;
     public static final double GEAR_RATIO = 220.5;
   }
 
@@ -137,7 +137,7 @@ public final class Constants {
   }
 
   public static class constLEDs {
-    public static final int LED_NUMBER = 192;
+    public static final int LED_NUMBER = 200;
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
@@ -286,8 +286,8 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(-12.125), Units.inchesToMeters(-8.625), Units.inchesToMeters(21.75)),
-        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-45)));
+        new Translation3d(Units.inchesToMeters(12.125), Units.inchesToMeters(-8.625), Units.inchesToMeters(8)),
+        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-25)));
 
     /**
      * The position, in meters, of the center of the camera lens relative to the
@@ -298,8 +298,8 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(-12.125), Units.inchesToMeters(8.625), Units.inchesToMeters(21.75)),
-        new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(45)));
+        new Translation3d(Units.inchesToMeters(12.125), Units.inchesToMeters(8.625), Units.inchesToMeters(8)),
+        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
   }
 
   public static class constTransfer {
