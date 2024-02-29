@@ -115,7 +115,8 @@ public class RobotContainer implements Logged {
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain, subClimber));
     subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
     subLEDs
-        .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subPitch, subTransfer, conOperator.btn_East));
+        .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subPitch, subTransfer, conOperator.btn_East,
+            conDriver.btn_RightBumper));
 
     // Register Autonomous Named Commands
     NamedCommands.registerCommand("IntakeGamePiece",
@@ -138,42 +139,41 @@ public class RobotContainer implements Logged {
     controller.btn_West.onTrue(new ZeroClimber(subClimber));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
 
-    // Climb Up
-    controller.btn_LeftTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorUpSpeed.getValue()), subClimber)
-            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
-    controller.btn_LeftTrigger.onTrue(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(true, true)));
-    controller.btn_LeftTrigger.onFalse(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(0), subClimber));
+    // // Climb Up
 
-    // Climb Down
-    controller.btn_RightTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorDownSpeed.getValue()), subClimber)
-            .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
-    controller.btn_RightTrigger.onTrue(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(true, true)));
-    controller.btn_RightTrigger.onFalse(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(0), subClimber));
+    // controller.btn_LeftTrigger.whileTrue(
+    // Commands.run(() ->
+    // subClimber.setClimberMotorSpeed(prefClimber.climberMotorUpSpeed.getValue()),
+    // subClimber)
+    // .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
+    // controller.btn_LeftTrigger.onFalse(
+    // Commands.run(() -> subClimber.setClimberMotorSpeed(0), subClimber));
+
+    // // Climb Down
+    // controller.btn_RightTrigger.whileTrue(
+    // Commands.run(() ->
+    // subClimber.setClimberMotorSpeed(prefClimber.climberMotorDownSpeed.getValue()),
+    // subClimber)
+    // .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
+    // controller.btn_RightTrigger.onFalse(
+    // Commands.run(() -> subClimber.setClimberMotorSpeed(0), subClimber));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
-        .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION), subLEDs))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch)
-            .alongWith(Commands
-                .runOnce(() -> subClimber.setClimbingConfigs(false))));
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
     controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch, subClimber));
 
-    controller.btn_West.onTrue(
-        Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)
-            .alongWith(Commands
-                .runOnce(() -> subClimber.setClimbingConfigs(false))));
+    controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
+        .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
+            Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)));
 
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
@@ -184,10 +184,10 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subShooter.setDesiredVelocities(0,
                 0))
                 .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0,
-                    false)))
+                    subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
                     () -> subPitch.setPitchAngle(0,
-                        false)))));
+                        subClimber.collidesWithPitch())))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
@@ -203,10 +203,10 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
                 prefShooter.rightShooterAmpVelocity.getValue()))
                 .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue(),
-                    false)))
+                    subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
                     () -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue(),
-                        false)))));
+                        subClimber.collidesWithPitch())))));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -216,9 +216,9 @@ public class RobotContainer implements Logged {
         .alongWith(
             Commands.runOnce(
                 () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue(),
-                    false)))
+                    subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(), false))));
+            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(), subClimber.collidesWithPitch()))));
 
     // Trap Preset
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
@@ -227,9 +227,9 @@ public class RobotContainer implements Logged {
         .alongWith(
             Commands.runOnce(
                 () -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue(),
-                    false)))
+                    subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(), false))));
+            () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(), subClimber.collidesWithPitch()))));
 
   }
 
@@ -247,7 +247,7 @@ public class RobotContainer implements Logged {
         new UpperCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
 
     autoChooser.addOption("Only Shoot",
-        new OnlyShoot(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+        new OnlyShoot(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
 
     SmartDashboard.putData(autoChooser);
   }

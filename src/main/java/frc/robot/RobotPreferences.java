@@ -39,7 +39,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 82);
+        "climberMotorForwardLimit", 75);
     /**
      * <b>Units:</b> Degrees
      */
@@ -48,7 +48,7 @@ public class RobotPreferences {
 
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
     public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage",
-        -2);
+        -1);
 
     /**
      * <b>Units:</b> Degrees
@@ -79,11 +79,11 @@ public class RobotPreferences {
         (1 / 15.1));
 
     // This PID is implemented on the Drivetrain subsystem
-    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 0.5);
+    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 3.5);
     public static final SN_DoublePreference autoDriveI = new SN_DoublePreference("autoDriveI", 0);
-    public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0);
+    public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0.1);
 
-    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 0);
+    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 10);
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
@@ -151,7 +151,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference intakeIntakingAngle = new SN_DoublePreference(
-        "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 1);
+        "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 0.5);
 
     /**
      * The time that we wait to get a game piece in auto

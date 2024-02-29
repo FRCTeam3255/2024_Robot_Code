@@ -19,6 +19,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private boolean hasAutoRun = false;
 
   @Override
   public void robotInit() {
@@ -69,6 +70,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.clearSubsystemMovements().schedule();
+    hasAutoRun = true;
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -87,6 +89,9 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+    }
+    if (!hasAutoRun) {
+      RobotContainer.zeroClimber().schedule();
     }
     m_robotContainer.clearSubsystemMovements().schedule();
   }

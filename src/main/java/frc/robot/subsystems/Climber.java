@@ -39,6 +39,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void configure() {
+    climberMotor.getConfigurator().apply(new TalonFXConfiguration());
     climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
     climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
     climberConfig.Slot0.kI = prefClimber.climberItele.getValue();
@@ -57,31 +58,9 @@ public class Climber extends SubsystemBase {
     climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
     climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0;
 
-    climberMotor.getConfigurator().apply(climberConfig);
-    climberMotor.setInverted(prefClimber.climberInverted.getValue());
-
-  }
-
-  public void setClimbingConfigs(boolean isClimbing) {
-    if (isClimbing) {
-      climberConfig.Slot0.kG = prefClimber.climberGClimb.getValue();
-      climberConfig.Slot0.kP = prefClimber.climberPClimb.getValue();
-      climberConfig.Slot0.kI = prefClimber.climberIClimb.getValue();
-      climberConfig.Slot0.kD = prefClimber.climberDClimb.getValue();
-
-      climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
-          .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue() + 12);
-
-    } else {
-      climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
-      climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
-      climberConfig.Slot0.kI = prefClimber.climberItele.getValue();
-      climberConfig.Slot0.kD = prefClimber.climberDtele.getValue();
-
-      climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
-          .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
-
-    }
+    climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionEnable = true;
+    climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionValue = Units
+        .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
 
     climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
@@ -154,12 +133,23 @@ public class Climber extends SubsystemBase {
     return climberMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
 
+  public boolean isAtAngle(double angle) {
+    if (Math.abs(getPosition() - angle) <= 1) {
+      return true;
+
+    } else {
+      return false;
+    }
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
     SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret());
     SmartDashboard.putString("Climber/Limit Switch Reverse", climberMotor.getReverseLimit().getValue().toString());
+    SmartDashboard.putString("Climber/Limit Switch Forward", climberMotor.getForwardLimit().getValue().toString());
+
   }
 
 }

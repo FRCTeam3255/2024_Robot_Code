@@ -17,6 +17,7 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -56,7 +57,9 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
 
         // Shoot preloaded game piece
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
+        Commands.race(
+            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch),
+            new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected())),
 
         Commands.parallel(
             RobotContainer.zeroPitch(),

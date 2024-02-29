@@ -54,9 +54,9 @@ public class IntakeFromSource extends Command {
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
 
-    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), false);
+    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), subClimber.collidesWithPitch());
 
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), false);
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
 
   }
 
@@ -71,7 +71,7 @@ public class IntakeFromSource extends Command {
     subTransfer.setFeederNeutralOutput();
     subTransfer.setTransferNeutralOutput();
     subShooter.setDesiredVelocities(lastDesiredSpeedLeft, lastDesiredSpeedRight);
-    subPitch.setPitchAngle(lastDesiredPitch, false);
+    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
   }
 
   // Returns true when the command should end.

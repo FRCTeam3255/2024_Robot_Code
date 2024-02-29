@@ -20,15 +20,17 @@ public class SetLEDS extends Command {
   Pitch subPitch;
   Transfer subTransfer;
   Trigger amplify;
+  Trigger defense;
 
   public SetLEDS(LEDs subLEDs, Shooter subShooter, Turret subTurret, Pitch subPitch, Transfer subTransfer,
-      Trigger amplify) {
+      Trigger amplify, Trigger defense) {
     this.subLEDs = subLEDs;
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
     this.subTransfer = subTransfer;
     this.amplify = amplify;
+    this.defense = defense;
 
     addRequirements(subLEDs);
   }
@@ -43,6 +45,11 @@ public class SetLEDS extends Command {
   public void execute() {
     if (amplify.getAsBoolean()) {
       subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION);
+      return;
+    }
+
+    if (defense.getAsBoolean()) {
+      subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION);
       return;
     }
 

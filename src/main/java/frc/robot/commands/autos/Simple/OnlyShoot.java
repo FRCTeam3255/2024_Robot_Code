@@ -7,6 +7,7 @@ package frc.robot.commands.autos.Simple;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,8 +17,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.autos.AutoInterface;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -34,13 +38,13 @@ public class OnlyShoot extends SequentialCommandGroup implements AutoInterface {
   Shooter subShooter;
   Transfer subTransfer;
   Turret subTurret;
+  Climber subClimber;
 
-  PathPlannerPath onlyShoot = PathPlannerPath.fromChoreoTrajectory("OnlyShoot");
-  PathPlannerPath onlyShootFlipped = PathPlannerPath.fromChoreoTrajectory("OnlyShoot").flipPath();
+  PathPlannerAuto onlyShoot = new PathPlannerAuto("OnlyShoot");
   Pose2d startingPosition;
 
   public OnlyShoot(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret) {
+      Transfer subTransfer, Turret subTurret, Climber subClimber) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
@@ -48,26 +52,33 @@ public class OnlyShoot extends SequentialCommandGroup implements AutoInterface {
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-    startingPosition = getInitialPose().get();
+    this.subClimber = subClimber;
 
     addCommands(
-        Commands.runOnce(() -> subDrivetrain.resetPoseToPose(startingPosition)),
+        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+            Commands.sequence(
+                Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+                Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees())),
 
-        // Shoot preloaded game piece
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
+                // get preload
+                Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+                Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
-        Commands.parallel(
-            RobotContainer.zeroPitch(),
-            RobotContainer.zeroClimber()),
+                // shoot preload
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                    .until(() -> !subTransfer.calcGamePieceCollected()))),
 
-        AutoBuilder.followPath(onlyShoot));
+        new PathPlannerAuto("OnlyShoot"),
+
+        Commands.race(
+            RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
+            RobotContainer.zeroClimber()));
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> (FieldConstants.isRedAlliance())
-        ? onlyShootFlipped.getStartingDifferentialPose()
-        : onlyShoot.getStartingDifferentialPose();
+    return () -> (!FieldConstants.isRedAlliance())
+        ? PathPlannerAuto.getStaringPoseFromAutoFile("OnlyShoot")
+        : PathPlannerPath.fromPathFile("OnlyShoot").flipPath().getPreviewStartingHolonomicPose();
   }
 
   public Command getAutonomousCommand() {
