@@ -6,21 +6,31 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
+import monologue.Logged;
+import monologue.Annotations.Log;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-public class Transfer extends SubsystemBase {
+public class Transfer extends SubsystemBase implements Logged {
   TalonSRX feederMotor;
   TalonFX transferMotor;
   CurrentLimitsConfigs transferCurrentLimitConfigs;
 
-  private boolean hasGamePiece;
+  @Log.NT
+  double transferCurrent;
+  @Log.NT
+  double feederCurrent;
+  @Log.NT
+  double transferVelocity;
+
+  public boolean hasGamePiece;
 
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
@@ -32,13 +42,16 @@ public class Transfer extends SubsystemBase {
   }
 
   public void configure() {
-    transferMotor.setInverted(prefTransfer.transferInverted.getValue());
-    feederMotor.setInverted(prefTransfer.feederInverted.getValue());
+    feederMotor.configFactoryDefault();
+    transferMotor.getConfigurator().apply(new TalonFXConfiguration());
 
-    transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
-    transferCurrentLimitConfigs.withStatorCurrentLimitEnable(prefTransfer.transferStatorLimitEnable.getValue());
+    transferMotor.setInverted(true);
+    feederMotor.setInverted(false);
 
-    transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
+    // transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
+    // transferCurrentLimitConfigs.withStatorCurrentLimitEnable(prefTransfer.transferStatorLimitEnable.getValue());
+
+    // transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
   }
 
   /**
@@ -49,14 +62,14 @@ public class Transfer extends SubsystemBase {
    * @return If we have a game piece.
    */
   public boolean calcGamePieceCollected() {
-    double transferCurrent = transferMotor.getStatorCurrent().getValue();
-    double feederCurrent = feederMotor.getStatorCurrent();
-    double transferVelocity = transferMotor.getVelocity().getValue();
+    transferCurrent = transferMotor.getStatorCurrent().getValue();
+    feederCurrent = feederMotor.getStatorCurrent();
+    transferVelocity = transferMotor.getVelocity().getValue();
 
     if (hasGamePiece ||
-        (feederCurrent < prefTransfer.feederHasGamePieceCurrent.getValue())
-            && (transferCurrent > prefTransfer.transferHasGamePieceCurrent.getValue())
-            && (transferVelocity < prefTransfer.transferHasGamePieceVelocity.getValue())) {
+        (feederCurrent <= prefTransfer.feederHasGamePieceCurrent.getValue())
+            && (transferCurrent >= prefTransfer.transferHasGamePieceCurrent.getValue())
+            && (transferVelocity <= prefTransfer.transferHasGamePieceVelocity.getValue())) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;

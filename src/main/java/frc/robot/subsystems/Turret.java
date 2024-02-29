@@ -229,10 +229,10 @@ public class Turret extends SubsystemBase {
 
       case SPEAKER:
         if (robotPose.getY() < 4.1) {
-          targetPose = fieldPoses[7];
+          targetPose = fieldPoses[6];
           break;
         } else if (robotPose.getY() > 6.9) {
-          targetPose = fieldPoses[8];
+          targetPose = fieldPoses[7];
           break;
         }
         targetPose = fieldPoses[0];

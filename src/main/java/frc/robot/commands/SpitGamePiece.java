@@ -45,7 +45,7 @@ public class SpitGamePiece extends Command {
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
 
-    subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
+    subPitch.setPitchAngle(0, false);
 
   }
 
@@ -55,7 +55,7 @@ public class SpitGamePiece extends Command {
     globalIntake.setNeutralMode();
     globalTransfer.setTransferNeutralOutput();
     globalTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
+    subPitch.setPitchAngle(lastDesiredPitch, false);
   }
 
   // Returns true when the command should end.

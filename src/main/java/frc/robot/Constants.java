@@ -151,7 +151,7 @@ public final class Constants {
     public static final int[] AUTO_ALIGNED_COLOR = { 207, 82, 4 };
     public static final int[] SPIT_OUT_GAME_PIECE = { 255, 60, 0 };
 
-    public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(76, 22, 105, 0, 0.95, LED_NUMBER,
+    public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(255, 0, 0, 0, 1, LED_NUMBER,
         Direction.Forward);
     public static final ColorFlowAnimation AMPLIFY_ANIMATION = new ColorFlowAnimation(160, 10, 247, 0, 0.95, LED_NUMBER,
         Direction.Forward);
@@ -287,7 +287,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11.84), Units.inchesToMeters(-9.82), Units.inchesToMeters(8)),
+        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(-9.82), Units.inchesToMeters(8)),
         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-25)));
 
     /**
@@ -299,7 +299,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11.84), Units.inchesToMeters(9.82), Units.inchesToMeters(8)),
+        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(9.82), Units.inchesToMeters(8)),
         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
   }
 

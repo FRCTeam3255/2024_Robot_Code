@@ -43,9 +43,11 @@ public class TransferGamePiece extends Command {
 
       subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
       subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
+      return;
     } else {
-      subTransfer.setFeederNeutralOutput();
-      subTransfer.setTransferNeutralOutput();
+      subTransfer.setFeederMotorSpeed(0);
+      subTransfer.setTransferMotorSpeed(0);
+      return;
     }
 
   }
@@ -53,8 +55,8 @@ public class TransferGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subTransfer.setFeederNeutralOutput();
-    subTransfer.setTransferNeutralOutput();
+        subTransfer.setFeederMotorSpeed(0);
+      subTransfer.setTransferMotorSpeed(0);
   }
 
   // Returns true when the command should end.

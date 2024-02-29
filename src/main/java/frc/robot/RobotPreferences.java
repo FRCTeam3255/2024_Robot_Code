@@ -364,28 +364,28 @@ public class RobotPreferences {
      * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
      */
     public static final SN_DoublePreference feederHasGamePieceCurrent = new SN_DoublePreference(
-        "feederHasGamePieceCurrent", -10);
+        "feederHasGamePieceCurrent", -7);
 
     /**
      * The value that the transfer current must be <b>ABOVE</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
-        "transferHasGamePieceCurrent", 6);
+        "transferHasGamePieceCurrent", 7);
 
     /**
      * The value that the transfer velocity must be <b>BELOW</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
-        "transferHasGamePieceVelocity", 0.8);
+        "transferHasGamePieceVelocity", 16.5);
 
   }
 
   public static final class prefTurret {
     // -- PID & Configs--
     public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 44);
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 60);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
 
@@ -393,7 +393,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference turretIsAtAngleTolerance = new SN_DoublePreference(
-        "turretIsAtAngleTolerance", 1);
+        "turretIsAtAngleTolerance", 2);
 
     /**
      * <p>

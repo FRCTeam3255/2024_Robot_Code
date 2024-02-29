@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constLEDs;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
@@ -18,13 +19,16 @@ public class SetLEDS extends Command {
   Turret subTurret;
   Pitch subPitch;
   Transfer subTransfer;
+  Trigger amplify;
 
-  public SetLEDS(LEDs subLEDs, Shooter subShooter, Turret subTurret, Pitch subPitch, Transfer subTransfer) {
+  public SetLEDS(LEDs subLEDs, Shooter subShooter, Turret subTurret, Pitch subPitch, Transfer subTransfer,
+      Trigger amplify) {
     this.subLEDs = subLEDs;
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
     this.subTransfer = subTransfer;
+    this.amplify = amplify;
 
     addRequirements(subLEDs);
   }
@@ -37,8 +41,13 @@ public class SetLEDS extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (amplify.getAsBoolean()) {
+      subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION);
+      return;
+    }
+
     // If we have a game piece, set to game piece colors
-    if (subTransfer.calcGamePieceCollected()) {
+    if (subTransfer.hasGamePiece) {
       // Set LEDs when we are ready to shoot
       if (subShooter.areBothShootersUpToSpeed()
           && subPitch.isPitchAtGoalAngle()

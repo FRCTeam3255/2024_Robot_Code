@@ -33,7 +33,7 @@ public class FieldConstants {
     if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
       return new Pose3d[] { redConstants.SPEAKER_CENTER, redConstants.AMP, redConstants.SOURCE, redConstants.LEFT_STAGE,
           redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN,
-          blueConstants.SPEAKER_CENTER, blueConstants.AMP,
+          blueConstants.AMP,
           blueConstants.SOURCE, blueConstants.LEFT_STAGE, blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE,
           blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN };
 
@@ -41,7 +41,7 @@ public class FieldConstants {
     return new Pose3d[] { blueConstants.SPEAKER_CENTER, blueConstants.AMP, blueConstants.SOURCE,
         blueConstants.LEFT_STAGE,
         blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE, blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN,
-        redConstants.SPEAKER_CENTER, redConstants.AMP,
+        redConstants.AMP,
         redConstants.SOURCE, redConstants.LEFT_STAGE, redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE,
         redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN };
   }
@@ -68,17 +68,17 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the blue speaker, in meters
      */
-    private static final Pose3d SPEAKER_CENTER = new Pose3d(0, 5.619077205657959, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(-0.1, 5.619077205657959, 1.452, new Rotation3d(0, 0, 0));
 
     /**
      * where to shoot when you are below the speaker
      */
-    private static final Pose3d SPEAKER_DOWN = new Pose3d(0, 5.919077205657959, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_DOWN = new Pose3d(-0.1, 5.819077205657959, 1.452, new Rotation3d(0, 0, 0));
 
     /**
      * where to shoot when you are above the speaker
      */
-    private static final Pose3d SPEAKER_UP = new Pose3d(0, 5.319077205657959, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_UP = new Pose3d(-0.1, 5.419077205657959, 1.452, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the blue amp, in meters.
@@ -98,19 +98,19 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the red speaker, in meters
      */
-    private static final Pose3d SPEAKER_CENTER = new Pose3d(16.5410515, 5.619077205657959, 1.552,
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(16.6410515, 5.619077205657959, 1.452,
         new Rotation3d(0, 0, 0));
 
     /**
      * where to shoot when you are below the speaker
      */
-    private static final Pose3d SPEAKER_DOWN = new Pose3d(16.5410515, 5.919077205657959, 1.552,
+    private static final Pose3d SPEAKER_DOWN = new Pose3d(16.6410515, 5.819077205657959, 1.452,
         new Rotation3d(0, 0, 0));
 
     /**
      * where to shoot when you are above the speaker
      */
-    private static final Pose3d SPEAKER_UP = new Pose3d(16.5410515, 5.319077205657959, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_UP = new Pose3d(16.6410515, 5.419077205657959, 1.452, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the red amp, in meters
