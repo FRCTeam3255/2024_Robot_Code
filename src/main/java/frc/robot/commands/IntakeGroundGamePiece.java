@@ -22,6 +22,7 @@ public class IntakeGroundGamePiece extends Command {
   Pitch subPitch;
 
   double lastDesiredPitch;
+  double lastDesiredTurret;
 
   public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret,
       Climber subClimber, Pitch subPitch) {
@@ -36,8 +37,9 @@ public class IntakeGroundGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
+    lastDesiredTurret = subTurret.getAngle();
     lastDesiredPitch = subPitch.getPitchAngle();
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -60,6 +62,7 @@ public class IntakeGroundGamePiece extends Command {
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
+    subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
   }
 
   // Returns true when the command should end.

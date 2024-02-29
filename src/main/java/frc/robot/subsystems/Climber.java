@@ -6,11 +6,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
 
 import frc.robot.Constants.constClimber;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
@@ -27,16 +25,12 @@ public class Climber extends SubsystemBase {
   double absoluteEncoderOffset, absEncoderRollover;
   VoltageOut voltageRequest;
   TalonFXConfiguration climberConfig;
-  DutyCycleEncoder absoluteEncoder;
 
   PositionVoltage positionRequest;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
-    absoluteEncoder = new DutyCycleEncoder(mapClimber.CLIMBER_ABSOLUTE_ENCODER_DIO);
     climberConfig = new TalonFXConfiguration();
-
-    absoluteEncoderOffset = constClimber.ABS_ENCODER_OFFSET;
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
@@ -116,23 +110,6 @@ public class Climber extends SubsystemBase {
     climberMotor.setControl(voltageRequest.withOutput(voltage));
   }
 
-  public double getRawAbsoluteEncoder() {
-    return absoluteEncoder.getAbsolutePosition();
-  }
-
-  public double getAbsoluteEncoder() {
-    double rotations = getRawAbsoluteEncoder();
-
-    rotations -= absoluteEncoderOffset;
-
-    return rotations;
-  }
-
-  public void resetClimberToAbsolutePosition() {
-    double rotations = getAbsoluteEncoder();
-    climberMotor.setPosition((constClimber.ABS_ENCODER_INVERT) ? -rotations : rotations);
-  }
-
   public double getClimberVelocity() {
     return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
   }
@@ -144,6 +121,10 @@ public class Climber extends SubsystemBase {
    */
   public void setClimberAngle(double angle) {
     climberMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  }
+
+  public void resetAngleToAngle(double angle) {
+    climberMotor.setPosition(angle);
   }
 
   /**
@@ -167,8 +148,6 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Climber/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
-    SmartDashboard.putNumber("Climber/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
     SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret());

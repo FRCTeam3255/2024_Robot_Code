@@ -44,7 +44,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", 1);
+        "climberMotorReverseLimit", 5);
 
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
     public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
@@ -64,7 +64,7 @@ public class RobotPreferences {
 
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.21);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.18);
     public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
     public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0.0);
 
@@ -143,7 +143,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference intakeStowAngle = new SN_DoublePreference(
-        "intakeStowAngle", 0);
+        "intakeStowAngle", 5);
 
     /**
      * The intake's pivot motor position when we are intaking
@@ -384,7 +384,7 @@ public class RobotPreferences {
   public static final class prefTurret {
     // -- PID & Configs--
     public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 42);
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 44);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
 
@@ -392,7 +392,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference turretIsAtAngleTolerance = new SN_DoublePreference(
-        "turretIsAtAngleTolerance", 2);
+        "turretIsAtAngleTolerance", 1);
 
     /**
      * <p>
@@ -401,7 +401,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretForwardLimit = new SN_DoublePreference("turretForwardLimit",
-        Units.degreesToRotations(65));
+        Units.degreesToRotations(66));
     /**
      * <p>
      * The minimum soft limit of the turret
@@ -409,7 +409,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
-        Units.degreesToRotations(-72));
+        Units.degreesToRotations(-79));
 
     public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", true);
 

@@ -24,20 +24,26 @@ public class FieldConstants {
    * Robot Coordinate Systems</a>
    * 
    * @return An array of field element positions. Your Speaker, Amp, Source, Left
-   *         Stage, Center Stage, Right Stage. Then, it continues in the same
+   *         Stage, Center Stage, Right Stage, SPEAKER UP, SPEAKER DOWN, Then, it
+   *         continues in the same
    *         order
    *         with the positions on the opposing alliance
    */
   public static Pose3d[] GET_FIELD_POSITIONS() {
     if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-      return new Pose3d[] { redConstants.SPEAKER, redConstants.AMP, redConstants.SOURCE, redConstants.LEFT_STAGE,
-          redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, blueConstants.SPEAKER, blueConstants.AMP,
-          blueConstants.SOURCE, blueConstants.LEFT_STAGE, blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE };
+      return new Pose3d[] { redConstants.SPEAKER_CENTER, redConstants.AMP, redConstants.SOURCE, redConstants.LEFT_STAGE,
+          redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN,
+          blueConstants.SPEAKER_CENTER, blueConstants.AMP,
+          blueConstants.SOURCE, blueConstants.LEFT_STAGE, blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE,
+          blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN };
 
     }
-    return new Pose3d[] { blueConstants.SPEAKER, blueConstants.AMP, blueConstants.SOURCE, blueConstants.LEFT_STAGE,
-        blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE, redConstants.SPEAKER, redConstants.AMP,
-        redConstants.SOURCE, redConstants.LEFT_STAGE, redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE };
+    return new Pose3d[] { blueConstants.SPEAKER_CENTER, blueConstants.AMP, blueConstants.SOURCE,
+        blueConstants.LEFT_STAGE,
+        blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE, blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN,
+        redConstants.SPEAKER_CENTER, redConstants.AMP,
+        redConstants.SOURCE, redConstants.LEFT_STAGE, redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE,
+        redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN };
   }
 
   /**
@@ -62,7 +68,17 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the blue speaker, in meters
      */
-    private static final Pose3d SPEAKER = new Pose3d(0, 5.619077205657959, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(0, 5.619077205657959, 1.552, new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are below the speaker
+     */
+    private static final Pose3d SPEAKER_DOWN = new Pose3d(0, 5.919077205657959, 1.552, new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are above the speaker
+     */
+    private static final Pose3d SPEAKER_UP = new Pose3d(0, 5.319077205657959, 1.552, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the blue amp, in meters.
@@ -82,7 +98,19 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the red speaker, in meters
      */
-    private static final Pose3d SPEAKER = new Pose3d(16.5410515, 5.619077205657959, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(16.5410515, 5.619077205657959, 1.552,
+        new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are below the speaker
+     */
+    private static final Pose3d SPEAKER_DOWN = new Pose3d(16.5410515, 5.919077205657959, 1.552,
+        new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are above the speaker
+     */
+    private static final Pose3d SPEAKER_UP = new Pose3d(16.5410515, 5.319077205657959, 1.552, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the red amp, in meters

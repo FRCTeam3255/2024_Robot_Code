@@ -134,6 +134,9 @@ public class RobotContainer implements Logged {
   private void configureDriverBindings(SN_XboxController controller) {
     Pose2d subwooferRobotPose = new Pose2d(1.35, 5.50, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_West.onTrue(Commands.runOnce(() -> subClimber.resetAngleToAngle(0))
+        .alongWith(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(true, true))));
+    controller.btn_East.onTrue(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(false, false)));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
 
     // Climb Up

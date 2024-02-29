@@ -40,8 +40,9 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.046801;
+    public static final double ABS_ENCODER_OFFSET = 0.021475;
     public static final double GEAR_RATIO = 327.6;
+    public static final double ABS_TO_MECH_RATIO = (1080 / 510);
   }
 
   public static class constControllers {
@@ -246,7 +247,7 @@ public final class Constants {
     public static final double GEAR_RATIO = 39;
     public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
-    public static final double ABS_ENCODER_OFFSET = 0.011712;
+    public static final double ABS_ENCODER_OFFSET = 0.011700;
     public static final boolean ABS_ENCODER_INVERT = false;
 
     /**
@@ -286,7 +287,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(12.125), Units.inchesToMeters(-8.625), Units.inchesToMeters(8)),
+        new Translation3d(Units.inchesToMeters(11.84), Units.inchesToMeters(-9.82), Units.inchesToMeters(8)),
         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-25)));
 
     /**
@@ -298,7 +299,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(12.125), Units.inchesToMeters(8.625), Units.inchesToMeters(8)),
+        new Translation3d(Units.inchesToMeters(11.84), Units.inchesToMeters(9.82), Units.inchesToMeters(8)),
         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
   }
 
