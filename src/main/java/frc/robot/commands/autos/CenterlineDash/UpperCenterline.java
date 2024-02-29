@@ -74,8 +74,10 @@ public class UpperCenterline extends SequentialCommandGroup implements AutoInter
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
 
-        // Drive to C51
-        RobotContainer.zeroPitch(),
+        // Drive to C1
+        Commands.parallel(
+            RobotContainer.zeroPitch(),
+            RobotContainer.zeroClimber()),
         AutoBuilder.followPath(initPath),
 
         Commands.waitSeconds(prefIntake.intakeGamePieceGetTime.getValue()),

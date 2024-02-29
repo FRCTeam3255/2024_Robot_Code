@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.FieldConstants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.autos.AutoInterface;
@@ -75,7 +76,9 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
 
         // Drive to C5
-        RobotContainer.zeroPitch(),
+        Commands.parallel(
+            RobotContainer.zeroPitch(),
+            RobotContainer.zeroClimber()),
         AutoBuilder.followPath(initPath),
 
         Commands.waitSeconds(prefIntake.intakeGamePieceGetTime.getValue()),

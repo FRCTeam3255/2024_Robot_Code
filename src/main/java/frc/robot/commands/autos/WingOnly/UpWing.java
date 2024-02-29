@@ -58,7 +58,9 @@ public class UpWing extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
 
-        RobotContainer.zeroPitch(),
+        Commands.parallel(
+            RobotContainer.zeroPitch(),
+            RobotContainer.zeroClimber()),
         AutoBuilder.followPath(PsW3sW2sW1s),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
 

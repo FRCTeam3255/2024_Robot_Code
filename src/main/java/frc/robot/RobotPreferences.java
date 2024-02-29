@@ -39,15 +39,16 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 87);
+        "climberMotorForwardLimit", 82);
     /**
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", 5);
+        "climberMotorReverseLimit", 0);
 
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
-    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage", 1);
+    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage",
+        -2);
 
     /**
      * <b>Units:</b> Degrees

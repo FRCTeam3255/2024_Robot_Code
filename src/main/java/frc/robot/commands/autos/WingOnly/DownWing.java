@@ -58,7 +58,9 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
 
-        RobotContainer.zeroPitch(), // I have no clue if this will work.. i think autobuilder will override it
+        Commands.parallel(
+            RobotContainer.zeroPitch(),
+            RobotContainer.zeroClimber()),
         AutoBuilder.followPath(PsW1sW2sW3s),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
 

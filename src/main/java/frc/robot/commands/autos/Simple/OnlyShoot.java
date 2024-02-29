@@ -57,6 +57,10 @@ public class OnlyShoot extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
 
+        Commands.parallel(
+            RobotContainer.zeroPitch(),
+            RobotContainer.zeroClimber()),
+
         AutoBuilder.followPath(onlyShoot));
   }
 

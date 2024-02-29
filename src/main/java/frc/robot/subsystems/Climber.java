@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import frc.robot.Constants.constClimber;
 import edu.wpi.first.math.util.Units;
@@ -53,6 +54,9 @@ public class Climber extends SubsystemBase {
 
     climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
     climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
+    climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+    climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0;
+
     climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
 
@@ -146,11 +150,16 @@ public class Climber extends SubsystemBase {
         - prefClimber.climberAtAngleTolerance.getValue());
   }
 
+  public boolean limitSwitchHit() {
+    return climberMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
     SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret());
+    SmartDashboard.putString("Climber/Limit Switch Reverse", climberMotor.getReverseLimit().getValue().toString());
   }
 
 }

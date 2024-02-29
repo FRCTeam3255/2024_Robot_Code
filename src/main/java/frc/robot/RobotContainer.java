@@ -42,6 +42,7 @@ import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
@@ -127,31 +128,30 @@ public class RobotContainer implements Logged {
 
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
-    subClimber.resetClimberToAbsolutePosition();
     subLEDs.clearAnimation();
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
     Pose2d subwooferRobotPose = new Pose2d(1.35, 5.50, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_West.onTrue(Commands.runOnce(() -> subClimber.resetAngleToAngle(0))
-        .alongWith(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(true, true))));
-    controller.btn_East.onTrue(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(false, false)));
+    controller.btn_West.onTrue(new ZeroClimber(subClimber));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
 
     // Climb Up
     controller.btn_LeftTrigger.whileTrue(
         Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorUpSpeed.getValue()), subClimber)
             .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
+    controller.btn_LeftTrigger.onTrue(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(true, true)));
     controller.btn_LeftTrigger.onFalse(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(0)));
+        Commands.run(() -> subClimber.setClimberMotorSpeed(0), subClimber));
 
     // Climb Down
     controller.btn_RightTrigger.whileTrue(
         Commands.run(() -> subClimber.setClimberMotorSpeed(prefClimber.climberMotorDownSpeed.getValue()), subClimber)
             .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0, false))));
+    controller.btn_RightTrigger.onTrue(Commands.runOnce(() -> subClimber.setClimberSoftwareLimits(true, true)));
     controller.btn_RightTrigger.onFalse(
-        Commands.run(() -> subClimber.setClimberMotorSpeed(0)));
+        Commands.run(() -> subClimber.setClimberMotorSpeed(0), subClimber));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileTrue(Commands.runOnce(() -> subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION), subLEDs))
@@ -325,6 +325,20 @@ public class RobotContainer implements Logged {
    */
   public static Command zeroPitch() {
     return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+  }
+
+  /**
+   * Returns the command to zero the climber. This will make the climber move
+   * itself
+   * upwards until it hits the limit switch. If the zeroing does not end within 3
+   * seconds, it
+   * will interrupt itself.
+   * 
+   * @return The command to zero the climber
+   */
+  public static Command zeroClimber() {
+    return new ZeroClimber(subClimber).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withTimeout(3);
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
