@@ -68,8 +68,8 @@
         "y": 4.11
       },
       "prevControl": {
-        "x": 7.178283620225199,
-        "y": 4.124147725730131
+        "x": 7.5585241906825855,
+        "y": 4.1046482092964185
       },
       "nextControl": null,
       "isLocked": false,
@@ -78,7 +78,18 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeGamePiece",
+      "waypointRelativePos": 2.95,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.5,
     "maxAcceleration": 2.5,

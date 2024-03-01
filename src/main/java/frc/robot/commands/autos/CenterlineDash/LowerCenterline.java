@@ -7,6 +7,7 @@ package frc.robot.commands.autos.CenterlineDash;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +20,7 @@ import frc.robot.FieldConstants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -37,10 +39,7 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
   Transfer subTransfer;
   Turret subTurret;
 
-  PathPlannerPath initPath = PathPlannerPath.fromChoreoTrajectory("U PsC5");
-  PathPlannerPath initPathFlipped = PathPlannerPath.fromChoreoTrajectory("U PsC5").flipPath();
-
-  Pose2d startingPosition;
+  PathPlannerAuto PsC5 = new PathPlannerAuto("U PsC5");
 
   /**
    * @formatter:off
@@ -67,61 +66,73 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
 
-    startingPosition = getInitialPose().get();
-
     addCommands(
-        Commands.runOnce(() -> subDrivetrain.resetPoseToPose(startingPosition)),
+        Commands.parallel(
+            RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
+            RobotContainer.zeroClimber(),
+            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+            Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees()))),
+
         // Shoot preloaded game piece
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
+        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+            // SHOOT PRELOAD
+            Commands.sequence(
+                // get preload
+                Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+                Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
+
+                // shoot preload
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                    .until(() -> !subTransfer.hasGamePiece))),
 
         // Drive to C5
-        Commands.parallel(
-            RobotContainer.zeroPitch(),
-            RobotContainer.zeroClimber()),
-        AutoBuilder.followPath(initPath),
-
+        new PathPlannerAuto("U PsC5"),
         Commands.waitSeconds(prefIntake.intakeGamePieceGetTime.getValue()),
 
         // Check if we got C5.
         // If yes, drive to score C5 in the speaker and then drive to collect C4
         new SequentialCommandGroup(
             Commands.runOnce(() -> lastGamePiece = 8),
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("U C5sUntilC1s.1")),
-            new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("U C5sUntilC1s.2")))
-            .unless(() -> !subTransfer.calcGamePieceCollected()),
+            new PathPlannerAuto("U C5sUntilC1s.1"),
+            Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+                // shoot C5
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                    .until(() -> !subTransfer.hasGamePiece)),
+            new PathPlannerAuto("U C5sUntilC1s.2")).unless(() -> !subTransfer.hasGamePiece),
 
         // If no, drive to collect C4 from C5
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("U C5UntilC1.1")).unless(() -> lastGamePiece == 8),
+        new PathPlannerAuto("U C5UntilC1.1").unless(() -> lastGamePiece == 8),
 
         // Either way we have ended up at C4.
         // Check if we got C4.
         // If yes, drive to score C4 in the speaker and then drive to collect C3
-        Commands.waitSeconds(prefIntake.intakeGamePieceGetTime.getValue()),
         new SequentialCommandGroup(
             Commands.runOnce(() -> lastGamePiece = 7),
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("U C5sUntilC1s.3")),
-            new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("U C5sUntilC1s.4")))
-            .unless(() -> !subTransfer.calcGamePieceCollected()),
+            new PathPlannerAuto("U C5sUntilC1s.3"),
+            Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+                // shoot C4
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                    .until(() -> !subTransfer.hasGamePiece)),
+            new PathPlannerAuto("U C5sUntilC1s.4")).unless(() -> !subTransfer.hasGamePiece),
 
-        // If no, drive to collect C3 from C4
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("U C5UntilC1.2")).unless(() -> lastGamePiece == 7),
+        // If no, drive to collect C4 from C5
+        new PathPlannerAuto("U C5UntilC1.2").unless(() -> lastGamePiece == 7),
 
         // Either way we have ended up at C3. For simplicity, we will act like we got
         // this game piece and score it
         new SequentialCommandGroup(
             Commands.runOnce(() -> lastGamePiece = 6),
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("U C5sUntilC1s.5")),
-            new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected())));
-
+            new PathPlannerAuto("U C5sUntilC1s.5"),
+            Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+                // shoot C4
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                    .until(() -> !subTransfer.hasGamePiece))));
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> (FieldConstants.isRedAlliance())
-        ? initPathFlipped.getStartingDifferentialPose()
-        : initPath.getStartingDifferentialPose();
+    return () -> (!FieldConstants.isRedAlliance())
+        ? PathPlannerAuto.getStaringPoseFromAutoFile("U PsC5")
+        : PathPlannerPath.fromPathFile("U PsC5").flipPath().getPreviewStartingHolonomicPose();
   }
 
   public Command getAutonomousCommand() {
