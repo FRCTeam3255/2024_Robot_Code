@@ -7,6 +7,7 @@ package frc.robot.commands.autos.WingOnly;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,9 +37,7 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
   Transfer subTransfer;
   Turret subTurret;
 
-  PathPlannerPath PsW1sW2sW3s = PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.1");
-  PathPlannerPath PsW1sW2sW3sFlipped = PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.1").flipPath();
-  Pose2d startingPosition;
+  PathPlannerAuto PsW1sW2sW3s1 = new PathPlannerAuto("PsW1sW2sW3s.1");
 
   public DownWing(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret) {
@@ -50,34 +49,50 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
 
-    startingPosition = getInitialPose().get();
-
     addCommands(
-        Commands.runOnce(() -> subDrivetrain.resetPoseToPose(startingPosition)),
-
-        // Shoot preloaded game piece
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        Commands.race(
-            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch),
-            new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected())),
-
         Commands.parallel(
-            RobotContainer.zeroPitch(),
-            RobotContainer.zeroClimber()),
-        AutoBuilder.followPath(PsW1sW2sW3s),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
+            RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
+            RobotContainer.zeroClimber(),
+            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+            Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees()))),
 
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.2")),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()),
+        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+            // SHOOT PRELOAD
+            Commands.sequence(
+                // get preload
+                Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+                Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("PsW1sW2sW3s.3")),
-        new Shoot(subShooter, subLEDs).until(() -> !subTransfer.calcGamePieceCollected()));
+                // shoot preload
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                    .until(() -> !subTransfer.hasGamePiece))),
+
+        // W1
+        new PathPlannerAuto("PsW1sW2sW3s.1"),
+        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+            // shoot W1
+            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                .until(() -> !subTransfer.hasGamePiece)),
+
+        // W2
+        new PathPlannerAuto("PsW1sW2sW3s.2"),
+        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+            // shoot W2
+            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                .until(() -> !subTransfer.hasGamePiece)),
+        // W3
+        new PathPlannerAuto("PsW1sW2sW3s.3"),
+        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+            // shoot W3
+            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                .until(() -> !subTransfer.hasGamePiece)));
+
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> (FieldConstants.isRedAlliance())
-        ? PsW1sW2sW3sFlipped.getStartingDifferentialPose()
-        : PsW1sW2sW3s.getStartingDifferentialPose();
+    return () -> (!FieldConstants.isRedAlliance())
+        ? PathPlannerAuto.getStaringPoseFromAutoFile("PsW1sW2sW3s.1")
+        : PathPlannerPath.fromPathFile("PsW1sW2sW3s.1").flipPath().getPreviewStartingHolonomicPose();
   }
 
   public Command getAutonomousCommand() {

@@ -31,7 +31,6 @@ public class TransferGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subTransfer.setGamePieceCollected(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +40,7 @@ public class TransferGamePiece extends Command {
         && subPitch.isPitchAtGoalAngle()
         && subTurret.isTurretAtGoalAngle()) {
 
+      subTransfer.setGamePieceCollected(false);
       subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
       subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
       return;
@@ -55,8 +55,8 @@ public class TransferGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-        subTransfer.setFeederMotorSpeed(0);
-      subTransfer.setTransferMotorSpeed(0);
+    subTransfer.setFeederMotorSpeed(0);
+    subTransfer.setTransferMotorSpeed(0);
   }
 
   // Returns true when the command should end.

@@ -1,0 +1,19 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "U C5UntilC1.4"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "CenterlineFromLower",
+  "choreoAuto": false
+}

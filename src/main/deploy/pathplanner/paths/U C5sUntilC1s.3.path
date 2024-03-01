@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.464,
-        "y": 7.331
+        "x": 7.68,
+        "y": 2.43
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.464,
-        "y": 7.331
+        "x": 7.178283620225199,
+        "y": 2.0864482584072066
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.486,
-        "y": 7.069
+        "x": 5.79,
+        "y": 1.96
       },
       "prevControl": {
-        "x": 2.4481389506683966,
-        "y": 7.279808323291151
+        "x": 6.729794742249817,
+        "y": 1.9499516433712205
+      },
+      "nextControl": {
+        "x": 4.6699957897658795,
+        "y": 1.9719751699219181
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.28,
+        "y": 3.48
+      },
+      "prevControl": {
+        "x": 2.8981397630253705,
+        "y": 2.8469293993219815
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,18 +46,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "IntakeGamePiece",
-      "waypointRelativePos": 0.30000000000000004,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": []
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.5,
     "maxAcceleration": 2.5,
@@ -54,10 +59,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "WingFromUpperSub",
+  "folder": "CenterlineFromLower",
   "previewStartingState": {
-    "rotation": 0.0,
-    "velocity": 0
+    "rotation": 0,
+    "velocity": 0.0
   },
   "useDefaultConstraints": true
 }

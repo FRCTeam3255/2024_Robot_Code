@@ -5164,7 +5164,7 @@
                 },
                 {
                     "x": 2.2842323780059814,
-                    "y": 3.4820966720581055,
+                    "y": 3.3820966720581054,
                     "heading": -0.785398,
                     "isInitialGuess": false,
                     "translationConstrained": true,
@@ -5336,6 +5336,15 @@
                 {
                     "x": 3.9,
                     "y": 5.550426959991455,
+                    "heading": 0,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 40
+                },
+                {
+                    "x": 8.263896942138672,
+                    "y": 1.2784719467163086,
                     "heading": 0,
                     "isInitialGuess": false,
                     "translationConstrained": true,

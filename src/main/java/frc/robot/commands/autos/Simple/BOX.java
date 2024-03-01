@@ -39,6 +39,7 @@ public class BOX extends SequentialCommandGroup implements AutoInterface {
   PathPlannerPath boxFlipped = PathPlannerPath.fromChoreoTrajectory("box").flipPath();
   Pose2d startingPosition;
 
+  // debug auto
   public BOX(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret) {
     this.subDrivetrain = subDrivetrain;

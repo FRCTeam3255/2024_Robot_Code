@@ -234,17 +234,11 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("box",
-        new BOX(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-    autoChooser.addOption("Wing Auto From Upper Sub",
+    autoChooser.setDefaultOption("Wing Auto From Upper Sub",
         new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-    autoChooser.addOption("Wing Auto From Lower Sub",
-        new UpWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
 
     autoChooser.addOption("Centerline Auto from Lower Field",
         new LowerCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-    autoChooser.addOption("Centerline Auto from Upper Field",
-        new UpperCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
 
     autoChooser.addOption("Only Shoot",
         new OnlyShoot(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
@@ -253,7 +247,6 @@ public class RobotContainer implements Logged {
   }
 
   public Command getAutonomousCommand() {
-
     return autoChooser.getSelected().getAutonomousCommand();
   }
 

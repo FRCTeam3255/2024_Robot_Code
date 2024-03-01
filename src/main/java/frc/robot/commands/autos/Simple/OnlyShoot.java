@@ -41,7 +41,6 @@ public class OnlyShoot extends SequentialCommandGroup implements AutoInterface {
   Climber subClimber;
 
   PathPlannerAuto onlyShoot = new PathPlannerAuto("OnlyShoot");
-  Pose2d startingPosition;
 
   public OnlyShoot(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret, Climber subClimber) {
@@ -66,7 +65,7 @@ public class OnlyShoot extends SequentialCommandGroup implements AutoInterface {
 
                 // shoot preload
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.calcGamePieceCollected()))),
+                    .until(() -> !subTransfer.hasGamePiece))),
 
         new PathPlannerAuto("OnlyShoot"),
 
