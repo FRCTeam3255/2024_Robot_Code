@@ -238,7 +238,7 @@ public class RobotContainer implements Logged {
 
     autoChooser.addOption("Wing Auto From Upper Sub",
         new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
-            subTransfer, subTurret));
+            subTransfer, subTurret, subClimber));
 
     autoChooser.addOption("Centerline Auto from Lower Field",
         new LowerCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,

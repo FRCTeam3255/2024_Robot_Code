@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.486,
+        "x": 2.49,
         "y": 7.069
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.519506420579918,
+        "x": 2.523506420579918,
         "y": 6.882438019636595
       },
       "isLocked": false,
@@ -37,7 +37,14 @@
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGamePiece"
+              }
+            }
+          ]
         }
       }
     }
@@ -50,13 +57,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "WingFromUpperSub",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

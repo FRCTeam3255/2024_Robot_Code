@@ -39,7 +39,7 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
   Transfer subTransfer;
   Turret subTurret;
 
-  PathPlannerAuto PsC5 = new PathPlannerAuto("U PsC5");
+  // PathPlannerAuto PsC5 = new PathPlannerAuto("U PsC5");
 
   /**
    * @formatter:off
@@ -67,71 +67,79 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
     this.subTurret = subTurret;
 
     addCommands(
-        Commands.parallel(
-            RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
-            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-            Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees()))),
+    // Commands.parallel(
+    // RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
+    // Commands.runOnce(() ->
+    // subDrivetrain.resetPoseToPose(getInitialPose().get())),
+    // Commands.runOnce(() ->
+    // subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees()))),
 
-        // Shoot preloaded game piece
-        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-            // SHOOT PRELOAD
-            Commands.sequence(
-                // get preload
-                Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
+    // // Shoot preloaded game piece
+    // Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+    // // SHOOT PRELOAD
+    // Commands.sequence(
+    // // get preload
+    // Commands.runOnce(() ->
+    // RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+    // Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
-                // shoot preload
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.hasGamePiece))),
+    // // shoot preload
+    // new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+    // .until(() -> !subTransfer.hasGamePiece))),
 
-        // Drive to C5
-        new PathPlannerAuto("U PsC5"),
-        Commands.waitSeconds(prefIntake.intakeGamePieceGetTime.getValue()),
+    // // Drive to C5
+    // new PathPlannerAuto("U PsC5"),
+    // Commands.waitSeconds(prefIntake.intakeGamePieceGetTime.getValue()),
 
-        // Check if we got C5.
-        // If yes, drive to score C5 in the speaker and then drive to collect C4
-        new SequentialCommandGroup(
-            Commands.runOnce(() -> lastGamePiece = 8),
-            new PathPlannerAuto("U C5sUntilC1s.1"),
-            Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-                // shoot C5
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.hasGamePiece)),
-            new PathPlannerAuto("U C5sUntilC1s.2")).unless(() -> !subTransfer.hasGamePiece),
+    // // Check if we got C5.
+    // // If yes, drive to score C5 in the speaker and then drive to collect C4
+    // new SequentialCommandGroup(
+    // Commands.runOnce(() -> lastGamePiece = 8),
+    // new PathPlannerAuto("U C5sUntilC1s.1"),
+    // Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+    // // shoot C5
+    // new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+    // .until(() -> !subTransfer.hasGamePiece)),
+    // new PathPlannerAuto("U C5sUntilC1s.2")).unless(() ->
+    // !subTransfer.hasGamePiece),
 
-        // If no, drive to collect C4 from C5
-        new PathPlannerAuto("U C5UntilC1.1").unless(() -> lastGamePiece == 8),
+    // // If no, drive to collect C4 from C5
+    // new PathPlannerAuto("U C5UntilC1.1").unless(() -> lastGamePiece == 8),
 
-        // Either way we have ended up at C4.
-        // Check if we got C4.
-        // If yes, drive to score C4 in the speaker and then drive to collect C3
-        new SequentialCommandGroup(
-            Commands.runOnce(() -> lastGamePiece = 7),
-            new PathPlannerAuto("U C5sUntilC1s.3"),
-            Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-                // shoot C4
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.hasGamePiece)),
-            new PathPlannerAuto("U C5sUntilC1s.4")).unless(() -> !subTransfer.hasGamePiece),
+    // // Either way we have ended up at C4.
+    // // Check if we got C4.
+    // // If yes, drive to score C4 in the speaker and then drive to collect C3
+    // new SequentialCommandGroup(
+    // Commands.runOnce(() -> lastGamePiece = 7),
+    // new PathPlannerAuto("U C5sUntilC1s.3"),
+    // Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+    // // shoot C4
+    // new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+    // .until(() -> !subTransfer.hasGamePiece)),
+    // new PathPlannerAuto("U C5sUntilC1s.4")).unless(() ->
+    // !subTransfer.hasGamePiece),
 
-        // If no, drive to collect C4 from C5
-        new PathPlannerAuto("U C5UntilC1.2").unless(() -> lastGamePiece == 7),
+    // // If no, drive to collect C4 from C5
+    // new PathPlannerAuto("U C5UntilC1.2").unless(() -> lastGamePiece == 7),
 
-        // Either way we have ended up at C3. For simplicity, we will act like we got
-        // this game piece and score it
-        new SequentialCommandGroup(
-            Commands.runOnce(() -> lastGamePiece = 6),
-            new PathPlannerAuto("U C5sUntilC1s.5"),
-            Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-                // shoot C4
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.hasGamePiece))));
+    // // Either way we have ended up at C3. For simplicity, we will act like we got
+    // // this game piece and score it
+    // new SequentialCommandGroup(
+    // Commands.runOnce(() -> lastGamePiece = 6),
+    // new PathPlannerAuto("U C5sUntilC1s.5"),
+    // Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
+    // // shoot C4
+    // new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+    // .until(() -> !subTransfer.hasGamePiece))));
+    );
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> (!FieldConstants.isRedAlliance())
-        ? PathPlannerAuto.getStaringPoseFromAutoFile("U PsC5")
-        : PathPlannerPath.fromPathFile("U PsC5").flipPath().getPreviewStartingHolonomicPose();
+    // return () -> (!FieldConstants.isRedAlliance())
+    // ? PathPlannerAuto.getStaringPoseFromAutoFile("U PsC5")
+    // : PathPlannerPath.fromPathFile("U
+    // PsC5").flipPath().getPreviewStartingHolonomicPose();
+    return () -> new Pose2d();
   }
 
   public Command getAutonomousCommand() {

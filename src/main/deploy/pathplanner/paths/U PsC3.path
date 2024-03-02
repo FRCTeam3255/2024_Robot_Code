@@ -3,41 +3,73 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.629,
-        "y": 5.79
+        "x": 1.26,
+        "y": 4.116342363738859
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.9882057881423485,
-        "y": 6.1601118453248045
+        "x": 2.26,
+        "y": 4.116342363738859
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.376,
-        "y": 7.47
+        "x": 3.60012235463901,
+        "y": 3.080923596526529
       },
       "prevControl": {
-        "x": 7.006000360666967,
-        "y": 7.469483382709272
+        "x": 1.9719127324240409,
+        "y": 3.05167432187596
       },
       "nextControl": {
-        "x": 7.49599988302693,
-        "y": 7.470167551553749
+        "x": 4.74491832690659,
+        "y": 3.101488793633133
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.681,
-        "y": 7.47
+        "x": 5.520824723359662,
+        "y": 4.12
       },
       "prevControl": {
-        "x": 7.750275049930557,
-        "y": 7.429987908613534
+        "x": 5.053488197905577,
+        "y": 4.1165120435429365
+      },
+      "nextControl": {
+        "x": 6.076560941720459,
+        "y": 4.124147725730131
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.68,
+        "y": 4.12
+      },
+      "prevControl": {
+        "x": 6.8760304162526165,
+        "y": 4.12
+      },
+      "nextControl": {
+        "x": 7.820184680562668,
+        "y": 4.12
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.270256540513081,
+        "y": 4.12
+      },
+      "prevControl": {
+        "x": 8.155909109140685,
+        "y": 4.103128142083416
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +81,7 @@
   "eventMarkers": [
     {
       "name": "IntakeGamePiece",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 3.0,
       "command": {
         "type": "parallel",
         "data": {

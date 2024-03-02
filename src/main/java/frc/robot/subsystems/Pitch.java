@@ -62,6 +62,11 @@ public class Pitch extends SubsystemBase {
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue();
 
+    pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    pitchConfig.CurrentLimits.SupplyCurrentThreshold = 50;
+    pitchConfig.CurrentLimits.SupplyCurrentLimit = 30;
+    pitchConfig.CurrentLimits.SupplyCurrentThreshold = 0.1;
+
     pitchConfig.Feedback.SensorToMechanismRatio = GEAR_RATIO;
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
 

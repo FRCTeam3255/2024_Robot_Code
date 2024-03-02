@@ -48,11 +48,6 @@ public class SetLEDS extends Command {
       return;
     }
 
-    if (defense.getAsBoolean()) {
-      subLEDs.setLEDsToAnimation(constLEDs.DEFENSE_MODE_ANIMATION);
-      return;
-    }
-
     // If we have a game piece, set to game piece colors
     if (subTransfer.hasGamePiece) {
       // Set LEDs when we are ready to shoot

@@ -78,12 +78,12 @@ public class Turret extends SubsystemBase {
 
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = 50;
+    turretConfig.CurrentLimits.SupplyCurrentLimit = 30;
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = 0.1;
 
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
-    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretStatorCurrentLimitEnable.getValue();
-    turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimitCeilingAmps.getValue();
-    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretStatorCurrentThreshold.getValue();
-    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretStatorTimeTreshold.getValue();
     turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(invertAbsEncoder);
   }

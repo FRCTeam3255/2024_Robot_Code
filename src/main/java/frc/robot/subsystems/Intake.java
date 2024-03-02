@@ -23,6 +23,7 @@ public class Intake extends SubsystemBase {
 
   public void configure() {
     rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
+
   }
 
   /**

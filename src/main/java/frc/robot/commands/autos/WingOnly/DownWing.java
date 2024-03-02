@@ -17,9 +17,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.IntakeGroundGamePiece;
+import frc.robot.commands.LockPitch;
+import frc.robot.commands.LockTurret;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.TransferAuto;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.autos.AutoInterface;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -36,11 +41,12 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
   Shooter subShooter;
   Transfer subTransfer;
   Turret subTurret;
+  Climber subClimber;
 
   PathPlannerAuto PsW1sW2sW3s1 = new PathPlannerAuto("PsW1sW2sW3s.1");
 
   public DownWing(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret) {
+      Transfer subTransfer, Turret subTurret, Climber subClimber) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
@@ -48,43 +54,46 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
+    this.subClimber = subClimber;
 
     addCommands(
-        Commands.parallel(
-            RobotContainer.zeroPitch(),
-            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-            Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees()))),
+        Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(PathPlannerAuto.getStaringPoseFromAutoFile("PsW1sW2sW3s.1"))),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            PathPlannerAuto.getStaringPoseFromAutoFile("PsW1sW2sW3s.1").getRotation().getDegrees())),
 
-        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-            // SHOOT PRELOAD
-            Commands.sequence(
-                // get preload
-                Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
+        // GET PRELOAD AND SHOOT IT
+        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch),
+        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
-                // shoot preload
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.hasGamePiece))),
+        new PathPlannerAuto("PsW1sW2sW3s.1").withTimeout(0.1),
 
-        // W1
+        new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchAtGoalAngle()),
+        new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretAtGoalAngle()),
+        new TransferAuto(subShooter, subTurret, subTransfer, subPitch),
+        Commands.runOnce(() -> subTransfer.setGamePieceCollected(false)),
+
         new PathPlannerAuto("PsW1sW2sW3s.1"),
-        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-            // shoot W1
-            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                .until(() -> !subTransfer.hasGamePiece)),
+
+        // W1 shoot
+        new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchAtGoalAngle()),
+        new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretAtGoalAngle()),
+        new TransferAuto(subShooter, subTurret, subTransfer, subPitch),
+        Commands.runOnce(() -> subTransfer.setGamePieceCollected(false)),
 
         // W2
         new PathPlannerAuto("PsW1sW2sW3s.2"),
-        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-            // shoot W2
-            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                .until(() -> !subTransfer.hasGamePiece)),
+        new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchAtGoalAngle()),
+        new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretAtGoalAngle()),
+        new TransferAuto(subShooter, subTurret, subTransfer, subPitch),
+        Commands.runOnce(() -> subTransfer.setGamePieceCollected(false)),
+
         // W3
         new PathPlannerAuto("PsW1sW2sW3s.3"),
-        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-            // shoot W3
-            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                .until(() -> !subTransfer.hasGamePiece)));
+        new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchAtGoalAngle()),
+        new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretAtGoalAngle()),
+        new TransferAuto(subShooter, subTurret, subTransfer, subPitch));
 
   }
 
