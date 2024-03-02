@@ -23,11 +23,8 @@ public class Transfer extends SubsystemBase implements Logged {
   TalonFX transferMotor;
   CurrentLimitsConfigs transferCurrentLimitConfigs;
 
-  @Log.NT
   double transferCurrent;
-  @Log.NT
   double feederCurrent;
-  @Log.NT
   double transferVelocity;
 
   public boolean hasGamePiece;
@@ -144,7 +141,6 @@ public class Transfer extends SubsystemBase implements Logged {
   public void periodic() {
     SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
-    SmartDashboard.putNumber("Transfer/Stator Current", transferMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
     // Key is intentional - shows in SmartDashboard
     SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected());

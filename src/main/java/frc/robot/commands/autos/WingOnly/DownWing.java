@@ -51,8 +51,7 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
 
     addCommands(
         Commands.parallel(
-            RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
-            RobotContainer.zeroClimber(),
+            RobotContainer.zeroPitch(),
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
             Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees()))),
 

@@ -30,6 +30,12 @@
         "open": true
       },
       "SmartDashboard": {
+        "Pitch": {
+          "open": true
+        },
+        "Turret": {
+          "open": true
+        },
         "open": true
       }
     }

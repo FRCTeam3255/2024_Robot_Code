@@ -26,14 +26,9 @@ import frc.robot.Constants.constDrivetrain;
 public class RobotPreferences {
   public static final class prefClimber {
     public static final SN_DoublePreference climberGtele = new SN_DoublePreference("climberGtele", 0);
-    public static final SN_DoublePreference climberPtele = new SN_DoublePreference("climberPtele", 250);
+    public static final SN_DoublePreference climberPtele = new SN_DoublePreference("climberPtele", 0);
     public static final SN_DoublePreference climberItele = new SN_DoublePreference("climberItele", 0);
     public static final SN_DoublePreference climberDtele = new SN_DoublePreference("climberDtele", 0);
-
-    public static final SN_DoublePreference climberGClimb = new SN_DoublePreference("climberGClimb", 100);
-    public static final SN_DoublePreference climberPClimb = new SN_DoublePreference("climberPClimb", 250);
-    public static final SN_DoublePreference climberIClimb = new SN_DoublePreference("climberIClimb", 0);
-    public static final SN_DoublePreference climberDClimb = new SN_DoublePreference("climberDClimb", 0);
 
     /**
      * <b>Units:</b> Degrees

@@ -39,16 +39,21 @@ public class IntakeGroundGamePiece extends Command {
   public void initialize() {
     lastDesiredTurret = subTurret.getAngle();
     lastDesiredPitch = subPitch.getPitchAngle();
+    // moved climber pivot to init since its pid
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
+    subClimber.configure(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if (!subClimber.isAtAngle(prefIntake.intakeIntakingAngle.getValue())) {
-      subClimber.setClimberAngle(prefIntake.intakeIntakingAngle.getValue());
+    if (subClimber.getPosition() < 30) {
+      subClimber.setClimberVoltage(11);
+    } else {
+      subClimber.setClimberVoltage(0);
+      subClimber.setNeutralOutput();
     }
+
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
 
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
@@ -65,6 +70,7 @@ public class IntakeGroundGamePiece extends Command {
     subTransfer.setFeederNeutralOutput();
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
     subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
+    subClimber.setNeutralOutput();
   }
 
   // Returns true when the command should end.

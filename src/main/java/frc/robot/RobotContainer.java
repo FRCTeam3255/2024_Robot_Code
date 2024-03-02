@@ -42,7 +42,6 @@ import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
@@ -106,7 +105,8 @@ public class RobotContainer implements Logged {
             conDriver.btn_B,
             conDriver.btn_A,
             conDriver.btn_X,
-            isPracticeBot()));
+            isPracticeBot(),
+            () -> FieldConstants.isRedAlliance()));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain, subClimber));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain, subClimber));
@@ -133,7 +133,6 @@ public class RobotContainer implements Logged {
   private void configureDriverBindings(SN_XboxController controller) {
     Pose2d subwooferRobotPose = new Pose2d(1.35, 5.50, new Rotation2d(0));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
-    controller.btn_West.onTrue(new ZeroClimber(subClimber));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
 
     // // Climb Up
@@ -171,7 +170,7 @@ public class RobotContainer implements Logged {
     controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
         .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
             Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)));
-
+    //
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())));
@@ -184,7 +183,8 @@ public class RobotContainer implements Logged {
                     subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
                     () -> subPitch.setPitchAngle(0,
-                        subClimber.collidesWithPitch())))));
+                        subClimber.collidesWithPitch()))
+                    .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput())))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
@@ -231,14 +231,18 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("Wing Auto From Upper Sub",
-        new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+
+    autoChooser.setDefaultOption("Only Shoot",
+        new OnlyShoot(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
+            subTransfer, subTurret, subClimber));
+
+    autoChooser.addOption("Wing Auto From Upper Sub",
+        new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
+            subTransfer, subTurret));
 
     autoChooser.addOption("Centerline Auto from Lower Field",
-        new LowerCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-
-    autoChooser.addOption("Only Shoot",
-        new OnlyShoot(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
+        new LowerCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
+            subTransfer, subTurret));
 
     SmartDashboard.putData(autoChooser);
   }
@@ -317,20 +321,6 @@ public class RobotContainer implements Logged {
    */
   public static Command zeroPitch() {
     return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
-  }
-
-  /**
-   * Returns the command to zero the climber. This will make the climber move
-   * itself
-   * upwards until it hits the limit switch. If the zeroing does not end within 3
-   * seconds, it
-   * will interrupt itself.
-   * 
-   * @return The command to zero the climber
-   */
-  public static Command zeroClimber() {
-    return new ZeroClimber(subClimber).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
-        .withTimeout(3);
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {

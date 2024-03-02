@@ -69,7 +69,6 @@ public class LowerCenterline extends SequentialCommandGroup implements AutoInter
     addCommands(
         Commands.parallel(
             RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
-            RobotContainer.zeroClimber(),
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
             Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees()))),
 

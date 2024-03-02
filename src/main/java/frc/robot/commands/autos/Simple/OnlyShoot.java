@@ -18,8 +18,10 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeGroundGamePiece;
+import frc.robot.commands.LockPitch;
+import frc.robot.commands.LockTurret;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.TransferAuto;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -54,24 +56,25 @@ public class OnlyShoot extends SequentialCommandGroup implements AutoInterface {
     this.subClimber = subClimber;
 
     addCommands(
-        Commands.parallel(new Shoot(subShooter, subLEDs).repeatedly(),
-            Commands.sequence(
-                Commands.runOnce(() -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-                Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees())),
+        Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(PathPlannerAuto.getStaringPoseFromAutoFile("OnlyShoot"))),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            PathPlannerAuto.getStaringPoseFromAutoFile("OnlyShoot").getRotation().getDegrees())),
 
-                // get preload
-                Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
+        // get preload
+        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch),
+        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
-                // shoot preload
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.hasGamePiece))),
+        new PathPlannerAuto("OnlyShoot").withTimeout(0.1),
+
+        new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchAtGoalAngle()),
+        new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretAtGoalAngle()),
+        new TransferAuto(subShooter, subTurret, subTransfer, subPitch).withTimeout(2),
 
         new PathPlannerAuto("OnlyShoot"),
 
-        Commands.race(
-            RobotContainer.zeroPitch().until(() -> subPitch.getPitchAngle() <= 0),
-            RobotContainer.zeroClimber()));
+        RobotContainer.zeroPitch());
   }
 
   public Supplier<Pose2d> getInitialPose() {

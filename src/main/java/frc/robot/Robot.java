@@ -19,7 +19,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private boolean hasAutoRun = false;
 
   @Override
   public void robotInit() {
@@ -46,7 +45,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // Logging to SmartDashboard
-    RobotContainer.logPDHValues();
+    // RobotContainer.logPDHValues();
     RobotContainer.AddVisionMeasurement().schedule();
     SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
@@ -59,7 +58,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     FieldConstants.ALLIANCE = DriverStation.getAlliance();
-    m_robotContainer.setAutoPlacementLEDs(DriverStation.getAlliance());
+    // m_robotContainer.setAutoPlacementLEDs(DriverStation.getAlliance());
   }
 
   @Override
@@ -70,7 +69,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.clearSubsystemMovements().schedule();
-    hasAutoRun = true;
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -89,9 +87,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    }
-    if (!hasAutoRun) {
-      RobotContainer.zeroClimber().schedule();
     }
     m_robotContainer.clearSubsystemMovements().schedule();
   }

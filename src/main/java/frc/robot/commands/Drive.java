@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,6 +25,8 @@ public class Drive extends Command {
   double driveSpeed, xVelocity, yVelocity, rVelocity, slowMultiplier;
   Translation2d translationVelocity;
 
+  BooleanSupplier isRedAlliance;
+
   public Drive(
       Drivetrain subDrivetrain,
       DoubleSupplier xAxis,
@@ -34,7 +37,8 @@ public class Drive extends Command {
       Trigger eastTrigger,
       Trigger southTrigger,
       Trigger westTrigger,
-      boolean isPracticeBot) {
+      boolean isPracticeBot,
+      BooleanSupplier isRedAlliance) {
 
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -47,6 +51,8 @@ public class Drive extends Command {
     this.eastTrigger = eastTrigger;
     this.southTrigger = southTrigger;
     this.westTrigger = westTrigger;
+
+    this.isRedAlliance = isRedAlliance;
 
     isOpenLoop = false;
 

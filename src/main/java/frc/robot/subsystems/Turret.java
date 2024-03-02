@@ -38,6 +38,8 @@ public class Turret extends SubsystemBase {
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
 
+  public double desiredLockingAngle = 0;
+
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
       constTurret.ROBOT_TO_TURRET.getY(),
@@ -137,12 +139,20 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean isTurretAtGoalAngle() {
-    if (Math.abs(getTurretAngle() - desiredTurretAngle) <= prefTurret.turretIsAtAngleTolerance.getValue()) {
+    return isTurretAtAngle(desiredTurretAngle);
+  }
+
+  public boolean isTurretAtAngle(double angle) {
+    if (Math.abs(getTurretAngle() - angle) <= prefTurret.turretIsAtAngleTolerance.getValue()) {
       return true;
 
     } else {
       return false;
     }
+  }
+
+  public boolean isTurretLocked() {
+    return isTurretAtAngle(desiredLockingAngle);
   }
 
   public void setTurretNeutralOutput() {

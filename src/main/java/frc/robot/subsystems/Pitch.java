@@ -28,6 +28,7 @@ public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
   double desiredPitchAngle;
+  public double desiredLockingPitch = 0;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
   boolean INVERT_MOTOR;
@@ -120,7 +121,11 @@ public class Pitch extends SubsystemBase {
   }
 
   public boolean isPitchAtGoalAngle() {
-    if (Math.abs(getPitchAngle() - desiredPitchAngle) <= prefPitch.pitchIsAtAngleTolerance.getValue()) {
+    return isPitchAtAngle(desiredPitchAngle);
+  }
+
+  public boolean isPitchAtAngle(double angle) {
+    if (Math.abs(getPitchAngle() - angle) <= prefPitch.pitchIsAtAngleTolerance.getValue()) {
       return true;
     } else {
       return false;
@@ -199,6 +204,10 @@ public class Pitch extends SubsystemBase {
     desiredAngle = new Rotation2d(Math.hypot(distX, distY), distZ);
 
     return Optional.of(desiredAngle);
+  }
+
+  public boolean isPitchLocked() {
+    return isPitchAtAngle(desiredLockingPitch);
   }
 
   @Override

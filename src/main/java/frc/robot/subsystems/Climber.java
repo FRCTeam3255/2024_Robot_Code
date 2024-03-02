@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import frc.robot.Constants.constClimber;
@@ -35,10 +36,10 @@ public class Climber extends SubsystemBase {
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
-    configure();
+    configure(true);
   }
 
-  public void configure() {
+  public void configure(boolean isBrake) {
     climberMotor.getConfigurator().apply(new TalonFXConfiguration());
     climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
     climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
@@ -53,14 +54,23 @@ public class Climber extends SubsystemBase {
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units
         .degreesToRotations(prefClimber.climberMotorReverseLimit.getValue());
 
-    climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
+    if (isBrake) {
+      climberConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    } else {
+      climberConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    }
+
     climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
+
     climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
     climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0;
 
     climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionEnable = true;
     climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionValue = Units
         .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
+
+    climberConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
+    climberConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
 
     climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
@@ -146,7 +156,6 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
-    SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret());
     SmartDashboard.putString("Climber/Limit Switch Reverse", climberMotor.getReverseLimit().getValue().toString());
     SmartDashboard.putString("Climber/Limit Switch Forward", climberMotor.getForwardLimit().getValue().toString());
 
