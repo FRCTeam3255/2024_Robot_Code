@@ -16,12 +16,28 @@
     },
     {
       "anchor": {
-        "x": 2.161014095063048,
-        "y": 4.11797697052983
+        "x": 2.28,
+        "y": 4.54
       },
       "prevControl": {
-        "x": 2.1645435684619017,
-        "y": 4.396608298206198
+        "x": 2.4102749958145044,
+        "y": 4.765007612016862
+      },
+      "nextControl": {
+        "x": 2.1999842041151134,
+        "y": 4.401798781545749
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.49,
+        "y": 5.557466432869466
+      },
+      "prevControl": {
+        "x": 2.61863569886684,
+        "y": 5.779655367275825
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "IntakeGamePiece",
-      "waypointRelativePos": 0.55,
+      "waypointRelativePos": 1.1,
       "command": {
         "type": "parallel",
         "data": {
@@ -50,20 +66,20 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.5,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 2.2,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 270.0,
     "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 180.0,
+    "velocity": 0.0,
+    "rotation": 135.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "WingFromUpperSub",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 135.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

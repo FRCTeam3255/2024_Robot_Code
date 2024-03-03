@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.46,
+      "y": 7.33
+    },
+    "rotation": 180.0
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -8,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "U C5sUntilC1s.AWGWAJIOFADOI"
+            "pathName": "OnlyW1"
           }
         }
       ]
     }
   },
-  "folder": "CenterlineFromLower",
+  "folder": null,
   "choreoAuto": false
 }

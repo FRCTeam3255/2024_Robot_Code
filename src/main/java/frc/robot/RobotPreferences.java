@@ -74,11 +74,11 @@ public class RobotPreferences {
         (1 / 15.1));
 
     // This PID is implemented on the Drivetrain subsystem
-    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 3.5);
+    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 1);
     public static final SN_DoublePreference autoDriveI = new SN_DoublePreference("autoDriveI", 0);
     public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0.1);
 
-    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 10);
+    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 2);
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
@@ -234,7 +234,7 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 45);
+    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 41);
 
     public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 42.6);
   }

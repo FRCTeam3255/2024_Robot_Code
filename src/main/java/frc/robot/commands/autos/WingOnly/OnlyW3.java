@@ -33,7 +33,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
-public class DownWing extends SequentialCommandGroup implements AutoInterface {
+public class OnlyW3 extends SequentialCommandGroup implements AutoInterface {
   Drivetrain subDrivetrain;
   Intake subIntake;
   LEDs subLEDs;
@@ -43,9 +43,7 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
   Turret subTurret;
   Climber subClimber;
 
-  PathPlannerAuto PsW1sW2sW3s1 = new PathPlannerAuto("PsW1sW2sW3s.1");
-
-  public DownWing(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
+  public OnlyW3(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret, Climber subClimber) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
@@ -58,9 +56,9 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
 
     addCommands(
         Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(PathPlannerAuto.getStaringPoseFromAutoFile("PsW1sW2sW3s.1"))),
+            () -> subDrivetrain.resetPoseToPose(PathPlannerAuto.getStaringPoseFromAutoFile("OnlyW3"))),
         Commands.runOnce(() -> subDrivetrain.resetYaw(
-            PathPlannerAuto.getStaringPoseFromAutoFile("PsW1sW2sW3s.1").getRotation().getDegrees())),
+            PathPlannerAuto.getStaringPoseFromAutoFile("OnlyW3").getRotation().getDegrees())),
 
         // GET PRELOAD AND SHOOT IT
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
@@ -80,65 +78,11 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> subTransfer.setGamePieceCollected(false)),
         Commands.waitSeconds(0.5),
 
-        new PathPlannerAuto("PsW1sW2sW3s.1"),
+        new PathPlannerAuto("OnlyW2"),
 
-        // W1 shoot
-        // GET PRELOAD AND SHOOT IT
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch),
-        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
-
-        // SHOOTING
-        Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-
-        Commands.waitUntil(() -> !subClimber.collidesWithPitch()),
+        // W2 shoot
         new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchLocked()),
-        Commands.waitUntil(() -> !subClimber.collidesWithTurret()),
         new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretLocked()),
-        Commands.waitSeconds(0.5),
-        new TransferAuto(subShooter, subTurret, subTransfer, subPitch),
-        Commands.runOnce(() -> subTransfer.setGamePieceCollected(false)),
-        Commands.waitSeconds(0.5),
-
-        new PathPlannerAuto("PsW1sW2sW3s.2"),
-
-        // W2
-        // GET PRELOAD AND SHOOT IT
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch),
-        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
-
-        // SHOOTING
-        Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-
-        Commands.waitUntil(() -> !subClimber.collidesWithPitch()),
-        new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchLocked()),
-        Commands.waitUntil(() -> !subClimber.collidesWithTurret()),
-        new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretLocked()),
-        Commands.waitSeconds(0.5),
-        new TransferAuto(subShooter, subTurret, subTransfer, subPitch),
-        Commands.runOnce(() -> subTransfer.setGamePieceCollected(false)),
-        Commands.waitSeconds(0.5),
-
-        new PathPlannerAuto("PsW1sW2sW3s.3"),
-
-        // W3
-        // GET PRELOAD AND SHOOT IT
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch),
-        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
-
-        // SHOOTING
-        Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-
-        Commands.waitUntil(() -> !subClimber.collidesWithPitch()),
-        new LockPitch(subPitch, subDrivetrain, subClimber).until(() -> subPitch.isPitchLocked()),
-        Commands.waitUntil(() -> !subClimber.collidesWithTurret()),
-        new LockTurret(subTurret, subDrivetrain, subClimber).until(() -> subTurret.isTurretLocked()),
-        Commands.waitSeconds(0.5),
         new TransferAuto(subShooter, subTurret, subTransfer, subPitch),
         Commands.runOnce(() -> subTransfer.setGamePieceCollected(false)),
         Commands.waitSeconds(0.5));
@@ -147,8 +91,8 @@ public class DownWing extends SequentialCommandGroup implements AutoInterface {
 
   public Supplier<Pose2d> getInitialPose() {
     return () -> (!FieldConstants.isRedAlliance())
-        ? PathPlannerAuto.getStaringPoseFromAutoFile("PsW1sW2sW3s.1")
-        : PathPlannerPath.fromPathFile("PsW1sW2sW3s.1").flipPath().getPreviewStartingHolonomicPose();
+        ? PathPlannerAuto.getStaringPoseFromAutoFile("OnlyW3")
+        : PathPlannerPath.fromPathFile("OnlyW3").flipPath().getPreviewStartingHolonomicPose();
   }
 
   public Command getAutonomousCommand() {

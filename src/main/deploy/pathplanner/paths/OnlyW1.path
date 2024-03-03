@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.49,
-        "y": 6.43
+        "x": 2.486,
+        "y": 7.069
       },
       "prevControl": {
-        "x": 2.4521389506683966,
-        "y": 6.640808323291151
+        "x": 2.4481389506683966,
+        "y": 7.279808323291151
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "WingFromUpperSub",
+  "folder": null,
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

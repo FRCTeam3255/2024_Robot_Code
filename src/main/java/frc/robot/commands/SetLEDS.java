@@ -19,17 +19,15 @@ public class SetLEDS extends Command {
   Turret subTurret;
   Pitch subPitch;
   Transfer subTransfer;
-  Trigger amplify;
   Trigger defense;
 
   public SetLEDS(LEDs subLEDs, Shooter subShooter, Turret subTurret, Pitch subPitch, Transfer subTransfer,
-      Trigger amplify, Trigger defense) {
+      Trigger defense) {
     this.subLEDs = subLEDs;
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
     this.subTransfer = subTransfer;
-    this.amplify = amplify;
     this.defense = defense;
 
     addRequirements(subLEDs);
@@ -43,7 +41,7 @@ public class SetLEDS extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (amplify.getAsBoolean()) {
+    if (false) {
       subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION);
       return;
     }

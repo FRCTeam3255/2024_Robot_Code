@@ -86,10 +86,10 @@ public final class Constants {
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.158936;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.031250;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.397217;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.409424;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.155518;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.039062;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.399658;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.418945;
 
     /**
      * <p>
@@ -142,7 +142,7 @@ public final class Constants {
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
-    public static final int[] INTAKE_GAME_PIECE_COLLECTED = { 240, 186, 36 };
+    public static final int[] INTAKE_GAME_PIECE_COLLECTED = { 11, 53, 255 };
     public static final int[] RED_COLOR = { 255, 0, 0 };
     public static final int[] BLUE_COLOR = { 0, 0, 255 };
     public static final int[] GREEN_COLOR = { 0, 255, 0 };

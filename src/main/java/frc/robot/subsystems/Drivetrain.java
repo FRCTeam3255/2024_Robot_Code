@@ -38,6 +38,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
   // Struct logging - Allows for logging data that SmartDashboard alone can't log,
   // but must be called on the variable's creation
+  @Log.NT
   private SwerveModuleState[] loggedDesiredStates;
   @Log.NT
   private SwerveModuleState[] loggedActualStates;
@@ -108,8 +109,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
 
     driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 30;
-    driveConfiguration.CurrentLimits.SupplyCurrentLimit = 30;
+    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 50;
+    driveConfiguration.CurrentLimits.SupplyCurrentLimit = 40;
     driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
 
     driveConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
@@ -122,7 +123,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     steerConfiguration.Slot0.kD = prefDrivetrain.steerD.getValue();
 
     steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 50;
+    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 40;
     steerConfiguration.CurrentLimits.SupplyCurrentLimit = 30;
     steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
 

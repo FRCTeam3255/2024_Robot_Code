@@ -36,13 +36,12 @@ public class TransferAuto extends Command {
     subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
         prefShooter.rightShooterSpeakerVelocity.getValue());
     subShooter.getUpToSpeed();
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subShooter.areBothShootersUpToSpeed()) {
+    if (subShooter.areBothShootersUpToSpeed() && subPitch.isPitchLocked() && subTurret.isTurretLocked()) {
       subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
       subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
     }
@@ -57,6 +56,6 @@ public class TransferAuto extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subShooter.areBothShootersUpToSpeed();
+    return subShooter.areBothShootersUpToSpeed() && subPitch.isPitchLocked() && subTurret.isTurretLocked();
   }
 }

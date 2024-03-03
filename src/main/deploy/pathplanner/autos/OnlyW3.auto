@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.46,
+      "y": 4.11
+    },
+    "rotation": 180.0
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -8,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "U C5sUntilC1s.awfwafaw"
+            "pathName": "OnlyW3"
           }
         }
       ]
     }
   },
-  "folder": "CenterlineFromLower",
+  "folder": null,
   "choreoAuto": false
 }

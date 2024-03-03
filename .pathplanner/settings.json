@@ -10,8 +10,8 @@
     "CenterlineFromLower",
     "WingFromUpperSub"
   ],
-  "defaultMaxVel": 2.5,
-  "defaultMaxAccel": 2.5,
+  "defaultMaxVel": 2.2,
+  "defaultMaxAccel": 2.0,
   "defaultMaxAngVel": 270.0,
   "defaultMaxAngAccel": 360.0,
   "maxModuleSpeed": 4.6

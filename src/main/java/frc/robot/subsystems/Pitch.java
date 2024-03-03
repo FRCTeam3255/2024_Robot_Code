@@ -224,5 +224,7 @@ public class Pitch extends SubsystemBase {
     SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
 
     SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());
+    SmartDashboard.putBoolean("Pitch/Is At LOCKING Angle", isPitchLocked());
+
   }
 }

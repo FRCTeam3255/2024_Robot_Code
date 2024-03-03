@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.9,
-        "y": 5.5
+        "x": 1.46,
+        "y": 4.11
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.921864375795261,
-        "y": 4.631135153006649
+        "x": 2.46,
+        "y": 4.11
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.189332943986554,
-        "y": 4.153397000380699
-      },
-      "prevControl": {
-        "x": 4.349780421427151,
-        "y": 4.177384215310967
-      },
-      "nextControl": {
-        "x": 6.554299094346408,
+        "x": 2.49,
         "y": 4.114397967513275
       },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.68,
-        "y": 2.43
-      },
       "prevControl": {
-        "x": 6.68,
-        "y": 2.43
+        "x": 2.275818749127482,
+        "y": 4.114397967513275
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,22 +30,40 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeGamePiece",
+      "waypointRelativePos": 0.30000000000000004,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGamePiece"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2.5,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 2.2,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 270.0,
     "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "CenterlineFromLower",
+  "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

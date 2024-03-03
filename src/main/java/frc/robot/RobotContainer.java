@@ -7,7 +7,9 @@ package frc.robot;
 import java.util.Optional;
 
 import com.frcteam3255.joystick.SN_XboxController;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -46,8 +48,12 @@ import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.CenterlineDash.LowerCenterline;
+import frc.robot.commands.autos.Simple.OnlyPre;
 import frc.robot.commands.autos.Simple.OnlyShoot;
 import frc.robot.commands.autos.WingOnly.DownWing;
+import frc.robot.commands.autos.WingOnly.OnlyW1;
+import frc.robot.commands.autos.WingOnly.OnlyW2;
+import frc.robot.commands.autos.WingOnly.OnlyW3;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Annotations.Log;
@@ -112,7 +118,7 @@ public class RobotContainer implements Logged {
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain, subClimber));
     subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
     subLEDs
-        .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subPitch, subTransfer, conOperator.btn_East,
+        .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subPitch, subTransfer,
             conDriver.btn_RightBumper));
 
     // Register Autonomous Named Commands
@@ -166,11 +172,12 @@ public class RobotContainer implements Logged {
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch, subClimber));
+    controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
 
     controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
         .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
             Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)));
-    //
+
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())));
@@ -184,7 +191,8 @@ public class RobotContainer implements Logged {
                 .alongWith(Commands.runOnce(
                     () -> subPitch.setPitchAngle(0,
                         subClimber.collidesWithPitch()))
-                    .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput())))));
+                    .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput()))
+                    .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
@@ -218,31 +226,49 @@ public class RobotContainer implements Logged {
             () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(), subClimber.collidesWithPitch()))));
 
     // Trap Preset
-    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)).alongWith(
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
-            prefShooter.rightShooterTrapVelocity.getValue())))
-        .alongWith(
-            Commands.runOnce(
-                () -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue(),
-                    subClimber.collidesWithTurret())))
-        .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(), subClimber.collidesWithPitch()))));
+    // controller.btn_Y.onTrue(Commands.runOnce(() ->
+    // setLockedLocation(LockedLocation.NONE)).alongWith(
+    // Commands.runOnce(() ->
+    // subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
+    // prefShooter.rightShooterTrapVelocity.getValue())))
+    // .alongWith(
+    // Commands.runOnce(
+    // () -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue(),
+    // subClimber.collidesWithTurret())))
+    // .alongWith(Commands.runOnce(
+    // () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(),
+    // subClimber.collidesWithPitch()))));
+
+    controller.btn_Y.whileTrue((Commands.runOnce(() -> subClimber.setClimberVoltage(-2))));
+    controller.btn_Y.onFalse((Commands.runOnce(() -> subClimber.setClimberVoltage(0))));
 
   }
 
   private void configureAutoSelector() {
 
-    autoChooser.setDefaultOption("Only Shoot",
+    autoChooser.setDefaultOption("DO NOT USE - Only Shoot",
         new OnlyShoot(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
             subTransfer, subTurret, subClimber));
 
-    autoChooser.addOption("Wing Auto From Upper Sub",
+    autoChooser.addOption("Wing Auto (4pc) From Upper Sub",
         new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
             subTransfer, subTurret, subClimber));
 
-    autoChooser.addOption("Centerline Auto from Lower Field",
+    autoChooser.addOption("DO NOT Centerline Auto (3pc) from Lower Field",
         new LowerCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
-            subTransfer, subTurret));
+            subTransfer, subTurret, subClimber));
+
+    autoChooser.addOption("Only W1",
+        new OnlyW1(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
+
+    autoChooser.addOption("Only W2",
+        new OnlyW2(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
+
+    autoChooser.addOption("Only W3",
+        new OnlyW3(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
+
+    autoChooser.addOption("Only Preload",
+        new OnlyPre(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
 
     SmartDashboard.putData(autoChooser);
   }
