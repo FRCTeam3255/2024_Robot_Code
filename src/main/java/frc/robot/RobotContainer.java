@@ -239,8 +239,7 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-
-    autoChooser.addOption("Wing Auto (4pc) From Upper Sub",
+    autoChooser.setDefaultOption("Wing Auto (4pc) From Upper Sub",
         new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
             subTransfer, subTurret, subClimber));
 
