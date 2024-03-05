@@ -7,9 +7,7 @@ package frc.robot;
 import java.util.Optional;
 
 import com.frcteam3255.joystick.SN_XboxController;
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,7 +24,6 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
@@ -47,9 +44,7 @@ import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
-import frc.robot.commands.autos.CenterlineDash.LowerCenterline;
 import frc.robot.commands.autos.Simple.OnlyPre;
-import frc.robot.commands.autos.Simple.OnlyShoot;
 import frc.robot.commands.autos.WingOnly.DownWing;
 import frc.robot.commands.autos.WingOnly.OnlyW1;
 import frc.robot.commands.autos.WingOnly.OnlyW2;
@@ -111,8 +106,7 @@ public class RobotContainer implements Logged {
             conDriver.btn_B,
             conDriver.btn_A,
             conDriver.btn_X,
-            isPracticeBot(),
-            () -> FieldConstants.isRedAlliance()));
+            isPracticeBot()));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain, subClimber));
     subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain, subClimber));
@@ -246,16 +240,8 @@ public class RobotContainer implements Logged {
 
   private void configureAutoSelector() {
 
-    autoChooser.setDefaultOption("DO NOT USE - Only Shoot",
-        new OnlyShoot(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
-            subTransfer, subTurret, subClimber));
-
     autoChooser.addOption("Wing Auto (4pc) From Upper Sub",
         new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
-            subTransfer, subTurret, subClimber));
-
-    autoChooser.addOption("DO NOT Centerline Auto (3pc) from Lower Field",
-        new LowerCenterline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
             subTransfer, subTurret, subClimber));
 
     autoChooser.addOption("Only W1",

@@ -6,7 +6,6 @@ package frc.robot.commands.autos.Simple;
 
 import java.util.function.Supplier;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -20,9 +19,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.LockTurret;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.TransferAuto;
-import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;

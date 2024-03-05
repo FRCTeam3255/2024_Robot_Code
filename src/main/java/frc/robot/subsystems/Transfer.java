@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
-import monologue.Logged;
-import monologue.Annotations.Log;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -18,7 +16,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-public class Transfer extends SubsystemBase implements Logged {
+public class Transfer extends SubsystemBase {
   TalonSRX feederMotor;
   TalonFX transferMotor;
   CurrentLimitsConfigs transferCurrentLimitConfigs;
@@ -44,11 +42,6 @@ public class Transfer extends SubsystemBase implements Logged {
 
     transferMotor.setInverted(true);
     feederMotor.setInverted(false);
-
-    // transferCurrentLimitConfigs.withStatorCurrentLimit(constTransfer.CURRENT_LIMIT_CEILING_AMPS);
-    // transferCurrentLimitConfigs.withStatorCurrentLimitEnable(prefTransfer.transferStatorLimitEnable.getValue());
-
-    // transferMotor.getConfigurator().apply(transferCurrentLimitConfigs);
   }
 
   /**

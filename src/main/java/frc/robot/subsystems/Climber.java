@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import frc.robot.Constants.constClimber;
 import edu.wpi.first.math.util.Units;
@@ -137,19 +136,6 @@ public class Climber extends SubsystemBase {
   public boolean collidesWithPitch() {
     return !(getPosition() >= prefIntake.intakeIntakingAngle.getValue()
         - prefClimber.climberAtAngleTolerance.getValue());
-  }
-
-  public boolean limitSwitchHit() {
-    return climberMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
-  }
-
-  public boolean isAtAngle(double angle) {
-    if (Math.abs(getPosition() - angle) <= 1) {
-      return true;
-
-    } else {
-      return false;
-    }
   }
 
   @Override
