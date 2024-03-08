@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
@@ -23,27 +24,61 @@ public class FieldConstants {
    * Robot Coordinate Systems</a>
    * 
    * @return An array of field element positions. Your Speaker, Amp, Source, Left
-   *         Stage, Center Stage, Right Stage. Then, it continues in the same
+   *         Stage, Center Stage, Right Stage, SPEAKER UP, SPEAKER DOWN, Then, it
+   *         continues in the same
    *         order
    *         with the positions on the opposing alliance
    */
   public static Pose3d[] GET_FIELD_POSITIONS() {
     if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-      return new Pose3d[] { redConstants.SPEAKER, redConstants.AMP, redConstants.SOURCE, redConstants.LEFT_STAGE,
-          redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, blueConstants.SPEAKER, blueConstants.AMP,
-          blueConstants.SOURCE, blueConstants.LEFT_STAGE, blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE };
+      return new Pose3d[] { redConstants.SPEAKER_CENTER, redConstants.AMP, redConstants.SOURCE, redConstants.LEFT_STAGE,
+          redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN,
+          blueConstants.AMP,
+          blueConstants.SOURCE, blueConstants.LEFT_STAGE, blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE,
+          blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN };
 
     }
-    return new Pose3d[] { blueConstants.SPEAKER, blueConstants.AMP, blueConstants.SOURCE, blueConstants.LEFT_STAGE,
-        blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE, redConstants.SPEAKER, redConstants.AMP,
-        redConstants.SOURCE, redConstants.LEFT_STAGE, redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE };
+    return new Pose3d[] { blueConstants.SPEAKER_CENTER, blueConstants.AMP, blueConstants.SOURCE,
+        blueConstants.LEFT_STAGE,
+        blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE, blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN,
+        redConstants.AMP,
+        redConstants.SOURCE, redConstants.LEFT_STAGE, redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE,
+        redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN };
   }
+
+  /**
+   * Boolean that controls when the path will be mirrored for the red
+   * alliance. This will flip the path being followed to the red side of the
+   * field.
+   * THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+   * 
+   * @return If we are currently on Red alliance. Will return false if no alliance
+   *         is found
+   */
+  public static boolean isRedAlliance() {
+
+    var alliance = FieldConstants.ALLIANCE;
+    if (alliance.isPresent()) {
+      return alliance.get() == DriverStation.Alliance.Red;
+    }
+    return false;
+  };
 
   private static final class blueConstants {
     /**
      * The coordinate of the center of the blue speaker, in meters
      */
-    private static final Pose3d SPEAKER = new Pose3d(0, 5.547, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(-0.1, 5.619077205657959, 1.452, new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are below the speaker
+     */
+    private static final Pose3d SPEAKER_DOWN = new Pose3d(-0.1, 5.819077205657959, 1.452, new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are above the speaker
+     */
+    private static final Pose3d SPEAKER_UP = new Pose3d(-0.1, 5.419077205657959, 1.452, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the blue amp, in meters.
@@ -63,7 +98,19 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the red speaker, in meters
      */
-    private static final Pose3d SPEAKER = new Pose3d(16.5410515, 5.547, 1.552, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(16.6410515, 5.619077205657959, 1.452,
+        new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are below the speaker
+     */
+    private static final Pose3d SPEAKER_DOWN = new Pose3d(16.6410515, 5.819077205657959, 1.452,
+        new Rotation3d(0, 0, 0));
+
+    /**
+     * where to shoot when you are above the speaker
+     */
+    private static final Pose3d SPEAKER_UP = new Pose3d(16.6410515, 5.419077205657959, 1.452, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the red amp, in meters

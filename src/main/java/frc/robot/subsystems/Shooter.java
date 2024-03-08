@@ -77,8 +77,12 @@ public class Shooter extends SubsystemBase {
    * speeds.
    */
   public void getUpToSpeed() {
-    leftMotor.setControl(velocityRequest.withVelocity(desiredLeftVelocity).withFeedForward(leftFF));
-    rightMotor.setControl(velocityRequest.withVelocity(desiredRightVelocity).withFeedForward(rightFF));
+    if (desiredLeftVelocity <= 0 && desiredRightVelocity <= 0) {
+      setShootingNeutralOutput();
+    } else {
+      leftMotor.setControl(velocityRequest.withVelocity(desiredLeftVelocity).withFeedForward(leftFF));
+      rightMotor.setControl(velocityRequest.withVelocity(desiredRightVelocity).withFeedForward(rightFF));
+    }
   }
 
   /**

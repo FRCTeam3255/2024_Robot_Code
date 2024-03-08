@@ -39,7 +39,7 @@ public class AddVisionMeasurement extends Command {
     ARresult = subVision.getPoseFromARCamera();
     OVresult = subVision.getPoseFromOVCamera();
 
-    if (ARresult.isPresent()) {
+    if (ARresult.isPresent() && !RobotState.isAutonomous()) {
       estimatedPose = ARresult.get().estimatedPose.toPose2d();
       timestamp = ARresult.get().timestampSeconds;
       if (estimatedPose.getX() < 5.847097873687744 || estimatedPose.getX() > 10.699200630187988) {
@@ -48,7 +48,7 @@ public class AddVisionMeasurement extends Command {
       }
     }
 
-    if (OVresult.isPresent()) {
+    if (OVresult.isPresent() && !RobotState.isAutonomous()) {
       estimatedPose = OVresult.get().estimatedPose.toPose2d();
       timestamp = OVresult.get().timestampSeconds;
       if (estimatedPose.getX() < 5.847097873687744 || estimatedPose.getX() > 10.699200630187988) {

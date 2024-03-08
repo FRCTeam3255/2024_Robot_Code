@@ -69,6 +69,8 @@ public class LockPitch extends Command {
               prefPitch.pitchReverseLimit.getValue(),
               prefPitch.pitchForwardLimit.getValue()));
 
+      subPitch.desiredLockingPitch = desiredAngle.getDegrees();
+
       subPitch.setPitchAngle(desiredAngle.getDegrees(), subClimber.collidesWithPitch());
     }
     SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredAngle.getDegrees());

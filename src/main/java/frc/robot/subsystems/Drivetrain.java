@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.FieldConstants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constDrivetrain;
@@ -95,7 +97,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
             prefDrivetrain.autoSteerI.getValue(),
             prefDrivetrain.autoSteerD.getValue()),
         new ReplanningConfig(),
-        constDrivetrain.AUTO_FLIP_WITH_ALLIANCE_COLOR,
+        () -> FieldConstants.isRedAlliance(),
         Robot.isSimulation());
   }
 
@@ -106,10 +108,28 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue();
     driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
 
+    driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
+    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 50;
+    driveConfiguration.CurrentLimits.SupplyCurrentLimit = 40;
+    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
+
+    driveConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
+    driveConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
+    driveConfiguration.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.1;
+
     steerConfiguration.Slot0.kS = prefDrivetrain.steerKs.getValue();
     steerConfiguration.Slot0.kP = prefDrivetrain.steerP.getValue();
     steerConfiguration.Slot0.kI = prefDrivetrain.steerI.getValue();
     steerConfiguration.Slot0.kD = prefDrivetrain.steerD.getValue();
+
+    steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
+    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 40;
+    steerConfiguration.CurrentLimits.SupplyCurrentLimit = 30;
+    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
+
+    steerConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
+    steerConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
+    steerConfiguration.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.1;
 
     SN_SwerveModule.driveConfiguration = driveConfiguration;
     SN_SwerveModule.steerConfiguration = steerConfiguration;

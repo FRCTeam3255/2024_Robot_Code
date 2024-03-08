@@ -2,7 +2,8 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser"
     },
     "windows": {
       "/SmartDashboard/Field": {
@@ -15,18 +16,26 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/SendableChooser[0]": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
   "NetworkTables": {
     "transitory": {
       "Monologue": {
-        "open": true,
-        "subDrivetrain": {
-          "open": true
-        }
+        "open": true
       },
       "SmartDashboard": {
+        "Pitch": {
+          "open": true
+        },
+        "Turret": {
+          "open": true
+        },
         "open": true
       }
     }

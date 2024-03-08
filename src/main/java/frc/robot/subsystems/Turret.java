@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +37,8 @@ public class Turret extends SubsystemBase {
 
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
+
+  public double desiredLockingAngle = 0;
 
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
@@ -75,12 +78,12 @@ public class Turret extends SubsystemBase {
 
     turretConfig.Feedback.SensorToMechanismRatio = constTurret.GEAR_RATIO;
     turretConfig.MotorOutput.NeutralMode = constTurret.NEUTRAL_MODE_VALUE;
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = 50;
+    turretConfig.CurrentLimits.SupplyCurrentLimit = 30;
+    turretConfig.CurrentLimits.SupplyCurrentThreshold = 0.1;
 
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
-    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = prefTurret.turretStatorCurrentLimitEnable.getValue();
-    turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimitCeilingAmps.getValue();
-    turretConfig.CurrentLimits.SupplyCurrentThreshold = prefTurret.turretStatorCurrentThreshold.getValue();
-    turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretStatorTimeTreshold.getValue();
     turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.setInverted(invertAbsEncoder);
   }
@@ -136,12 +139,20 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean isTurretAtGoalAngle() {
-    if (Math.abs(getTurretAngle() - desiredTurretAngle) <= prefTurret.turretIsAtAngleTolerance.getValue()) {
+    return isTurretAtAngle(desiredTurretAngle);
+  }
+
+  public boolean isTurretAtAngle(double angle) {
+    if (Math.abs(getTurretAngle() - angle) <= prefTurret.turretIsAtAngleTolerance.getValue()) {
       return true;
 
     } else {
       return false;
     }
+  }
+
+  public boolean isTurretLocked() {
+    return isTurretAtAngle(desiredLockingAngle);
   }
 
   public void setTurretNeutralOutput() {
@@ -227,11 +238,20 @@ public class Turret extends SubsystemBase {
         return Optional.empty();
 
       case SPEAKER:
+        if (robotPose.getY() < 4.1) {
+          targetPose = fieldPoses[6];
+          break;
+        } else if (robotPose.getY() > 6.9) {
+          targetPose = fieldPoses[7];
+          break;
+        }
         targetPose = fieldPoses[0];
         break;
     }
 
-    Pose2d turretPose = robotPose.transformBy(robotToTurret);
+    Rotation2d rotation = robotPose.getRotation().plus(robotToTurret.getRotation().unaryMinus());
+    Translation2d translation = robotPose.getTranslation().plus(robotToTurret.getTranslation());
+    Pose2d turretPose = new Pose2d(translation, rotation);
 
     Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
     Rotation2d desiredAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());

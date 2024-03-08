@@ -33,6 +33,7 @@ public class LEDs extends SubsystemBase {
    * @param rgb How much red, green, and blue the color has
    */
   public void setLEDs(int[] rgb) {
+    setLEDBrightness(1);
     CANdle.setLEDs(rgb[0], rgb[1], rgb[2]);
   }
 
@@ -55,6 +56,7 @@ public class LEDs extends SubsystemBase {
    * @param animation Type of Animation desired
    */
   public void setLEDsToAnimation(Animation animation) {
+    setLEDBrightness(1);
     CANdle.animate(animation, 0);
   }
 
@@ -66,6 +68,7 @@ public class LEDs extends SubsystemBase {
    * Clears the LEDs of the current animation or color
    */
   public void clearAnimation() {
+    setLEDBrightness(0);
     CANdle.clearAnimation(0);
     CANdle.setLEDs(0, 0, 0, 0, 0, 0);
   }

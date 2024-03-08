@@ -40,8 +40,9 @@ public final class Constants {
   public static class constClimber {
     public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.063389;
-    public static final double GEAR_RATIO = 220.5;
+    public static final double ABS_ENCODER_OFFSET = 0.021475;
+    public static final double GEAR_RATIO = 327.6;
+    public static final double ABS_TO_MECH_RATIO = (1080 / 510);
   }
 
   public static class constControllers {
@@ -85,10 +86,10 @@ public final class Constants {
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.158936;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.031250;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.397217;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.409424;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.155518;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.039062;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.399658;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.418945;
 
     /**
      * <p>
@@ -141,7 +142,7 @@ public final class Constants {
     public static final double LED_BRIGHTNESS = 1;
 
     public static final int[] SHOOTER_UP_TO_SPEED_COLOR = { 36, 240, 83 };
-    public static final int[] INTAKE_GAME_PIECE_COLLECTED = { 240, 186, 36 };
+    public static final int[] INTAKE_GAME_PIECE_COLLECTED = { 11, 53, 255 };
     public static final int[] RED_COLOR = { 255, 0, 0 };
     public static final int[] BLUE_COLOR = { 0, 0, 255 };
     public static final int[] GREEN_COLOR = { 0, 255, 0 };
@@ -150,7 +151,7 @@ public final class Constants {
     public static final int[] AUTO_ALIGNED_COLOR = { 207, 82, 4 };
     public static final int[] SPIT_OUT_GAME_PIECE = { 255, 60, 0 };
 
-    public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(76, 22, 105, 0, 0.95, LED_NUMBER,
+    public static final ColorFlowAnimation PANIC_ANIMATION = new ColorFlowAnimation(255, 0, 0, 0, 1, LED_NUMBER,
         Direction.Forward);
     public static final ColorFlowAnimation AMPLIFY_ANIMATION = new ColorFlowAnimation(160, 10, 247, 0, 0.95, LED_NUMBER,
         Direction.Forward);
@@ -246,7 +247,7 @@ public final class Constants {
     public static final double GEAR_RATIO = 39;
     public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
-    public static final double ABS_ENCODER_OFFSET = 0.011712;
+    public static final double ABS_ENCODER_OFFSET = 0.011700;
     public static final boolean ABS_ENCODER_INVERT = false;
 
     /**
@@ -266,7 +267,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
-        new Translation3d(0, 0, Units.inchesToMeters(14.5)),
+        new Translation3d(Units.inchesToMeters(1), 0, 0),
         new Rotation3d(0, 0, Units.degreesToRadians(180)));
 
     // TODO: figure out why its 180 because it makes no sense and theres probably a
@@ -286,7 +287,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(12.125), Units.inchesToMeters(-8.625), Units.inchesToMeters(8)),
+        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(-9.82), Units.inchesToMeters(8)),
         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-25)));
 
     /**
@@ -298,7 +299,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(12.125), Units.inchesToMeters(8.625), Units.inchesToMeters(8)),
+        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(9.82), Units.inchesToMeters(8)),
         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
   }
 

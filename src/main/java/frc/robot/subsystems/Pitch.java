@@ -28,6 +28,7 @@ public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
   double desiredPitchAngle;
+  public double desiredLockingPitch = 0;
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
   boolean INVERT_MOTOR;
@@ -60,6 +61,11 @@ public class Pitch extends SubsystemBase {
 
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue();
+
+    pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    pitchConfig.CurrentLimits.SupplyCurrentThreshold = 50;
+    pitchConfig.CurrentLimits.SupplyCurrentLimit = 30;
+    pitchConfig.CurrentLimits.SupplyCurrentThreshold = 0.1;
 
     pitchConfig.Feedback.SensorToMechanismRatio = GEAR_RATIO;
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
@@ -120,7 +126,11 @@ public class Pitch extends SubsystemBase {
   }
 
   public boolean isPitchAtGoalAngle() {
-    if (Math.abs(getPitchAngle() - desiredPitchAngle) <= prefPitch.pitchIsAtAngleTolerance.getValue()) {
+    return isPitchAtAngle(desiredPitchAngle);
+  }
+
+  public boolean isPitchAtAngle(double angle) {
+    if (Math.abs(getPitchAngle() - angle) <= prefPitch.pitchIsAtAngleTolerance.getValue()) {
       return true;
     } else {
       return false;
@@ -201,6 +211,10 @@ public class Pitch extends SubsystemBase {
     return Optional.of(desiredAngle);
   }
 
+  public boolean isPitchLocked() {
+    return isPitchAtAngle(desiredLockingPitch);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -210,5 +224,7 @@ public class Pitch extends SubsystemBase {
     SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
 
     SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());
+    SmartDashboard.putBoolean("Pitch/Is At LOCKING Angle", isPitchLocked());
+
   }
 }

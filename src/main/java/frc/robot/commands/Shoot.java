@@ -28,11 +28,6 @@ public class Shoot extends Command {
   @Override
   public void execute() {
     subShooter.getUpToSpeed();
-
-    // Set LEDs when shooters are up to speed
-    if (subShooter.areBothShootersUpToSpeed()) {
-
-    }
   }
 
   // Called once the command ends or is interrupted.

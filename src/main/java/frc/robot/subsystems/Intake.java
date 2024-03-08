@@ -15,6 +15,7 @@ import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
+  TalonFXConfiguration rollerConfig;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
@@ -22,7 +23,13 @@ public class Intake extends SubsystemBase {
   }
 
   public void configure() {
-    rollerMotor.getConfigurator().apply(new TalonFXConfiguration());
+    rollerConfig = new TalonFXConfiguration();
+    rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    rollerConfig.CurrentLimits.SupplyCurrentThreshold = 40;
+    rollerConfig.CurrentLimits.SupplyCurrentLimit = 30;
+    rollerConfig.CurrentLimits.SupplyCurrentThreshold = 0.1;
+
+    rollerMotor.getConfigurator().apply(rollerConfig);
   }
 
   /**
@@ -53,6 +60,5 @@ public class Intake extends SubsystemBase {
   public void periodic() {
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake/Roller Percent Output", getRollerPercentOutput());
   }
 }

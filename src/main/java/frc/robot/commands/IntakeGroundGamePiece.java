@@ -4,14 +4,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.constLEDs;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
@@ -20,19 +19,17 @@ public class IntakeGroundGamePiece extends Command {
   Intake subIntake;
   Transfer subTransfer;
   Turret subTurret;
-  LEDs subLEDs;
   Climber subClimber;
   Pitch subPitch;
 
   double lastDesiredPitch;
+  double lastDesiredTurret;
 
-  public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret, LEDs subLEDs,
-      Climber subClimber,
-      Pitch subPitch) {
+  public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret,
+      Climber subClimber, Pitch subPitch) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-    this.subLEDs = subLEDs;
     this.subClimber = subClimber;
     this.subPitch = subPitch;
     addRequirements(subIntake, subTransfer, subTurret, subClimber, subPitch);
@@ -41,16 +38,22 @@ public class IntakeGroundGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
+    lastDesiredTurret = subTurret.getAngle();
     lastDesiredPitch = subPitch.getPitchAngle();
-    subLEDs.clearAnimation();
+    // moved climber pivot to init since its pid
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
+    subClimber.configure(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subClimber.setClimberAngle(prefIntake.intakeIntakingAngle.getValue());
+    if (subClimber.getPosition() < 30) {
+      subClimber.setClimberVoltage(11);
+    } else {
+      subClimber.setClimberVoltage(0);
+      subClimber.setNeutralOutput();
+    }
 
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
 
@@ -63,15 +66,14 @@ public class IntakeGroundGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subIntake.setNeutralMode();
+    if (!RobotState.isAutonomous()) {
+      subIntake.setNeutralMode();
+    }
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
-
-    if (!interrupted) {
-      subLEDs.setLEDs(constLEDs.INTAKE_GAME_PIECE_COLLECTED);
-    }
-
+    subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
+    subClimber.setNeutralOutput();
   }
 
   // Returns true when the command should end.

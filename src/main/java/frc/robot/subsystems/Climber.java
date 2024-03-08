@@ -6,11 +6,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Constants.constClimber;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapClimber;
@@ -27,23 +26,20 @@ public class Climber extends SubsystemBase {
   double absoluteEncoderOffset, absEncoderRollover;
   VoltageOut voltageRequest;
   TalonFXConfiguration climberConfig;
-  DutyCycleEncoder absoluteEncoder;
 
   PositionVoltage positionRequest;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
-    absoluteEncoder = new DutyCycleEncoder(mapClimber.CLIMBER_ABSOLUTE_ENCODER_DIO);
     climberConfig = new TalonFXConfiguration();
-
-    absoluteEncoderOffset = constClimber.ABS_ENCODER_OFFSET;
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
-    configure();
+    configure(true);
   }
 
-  public void configure() {
+  public void configure(boolean isBrake) {
+    climberMotor.getConfigurator().apply(new TalonFXConfiguration());
     climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
     climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
     climberConfig.Slot0.kI = prefClimber.climberItele.getValue();
@@ -57,33 +53,23 @@ public class Climber extends SubsystemBase {
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units
         .degreesToRotations(prefClimber.climberMotorReverseLimit.getValue());
 
-    climberConfig.MotorOutput.NeutralMode = constClimber.CLIMBER_NEUTRAL_MODE;
-    climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
-    climberMotor.getConfigurator().apply(climberConfig);
-    climberMotor.setInverted(prefClimber.climberInverted.getValue());
-
-  }
-
-  public void setClimbingConfigs(boolean isClimbing) {
-    if (isClimbing) {
-      climberConfig.Slot0.kG = prefClimber.climberGClimb.getValue();
-      climberConfig.Slot0.kP = prefClimber.climberPClimb.getValue();
-      climberConfig.Slot0.kI = prefClimber.climberIClimb.getValue();
-      climberConfig.Slot0.kD = prefClimber.climberDClimb.getValue();
-
-      climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
-          .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue() + 12);
-
+    if (isBrake) {
+      climberConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     } else {
-      climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
-      climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
-      climberConfig.Slot0.kI = prefClimber.climberItele.getValue();
-      climberConfig.Slot0.kD = prefClimber.climberDtele.getValue();
-
-      climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
-          .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
-
+      climberConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     }
+
+    climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
+
+    climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+    climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0;
+
+    climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionEnable = true;
+    climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionValue = Units
+        .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
+
+    climberConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
+    climberConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
 
     climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
@@ -116,23 +102,6 @@ public class Climber extends SubsystemBase {
     climberMotor.setControl(voltageRequest.withOutput(voltage));
   }
 
-  public double getRawAbsoluteEncoder() {
-    return absoluteEncoder.getAbsolutePosition();
-  }
-
-  public double getAbsoluteEncoder() {
-    double rotations = getRawAbsoluteEncoder();
-
-    rotations -= absoluteEncoderOffset;
-
-    return rotations;
-  }
-
-  public void resetClimberToAbsolutePosition() {
-    double rotations = getAbsoluteEncoder();
-    climberMotor.setPosition((constClimber.ABS_ENCODER_INVERT) ? -rotations : rotations);
-  }
-
   public double getClimberVelocity() {
     return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
   }
@@ -144,6 +113,10 @@ public class Climber extends SubsystemBase {
    */
   public void setClimberAngle(double angle) {
     climberMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  }
+
+  public void resetAngleToAngle(double angle) {
+    climberMotor.setPosition(angle);
   }
 
   /**
@@ -167,11 +140,11 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Climber/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
-    SmartDashboard.putNumber("Climber/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
     SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
-    SmartDashboard.putBoolean("Climber has Collision with Intake", collidesWithTurret());
+    SmartDashboard.putString("Climber/Limit Switch Reverse", climberMotor.getReverseLimit().getValue().toString());
+    SmartDashboard.putString("Climber/Limit Switch Forward", climberMotor.getForwardLimit().getValue().toString());
+
   }
 
 }
