@@ -44,11 +44,7 @@ import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
-import frc.robot.commands.autos.Simple.OnlyPre;
-import frc.robot.commands.autos.WingOnly.DownWing;
-import frc.robot.commands.autos.WingOnly.OnlyW1;
-import frc.robot.commands.autos.WingOnly.OnlyW2;
-import frc.robot.commands.autos.WingOnly.OnlyW3;
+import frc.robot.commands.autos.DefaultAuto;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Annotations.Log;
@@ -239,23 +235,8 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("Wing Auto (4pc) From Upper Sub",
-        new DownWing(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
-            subTransfer, subTurret, subClimber));
-
-    autoChooser.addOption("Only W1",
-        new OnlyW1(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
-
-    autoChooser.addOption("Only W2",
-        new OnlyW2(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
-
-    autoChooser.addOption("Only W3",
-        new OnlyW3(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
-
-    autoChooser.addOption("Only Preload",
-        new OnlyPre(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
-
-    SmartDashboard.putData(autoChooser);
+    autoChooser.setDefaultOption("Default Auto",
+        new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
   }
 
   public Command getAutonomousCommand() {
