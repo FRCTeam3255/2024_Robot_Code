@@ -154,10 +154,10 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
         0.5);
-    public static final SN_DoublePreference intakeHasGamePieceVelocity = new SN_DoublePreference(
-        "intakeHasGamePieceVelocity", 16.5);
-    public static final SN_DoublePreference intakeHasGamePieceCurrent = new SN_DoublePreference(
-        "intakeHasGamePieceCurrent", 7);
+    public static final SN_DoublePreference intakeSourceHasGamePieceVelocity = new SN_DoublePreference(
+        "intakeSourceHasGamePieceVelocity", 16.5);
+    public static final SN_DoublePreference intakeSourceHasGamePieceCurrent = new SN_DoublePreference(
+        "intakeSourceHasGamePieceCurrent", 7);
 
   }
 
