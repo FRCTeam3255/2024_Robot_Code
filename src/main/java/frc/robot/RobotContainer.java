@@ -233,8 +233,8 @@ public class RobotContainer implements Logged {
                     subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
             () -> subPitch.setPitchAngle(pitchAngle, subClimber.collidesWithPitch()))));
-    controller.btn_North.onTrue(Commands.runOnce(() -> pitchAngle = pitchAngle + 0.25));
-    controller.btn_South.onTrue(Commands.runOnce(() -> pitchAngle = pitchAngle - 0.25));
+    controller.btn_North.onTrue(Commands.runOnce(() -> pitchAngle = pitchAngle + 0.1));
+    controller.btn_South.onTrue(Commands.runOnce(() -> pitchAngle = pitchAngle - 0.1));
 
     // Trap Preset
     // controller.btn_Y.onTrue(Commands.runOnce(() ->

@@ -22,7 +22,9 @@ import frc.robot.RobotPreferences.prefShooter;
 public class Shooter extends SubsystemBase {
   TalonFX leftMotor, rightMotor;
   TalonFXConfiguration leftConfig, rightConfig;
-  MotionMagicConfigs motionMagicConfigs;
+  MotionMagicConfigs leftMotionMagicConfigs;
+  MotionMagicConfigs rightMotionMagicConfigs;
+
   MotionMagicVelocityVoltage motionMagicRequest;
 
   VelocityVoltage velocityRequest;
@@ -67,14 +69,20 @@ public class Shooter extends SubsystemBase {
     leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
 
-    MotionMagicConfigs motionMagicConfigs = leftConfig.MotionMagic;
-    motionMagicConfigs.MotionMagicAcceleration = 100; // Target acceleration of 400 rps/s (0.25 seconds to max)
-    motionMagicConfigs.MotionMagicJerk = 1000; // Target jerk of 4000 rps/s/s (0.1 seconds)
+    leftMotionMagicConfigs = leftConfig.MotionMagic;
+    leftMotionMagicConfigs.MotionMagicAcceleration = 400;
+    leftMotionMagicConfigs.MotionMagicJerk = 4000;
 
     rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue();
+    rightConfig.Slot0.kS = prefShooter.rightShooterS.getValue();
+    rightConfig.Slot0.kA = prefShooter.rightShooterA.getValue();
     rightConfig.Slot0.kP = prefShooter.rightShooterP.getValue();
     rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue();
     rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue();
+
+    rightMotionMagicConfigs = rightConfig.MotionMagic;
+    rightMotionMagicConfigs.MotionMagicAcceleration = 400;
+    rightMotionMagicConfigs.MotionMagicJerk = 4000;
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
@@ -92,7 +100,7 @@ public class Shooter extends SubsystemBase {
       setShootingNeutralOutput();
     } else {
       leftMotor.setControl(motionMagicRequest.withVelocity(desiredLeftVelocity));
-      rightMotor.setControl(velocityRequest.withVelocity(desiredRightVelocity));
+      rightMotor.setControl(motionMagicRequest.withVelocity(desiredRightVelocity));
     }
   }
 

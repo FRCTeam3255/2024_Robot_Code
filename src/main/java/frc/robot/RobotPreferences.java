@@ -241,16 +241,18 @@ public class RobotPreferences {
 
   public static final class prefShooter {
     public static final SN_DoublePreference leftShooterS = new SN_DoublePreference("leftShooterS", 0.4);
-    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", (1 / 80));
+    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", 0.12);
     public static final SN_DoublePreference leftShooterA = new SN_DoublePreference("leftShooterA", 0.1);
-    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.0);
+    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.6);
     public static final SN_DoublePreference leftShooterI = new SN_DoublePreference("leftShooterI", 0);
-    public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0.0);
+    public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0.01);
 
-    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.125);
-    public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.4);
+    public static final SN_DoublePreference rightShooterS = new SN_DoublePreference("rightShooterS", 0.4);
+    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.1175);
+    public static final SN_DoublePreference rightShooterA = new SN_DoublePreference("rightShooterA", 0.1);
+    public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.6);
     public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
-    public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0);
+    public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0.01);
 
     public static final SN_DoublePreference shooterVelocityVoltage = new SN_DoublePreference("shooterVelocityVoltage",
         0);
@@ -259,7 +261,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
-        "shooterUpToSpeedTolerance", 0.5);
+        "shooterUpToSpeedTolerance", 1);
 
     public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
         "leftShooterIntakeVelocity",
