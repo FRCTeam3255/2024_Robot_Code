@@ -6,7 +6,10 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -29,9 +32,12 @@ import frc.robot.RobotPreferences.prefPitch;
 public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
+  MotionMagicConfigs motionMagicConfig;
   double desiredPitchAngle;
   Rotation2d desiredLockingAngle = new Rotation2d();
   PositionVoltage positionRequest;
+  MotionMagicVoltage motionMagicRequest;
+
   VoltageOut voltageRequest;
   boolean INVERT_MOTOR;
   double GEAR_RATIO;
@@ -43,6 +49,7 @@ public class Pitch extends SubsystemBase {
 
     positionRequest = new PositionVoltage(0).withSlot(0);
     voltageRequest = new VoltageOut(0);
+    motionMagicRequest = new MotionMagicVoltage(0);
 
     INVERT_MOTOR = (RobotContainer.isPracticeBot()) ? constPitch.pracBot.INVERT
         : constPitch.INVERT;
@@ -54,10 +61,16 @@ public class Pitch extends SubsystemBase {
   }
 
   public void configure() {
+    pitchConfig.Slot0.kS = prefPitch.pitchS.getValue();
+    pitchConfig.Slot0.kV = prefPitch.pitchV.getValue();
+    pitchConfig.Slot0.kA = prefPitch.pitchA.getValue();
     pitchConfig.Slot0.kP = prefPitch.pitchP.getValue();
     pitchConfig.Slot0.kI = prefPitch.pitchI.getValue();
     pitchConfig.Slot0.kD = prefPitch.pitchD.getValue();
-    pitchConfig.Slot0.kG = prefPitch.pitchG.getValue();
+
+    pitchConfig.MotionMagic.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
+    pitchConfig.MotionMagic.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
+    pitchConfig.MotionMagic.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefPitch.pitchForwardLimit.getValue();
@@ -101,7 +114,7 @@ public class Pitch extends SubsystemBase {
       angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
     }
     desiredPitchAngle = angle;
-    pitchMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+    pitchMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   /**

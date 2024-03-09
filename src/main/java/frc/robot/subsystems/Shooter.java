@@ -22,8 +22,6 @@ import frc.robot.RobotPreferences.prefShooter;
 public class Shooter extends SubsystemBase {
   TalonFX leftMotor, rightMotor;
   TalonFXConfiguration leftConfig, rightConfig;
-  MotionMagicConfigs leftMotionMagicConfigs;
-  MotionMagicConfigs rightMotionMagicConfigs;
 
   MotionMagicVelocityVoltage motionMagicRequest;
 
@@ -69,9 +67,8 @@ public class Shooter extends SubsystemBase {
     leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
 
-    leftMotionMagicConfigs = leftConfig.MotionMagic;
-    leftMotionMagicConfigs.MotionMagicAcceleration = 400;
-    leftMotionMagicConfigs.MotionMagicJerk = 4000;
+    leftConfig.MotionMagic.MotionMagicAcceleration = 400;
+    leftConfig.MotionMagic.MotionMagicJerk = 4000;
 
     rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue();
     rightConfig.Slot0.kS = prefShooter.rightShooterS.getValue();
@@ -80,9 +77,8 @@ public class Shooter extends SubsystemBase {
     rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue();
     rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue();
 
-    rightMotionMagicConfigs = rightConfig.MotionMagic;
-    rightMotionMagicConfigs.MotionMagicAcceleration = 400;
-    rightMotionMagicConfigs.MotionMagicJerk = 4000;
+    rightConfig.MotionMagic.MotionMagicAcceleration = 400;
+    rightConfig.MotionMagic.MotionMagicJerk = 4000;
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);

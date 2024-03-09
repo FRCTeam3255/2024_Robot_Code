@@ -158,12 +158,12 @@ public class RobotPreferences {
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 100); // Original: 70. With 0 G,
-                                                                                             // P
-                                                                                             // is 500
+    public static final SN_DoublePreference pitchS = new SN_DoublePreference("pitchS", 4);
+    public static final SN_DoublePreference pitchV = new SN_DoublePreference("pitchV", 4);
+    public static final SN_DoublePreference pitchA = new SN_DoublePreference("pitchA", 0.1);
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300); // 100
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
-    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.34);
 
     /**
      * <b>Units:</b> Degrees
@@ -304,13 +304,13 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterAmpVelocity = new SN_DoublePreference(
-        "leftShooterAmpVelocity", 6.7);
+        "leftShooterAmpVelocity", 35);
     /**
      * Preset: Shooting while touching the amp velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterAmpVelocity = new SN_DoublePreference(
-        "rightShooterAmpVelocity", 6.7);
+        "rightShooterAmpVelocity", 35);
 
     /**
      * Preset: Shooting into the trap velocity
