@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
-import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
 
