@@ -149,7 +149,8 @@ public class RobotPreferences {
      * The time that we wait to get a game piece in auto
      * <b> Units: </b> Seconds
      */
-    public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
+    public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
+        "intakeSourceGamePieceGetTime",
         0.5);
     public static final SN_DoublePreference intakeSourceHasGamePieceVelocity = new SN_DoublePreference(
         "intakeSourceHasGamePieceVelocity", 16.5);
