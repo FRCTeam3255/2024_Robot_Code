@@ -70,6 +70,24 @@ public class RobotPreferences {
     public static final SN_DoublePreference steerKs = new SN_DoublePreference("steerKs",
         0);
 
+    public static final SN_BooleanPreference driveEnableCurrentLimiting = new SN_BooleanPreference(
+        "driveEnableCurrentLimiting", true);
+    public static final SN_DoublePreference driveCurrentThreshold = new SN_DoublePreference("driveCurrentThreshold",
+        50);
+    public static final SN_DoublePreference driveCurrentLimit = new SN_DoublePreference("driveCurrentThreshold",
+        40);
+    public static final SN_DoublePreference driveCurrentTimeThreshold = new SN_DoublePreference(
+        "driveCurrentTimeThreshold", 0.1);
+
+    public static final SN_BooleanPreference steerEnableCurrentLimiting = new SN_BooleanPreference(
+        "steerEnableCurrentLimiting", true);
+    public static final SN_DoublePreference steerCurrentThreshold = new SN_DoublePreference("steerCurrentThreshold",
+        40);
+    public static final SN_DoublePreference steerCurrentLimit = new SN_DoublePreference("steerCurrentThreshold",
+        30);
+    public static final SN_DoublePreference steerCurrentTimeThreshold = new SN_DoublePreference(
+        "steerCurrentTimeThreshold", 0.1);
+
     public static final SN_DoublePreference driveKv = new SN_DoublePreference("driveKv",
         (1 / 15.1));
 
@@ -126,6 +144,16 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
+
+    public static final SN_BooleanPreference intakeEnableCurrentLimiting = new SN_BooleanPreference(
+        "intakeEnableCurrentLimiting", true);
+    public static final SN_DoublePreference intakeCurrentThreshold = new SN_DoublePreference("intakeCurrentThreshold",
+        40);
+    public static final SN_DoublePreference intakeCurrentLimit = new SN_DoublePreference("intakeCurrentThreshold",
+        30);
+    public static final SN_DoublePreference intakeCurrentTimeThreshold = new SN_DoublePreference(
+        "intakeCurrentTimeThreshold", 0.1);
+
     /**
      * <b> Units: </b> Percent Output
      */
@@ -164,6 +192,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
     public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
+
+    public static final SN_BooleanPreference pitchEnableCurrentLimiting = new SN_BooleanPreference(
+        "pitchEnableCurrentLimiting", true);
+    public static final SN_DoublePreference pitchCurrentThreshold = new SN_DoublePreference("pitchCurrentThreshold",
+        50);
+    public static final SN_DoublePreference pitchCurrentLimit = new SN_DoublePreference("pitchCurrentThreshold",
+        30);
+    public static final SN_DoublePreference pitchCurrentTimeThreshold = new SN_DoublePreference(
+        "pitchCurrentTimeThreshold", 0.1);
 
     /**
      * <b>Units:</b> Degrees
@@ -383,6 +420,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 60);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
     public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
+
+    public static final SN_BooleanPreference turretEnableCurrentLimiting = new SN_BooleanPreference(
+        "turretEnableCurrentLimiting", true);
+    public static final SN_DoublePreference turretCurrentThreshold = new SN_DoublePreference("turretCurrentThreshold",
+        50);
+    public static final SN_DoublePreference turretCurrentLimit = new SN_DoublePreference("turretCurrentThreshold",
+        30);
+    public static final SN_DoublePreference turretCurrentTimeThreshold = new SN_DoublePreference(
+        "turretCurrentTimeThreshold", 0.1);
 
     /**
      * <b>Units:</b> Degrees

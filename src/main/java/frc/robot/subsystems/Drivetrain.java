@@ -108,10 +108,10 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue();
     driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
 
-    driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 50;
-    driveConfiguration.CurrentLimits.SupplyCurrentLimit = 40;
-    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
+    driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.driveEnableCurrentLimiting.getValue();
+    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.driveCurrentThreshold.getValue();
+    driveConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.driveCurrentThreshold.getValue();
+    driveConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.driveCurrentTimeThreshold.getValue();
 
     driveConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
     driveConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
@@ -122,10 +122,10 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     steerConfiguration.Slot0.kI = prefDrivetrain.steerI.getValue();
     steerConfiguration.Slot0.kD = prefDrivetrain.steerD.getValue();
 
-    steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 40;
-    steerConfiguration.CurrentLimits.SupplyCurrentLimit = 30;
-    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
+    steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.steerEnableCurrentLimiting.getValue();
+    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.steerCurrentThreshold.getValue();
+    steerConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.steerCurrentLimit.getValue();
+    steerConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.steerCurrentTimeThreshold.getValue();
 
     steerConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
     steerConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
