@@ -49,7 +49,7 @@ public class IntakeFromSource extends Command {
     lastDesiredSpeedRight = subShooter.getRightShooterVelocity();
 
     lastDesiredPitch = subPitch.getPitchAngle();
-
+    subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
     subShooter.setDesiredVelocities(prefShooter.leftShooterIntakeVelocity.getValue(),
         prefShooter.rightShooterIntakeVelocity.getValue());
     subShooter.getUpToSpeed();
