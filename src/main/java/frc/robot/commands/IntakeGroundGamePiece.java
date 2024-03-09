@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Transfer;
@@ -19,20 +18,18 @@ public class IntakeGroundGamePiece extends Command {
   Intake subIntake;
   Transfer subTransfer;
   Turret subTurret;
-  Climber subClimber;
   Pitch subPitch;
 
   double lastDesiredPitch;
   double lastDesiredTurret;
 
   public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret,
-      Climber subClimber, Pitch subPitch) {
+      Pitch subPitch) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-    this.subClimber = subClimber;
     this.subPitch = subPitch;
-    addRequirements(subIntake, subTransfer, subTurret, subClimber, subPitch);
+    addRequirements(subIntake, subTransfer, subTurret, subPitch);
   }
 
   // Called when the command is initially scheduled.
@@ -41,26 +38,17 @@ public class IntakeGroundGamePiece extends Command {
     lastDesiredTurret = subTurret.getAngle();
     lastDesiredPitch = subPitch.getPitchAngle();
     // moved climber pivot to init since its pid
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
-    subClimber.configure(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subClimber.getPosition() < 30) {
-      subClimber.setClimberVoltage(11);
-    } else {
-      subClimber.setClimberVoltage(0);
-      subClimber.setNeutralOutput();
-    }
 
     subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
 
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
 
-    subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
   }
 
   // Called once the command ends or is interrupted.
@@ -71,9 +59,6 @@ public class IntakeGroundGamePiece extends Command {
     }
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
-    subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
-    subClimber.setNeutralOutput();
   }
 
   // Returns true when the command should end.

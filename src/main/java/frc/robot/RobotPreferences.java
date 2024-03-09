@@ -24,40 +24,6 @@ import frc.robot.Constants.constDrivetrain;
  * are exempt from this
  */
 public class RobotPreferences {
-  public static final class prefClimber {
-    public static final SN_DoublePreference climberGtele = new SN_DoublePreference("climberGtele", 0);
-    public static final SN_DoublePreference climberPtele = new SN_DoublePreference("climberPtele", 0);
-    public static final SN_DoublePreference climberItele = new SN_DoublePreference("climberItele", 0);
-    public static final SN_DoublePreference climberDtele = new SN_DoublePreference("climberDtele", 0);
-
-    /**
-     * <b>Units:</b> Degrees
-     */
-    public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 75);
-    /**
-     * <b>Units:</b> Degrees
-     */
-    public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", 0);
-
-    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
-    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage",
-        -1);
-
-    /**
-     * <b>Units:</b> Degrees
-     */
-    public static final SN_DoublePreference climberAtAngleTolerance = new SN_DoublePreference("climberAtAngleTolerance",
-        5);
-
-    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
-        "climberMotorUpSpeed", 0.2);
-    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
-        "climberMotorDownSpeed", -0.2);
-
-  }
-
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
     public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.18);
@@ -145,8 +111,6 @@ public class RobotPreferences {
      * The intake's pivot motor position when we are intaking
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference intakeIntakingAngle = new SN_DoublePreference(
-        "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 0.5);
 
     /**
      * The time that we wait to get a game piece in auto

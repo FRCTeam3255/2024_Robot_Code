@@ -18,14 +18,12 @@ import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefPitch;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pitch;
 
 public class LockPitch extends Command {
   Pitch subPitch;
   Drivetrain subDrivetrain;
-  Climber subClimber;
 
   LockedLocation lockedLocation = LockedLocation.NONE;
 
@@ -38,11 +36,9 @@ public class LockPitch extends Command {
   Pose3d ampPose;
   Pose2d robotPose = new Pose2d();
 
-  public LockPitch(Pitch subPitch, Drivetrain subDrivetrain, Climber subClimber) {
+  public LockPitch(Pitch subPitch, Drivetrain subDrivetrain) {
     this.subPitch = subPitch;
     this.subDrivetrain = subDrivetrain;
-    this.subClimber = subClimber;
-
     addRequirements(subPitch);
   }
 
@@ -71,7 +67,6 @@ public class LockPitch extends Command {
 
       subPitch.desiredLockingPitch = desiredAngle.getDegrees();
 
-      subPitch.setPitchAngle(desiredAngle.getDegrees(), subClimber.collidesWithPitch());
     }
     SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredAngle.getDegrees());
   }

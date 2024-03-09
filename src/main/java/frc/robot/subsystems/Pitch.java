@@ -91,8 +91,8 @@ public class Pitch extends SubsystemBase {
    * @param hasCollision If there is a collision with the pitch. If this is true,
    *                     the pitch will not turn above 30 degrees
    */
-  public void setPitchAngle(double angle, boolean hasCollision) {
-    if (hasCollision && angle >= prefPitch.pitchMaxIntake.getValue()) {
+  public void setPitchAngle(double angle) {
+    if (angle >= prefPitch.pitchMaxIntake.getValue()) {
       angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
     }
     desiredPitchAngle = angle;

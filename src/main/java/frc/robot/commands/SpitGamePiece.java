@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Transfer;
@@ -17,16 +16,13 @@ public class SpitGamePiece extends Command {
   Intake globalIntake;
   Transfer globalTransfer;
   Pitch subPitch;
-  Climber subClimber;
 
   double lastDesiredPitch;
 
-  public SpitGamePiece(Intake subIntake, Transfer subTransfer, Pitch subPitch, Climber subClimber) {
+  public SpitGamePiece(Intake subIntake, Transfer subTransfer, Pitch subPitch) {
     globalIntake = subIntake;
     globalTransfer = subTransfer;
     this.subPitch = subPitch;
-    this.subClimber = subClimber;
-
     addRequirements(globalIntake, globalTransfer, subPitch);
   }
 
@@ -44,9 +40,6 @@ public class SpitGamePiece extends Command {
 
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
-
-    subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
-
   }
 
   // Called once the command ends or is interrupted.
@@ -55,7 +48,6 @@ public class SpitGamePiece extends Command {
     globalIntake.setNeutralMode();
     globalTransfer.setTransferNeutralOutput();
     globalTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
   }
 
   // Returns true when the command should end.

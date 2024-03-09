@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -27,10 +26,9 @@ public class DefaultAuto extends SequentialCommandGroup implements AutoInterface
   Shooter subShooter;
   Transfer subTransfer;
   Turret subTurret;
-  Climber subClimber;
 
   public DefaultAuto(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret, Climber subClimber) {
+      Transfer subTransfer, Turret subTurret) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
@@ -38,8 +36,6 @@ public class DefaultAuto extends SequentialCommandGroup implements AutoInterface
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-    this.subClimber = subClimber;
-
     addCommands();
   }
 

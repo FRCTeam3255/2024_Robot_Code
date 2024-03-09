@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
-import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
 
@@ -96,11 +95,12 @@ public class Turret extends SubsystemBase {
    * @param hasCollision If there is a collision with the turret. If this is true,
    *                     the turret will not turn
    */
-  public void setTurretAngle(double angle, boolean hasCollision) {
+  public void setTurretAngle(double angle) {
     desiredTurretAngle = angle;
-    if (hasCollision) {
-      angle = 0;
-    }
+    // need to add colision check TODO
+    // if (hasCollision) {
+    // angle = 0;
+    // }
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 

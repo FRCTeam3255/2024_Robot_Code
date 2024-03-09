@@ -37,14 +37,6 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static class constClimber {
-    public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
-    public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.021475;
-    public static final double GEAR_RATIO = 327.6;
-    public static final double ABS_TO_MECH_RATIO = (1080 / 510);
-  }
-
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
   }
