@@ -83,6 +83,10 @@ public class Hood extends SubsystemBase {
     hoodMotor.setInverted(INVERT_MOTOR);
   }
 
+  public void setHoodGoalAngle(double angle) {
+    desiredHoodAngle = angle;
+  }
+
   /**
    * Sets the angle of the Hood motor
    * 
@@ -97,6 +101,15 @@ public class Hood extends SubsystemBase {
     }
     desiredHoodAngle = angle;
     hoodMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+  }
+
+  /**
+   * Sets the speed of the hood motor
+   * 
+   * @param speed The speed to set the hood motor to (-1 to 1)
+   */
+  public void setHoodSpeed(double speed) {
+    hoodMotor.set(speed);
   }
 
   /**

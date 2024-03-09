@@ -37,6 +37,7 @@ import frc.robot.commands.LockHood;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
+import frc.robot.commands.ManualHoodMovement;
 import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
@@ -164,11 +165,16 @@ public class RobotContainer implements Logged {
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subHood, subTurret, subClimber));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subHood, subClimber));
-    controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
+    controller.btn_West.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
+    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
+        .whileTrue(new ManualHoodMovement(subHood, controller.axis_RightX));
 
-    controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
-        .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
-            Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)));
+    // controller.btn_East.onTrue(Commands.run(() -> subTurret.setTurretAngle(0,
+    // subClimber.collidesWithTurret()))
+    // .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
+    // Commands.runOnce(() ->
+    // subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()),
+    // subClimber)));
 
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subHood))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
