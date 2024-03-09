@@ -62,7 +62,7 @@ public class Pitch extends SubsystemBase {
 
   public void configure() {
     pitchConfig.Slot0.kS = prefPitch.pitchS.getValue();
-    pitchConfig.Slot0.kV = prefPitch.pitchV.getValue();
+    pitchConfig.Slot0.kG = prefPitch.pitchG.getValue();
     pitchConfig.Slot0.kA = prefPitch.pitchA.getValue();
     pitchConfig.Slot0.kP = prefPitch.pitchP.getValue();
     pitchConfig.Slot0.kI = prefPitch.pitchI.getValue();

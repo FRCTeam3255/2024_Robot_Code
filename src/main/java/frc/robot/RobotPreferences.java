@@ -158,8 +158,8 @@ public class RobotPreferences {
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchS = new SN_DoublePreference("pitchS", 4);
-    public static final SN_DoublePreference pitchV = new SN_DoublePreference("pitchV", 4);
+    public static final SN_DoublePreference pitchS = new SN_DoublePreference("pitchS", 0.4);
+    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
     public static final SN_DoublePreference pitchA = new SN_DoublePreference("pitchA", 0.1);
     public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300); // 100
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
