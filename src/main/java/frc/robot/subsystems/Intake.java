@@ -31,8 +31,8 @@ public class Intake extends SubsystemBase {
 
     if (hasGamePiece ||
 
-        (intakeCurrent >= prefIntake.intakeHasGamePieceCurrent.getValue())
-            && (intakeVelocity <= prefIntake.intakeHasGamePieceVelocity.getValue())) {
+        (intakeCurrent >= prefIntake.intakeSourceHasGamePieceCurrent.getValue())
+            && (intakeVelocity <= prefIntake.intakeSourceHasGamePieceVelocity.getValue())) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
