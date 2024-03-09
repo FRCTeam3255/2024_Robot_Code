@@ -69,6 +69,11 @@ public class RobotMap {
     public static final int TURRET_ABSOLUTE_ENCODER_DIO = 1;
   }
 
+  // MOTORS: 30 -> 39
+  public static class mapClimber {
+    public static final int CLIMBER_MOTOR_CAN = 30;
+  }
+
   public static class mapVision {
   }
 }

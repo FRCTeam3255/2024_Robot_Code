@@ -408,6 +408,18 @@ public class RobotPreferences {
 
   }
 
+  public static final class prefClimber {
+    // all values placeholder for now in climber
+    public static final SN_DoublePreference climberMotorP = new SN_DoublePreference("climberMotorP", 0.4);
+    public static final SN_DoublePreference climberMotorI = new SN_DoublePreference("climberMotorI", 0.4);
+    public static final SN_DoublePreference climberMotorD = new SN_DoublePreference("clismberMotorD", 0.4);
+
+    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 40);
+    public static final SN_DoublePreference climberMinPos = new SN_DoublePreference("climberMinPos", 10);
+    public static final SN_DoublePreference climberEncoderCountsPerMeter = new SN_DoublePreference(
+        "climberEncoderCountsPerMeter", 3);
+  }
+
   public static final class prefVision {
     /**
      * <p>

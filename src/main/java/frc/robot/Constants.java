@@ -295,6 +295,12 @@ public final class Constants {
         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
   }
 
+  public static class constClimber {
+    // place holder values
+    public static final double CIRCUMFERENCE = 90;
+    public static final double GEAR_RATIO = 5;
+  }
+
   public static class constTransfer {
     public static final double CURRENT_LIMIT_CEILING_AMPS = 40;
     public static final double CURRENT_LIMIT_AFTER_SEC = 10;
