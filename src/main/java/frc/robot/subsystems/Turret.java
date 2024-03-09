@@ -134,6 +134,10 @@ public class Turret extends SubsystemBase {
     turretMotor.set(speed);
   }
 
+  public void setTurretGoalAngle(double angle) {
+    desiredTurretAngle = angle;
+  }
+
   public double getTurretCurrent() {
     return turretMotor.getSupplyCurrent().getValueAsDouble();
   }
