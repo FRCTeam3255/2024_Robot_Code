@@ -4,7 +4,6 @@ import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.constDrivetrain;
 
 /*
  * @formatter:off
