@@ -158,7 +158,9 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
         .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
-    controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+    controller.btn_LeftBumper
+        .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
+        .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
