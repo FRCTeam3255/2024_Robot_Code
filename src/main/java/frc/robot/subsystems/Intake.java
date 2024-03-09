@@ -25,13 +25,13 @@ public class Intake extends SubsystemBase {
     configure();
   }
 
-  public boolean intakeGamePieceDetection() {
+  public boolean intakeSourceGamePieceDetection() {
     intakeCurrent = rollerMotor.getStatorCurrent().getValue();
     intakeVelocity = rollerMotor.getVelocity().getValue();
 
     if (hasGamePiece ||
 
-        (intakeCurrent >= prefIntake.intakeSourceHasGamePieceCurrent.getValue())
+        (intakeCurrent <= prefIntake.intakeSourceHasGamePieceCurrent.getValue())
             && (intakeVelocity <= prefIntake.intakeSourceHasGamePieceVelocity.getValue())) {
       hasGamePiece = true;
     } else {

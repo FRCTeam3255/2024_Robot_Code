@@ -66,7 +66,7 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subIntake.intakeGamePieceDetection()) {
+    if (subIntake.intakeSourceGamePieceDetection()) {
       subTransfer.setTransferNeutralOutput();
       subIntake.setIntakeNeutralOutput();
       subTransfer.setFeederNeutralOutput();
@@ -87,6 +87,7 @@ public class IntakeFromSource extends Command {
     subTransfer.setTransferNeutralOutput();
     subShooter.setDesiredVelocities(lastDesiredSpeedLeft, lastDesiredSpeedRight);
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
+    subIntake.setIntakeNeutralOutput();
   }
 
   // Returns true when the command should end.
