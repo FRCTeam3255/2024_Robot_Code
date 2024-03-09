@@ -181,7 +181,7 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
-        new Translation3d(-0, 0, 0),
+        new Translation3d(-Units.inchesToMeters(3.5), 0, Units.inchesToMeters(12.03)),
         new Rotation3d(0, 0, 0));
   }
 
@@ -268,10 +268,8 @@ public final class Constants {
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
         new Translation3d(Units.inchesToMeters(1), 0, 0),
-        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+        new Rotation3d(0, 0, 0));
 
-    // TODO: figure out why its 180 because it makes no sense and theres probably a
-    // bug somewhere
   }
 
   public static class constVision {

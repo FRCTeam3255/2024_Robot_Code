@@ -15,6 +15,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,11 +30,12 @@ public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
   double desiredPitchAngle;
-  public double desiredLockingPitch = 0;
+  Rotation2d desiredLockingAngle = new Rotation2d();
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
   boolean INVERT_MOTOR;
   double GEAR_RATIO;
+  Transform3d robotToPitch = constPitch.ROBOT_TO_PITCH;
 
   public Pitch() {
     pitchMotor = new TalonFX(mapPitch.PITCH_MOTOR_CAN, "rio");
@@ -72,6 +75,8 @@ public class Pitch extends SubsystemBase {
 
     pitchMotor.getConfigurator().apply(pitchConfig);
     pitchMotor.setInverted(INVERT_MOTOR);
+
+    setPitchSensorAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
   }
 
   // -- Set --
@@ -198,21 +203,19 @@ public class Pitch extends SubsystemBase {
         break;
     }
 
-    Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
+    // Get the pitch pose (field relative)
+    Pose3d pitchPose = new Pose3d(robotPose).transformBy(robotToPitch);
 
-    Rotation2d desiredAngle = new Rotation2d();
-
+    // Get distances from the pitch pose to the target pose and then calculate the
+    // required angle
+    // Theres probably a WPILib method for this but im eppy
     double distX = Math.abs(targetPose.getX() - pitchPose.getX());
     double distY = Math.abs(targetPose.getY() - pitchPose.getY());
     double distZ = Math.abs(targetPose.getZ() - pitchPose.getZ());
 
-    desiredAngle = new Rotation2d(Math.hypot(distX, distY), distZ);
+    desiredLockingAngle = new Rotation2d(Math.hypot(distX, distY), distZ);
 
-    return Optional.of(desiredAngle);
-  }
-
-  public boolean isPitchLocked() {
-    return isPitchAtAngle(desiredLockingPitch);
+    return Optional.of(desiredLockingAngle);
   }
 
   @Override
@@ -222,9 +225,8 @@ public class Pitch extends SubsystemBase {
     SmartDashboard.putNumber("Pitch/Voltage", getPitchVoltage());
     SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
     SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
+    SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredLockingAngle.getDegrees());
 
     SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());
-    SmartDashboard.putBoolean("Pitch/Is At LOCKING Angle", isPitchLocked());
-
   }
 }

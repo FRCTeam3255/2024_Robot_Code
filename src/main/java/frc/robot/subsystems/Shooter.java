@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -20,8 +22,10 @@ import frc.robot.RobotPreferences.prefShooter;
 public class Shooter extends SubsystemBase {
   TalonFX leftMotor, rightMotor;
   TalonFXConfiguration leftConfig, rightConfig;
+  MotionMagicConfigs motionMagicConfigs;
+  MotionMagicVelocityVoltage motionMagicRequest;
+
   VelocityVoltage velocityRequest;
-  double leftFF, rightFF;
 
   boolean leftInvert, rightInvert;
 
@@ -50,15 +54,22 @@ public class Shooter extends SubsystemBase {
         : constShooter.RIGHT_INVERT;
 
     velocityRequest = new VelocityVoltage(0).withSlot(0);
+    motionMagicRequest = new MotionMagicVelocityVoltage(0);
 
     configure();
   }
 
   public void configure() {
     leftConfig.Slot0.kV = prefShooter.leftShooterV.getValue();
+    leftConfig.Slot0.kS = prefShooter.leftShooterS.getValue();
+    leftConfig.Slot0.kA = prefShooter.leftShooterA.getValue();
     leftConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
+
+    MotionMagicConfigs motionMagicConfigs = leftConfig.MotionMagic;
+    motionMagicConfigs.MotionMagicAcceleration = 100; // Target acceleration of 400 rps/s (0.25 seconds to max)
+    motionMagicConfigs.MotionMagicJerk = 1000; // Target jerk of 4000 rps/s/s (0.1 seconds)
 
     rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue();
     rightConfig.Slot0.kP = prefShooter.rightShooterP.getValue();
@@ -80,8 +91,8 @@ public class Shooter extends SubsystemBase {
     if (desiredLeftVelocity <= 0 && desiredRightVelocity <= 0) {
       setShootingNeutralOutput();
     } else {
-      leftMotor.setControl(velocityRequest.withVelocity(desiredLeftVelocity).withFeedForward(leftFF));
-      rightMotor.setControl(velocityRequest.withVelocity(desiredRightVelocity).withFeedForward(rightFF));
+      leftMotor.setControl(motionMagicRequest.withVelocity(desiredLeftVelocity));
+      rightMotor.setControl(velocityRequest.withVelocity(desiredRightVelocity));
     }
   }
 

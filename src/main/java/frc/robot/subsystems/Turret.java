@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
-import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
 
@@ -38,7 +36,7 @@ public class Turret extends SubsystemBase {
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
 
-  public double desiredLockingAngle = 0;
+  Rotation2d desiredLockingAngle = new Rotation2d();
 
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
@@ -152,7 +150,7 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean isTurretLocked() {
-    return isTurretAtAngle(desiredLockingAngle);
+    return isTurretAtAngle(desiredLockingAngle.getDegrees());
   }
 
   public void setTurretNeutralOutput() {
@@ -222,7 +220,7 @@ public class Turret extends SubsystemBase {
    * 
    * Returns empty if there is nothing set to be locked onto.
    * 
-   * @param robotPose      The current pose of the robot
+   * @param robotPose      The current pose of the robot (field relative)
    * @param fieldPoses     The poses of the field elements, matching your alliance
    *                       color
    * @param lockedLocation The location that we are locked onto
@@ -238,26 +236,20 @@ public class Turret extends SubsystemBase {
         return Optional.empty();
 
       case SPEAKER:
-        if (robotPose.getY() < 4.1) {
-          targetPose = fieldPoses[6];
-          break;
-        } else if (robotPose.getY() > 6.9) {
-          targetPose = fieldPoses[7];
-          break;
-        }
         targetPose = fieldPoses[0];
         break;
     }
 
-    Rotation2d rotation = robotPose.getRotation().plus(robotToTurret.getRotation().unaryMinus());
-    Translation2d translation = robotPose.getTranslation().plus(robotToTurret.getTranslation());
-    Pose2d turretPose = new Pose2d(translation, rotation);
+    // Get the turret pose (field relative)
+    Pose2d turretPose = robotPose.transformBy(robotToTurret);
 
+    // Move the turret pose to be relative to the target (the target is now 0,0)
     Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
-    Rotation2d desiredAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
 
-    // TODO: figure out why this is a unary Minus (i REALLY done goofed somewhere)
-    return Optional.of(desiredAngle.rotateBy(turretPose.getRotation().unaryMinus()));
+    // Get the angle of 0,0 to the turret pose
+    desiredLockingAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
+
+    return Optional.of(desiredLockingAngle);
   }
 
   /**
@@ -275,7 +267,9 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
     SmartDashboard.putNumber("Turret/Desired Angle (Degrees)", desiredTurretAngle);
-    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
     SmartDashboard.putBoolean("Turret/Is At Desired Angle", isTurretAtGoalAngle());
+    SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredLockingAngle.getDegrees());
+
+    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
   }
 }

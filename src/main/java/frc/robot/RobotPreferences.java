@@ -163,7 +163,7 @@ public class RobotPreferences {
                                                                                              // is 500
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
-    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
+    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.34);
 
     /**
      * <b>Units:</b> Degrees
@@ -176,7 +176,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pitchMaxIntake = new SN_DoublePreference("pitchMaxIntake",
-        25);
+        31);
 
     /**
      * <p>
@@ -210,7 +210,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
-        Units.degreesToRotations(56));
+        Units.degreesToRotations(62));
     /**
      * <p>
      * The minimum soft limit of the pitch motor
@@ -218,35 +218,36 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchReverseLimit = new SN_DoublePreference("pitchReverseLimit",
-        Units.degreesToRotations(0));
+        Units.degreesToRotations(6));
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 51.5);
+    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 57.5);
 
-    public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 18);
+    public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 24);
     public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
-        55);
+        61);
 
-    public static final SN_DoublePreference pitchCenterAngle = new SN_DoublePreference("pitchCenterAngle", 16);
+    public static final SN_DoublePreference pitchCenterAngle = new SN_DoublePreference("pitchCenterAngle", 22);
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 41);
+    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 47);
 
-    public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 42.6);
+    public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 48.6);
   }
 
   public static final class prefShooter {
-    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", 0.15);
-    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.4);
+    public static final SN_DoublePreference leftShooterS = new SN_DoublePreference("leftShooterS", 0.4);
+    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", (1 / 80));
+    public static final SN_DoublePreference leftShooterA = new SN_DoublePreference("leftShooterA", 0.1);
+    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.0);
     public static final SN_DoublePreference leftShooterI = new SN_DoublePreference("leftShooterI", 0);
-    public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0);
+    public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0.0);
 
-    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.15); // 0.15 //
-                                                                                                            // (1/80)
+    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.125);
     public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.4);
     public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
     public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0);
@@ -258,7 +259,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
-        "shooterUpToSpeedTolerance", 3);
+        "shooterUpToSpeedTolerance", 0.5);
 
     public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
         "leftShooterIntakeVelocity",
