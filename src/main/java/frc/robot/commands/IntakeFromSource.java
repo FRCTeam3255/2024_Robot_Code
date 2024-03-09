@@ -24,7 +24,7 @@ public class IntakeFromSource extends Command {
   Turret subTurret;
   Climber subClimber;
   Intake subIntake;
-
+  double intakeCurrent;
   double lastDesiredSpeedLeft;
   double lastDesiredSpeedRight;
   double lastDesiredPitch;
@@ -66,14 +66,18 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if (intake) {
-    // }
+    if (subIntake.intakeGamePieceDetection()) {
+      subTransfer.setTransferNeutralOutput();
+      subIntake.setIntakeNeutralOutput();
+      subTransfer.setFeederNeutralOutput();
+      subShooter.setShootingNeutralOutput();
+    }
 
-    // else {
-    // subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
-    // subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
-    // subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
-    // }
+    else {
+      subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
+      subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
+    }
   }
 
   // Called once the command ends or is interrupted.

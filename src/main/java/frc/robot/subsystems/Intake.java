@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
     configure();
   }
 
-  public boolean intakeDetection() {
+  public boolean intakeGamePieceDetection() {
     intakeCurrent = rollerMotor.getStatorCurrent().getValue();
     intakeVelocity = rollerMotor.getVelocity().getValue();
 
@@ -39,6 +39,10 @@ public class Intake extends SubsystemBase {
     }
 
     return hasGamePiece;
+  }
+
+  public void setIntakeNeutralOutput() {
+    rollerMotor.setControl(new NeutralOut());
   }
 
   public void configure() {
