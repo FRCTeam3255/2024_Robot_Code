@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefTransfer;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
@@ -16,13 +16,13 @@ public class TransferGamePiece extends Command {
   Transfer subTransfer;
   Turret subTurret;
   Shooter subShooter;
-  Pitch subPitch;
+  Hood subHood;
 
   public TransferGamePiece(Shooter subShooter, Turret subTurret,
-      Transfer subTransfer, Pitch subPitch) {
+      Transfer subTransfer, Hood subHood) {
     this.subTransfer = subTransfer;
     this.subShooter = subShooter;
-    this.subPitch = subPitch;
+    this.subHood = subHood;
     this.subTurret = subTurret;
 
     addRequirements(subTransfer);
@@ -37,7 +37,7 @@ public class TransferGamePiece extends Command {
   @Override
   public void execute() {
     if (subShooter.areBothShootersUpToSpeed()
-        && subPitch.isPitchAtGoalAngle()
+        && subHood.isHoodAtGoalAngle()
         && subTurret.isTurretAtGoalAngle()) {
 
       subTransfer.setGamePieceCollected(false);

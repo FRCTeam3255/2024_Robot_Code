@@ -9,31 +9,31 @@ import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Transfer;
 
 public class SpitGamePiece extends Command {
   /** Creates a new SpitGamePiece. */
   Intake globalIntake;
   Transfer globalTransfer;
-  Pitch subPitch;
+  Hood subHood;
   Climber subClimber;
 
-  double lastDesiredPitch;
+  double lastDesiredHood;
 
-  public SpitGamePiece(Intake subIntake, Transfer subTransfer, Pitch subPitch, Climber subClimber) {
+  public SpitGamePiece(Intake subIntake, Transfer subTransfer, Hood subHood, Climber subClimber) {
     globalIntake = subIntake;
     globalTransfer = subTransfer;
-    this.subPitch = subPitch;
+    this.subHood = subHood;
     this.subClimber = subClimber;
 
-    addRequirements(globalIntake, globalTransfer, subPitch);
+    addRequirements(globalIntake, globalTransfer, subHood);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    lastDesiredPitch = subPitch.getPitchAngle();
+    lastDesiredHood = subHood.getHoodAngle();
     globalTransfer.setGamePieceCollected(false);
   }
 
@@ -45,7 +45,7 @@ public class SpitGamePiece extends Command {
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
 
-    subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
+    subHood.setHoodAngle(0, subClimber.collidesWithHood());
 
   }
 
@@ -55,7 +55,7 @@ public class SpitGamePiece extends Command {
     globalIntake.setNeutralMode();
     globalTransfer.setTransferNeutralOutput();
     globalTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
+    subHood.setHoodAngle(lastDesiredHood, subClimber.collidesWithHood());
   }
 
   // Returns true when the command should end.

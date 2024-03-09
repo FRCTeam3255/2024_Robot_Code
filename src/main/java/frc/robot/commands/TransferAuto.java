@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
@@ -18,13 +18,13 @@ public class TransferAuto extends Command {
   Transfer subTransfer;
   Turret subTurret;
   Shooter subShooter;
-  Pitch subPitch;
+  Hood subHood;
 
   public TransferAuto(Shooter subShooter, Turret subTurret,
-      Transfer subTransfer, Pitch subPitch) {
+      Transfer subTransfer, Hood subHood) {
     this.subTransfer = subTransfer;
     this.subShooter = subShooter;
-    this.subPitch = subPitch;
+    this.subHood = subHood;
     this.subTurret = subTurret;
 
     addRequirements(subTransfer);
@@ -41,7 +41,7 @@ public class TransferAuto extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subShooter.areBothShootersUpToSpeed() && subPitch.isPitchLocked() && subTurret.isTurretLocked()) {
+    if (subShooter.areBothShootersUpToSpeed() && subHood.isHoodLocked() && subTurret.isTurretLocked()) {
       subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
       subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
     }
@@ -56,6 +56,6 @@ public class TransferAuto extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subShooter.areBothShootersUpToSpeed() && subPitch.isPitchLocked() && subTurret.isTurretLocked();
+    return subShooter.areBothShootersUpToSpeed() && subHood.isHoodLocked() && subTurret.isTurretLocked();
   }
 }

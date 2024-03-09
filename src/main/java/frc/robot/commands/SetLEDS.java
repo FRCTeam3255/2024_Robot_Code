@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constLEDs;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
@@ -17,16 +17,16 @@ public class SetLEDS extends Command {
   LEDs subLEDs;
   Shooter subShooter;
   Turret subTurret;
-  Pitch subPitch;
+  Hood subHood;
   Transfer subTransfer;
   Trigger defense;
 
-  public SetLEDS(LEDs subLEDs, Shooter subShooter, Turret subTurret, Pitch subPitch, Transfer subTransfer,
+  public SetLEDS(LEDs subLEDs, Shooter subShooter, Turret subTurret, Hood subHood, Transfer subTransfer,
       Trigger defense) {
     this.subLEDs = subLEDs;
     this.subShooter = subShooter;
     this.subTurret = subTurret;
-    this.subPitch = subPitch;
+    this.subHood = subHood;
     this.subTransfer = subTransfer;
     this.defense = defense;
 
@@ -50,7 +50,7 @@ public class SetLEDS extends Command {
     if (subTransfer.hasGamePiece) {
       // Set LEDs when we are ready to shoot
       if (subShooter.areBothShootersUpToSpeed()
-          && subPitch.isPitchAtGoalAngle()
+          && subHood.isHoodAtGoalAngle()
           && subTurret.isTurretAtGoalAngle()) {
 
         subLEDs.setLEDs(constLEDs.GREEN_COLOR);

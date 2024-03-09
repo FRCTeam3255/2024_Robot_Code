@@ -59,8 +59,8 @@ public class RobotMap {
   }
 
   // MOTORS: 60 -> 69
-  public static class mapPitch {
-    public static final int PITCH_MOTOR_CAN = 60;
+  public static class mapHood {
+    public static final int HOOD_MOTOR_CAN = 60;
   }
 
   // MOTORS: 10 -> 19

@@ -162,25 +162,25 @@ public final class Constants {
         Direction.Forward);
   }
 
-  public static class constPitch {
+  public static class constHood {
     public static final class pracBot {
-      public static final double PITCH_GEAR_RATIO = 57;
+      public static final double HOOD_GEAR_RATIO = 57;
       public static final boolean INVERT = true;
     }
 
-    public static final double PITCH_GEAR_RATIO = 186.666;
-    public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+    public static final double HOOD_GEAR_RATIO = 186.666;
+    public static final NeutralModeValue HOOD_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
     public static final boolean INVERT = false;
 
     /**
-     * The position, in meters, of the center of rotation for the pitch motor
+     * The position, in meters, of the center of rotation for the hood motor
      * relative to the center of the robot (Robot Coordinates).
      * 
      * @see <a href=
      *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
      *      Coordinate System</a>
      */
-    public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
+    public static final Transform3d ROBOT_TO_Hood = new Transform3d(
         new Translation3d(-0, 0, 0),
         new Rotation3d(0, 0, 0));
   }
@@ -204,7 +204,7 @@ public final class Constants {
         /*  1 */ "Swerve/FL Drive",
         /*  2 */ "Shooter/Right",
         /*  3 */ "Transfer/Feeder",
-        /*  4 */ "Shooter/Pitch",
+        /*  4 */ "Shooter/Hood",
         /*  5 */ "Transfer/Transfer",
         /*  6 */ "Shooter/Left",
         /*  7 */ "7 HAS NOTHING!",

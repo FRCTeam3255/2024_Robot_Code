@@ -25,7 +25,7 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefIntake;
-import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefHood;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTurret;
@@ -33,7 +33,7 @@ import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFromSource;
 import frc.robot.commands.IntakeGroundGamePiece;
-import frc.robot.commands.LockPitch;
+import frc.robot.commands.LockHood;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
@@ -41,7 +41,7 @@ import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.ZeroPitch;
+import frc.robot.commands.ZeroHood;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
@@ -51,7 +51,7 @@ import monologue.Annotations.Log;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Vision;
@@ -72,7 +72,7 @@ public class RobotContainer implements Logged {
   private final static Drivetrain subDrivetrain = new Drivetrain();
   private final static Intake subIntake = new Intake();
   private final static LEDs subLEDs = new LEDs();
-  private final static Pitch subPitch = new Pitch();
+  private final static Hood subHood = new Hood();
   private final static Shooter subShooter = new Shooter();
   private final static Turret subTurret = new Turret();
   private final static Transfer subTransfer = new Transfer();
@@ -105,15 +105,15 @@ public class RobotContainer implements Logged {
             isPracticeBot()));
 
     subTurret.setDefaultCommand(new LockTurret(subTurret, subDrivetrain, subClimber));
-    subPitch.setDefaultCommand(new LockPitch(subPitch, subDrivetrain, subClimber));
+    subHood.setDefaultCommand(new LockHood(subHood, subDrivetrain, subClimber));
     subShooter.setDefaultCommand(new Shoot(subShooter, subLEDs));
     subLEDs
-        .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subPitch, subTransfer,
+        .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subHood, subTransfer,
             conDriver.btn_RightBumper));
 
     // Register Autonomous Named Commands
     NamedCommands.registerCommand("IntakeGamePiece",
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subHood));
 
     // View controls at:
     // src\main\assets\controllerMap2024.png
@@ -156,21 +156,21 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subHood));
     controller.btn_LeftBumper
         .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
         .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
-    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch, subClimber));
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subHood, subTurret, subClimber));
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subHood, subClimber));
     controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
 
     controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
         .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
             Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)));
 
-    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
+    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subHood))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())));
 
@@ -181,13 +181,13 @@ public class RobotContainer implements Logged {
                 .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0,
                     subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
-                    () -> subPitch.setPitchAngle(0,
-                        subClimber.collidesWithPitch()))
+                    () -> subHood.setHoodAngle(0,
+                        subClimber.collidesWithHood()))
                     .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput()))
                     .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
-    controller.btn_Start.onTrue(new ZeroPitch(subPitch));
+    controller.btn_Start.onTrue(new ZeroHood(subHood));
 
     // Lock Speaker
     controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
@@ -202,8 +202,8 @@ public class RobotContainer implements Logged {
                 .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue(),
                     subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
-                    () -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue(),
-                        subClimber.collidesWithPitch())))));
+                    () -> subHood.setHoodAngle(prefHood.hoodAmpAngle.getValue(),
+                        subClimber.collidesWithHood())))));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -215,7 +215,7 @@ public class RobotContainer implements Logged {
                 () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue(),
                     subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(), subClimber.collidesWithPitch()))));
+            () -> subHood.setHoodAngle(prefHood.hoodSubAngle.getValue(), subClimber.collidesWithHood()))));
 
     // Trap Preset
     // controller.btn_Y.onTrue(Commands.runOnce(() ->
@@ -228,8 +228,8 @@ public class RobotContainer implements Logged {
     // () -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue(),
     // subClimber.collidesWithTurret())))
     // .alongWith(Commands.runOnce(
-    // () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(),
-    // subClimber.collidesWithPitch()))));
+    // () -> subHood.setHoodAngle(prefHood.hoodTrapAngle.getValue(),
+    // subClimber.collidesWithHood()))));
 
     controller.btn_Y.whileTrue((Commands.runOnce(() -> subClimber.setClimberVoltage(-2))));
     controller.btn_Y.onFalse((Commands.runOnce(() -> subClimber.setClimberVoltage(0))));
@@ -238,7 +238,7 @@ public class RobotContainer implements Logged {
 
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("Default Auto",
-        new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
+        new DefaultAuto(subDrivetrain, subIntake, subLEDs, subHood, subShooter, subTransfer, subTurret, subClimber));
   }
 
   public Command getAutonomousCommand() {
@@ -306,15 +306,15 @@ public class RobotContainer implements Logged {
   }
 
   /**
-   * Returns the command to zero the pitch. This will make the pitch move itself
+   * Returns the command to zero the hood. This will make the hood move itself
    * downwards until it sees a current spike and cancel any incoming commands that
-   * require the pitch motor. If the zeroing does not end within 3 seconds, it
+   * require the hood motor. If the zeroing does not end within 3 seconds, it
    * will interrupt itself.
    * 
-   * @return The command to zero the pitch
+   * @return The command to zero the hood
    */
-  public static Command zeroPitch() {
-    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+  public static Command zeroHood() {
+    return new ZeroHood(subHood).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {

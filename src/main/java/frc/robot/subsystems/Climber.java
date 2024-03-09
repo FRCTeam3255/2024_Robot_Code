@@ -129,11 +129,11 @@ public class Climber extends SubsystemBase {
   }
 
   /**
-   * @return True if the intake is going to collide with the pitch (should the
-   *         pitch move)
+   * @return True if the intake is going to collide with the hood (should the
+   *         hood move)
    */
 
-  public boolean collidesWithPitch() {
+  public boolean collidesWithHood() {
     return !(getPosition() >= prefIntake.intakeIntakingAngle.getValue()
         - prefClimber.climberAtAngleTolerance.getValue());
   }

@@ -17,13 +17,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
-import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefHood;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 
-public class LockPitch extends Command {
-  Pitch subPitch;
+public class LockHood extends Command {
+  Hood subHood;
   Drivetrain subDrivetrain;
   Climber subClimber;
 
@@ -38,18 +38,18 @@ public class LockPitch extends Command {
   Pose3d ampPose;
   Pose2d robotPose = new Pose2d();
 
-  public LockPitch(Pitch subPitch, Drivetrain subDrivetrain, Climber subClimber) {
-    this.subPitch = subPitch;
+  public LockHood(Hood subHood, Drivetrain subDrivetrain, Climber subClimber) {
+    this.subHood = subHood;
     this.subDrivetrain = subDrivetrain;
     this.subClimber = subClimber;
 
-    addRequirements(subPitch);
+    addRequirements(subHood);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    desiredAngle = Rotation2d.fromDegrees(subPitch.getPitchAngle());
+    desiredAngle = Rotation2d.fromDegrees(subHood.getHoodAngle());
 
     fieldPoses = FieldConstants.GET_FIELD_POSITIONS();
   }
@@ -59,21 +59,21 @@ public class LockPitch extends Command {
   public void execute() {
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
+    Optional<Rotation2d> calculatedAngle = subHood.getDesiredAngleToLock(robotPose, fieldPoses,
         RobotContainer.getLockedLocation());
 
     if (calculatedAngle.isPresent()) {
       desiredAngle = Rotation2d.fromRotations(
           MathUtil.clamp(
               calculatedAngle.get().getRotations(),
-              prefPitch.pitchReverseLimit.getValue(),
-              prefPitch.pitchForwardLimit.getValue()));
+              prefHood.hoodReverseLimit.getValue(),
+              prefHood.hoodForwardLimit.getValue()));
 
-      subPitch.desiredLockingPitch = desiredAngle.getDegrees();
+      subHood.desiredLockingHood = desiredAngle.getDegrees();
 
-      subPitch.setPitchAngle(desiredAngle.getDegrees(), subClimber.collidesWithPitch());
+      subHood.setHoodAngle(desiredAngle.getDegrees(), subClimber.collidesWithHood());
     }
-    SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredAngle.getDegrees());
+    SmartDashboard.putNumber("Hood/Locking Desired Angle", desiredAngle.getDegrees());
   }
 
   // Called once the command ends or is interrupted.

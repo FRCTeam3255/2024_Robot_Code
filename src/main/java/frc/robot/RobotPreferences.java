@@ -157,25 +157,25 @@ public class RobotPreferences {
 
   }
 
-  public static final class prefPitch {
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 100); // Original: 70. With 0 G,
-                                                                                             // P
-                                                                                             // is 500
-    public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
-    public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
-    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
+  public static final class prefHood {
+    public static final SN_DoublePreference hoodP = new SN_DoublePreference("hoodP", 100); // Original: 70. With 0 G,
+                                                                                           // P
+                                                                                           // is 500
+    public static final SN_DoublePreference hoodI = new SN_DoublePreference("hoodI", 0);
+    public static final SN_DoublePreference hoodD = new SN_DoublePreference("hoodD", 0);
+    public static final SN_DoublePreference hoodG = new SN_DoublePreference("hoodG", 0.36);
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchIsAtAngleTolerance = new SN_DoublePreference("pitchIsAtAngleTolerance",
+    public static final SN_DoublePreference hoodIsAtAngleTolerance = new SN_DoublePreference("hoodIsAtAngleTolerance",
         1);
 
     /**
      * Maximum when the intake is up
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchMaxIntake = new SN_DoublePreference("pitchMaxIntake",
+    public static final SN_DoublePreference hoodMaxIntake = new SN_DoublePreference("hoodMaxIntake",
         25);
 
     /**
@@ -184,7 +184,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Volts
      */
-    public static final SN_DoublePreference pitchZeroingVoltage = new SN_DoublePreference("pitchZeroingVoltage", -1);
+    public static final SN_DoublePreference hoodZeroingVoltage = new SN_DoublePreference("hoodZeroingVoltage", -1);
 
     /**
      * <p>
@@ -193,7 +193,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Degrees per second
      */
-    public static final SN_DoublePreference pitchZeroedVelocity = new SN_DoublePreference("pitchZeroedVelocity", 0.01);
+    public static final SN_DoublePreference hoodZeroedVelocity = new SN_DoublePreference("hoodZeroedVelocity", 0.01);
 
     /**
      * <p>
@@ -201,42 +201,42 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Seconds
      */
-    public static final SN_DoublePreference pitchZeroedTime = new SN_DoublePreference("pitchZeroedTime", 0.25);
+    public static final SN_DoublePreference hoodZeroedTime = new SN_DoublePreference("hoodZeroedTime", 0.25);
 
     /**
      * <p>
-     * The maximum soft limit of the pitch motor
+     * The maximum soft limit of the Hood motor
      * </p>
      * <b>Units:</b> Rotations
      */
-    public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
+    public static final SN_DoublePreference hoodForwardLimit = new SN_DoublePreference("hoodForwardLimit",
         Units.degreesToRotations(56));
     /**
      * <p>
-     * The minimum soft limit of the pitch motor
+     * The minimum soft limit of the Hood motor
      * </p>
      * <b>Units:</b> Rotations
      */
-    public static final SN_DoublePreference pitchReverseLimit = new SN_DoublePreference("pitchReverseLimit",
+    public static final SN_DoublePreference hoodReverseLimit = new SN_DoublePreference("hoodReverseLimit",
         Units.degreesToRotations(0));
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 51.5);
+    public static final SN_DoublePreference hoodAmpAngle = new SN_DoublePreference("hoodAmpAngle", 51.5);
 
-    public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 18);
-    public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
+    public static final SN_DoublePreference hoodWingAngle = new SN_DoublePreference("hoodWingAngle", 18);
+    public static final SN_DoublePreference hoodTrapAngle = new SN_DoublePreference("hoodTrapAngle",
         55);
 
-    public static final SN_DoublePreference pitchCenterAngle = new SN_DoublePreference("pitchCenterAngle", 16);
+    public static final SN_DoublePreference hoodCenterAngle = new SN_DoublePreference("hoodCenterAngle", 16);
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 41);
+    public static final SN_DoublePreference hoodSubAngle = new SN_DoublePreference("hoodSubAngle", 41);
 
-    public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 42.6);
+    public static final SN_DoublePreference hoodSourceAngle = new SN_DoublePreference("hoodSourceAngle", 42.6);
   }
 
   public static final class prefShooter {

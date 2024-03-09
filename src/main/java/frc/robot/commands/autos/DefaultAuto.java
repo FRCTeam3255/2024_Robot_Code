@@ -14,7 +14,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
@@ -23,18 +23,18 @@ public class DefaultAuto extends SequentialCommandGroup implements AutoInterface
   Drivetrain subDrivetrain;
   Intake subIntake;
   LEDs subLEDs;
-  Pitch subPitch;
+  Hood subHood;
   Shooter subShooter;
   Transfer subTransfer;
   Turret subTurret;
   Climber subClimber;
 
-  public DefaultAuto(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
+  public DefaultAuto(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Hood subHood, Shooter subShooter,
       Transfer subTransfer, Turret subTurret, Climber subClimber) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
-    this.subPitch = subPitch;
+    this.subHood = subHood;
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;

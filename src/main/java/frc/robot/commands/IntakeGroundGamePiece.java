@@ -11,7 +11,7 @@ import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
@@ -20,26 +20,26 @@ public class IntakeGroundGamePiece extends Command {
   Transfer subTransfer;
   Turret subTurret;
   Climber subClimber;
-  Pitch subPitch;
+  Hood subHood;
 
-  double lastDesiredPitch;
+  double lastDesiredHood;
   double lastDesiredTurret;
 
   public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret,
-      Climber subClimber, Pitch subPitch) {
+      Climber subClimber, Hood subHood) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
     this.subClimber = subClimber;
-    this.subPitch = subPitch;
-    addRequirements(subIntake, subTransfer, subTurret, subClimber, subPitch);
+    this.subHood = subHood;
+    addRequirements(subIntake, subTransfer, subTurret, subClimber, subHood);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     lastDesiredTurret = subTurret.getAngle();
-    lastDesiredPitch = subPitch.getPitchAngle();
+    lastDesiredHood = subHood.getHoodAngle();
     // moved climber pivot to init since its pid
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
     subClimber.configure(false);
@@ -60,7 +60,7 @@ public class IntakeGroundGamePiece extends Command {
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
 
-    subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
+    subHood.setHoodAngle(0, subClimber.collidesWithHood());
   }
 
   // Called once the command ends or is interrupted.
@@ -71,7 +71,7 @@ public class IntakeGroundGamePiece extends Command {
     }
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
+    subHood.setHoodAngle(lastDesiredHood, subClimber.collidesWithHood());
     subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
     subClimber.setNeutralOutput();
   }
