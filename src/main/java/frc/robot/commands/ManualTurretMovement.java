@@ -34,6 +34,7 @@ public class ManualTurretMovement extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    subTurret.setTurretGoalAngle(subTurret.getAngle());
     subTurret.setTurretSpeed(-xAxis.getAsDouble() * prefTurret.turretPercentageSpeed.getValue());
   }
 
