@@ -50,10 +50,6 @@ public class Intake extends SubsystemBase {
     rollerMotor.setControl(new NeutralOut());
   }
 
-  private double getRollerPercentOutput() {
-    return rollerMotor.get();
-  }
-
   @Override
   public void periodic() {
 
