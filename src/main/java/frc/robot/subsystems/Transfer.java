@@ -57,7 +57,7 @@ public class Transfer extends SubsystemBase {
     transferVelocity = transferMotor.getVelocity().getValue();
 
     if (hasGamePiece ||
-        (feederCurrent <= prefTransfer.feederHasGamePieceCurrent.getValue())
+        (feederCurrent >= prefTransfer.feederHasGamePieceCurrent.getValue())
             && (transferCurrent >= prefTransfer.transferHasGamePieceCurrent.getValue())
             && (transferVelocity <= prefTransfer.transferHasGamePieceVelocity.getValue())) {
       hasGamePiece = true;

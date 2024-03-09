@@ -16,10 +16,29 @@ import frc.robot.RobotPreferences.prefIntake;
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
   TalonFXConfiguration rollerConfig;
+  double intakeCurrent;
+  double intakeVelocity;
+  public boolean hasGamePiece;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
     configure();
+  }
+
+  public boolean intakeDetection() {
+    intakeCurrent = rollerMotor.getStatorCurrent().getValue();
+    intakeVelocity = rollerMotor.getVelocity().getValue();
+
+    if (hasGamePiece ||
+
+        (intakeCurrent >= prefIntake.intakeHasGamePieceCurrent.getValue())
+            && (intakeVelocity <= prefIntake.intakeHasGamePieceVelocity.getValue())) {
+      hasGamePiece = true;
+    } else {
+      hasGamePiece = false;
+    }
+
+    return hasGamePiece;
   }
 
   public void configure() {

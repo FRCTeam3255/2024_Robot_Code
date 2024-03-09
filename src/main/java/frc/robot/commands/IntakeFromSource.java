@@ -5,11 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
@@ -21,6 +23,7 @@ public class IntakeFromSource extends Command {
   Pitch subPitch;
   Turret subTurret;
   Climber subClimber;
+  Intake subIntake;
 
   double lastDesiredSpeedLeft;
   double lastDesiredSpeedRight;
@@ -29,13 +32,13 @@ public class IntakeFromSource extends Command {
 
   /** Creates a new ShooterIntake. */
   public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret,
-      Climber subClimber) {
+      Climber subClimber, Intake subIntake) {
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subPitch = subPitch;
     this.subTurret = subTurret;
     this.subClimber = subClimber;
-
+    this.subIntake = subIntake;
     addRequirements(subShooter, subPitch, subTurret, subTransfer);
   }
 
@@ -63,6 +66,14 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // if (intake) {
+    // }
+
+    // else {
+    // subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
+    // subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
+    // subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
+    // }
   }
 
   // Called once the command ends or is interrupted.
