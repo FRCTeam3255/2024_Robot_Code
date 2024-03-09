@@ -166,6 +166,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
 
     /**
+     * Takes a percentage of the controller joystick input to set as the manual
+     * pitch speed
+     */
+    public static final SN_DoublePreference pitchPercentageSpeed = new SN_DoublePreference("pitchPercentageSpeed",
+        0.15);
+
+    /**
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pitchIsAtAngleTolerance = new SN_DoublePreference("pitchIsAtAngleTolerance",
