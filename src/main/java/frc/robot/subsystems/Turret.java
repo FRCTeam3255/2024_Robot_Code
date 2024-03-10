@@ -5,7 +5,10 @@
 package frc.robot.subsystems;
 
 import java.util.Optional;
+
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -32,6 +35,7 @@ public class Turret extends SubsystemBase {
 
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
+  MotionMagicVoltage motionMagicRequest;
 
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
@@ -58,15 +62,22 @@ public class Turret extends SubsystemBase {
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
+    motionMagicRequest = new MotionMagicVoltage(0);
 
     configure();
   }
 
   public void configure() {
+    turretConfig.Slot0.kS = prefTurret.turretS.getValue();
     turretConfig.Slot0.kV = prefTurret.turretV.getValue();
+    turretConfig.Slot0.kA = prefTurret.turretA.getValue();
     turretConfig.Slot0.kP = prefTurret.turretP.getValue();
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
+
+    turretConfig.MotionMagic.MotionMagicCruiseVelocity = 160; // rps
+    turretConfig.MotionMagic.MotionMagicAcceleration = 160; // rps/s
+    turretConfig.MotionMagic.MotionMagicJerk = 1600; // rps/s/s
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
@@ -83,7 +94,6 @@ public class Turret extends SubsystemBase {
 
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
     turretMotor.getConfigurator().apply(turretConfig);
-    turretMotor.setInverted(invertAbsEncoder);
   }
   // "Set" Methods
 
@@ -99,7 +109,7 @@ public class Turret extends SubsystemBase {
     if (hasCollision) {
       angle = 0;
     }
-    turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+    turretMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   public void setTurretSoftwareLimits(boolean reverse, boolean forward) {

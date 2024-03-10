@@ -33,7 +33,6 @@ import frc.robot.RobotPreferences.prefPitch;
 public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
-  MotionMagicConfigs motionMagicConfig;
   double desiredPitchAngle;
   Rotation2d desiredLockingAngle = new Rotation2d();
   PositionVoltage positionRequest;
