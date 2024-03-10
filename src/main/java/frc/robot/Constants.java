@@ -181,17 +181,31 @@ public final class Constants {
         new Translation3d(-Units.inchesToMeters(3.5), 0, Units.inchesToMeters(12.03)),
         new Rotation3d(0, 0, 0));
 
+    /**
+     * <p>
+     * Determines the necessary angle for the shooter depending on the distance from
+     * the SPEAKER.
+     * </p>
+     * <b>KEY:</b> The distance (in meters) of the center of the turret to the
+     * SPEAKER
+     * <br>
+     * <br>
+     * <b>VALUE:</b> The angle (in degrees) for the hood to go up by
+     * 
+     */
     public static final InterpolatingDoubleTreeMap DISTANCE_MAP = new InterpolatingDoubleTreeMap();
 
-    static { // Distance of the center of the turret to the speaker
+    // Comments indicate where we placed the robot directly in line with the SPEAKER
+    static {
       DISTANCE_MAP.put(1.3373, 56.0); // Subwoofer
-      DISTANCE_MAP.put(2.295, 43.0); // Starting Line
-      DISTANCE_MAP.put(3.3073, 33.0); // Spike Mark
-      DISTANCE_MAP.put(4.6173, 27.0); // Mid Wing
-      DISTANCE_MAP.put(6.2296, 20.5); // Edge Wing
-      DISTANCE_MAP.put(7.3973, 20.25); // Mid Centerline
-      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline
+      DISTANCE_MAP.put(2.295, 41.0); // Starting Line
+      DISTANCE_MAP.put(3.3073, 31.0); // Spike Mark
+      DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
+      DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
+      DISTANCE_MAP.put(659.73, 19.9); // Mid Centerline
+      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :)
 
+      // sub to robot 328
       // edge of bumper to center of turret = 42.29cm = 0.4229 m
     }
   }

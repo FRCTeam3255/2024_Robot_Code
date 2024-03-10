@@ -10,6 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -59,16 +60,16 @@ public class LockPitch extends Command {
   public void execute() {
     robotPose = subDrivetrain.getPose();
 
-    Optional<Double> calculatedAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
+    Optional<Rotation2d> calculatedAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
         RobotContainer.getLockedLocation());
 
     if (calculatedAngle.isPresent()) {
       desiredAngle = MathUtil.clamp(
-          calculatedAngle.get(),
+          calculatedAngle.get().getRotations(),
           prefPitch.pitchReverseLimit.getValue(),
           prefPitch.pitchForwardLimit.getValue());
 
-      subPitch.setPitchAngle(desiredAngle, subClimber.collidesWithPitch());
+      subPitch.setPitchAngle(Units.rotationsToDegrees(desiredAngle), subClimber.collidesWithPitch());
     }
   }
 

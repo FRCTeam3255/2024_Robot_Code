@@ -216,12 +216,10 @@ public class Pitch extends SubsystemBase {
    * 
    * @return The desired angle required to reach the current locked location
    */
-  public Optional<Double> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
+  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
       LockedLocation lockedLocation) {
 
     Pose3d targetPose;
-    double desiredAngle;
-
     switch (lockedLocation) {
       default:
         return Optional.empty();
@@ -239,9 +237,9 @@ public class Pitch extends SubsystemBase {
     // Theres probably a WPILib method for this but im eppy
     double distX = Math.abs(targetPose.getX() - pitchPose.getX());
     double distY = Math.abs(targetPose.getY() - pitchPose.getY());
-    desiredAngle = constPitch.DISTANCE_MAP.get(Math.hypot(distX, distY));
+    desiredLockingAngle = Rotation2d.fromDegrees(constPitch.DISTANCE_MAP.get(Math.hypot(distX, distY)));
 
-    return Optional.of(desiredAngle);
+    return Optional.of(desiredLockingAngle);
   }
 
   @Override
