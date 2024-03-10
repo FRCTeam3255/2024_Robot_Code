@@ -68,7 +68,7 @@ public class LockPitch extends Command {
           prefPitch.pitchReverseLimit.getValue(),
           prefPitch.pitchForwardLimit.getValue());
 
-      subPitch.setPitchAngle(desiredAngle.getDegrees(), subClimber.collidesWithPitch());
+      subPitch.setPitchAngle(desiredAngle, subClimber.collidesWithPitch());
     }
   }
 

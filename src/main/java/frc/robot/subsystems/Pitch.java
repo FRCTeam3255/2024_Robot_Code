@@ -241,7 +241,7 @@ public class Pitch extends SubsystemBase {
     double distY = Math.abs(targetPose.getY() - pitchPose.getY());
     desiredAngle = constPitch.DISTANCE_MAP.get(Math.hypot(distX, distY));
 
-    return Optional.of(desiredLockingAngle);
+    return Optional.of(desiredAngle);
   }
 
   @Override
