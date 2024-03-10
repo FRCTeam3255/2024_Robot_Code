@@ -65,10 +65,8 @@ public class LockTurret extends Command {
       if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
         subTurret.setTurretAngle(desiredAngle.getDegrees(), subClimber.collidesWithTurret());
       }
-      subTurret.desiredLockingAngle = desiredAngle.getDegrees();
 
     }
-    SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredAngle.getDegrees());
   }
 
   // Called once the command ends or is interrupted.
