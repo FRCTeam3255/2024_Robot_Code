@@ -75,7 +75,6 @@ public class LEDs extends SubsystemBase {
    * Clears a specified chunk of LEDs of the current animation or color
    */
   public void clearAnimationChunk(int startIdx, int count) {
-    setLEDBrightness(0);
     CANdle.setLEDs(0, 0, 0, 0, startIdx, count);
   }
 
