@@ -190,7 +190,7 @@ public final class Constants {
       DISTANCE_MAP.put(4.6173, 27.0); // Mid Wing
       DISTANCE_MAP.put(6.2296, 20.5); // Edge Wing
       DISTANCE_MAP.put(7.3973, 20.25); // Mid Centerline
-      // DISTANCE_MAP.put(8.2744, 0.0); // Edge Centerline, didn't add yet
+      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline
 
       // edge of bumper to center of turret = 42.29cm = 0.4229 m
     }
