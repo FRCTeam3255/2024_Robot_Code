@@ -75,9 +75,9 @@ public class Turret extends SubsystemBase {
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
 
-    turretConfig.MotionMagic.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
-    turretConfig.MotionMagic.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
-    turretConfig.MotionMagic.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
+    turretConfig.MotionMagic.MotionMagicCruiseVelocity = 160; // rps
+    turretConfig.MotionMagic.MotionMagicAcceleration = 160; // rps/s
+    turretConfig.MotionMagic.MotionMagicJerk = 1600; // rps/s/s
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
@@ -94,7 +94,6 @@ public class Turret extends SubsystemBase {
 
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
     turretMotor.getConfigurator().apply(turretConfig);
-    turretMotor.setInverted(invertAbsEncoder);
   }
   // "Set" Methods
 
