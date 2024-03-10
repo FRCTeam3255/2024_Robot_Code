@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
  */
 public class FieldConstants {
   public static Optional<Alliance> ALLIANCE = Optional.empty();
+  public static double FIELD_LENGTH = 16.541;
 
   /**
    * Gets the positions of all of the necessary field elements on the field. All
@@ -32,18 +33,16 @@ public class FieldConstants {
   public static Pose3d[] GET_FIELD_POSITIONS() {
     if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
       return new Pose3d[] { redConstants.SPEAKER_CENTER, redConstants.AMP, redConstants.SOURCE, redConstants.LEFT_STAGE,
-          redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN,
+          redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE,
           blueConstants.AMP,
-          blueConstants.SOURCE, blueConstants.LEFT_STAGE, blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE,
-          blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN };
+          blueConstants.SOURCE, blueConstants.LEFT_STAGE, blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE };
 
     }
     return new Pose3d[] { blueConstants.SPEAKER_CENTER, blueConstants.AMP, blueConstants.SOURCE,
         blueConstants.LEFT_STAGE,
-        blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE, blueConstants.SPEAKER_UP, blueConstants.SPEAKER_DOWN,
+        blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE,
         redConstants.AMP,
-        redConstants.SOURCE, redConstants.LEFT_STAGE, redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE,
-        redConstants.SPEAKER_UP, redConstants.SPEAKER_DOWN };
+        redConstants.SOURCE, redConstants.LEFT_STAGE, redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, };
   }
 
   /**
@@ -68,17 +67,9 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the blue speaker, in meters
      */
-    private static final Pose3d SPEAKER_CENTER = new Pose3d(-0.1, 5.619077205657959, 1.452, new Rotation3d(0, 0, 0));
-
-    /**
-     * where to shoot when you are below the speaker
-     */
-    private static final Pose3d SPEAKER_DOWN = new Pose3d(-0.1, 5.819077205657959, 1.452, new Rotation3d(0, 0, 0));
-
-    /**
-     * where to shoot when you are above the speaker
-     */
-    private static final Pose3d SPEAKER_UP = new Pose3d(-0.1, 5.419077205657959, 1.452, new Rotation3d(0, 0, 0));
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(0.457 / 2, 5.557034, 2.105 - (0.133 / 2),
+        new Rotation3d(0, 0, 0));
+    // HEIGHT = 2.105m to the TOP of our shot. Opening is 0.133m.
 
     /**
      * The coordinate of the center of the blue amp, in meters.
@@ -98,19 +89,8 @@ public class FieldConstants {
     /**
      * The coordinate of the center of the red speaker, in meters
      */
-    private static final Pose3d SPEAKER_CENTER = new Pose3d(16.6410515, 5.619077205657959, 1.452,
+    private static final Pose3d SPEAKER_CENTER = new Pose3d(FIELD_LENGTH - (0.457 / 2), 5.557034, 2.105 - (0.133 / 2),
         new Rotation3d(0, 0, 0));
-
-    /**
-     * where to shoot when you are below the speaker
-     */
-    private static final Pose3d SPEAKER_DOWN = new Pose3d(16.6410515, 5.819077205657959, 1.452,
-        new Rotation3d(0, 0, 0));
-
-    /**
-     * where to shoot when you are above the speaker
-     */
-    private static final Pose3d SPEAKER_UP = new Pose3d(16.6410515, 5.419077205657959, 1.452, new Rotation3d(0, 0, 0));
 
     /**
      * The coordinate of the center of the red amp, in meters
