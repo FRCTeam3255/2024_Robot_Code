@@ -418,6 +418,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberMinPos = new SN_DoublePreference("climberMinPos", 10);
     public static final SN_DoublePreference climberEncoderCountsPerMeter = new SN_DoublePreference(
         "climberEncoderCountsPerMeter", 3);
+    public static final SN_DoublePreference climberZeroedTime = new SN_DoublePreference("climberZeroedTime", 4);
+    public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity", 2);
+    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberinverted", false);
   }
 
   public static final class prefVision {

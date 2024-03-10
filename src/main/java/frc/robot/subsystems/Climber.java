@@ -6,10 +6,12 @@ package frc.robot.subsystems;
 
 import javax.xml.namespace.QName;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Constants.constClimber;
@@ -19,7 +21,7 @@ import frc.robot.RobotPreferences.prefClimber;
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   TalonFX climberMotor;
-  com.ctre.phoenix6.configs.TalonFXConfiguration config;
+  TalonFXConfiguration climberConfig;
 
   double desiredPosition;
 
@@ -39,10 +41,16 @@ public class Climber extends SubsystemBase {
   }
 
   public void configure() {
-    config.Slot0.kP = prefClimber.climberMotorP.getValue();
-    config.Slot0.kI = prefClimber.climberMotorI.getValue();
-    config.Slot0.kD = prefClimber.climberMotorD.getValue();
+    climberMotor.getConfigurator().apply(new TalonFXConfiguration());
+    climberConfig.Slot0.kP = prefClimber.climberMotorP.getValue();
+    climberConfig.Slot0.kI = prefClimber.climberMotorI.getValue();
+    climberConfig.Slot0.kD = prefClimber.climberMotorD.getValue();
 
+    climberConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
+    climberConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
+
+    climberMotor.getConfigurator().apply(climberConfig);
+    climberMotor.setInverted(prefClimber.climberInverted.getValue());
   }
 
   public boolean isClimberAtPosition(double desiredPosition, double tolerance) {
@@ -50,6 +58,10 @@ public class Climber extends SubsystemBase {
       return true;
     }
     return tolerance >= Math.abs(getClimberPositionMeters() - desiredPosition);
+  }
+
+  public double getClimberVelocity() {
+    return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
   }
 
   public double getClimberPositionMeters() {
