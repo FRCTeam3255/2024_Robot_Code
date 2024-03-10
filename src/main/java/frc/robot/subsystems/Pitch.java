@@ -117,6 +117,10 @@ public class Pitch extends SubsystemBase {
     pitchMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
+  public void setPitchGoalAngle(double angle) {
+    desiredPitchAngle = angle;
+  }
+
   /**
    * Sets the current angle of the pitch motor to read as the given value
    * 
@@ -141,6 +145,15 @@ public class Pitch extends SubsystemBase {
    */
   public void setPitchNeutralOutput() {
     pitchMotor.setControl(new NeutralOut());
+  }
+
+  /**
+   * Sets the speed of the pitch motor
+   * 
+   * @param speed The speed to set the pitch motor to (-1 to 1)
+   */
+  public void setPitchSpeed(double speed) {
+    pitchMotor.set(speed);
   }
 
   public boolean isPitchAtGoalAngle() {

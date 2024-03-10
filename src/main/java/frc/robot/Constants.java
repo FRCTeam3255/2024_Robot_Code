@@ -38,11 +38,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public static class constClimber {
-    public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
-    public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.021475;
     public static final double GEAR_RATIO = 327.6;
-    public static final double ABS_TO_MECH_RATIO = (1080 / 510);
   }
 
   public static class constControllers {
@@ -192,7 +188,6 @@ public final class Constants {
     /**
      * Volts
      */
-    public static final double MAX_VOLTAGE = 12;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
     // @formatter:off
@@ -302,9 +297,6 @@ public final class Constants {
   }
 
   public static class constTransfer {
-    public static final double CURRENT_LIMIT_CEILING_AMPS = 40;
-    public static final double CURRENT_LIMIT_AFTER_SEC = 10;
-    public static final double CURRENT_LIMIT_FLOOR_AMPS = 8;
   }
 
   /**

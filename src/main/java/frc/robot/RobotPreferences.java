@@ -4,7 +4,6 @@ import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.constDrivetrain;
 
 /*
  * @formatter:off
@@ -42,8 +41,6 @@ public class RobotPreferences {
         "climberMotorReverseLimit", 0);
 
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
-    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage",
-        -1);
 
     /**
      * <b>Units:</b> Degrees
@@ -148,13 +145,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeIntakingAngle = new SN_DoublePreference(
         "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 0.5);
 
-    /**
-     * The time that we wait to get a game piece in auto
-     * <b> Units: </b> Seconds
-     */
-    public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
-        0.5);
-
   }
 
   public static final class prefPitch {
@@ -164,6 +154,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300); // 100
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
+
+    /**
+     * Takes a percentage of the controller joystick input to set as the manual
+     * pitch speed
+     */
+    public static final SN_DoublePreference pitchPercentageSpeed = new SN_DoublePreference("pitchPercentageSpeed",
+        0.15);
 
     /**
      * <b>Units:</b> Degrees
@@ -226,6 +223,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 57.5);
 
     public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 24);
+
     public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
         61);
 
@@ -253,9 +251,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.6);
     public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
     public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0.01);
-
-    public static final SN_DoublePreference shooterVelocityVoltage = new SN_DoublePreference("shooterVelocityVoltage",
-        0);
 
     /**
      * <b>Units:</b> Rotations per second
@@ -328,14 +323,6 @@ public class RobotPreferences {
   }
 
   public static final class prefTransfer {
-    // -- Configs --
-    public static final SN_BooleanPreference transferStatorLimitEnable = new SN_BooleanPreference(
-        "transferStatorLimitEnable", false);
-    public static final SN_BooleanPreference transferInverted = new SN_BooleanPreference("transferInverted",
-        true);
-    public static final SN_BooleanPreference feederInverted = new SN_BooleanPreference("feederInverted",
-        false);
-
     // -- Speeds --
     public static final SN_DoublePreference feederIntakeGroundSpeed = new SN_DoublePreference(
         "feederIntakeGroundSpeed", -1);
@@ -431,16 +418,6 @@ public class RobotPreferences {
         0.01);
     public static final SN_DoublePreference turretZeroedTime = new SN_DoublePreference("turretZeroedTime", 0.25);
 
-    public static final SN_DoublePreference turretStatorTimeTreshold = new SN_DoublePreference(
-        "turretSupplyTimeThreshold", 0.01);
-    public static final SN_BooleanPreference turretStatorCurrentLimitEnable = new SN_BooleanPreference(
-        "turretSupplyCurrentLimitEnable",
-        true);
-    public static final SN_DoublePreference turretStatorCurrentThreshold = new SN_DoublePreference(
-        "turretSupplyCurrentThreshold", 5);
-    public static final SN_DoublePreference turretCurrentLimitCeilingAmps = new SN_DoublePreference(
-        "turretCurrentLimitCeilingAmps",
-        .1);
     public static final SN_DoublePreference turretSensorZeroedAngle = new SN_DoublePreference("turretSensorZeroedAngle",
         66.621094);
 
@@ -478,8 +455,6 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
         "visionStdDevsHeading", 500);
-
-    public static final SN_DoublePreference maxAmbiguity = new SN_DoublePreference("maxAmbiguity", 0.2);
 
     /**
      * The translational tolerance of how off we want to be to count as correct

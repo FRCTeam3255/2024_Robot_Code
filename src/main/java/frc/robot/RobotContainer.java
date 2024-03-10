@@ -38,6 +38,7 @@ import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
+import frc.robot.commands.ManualHoodMovement;
 import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
@@ -158,18 +159,16 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
         .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
-    controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+    controller.btn_LeftBumper
+        .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
+        .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
-    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer,
-        subPitch, subTurret, subClimber));
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
-        subPitch, subClimber));
-    controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
-
-    controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
-        .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
-            Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)));
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch, subClimber));
+    controller.btn_West.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
+    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
+        .whileTrue(new ManualHoodMovement(subPitch, controller.axis_RightX));
 
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
