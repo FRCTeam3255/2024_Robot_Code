@@ -382,6 +382,8 @@ public class RobotPreferences {
 
   public static final class prefTurret {
     // -- PID & Configs--
+    public static final SN_DoublePreference turretS = new SN_DoublePreference("turretS", 0);
+    public static final SN_DoublePreference turretA = new SN_DoublePreference("turretA", 0);
     public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
     public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 60);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
