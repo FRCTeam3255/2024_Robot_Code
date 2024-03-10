@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constPitch;
+import frc.robot.Constants.constTurret;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap.mapPitch;
 import frc.robot.RobotPreferences.prefPitch;
@@ -197,10 +198,11 @@ public class Pitch extends SubsystemBase {
    * 
    * @return The desired angle required to reach the current locked location
    */
-  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
+  public Optional<Double> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
       LockedLocation lockedLocation) {
 
     Pose3d targetPose;
+    double desiredAngle;
 
     switch (lockedLocation) {
       default:
@@ -211,15 +213,12 @@ public class Pitch extends SubsystemBase {
         break;
     }
 
-    Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
+    Pose3d turretPose = new Pose3d(robotPose).transformBy(constTurret.ROBOT_TO_TURRET);
 
-    Rotation2d desiredAngle = new Rotation2d();
+    double distX = Math.abs(targetPose.getX() - turretPose.getX());
+    double distY = Math.abs(targetPose.getY() - turretPose.getY());
 
-    double distX = Math.abs(targetPose.getX() - pitchPose.getX());
-    double distY = Math.abs(targetPose.getY() - pitchPose.getY());
-    double distZ = Math.abs(targetPose.getZ() - pitchPose.getZ());
-
-    desiredAngle = new Rotation2d(Math.hypot(distX, distY), distZ);
+    desiredAngle = constPitch.DISTANCE_MAP.get(Math.hypot(distX, distY));
 
     return Optional.of(desiredAngle);
   }
