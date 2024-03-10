@@ -88,7 +88,7 @@ public class RobotContainer implements Logged {
   int[] YTranslationColor;
 
   @Log.NT
-  public double pitchAngle = 20.5;
+  public double pitchAngle = 18.3255;
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);

@@ -72,7 +72,11 @@ public class IntakeGroundGamePiece extends Command {
     if (!RobotState.isAutonomous()) {
       subIntake.setNeutralMode();
     }
-    subTransfer.setTransferNeutralOutput();
+    if (!interrupted) {
+      subTransfer.repositionGamePiece();
+    } else {
+      subTransfer.setTransferNeutralOutput();
+    }
     subTransfer.setFeederNeutralOutput();
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
     subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());

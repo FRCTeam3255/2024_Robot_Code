@@ -169,7 +169,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pitchIsAtAngleTolerance = new SN_DoublePreference("pitchIsAtAngleTolerance",
-        1);
+        0.5);
 
     /**
      * Maximum when the intake is up
@@ -261,7 +261,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
-        "shooterUpToSpeedTolerance", 1);
+        "shooterUpToSpeedTolerance", 0.7);
 
     public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
         "leftShooterIntakeVelocity",
@@ -355,28 +355,28 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference feederShootSpeed = new SN_DoublePreference(
         "feederShootSpeed", 1);
-    public static final SN_DoublePreference transferShootSpeed = new SN_DoublePreference("transferShootSpeed", 0.2);
+    public static final SN_DoublePreference transferShootSpeed = new SN_DoublePreference("transferShootSpeed", 0.5);
 
     // -- Game Piece Detection --
     /**
      * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
      */
     public static final SN_DoublePreference feederHasGamePieceCurrent = new SN_DoublePreference(
-        "feederHasGamePieceCurrent", -7);
+        "feederHasGamePieceCurrent", -6);
 
     /**
      * The value that the transfer current must be <b>ABOVE</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
-        "transferHasGamePieceCurrent", 7);
+        "transferHasGamePieceCurrent", 6);
 
     /**
      * The value that the transfer velocity must be <b>BELOW</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
-        "transferHasGamePieceVelocity", 16.5);
+        "transferHasGamePieceVelocity", 18);
 
   }
 
