@@ -343,7 +343,6 @@ public class RobotContainer implements Logged {
     // subDrivetrain.getPose().getRotation().getDegrees());
 
     subLEDs.setLEDBrightness(0.4);
-    subLEDs.clearAnimation();
 
     // Checking Rotation
     if (Math.abs(desiredStartingRotation
@@ -404,6 +403,7 @@ public class RobotContainer implements Logged {
 
       subLEDs.setIndividualLED(YTranslationColor, 5);
       subLEDs.setIndividualLED(YTranslationColor, 6);
+      subLEDs.clearAnimationChunk(8, 0);
     }
   }
 
