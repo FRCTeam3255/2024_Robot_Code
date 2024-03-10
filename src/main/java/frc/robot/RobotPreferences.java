@@ -337,7 +337,6 @@ public class RobotPreferences {
         false);
 
     // -- Speeds --
-
     public static final SN_DoublePreference feederIntakeGroundSpeed = new SN_DoublePreference(
         "feederIntakeGroundSpeed", -1);
     public static final SN_DoublePreference transferIntakeGroundSpeed = new SN_DoublePreference(
@@ -377,6 +376,20 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
         "transferHasGamePieceVelocity", 18);
+
+    /**
+     * The period of time that we spend pushing the note back towards the intake
+     * <b>Units:</b> Seconds
+     */
+    public static final SN_DoublePreference transferRepositionTime = new SN_DoublePreference("transferRepositionTime",
+        0.1);
+
+    /**
+     * The speed that we push the note back towards the intake
+     * <b>Units:</b> Percent Output
+     */
+    public static final SN_DoublePreference transferRepositionSpeed = new SN_DoublePreference("transferRepositionSpeed",
+        -0.3);
 
   }
 

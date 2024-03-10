@@ -87,9 +87,6 @@ public class RobotContainer implements Logged {
   int[] XTranslationColor;
   int[] YTranslationColor;
 
-  @Log.NT
-  public double pitchAngle = 18.3255;
-
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
@@ -164,10 +161,10 @@ public class RobotContainer implements Logged {
     controller.btn_LeftBumper.whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
-    // controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer,
-    // subPitch, subTurret, subClimber));
-    // controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
-    // subPitch, subClimber));
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer,
+        subPitch, subTurret, subClimber));
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
+        subPitch, subClimber));
     controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
 
     controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
@@ -210,31 +207,17 @@ public class RobotContainer implements Logged {
                         subClimber.collidesWithPitch())))));
 
     // Subwoofer Preset
-    // controller.btn_X.onTrue(Commands.runOnce(() ->
-    // setLockedLocation(LockedLocation.NONE))
-    // .alongWith(
-    // Commands.runOnce(() ->
-    // subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-    // prefShooter.rightShooterSubVelocity.getValue())))
-    // .alongWith(
-    // Commands.runOnce(
-    // () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue(),
-    // subClimber.collidesWithTurret())))
-    // .alongWith(Commands.runOnce(
-    // () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(),
-    // subClimber.collidesWithPitch()))));
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(
-            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-                prefShooter.rightShooterSpeakerVelocity.getValue())))
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+                prefShooter.rightShooterSubVelocity.getValue())))
         .alongWith(
             Commands.runOnce(
                 () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue(),
                     subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(pitchAngle, subClimber.collidesWithPitch()))));
-    controller.btn_North.onTrue(Commands.runOnce(() -> pitchAngle = pitchAngle + 0.1));
-    controller.btn_South.onTrue(Commands.runOnce(() -> pitchAngle = pitchAngle - 0.1));
+            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(),
+                subClimber.collidesWithPitch()))));
 
     // Trap Preset
     // controller.btn_Y.onTrue(Commands.runOnce(() ->
