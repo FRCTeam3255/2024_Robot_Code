@@ -202,10 +202,9 @@ public final class Constants {
       DISTANCE_MAP.put(3.3073, 31.0); // Spike Mark
       DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
       DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
-      DISTANCE_MAP.put(659.73, 19.9); // Mid Centerline
+      DISTANCE_MAP.put(6.5973, 19.9); // Mid Centerline
       DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :)
 
-      // sub to robot 328
       // edge of bumper to center of turret = 42.29cm = 0.4229 m
     }
   }
