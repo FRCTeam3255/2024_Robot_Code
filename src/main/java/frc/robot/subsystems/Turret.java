@@ -6,14 +6,12 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -30,10 +28,8 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
-import monologue.Logged;
-import monologue.Annotations.Log;
 
-public class Turret extends SubsystemBase implements Logged {
+public class Turret extends SubsystemBase {
   TalonFX turretMotor;
   DutyCycleEncoder absoluteEncoder;
   TalonFXConfiguration turretConfig;
@@ -44,9 +40,6 @@ public class Turret extends SubsystemBase implements Logged {
 
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
-
-  @Log.NT
-  Pose3d speakerPose = new Pose3d();
 
   Rotation2d desiredLockingAngle = new Rotation2d();
 
@@ -267,7 +260,6 @@ public class Turret extends SubsystemBase implements Logged {
 
       case SPEAKER:
         targetPose = fieldPoses[0];
-        speakerPose = targetPose;
         break;
     }
 
