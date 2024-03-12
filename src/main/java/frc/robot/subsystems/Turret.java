@@ -13,11 +13,14 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,8 +30,10 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Turret extends SubsystemBase {
+public class Turret extends SubsystemBase implements Logged {
   TalonFX turretMotor;
   DutyCycleEncoder absoluteEncoder;
   TalonFXConfiguration turretConfig;
@@ -39,6 +44,9 @@ public class Turret extends SubsystemBase {
 
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
+
+  @Log.NT
+  Pose3d speakerPose = new Pose3d();
 
   Rotation2d desiredLockingAngle = new Rotation2d();
 
@@ -142,8 +150,16 @@ public class Turret extends SubsystemBase {
     turretMotor.set(speed);
   }
 
+  /**
+   * Sets the desired goal angle of the turret. It will check if the given angle
+   * is possible before setting it.
+   * 
+   * @param angle The angle, in degrees
+   */
   public void setTurretGoalAngle(double angle) {
-    desiredTurretAngle = angle;
+    if (isAnglePossible(angle)) {
+      desiredTurretAngle = angle;
+    }
   }
 
   public double getTurretCurrent() {
@@ -251,6 +267,7 @@ public class Turret extends SubsystemBase {
 
       case SPEAKER:
         targetPose = fieldPoses[0];
+        speakerPose = targetPose;
         break;
     }
 
@@ -263,6 +280,10 @@ public class Turret extends SubsystemBase {
     // Get the angle of 0,0 to the turret pose
     desiredLockingAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
 
+    // Account for robot rotation
+    desiredLockingAngle = desiredLockingAngle
+        .rotateBy(robotPose.getRotation().minus(new Rotation2d().fromDegrees(180)));
+
     return Optional.of(desiredLockingAngle);
   }
 
@@ -273,6 +294,11 @@ public class Turret extends SubsystemBase {
   public boolean isAnglePossible(double angle) {
     return (angle <= Units.rotationsToDegrees(prefTurret.turretForwardLimit.getValue())
         && angle >= Units.rotationsToDegrees(prefTurret.turretReverseLimit.getValue()));
+  }
+
+  public Pose3d getAngleAsPose3d() {
+    return new Pose3d(new Translation3d(),
+        new Rotation3d(0, 0, Units.degreesToRadians(desiredTurretAngle)));
   }
 
   @Override

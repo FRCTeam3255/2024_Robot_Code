@@ -16,6 +16,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -38,11 +40,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   // Struct logging - Allows for logging data that SmartDashboard alone can't log,
   // but must be called on the variable's creation
   @Log.NT
-  private SwerveModuleState[] loggedDesiredStates;
+  private static SwerveModuleState[] loggedDesiredStates;
   @Log.NT
-  private SwerveModuleState[] loggedActualStates;
-  @Log.NT
-  private Pose3d currentRobotPose;
+  private static SwerveModuleState[] loggedActualStates;
 
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -163,7 +163,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   public void updateMonologueValues() {
     loggedDesiredStates = getDesiredModuleStates();
     loggedActualStates = getActualModuleStates();
-    currentRobotPose = new Pose3d(getPose());
   }
 
   /**
@@ -191,6 +190,10 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()));
 
     return yawSetpoint;
+  }
+
+  public Pose3d getPose3d() {
+    return new Pose3d(getPose());
   }
 
   @Override

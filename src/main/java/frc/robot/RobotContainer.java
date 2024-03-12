@@ -5,11 +5,13 @@
 package frc.robot;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -87,6 +89,14 @@ public class RobotContainer implements Logged {
   int[] rotationColor;
   int[] XTranslationColor;
   int[] YTranslationColor;
+
+  // Poses
+  @Log.NT
+  static Pose3d currentRobotPose;
+  @Log.NT
+  static Pose3d turretPose = new Pose3d();
+  @Log.NT
+  static Pose3d hoodPose = new Pose3d();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -254,6 +264,12 @@ public class RobotContainer implements Logged {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public static void updateLoggedPoses() {
+    currentRobotPose = subDrivetrain.getPose3d();
+    turretPose = subTurret.getAngleAsPose3d();
+    hoodPose = turretPose.plus(subPitch.getAngleAsTransform3d());
   }
 
   // --- PDH ---
