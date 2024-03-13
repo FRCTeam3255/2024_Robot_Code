@@ -139,11 +139,12 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * @return If both motors are at their desired velocities
+   * @return If both motors have a non-zero desired velocity and are at their
+   *         desired velocities
    */
   public boolean areBothShootersUpToSpeed() {
     return isLeftShooterUpToSpeed()
-        && isRightShooterUpToSpeed();
+        && isRightShooterUpToSpeed() && (getLeftShooterVelocity() != 0 || getRightShooterVelocity() != 0);
   }
 
   public void setLeftDesiredVelocity(double desiredVelocity) {
