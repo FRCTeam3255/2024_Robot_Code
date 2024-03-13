@@ -192,7 +192,8 @@ public class RobotContainer implements Logged {
                     () -> subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
                         subClimber.collidesWithPitch()))
                     .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput()))
-                    .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));
+                    .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs))))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
@@ -200,7 +201,8 @@ public class RobotContainer implements Logged {
     // Lock Speaker
     controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue()))));
+            prefShooter.rightShooterSpeakerVelocity.getValue())))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Amp Preset
     controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -211,7 +213,8 @@ public class RobotContainer implements Logged {
                     subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
                     () -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue(),
-                        subClimber.collidesWithPitch())))));
+                        subClimber.collidesWithPitch()))))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -224,7 +227,8 @@ public class RobotContainer implements Logged {
                     subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
             () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(),
-                subClimber.collidesWithPitch()))));
+                subClimber.collidesWithPitch())))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(true))));
 
     // Trap Preset
     // controller.btn_Y.onTrue(Commands.runOnce(() ->
