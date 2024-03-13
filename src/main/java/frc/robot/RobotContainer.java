@@ -187,7 +187,7 @@ public class RobotContainer implements Logged {
                 .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0,
                     subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
-                    () -> subHood.setHoodAngle(0,
+                    () -> subHood.setHoodAngle(prefHood.hoodReverseLimit.getValue(),
                         subClimber.collidesWithHood()))
                     .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput()))
                     .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));

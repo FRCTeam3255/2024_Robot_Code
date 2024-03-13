@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotPreferences.prefHood;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
@@ -60,7 +61,7 @@ public class IntakeGroundGamePiece extends Command {
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
 
-    subHood.setHoodAngle(0, subClimber.collidesWithHood());
+    subHood.setHoodAngle(prefHood.hoodReverseLimit.getValue(), subClimber.collidesWithHood());
   }
 
   // Called once the command ends or is interrupted.

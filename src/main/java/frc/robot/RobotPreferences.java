@@ -166,14 +166,14 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference hoodIsAtAngleTolerance = new SN_DoublePreference("hoodIsAtAngleTolerance",
-        1);
+        0.5);
 
     /**
      * Maximum when the intake is up
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference hoodMaxIntake = new SN_DoublePreference("hoodMaxIntake",
-        25);
+        31);
 
     /**
      * <p>
@@ -207,7 +207,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference hoodForwardLimit = new SN_DoublePreference("hoodForwardLimit",
-        Units.degreesToRotations(56));
+        Units.degreesToRotations(62));
     /**
      * <p>
      * The minimum soft limit of the Hood motor
@@ -215,25 +215,25 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference hoodReverseLimit = new SN_DoublePreference("hoodReverseLimit",
-        Units.degreesToRotations(0));
+        Units.degreesToRotations(6));
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference hoodAmpAngle = new SN_DoublePreference("hoodAmpAngle", 51.5);
+    public static final SN_DoublePreference hoodAmpAngle = new SN_DoublePreference("hoodAmpAngle", 57.5);
 
-    public static final SN_DoublePreference hoodWingAngle = new SN_DoublePreference("hoodWingAngle", 18);
+    public static final SN_DoublePreference hoodWingAngle = new SN_DoublePreference("hoodWingAngle", 24);
     public static final SN_DoublePreference hoodTrapAngle = new SN_DoublePreference("hoodTrapAngle",
-        55);
+        61);
 
-    public static final SN_DoublePreference hoodCenterAngle = new SN_DoublePreference("hoodCenterAngle", 16);
+    public static final SN_DoublePreference hoodCenterAngle = new SN_DoublePreference("hoodCenterAngle", 22);
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference hoodSubAngle = new SN_DoublePreference("hoodSubAngle", 41);
+    public static final SN_DoublePreference hoodSubAngle = new SN_DoublePreference("hoodSubAngle", 47);
 
-    public static final SN_DoublePreference hoodSourceAngle = new SN_DoublePreference("hoodSourceAngle", 42.6);
+    public static final SN_DoublePreference hoodSourceAngle = new SN_DoublePreference("hoodSourceAngle", 48.6);
   }
 
   public static final class prefShooter {

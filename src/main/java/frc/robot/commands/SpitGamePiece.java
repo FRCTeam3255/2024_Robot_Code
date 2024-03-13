@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotPreferences.prefHood;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.subsystems.Climber;
@@ -45,7 +46,7 @@ public class SpitGamePiece extends Command {
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
 
-    subHood.setHoodAngle(0, subClimber.collidesWithHood());
+    subHood.setHoodAngle(prefHood.hoodReverseLimit.getValue(), subClimber.collidesWithHood());
 
   }
 
