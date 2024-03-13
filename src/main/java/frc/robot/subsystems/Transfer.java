@@ -75,6 +75,12 @@ public class Transfer extends SubsystemBase {
     while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue()) {
       setTransferMotorSpeed(prefTransfer.transferRepositionSpeed.getValue());
     }
+
+    time = Timer.getFPGATimestamp();
+
+    while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue() / 2) {
+      setTransferMotorSpeed(-prefTransfer.transferRepositionSpeed.getValue());
+    }
     setTransferNeutralOutput();
   }
 
