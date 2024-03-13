@@ -176,7 +176,7 @@ public final class Constants {
      *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
      *      Coordinate System</a>
      */
-    public static final Transform3d ROBOT_TO_Hood = new Transform3d(
+    public static final Transform3d ROBOT_TO_HOOD = new Transform3d(
         new Translation3d(-0, 0, 0),
         new Rotation3d(0, 0, 0));
   }

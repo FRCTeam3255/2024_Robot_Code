@@ -194,7 +194,7 @@ public class RobotPreferences {
 
     /**
      * <p>
-     * The elapsed time required to consider the pivot motor as zeroed
+     * The elapsed time required to consider the hood as zeroed
      * </p>
      * <b>Units:</b> Seconds
      */

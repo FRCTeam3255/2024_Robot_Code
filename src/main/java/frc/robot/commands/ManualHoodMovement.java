@@ -9,19 +9,18 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefHood;
 import frc.robot.subsystems.Hood;
-import frc.robot.subsystems.Hood;
 
 public class ManualHoodMovement extends Command {
   Hood subHood;
   DoubleSupplier xAxis;
 
   /** Creates a new ManualHoodMovement. */
-  public ManualHoodMovement(Hood subhood, DoubleSupplier xAxis) {
-    this.subHood = subhood;
+  public ManualHoodMovement(Hood subHood, DoubleSupplier xAxis) {
+    this.subHood = subHood;
     this.xAxis = xAxis;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subhood);
+    addRequirements(subHood);
   }
 
   // Called when the command is initially scheduled.

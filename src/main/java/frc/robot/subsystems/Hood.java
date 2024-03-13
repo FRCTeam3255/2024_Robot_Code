@@ -211,7 +211,7 @@ public class Hood extends SubsystemBase {
         break;
     }
 
-    Pose3d hoodPose = new Pose3d(robotPose).transformBy(constHood.ROBOT_TO_Hood);
+    Pose3d hoodPose = new Pose3d(robotPose).transformBy(constHood.ROBOT_TO_HOOD);
 
     Rotation2d desiredAngle = new Rotation2d();
 
@@ -231,13 +231,13 @@ public class Hood extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("hood/Velocity DPS", getHoodVelocity());
-    SmartDashboard.putNumber("hood/Voltage", getHoodVoltage());
-    SmartDashboard.putNumber("hood/Angle", getHoodAngle());
-    SmartDashboard.putNumber("hood/Desired Angle", desiredHoodAngle);
+    SmartDashboard.putNumber("Hood/Velocity DPS", getHoodVelocity());
+    SmartDashboard.putNumber("Hood/Voltage", getHoodVoltage());
+    SmartDashboard.putNumber("Hood/Angle", getHoodAngle());
+    SmartDashboard.putNumber("Hood/Desired Angle", desiredHoodAngle);
 
-    SmartDashboard.putBoolean("hood/Is At Desired Angle", isHoodAtGoalAngle());
-    SmartDashboard.putBoolean("hood/Is At LOCKING Angle", isHoodLocked());
+    SmartDashboard.putBoolean("Hood/Is At Desired Angle", isHoodAtGoalAngle());
+    SmartDashboard.putBoolean("Hood/Is At LOCKING Angle", isHoodLocked());
 
   }
 }
