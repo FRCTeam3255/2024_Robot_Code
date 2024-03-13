@@ -16,8 +16,10 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.constShooter;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Shooter extends SubsystemBase {
+public class Shooter extends SubsystemBase implements Logged {
   TalonFX leftMotor, rightMotor;
   TalonFXConfiguration leftConfig, rightConfig;
 
@@ -27,6 +29,7 @@ public class Shooter extends SubsystemBase {
 
   boolean leftInvert, rightInvert;
 
+  @Log.NT
   private boolean ignoreFlywheelSpeed = false;
 
   /**
