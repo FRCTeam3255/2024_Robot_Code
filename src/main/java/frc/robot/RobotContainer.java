@@ -43,6 +43,7 @@ import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.UnaliveShooter;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
@@ -123,7 +124,7 @@ public class RobotContainer implements Logged {
 
     // Register Autonomous Named Commands
     NamedCommands.registerCommand("IntakeGamePiece",
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter));
 
     // View controls at:
     // src\main\assets\controllerMap2024.png
@@ -166,7 +167,7 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter));
     controller.btn_LeftBumper
         .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
         .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
@@ -180,19 +181,10 @@ public class RobotContainer implements Logged {
 
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
-            .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())));
+            .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
+            .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)));
 
-    controller.btn_RightBumper.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(
-            Commands.runOnce(() -> subShooter.setDesiredVelocities(0,
-                0))
-                .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0,
-                    subClimber.collidesWithTurret())))
-                .alongWith(Commands.runOnce(
-                    () -> subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
-                        subClimber.collidesWithPitch()))
-                    .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput()))
-                    .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs))))
+    controller.btn_RightBumper.onTrue(new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));

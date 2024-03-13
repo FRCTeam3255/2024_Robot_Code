@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
@@ -23,18 +25,21 @@ public class IntakeGroundGamePiece extends Command {
   Turret subTurret;
   Climber subClimber;
   Pitch subPitch;
+  Shooter subShooter;
 
   double lastDesiredPitch;
   double lastDesiredTurret;
 
   public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret,
-      Climber subClimber, Pitch subPitch) {
+      Climber subClimber, Pitch subPitch, Shooter subShooter) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
     this.subClimber = subClimber;
     this.subPitch = subPitch;
-    addRequirements(subIntake, subTransfer, subTurret, subClimber, subPitch);
+    this.subShooter = subShooter;
+
+    addRequirements(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter);
   }
 
   // Called when the command is initially scheduled.
@@ -74,6 +79,10 @@ public class IntakeGroundGamePiece extends Command {
     }
     if (!interrupted) {
       subTransfer.repositionGamePiece();
+
+      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+          prefShooter.rightShooterSubVelocity.getValue());
+      subShooter.getUpToSpeed();
     } else {
       subTransfer.setTransferNeutralOutput();
     }
