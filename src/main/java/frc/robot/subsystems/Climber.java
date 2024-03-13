@@ -12,6 +12,7 @@ import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Constants.constClimber;
@@ -64,6 +65,10 @@ public class Climber extends SubsystemBase {
     return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
   }
 
+  public double getClimberVoltage() {
+    return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
+  }
+
   public double getClimberPositionMeters() {
     return desiredPosition / prefClimber.climberEncoderCountsPerMeter.getValue();
   }
@@ -74,6 +79,9 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Climber/Velocity DPS", getClimberVelocity());
+    SmartDashboard.putNumber("Climber/Voltage", getClimberVoltage());
+    SmartDashboard.putNumber("Climber/Position", getClimberPositionMeters());
     // This method will be called once per scheduler run
   }
 }

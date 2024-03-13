@@ -420,6 +420,9 @@ public class RobotPreferences {
         "climberEncoderCountsPerMeter", 3);
     public static final SN_DoublePreference climberZeroedTime = new SN_DoublePreference("climberZeroedTime", 4);
     public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity", 2);
+    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference("climberMotorUpSpeed", 10);
+    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference("climberMotorDownSpeed", 5);
+
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberinverted", false);
   }
 

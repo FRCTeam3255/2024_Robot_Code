@@ -13,10 +13,12 @@ public class Climb extends Command {
   Climber subClimber;
 
   double zeroingTimestamp;
+  double speed;
 
   /** Creates a new Climb. */
-  public Climb(Climber subClimber) {
+  public Climb(Climber subClimber, double speed) {
     this.subClimber = subClimber;
+    this.speed = speed;
     addRequirements(subClimber);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -29,6 +31,7 @@ public class Climb extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    subClimber.setClimberSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.
