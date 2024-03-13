@@ -5,6 +5,7 @@
 // Concept credit: FRC team 2910, Jack in the Bot
 package frc.robot.commands;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefPitch;
@@ -46,7 +47,7 @@ public class ZeroPitch extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subPitch.setPitchSensorAngle(0);
+      subPitch.setPitchSensorAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
     }
   }
 

@@ -4,9 +4,11 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
+import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
@@ -60,7 +62,8 @@ public class IntakeGroundGamePiece extends Command {
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
 
-    subPitch.setPitchAngle(0, subClimber.collidesWithPitch());
+    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
+        subClimber.collidesWithPitch());
   }
 
   // Called once the command ends or is interrupted.
@@ -69,7 +72,11 @@ public class IntakeGroundGamePiece extends Command {
     if (!RobotState.isAutonomous()) {
       subIntake.setNeutralMode();
     }
-    subTransfer.setTransferNeutralOutput();
+    if (!interrupted) {
+      subTransfer.repositionGamePiece();
+    } else {
+      subTransfer.setTransferNeutralOutput();
+    }
     subTransfer.setFeederNeutralOutput();
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
     subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
