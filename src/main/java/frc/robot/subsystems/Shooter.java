@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -19,8 +20,10 @@ import frc.robot.RobotPreferences.prefShooter;
 public class Shooter extends SubsystemBase {
   TalonFX leftMotor, rightMotor;
   TalonFXConfiguration leftConfig, rightConfig;
+
+  MotionMagicVelocityVoltage motionMagicRequest;
+
   VelocityVoltage velocityRequest;
-  double leftFF, rightFF;
 
   boolean leftInvert, rightInvert;
 
@@ -49,20 +52,31 @@ public class Shooter extends SubsystemBase {
         : constShooter.RIGHT_INVERT;
 
     velocityRequest = new VelocityVoltage(0).withSlot(0);
+    motionMagicRequest = new MotionMagicVelocityVoltage(0);
 
     configure();
   }
 
   public void configure() {
     leftConfig.Slot0.kV = prefShooter.leftShooterV.getValue();
+    leftConfig.Slot0.kS = prefShooter.leftShooterS.getValue();
+    leftConfig.Slot0.kA = prefShooter.leftShooterA.getValue();
     leftConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
     leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
     leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
 
+    leftConfig.MotionMagic.MotionMagicAcceleration = 400;
+    leftConfig.MotionMagic.MotionMagicJerk = 4000;
+
     rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue();
+    rightConfig.Slot0.kS = prefShooter.rightShooterS.getValue();
+    rightConfig.Slot0.kA = prefShooter.rightShooterA.getValue();
     rightConfig.Slot0.kP = prefShooter.rightShooterP.getValue();
     rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue();
     rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue();
+
+    rightConfig.MotionMagic.MotionMagicAcceleration = 400;
+    rightConfig.MotionMagic.MotionMagicJerk = 4000;
 
     leftMotor.getConfigurator().apply(leftConfig);
     rightMotor.getConfigurator().apply(rightConfig);
@@ -79,8 +93,8 @@ public class Shooter extends SubsystemBase {
     if (desiredLeftVelocity <= 0 && desiredRightVelocity <= 0) {
       setShootingNeutralOutput();
     } else {
-      leftMotor.setControl(velocityRequest.withVelocity(desiredLeftVelocity).withFeedForward(leftFF));
-      rightMotor.setControl(velocityRequest.withVelocity(desiredRightVelocity).withFeedForward(rightFF));
+      leftMotor.setControl(motionMagicRequest.withVelocity(desiredLeftVelocity));
+      rightMotor.setControl(motionMagicRequest.withVelocity(desiredRightVelocity));
     }
   }
 
@@ -125,11 +139,12 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * @return If both motors are at their desired velocities
+   * @return If both motors have a non-zero desired velocity and are at their
+   *         desired velocities
    */
   public boolean areBothShootersUpToSpeed() {
     return isLeftShooterUpToSpeed()
-        && isRightShooterUpToSpeed();
+        && isRightShooterUpToSpeed() && (getLeftShooterVelocity() != 0 || getRightShooterVelocity() != 0);
   }
 
   public void setLeftDesiredVelocity(double desiredVelocity) {

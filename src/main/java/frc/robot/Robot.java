@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
     // Logging to SmartDashboard
     // RobotContainer.logPDHValues();
     RobotContainer.AddVisionMeasurement().schedule();
+    RobotContainer.updateLoggedPoses();
     SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
   }
