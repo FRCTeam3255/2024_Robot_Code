@@ -10,7 +10,9 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -24,7 +26,6 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
@@ -37,6 +38,7 @@ import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
+import frc.robot.commands.ManualHoodMovement;
 import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
@@ -86,6 +88,14 @@ public class RobotContainer implements Logged {
   int[] XTranslationColor;
   int[] YTranslationColor;
 
+  // Poses
+  @Log.NT
+  static Pose3d currentRobotPose;
+  @Log.NT
+  static Pose3d turretPose = new Pose3d();
+  @Log.NT
+  static Pose3d hoodPose = new Pose3d();
+
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
@@ -127,7 +137,7 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    Pose2d subwooferRobotPose = new Pose2d(1.35, 5.50, new Rotation2d(0));
+    Pose2d subwooferRobotPose = new Pose2d(1.35, 5.50, new Rotation2d().fromDegrees(180));
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
 
@@ -164,11 +174,9 @@ public class RobotContainer implements Logged {
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch, subClimber));
-    controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
-
-    controller.btn_West.onTrue(Commands.run(() -> subTurret.setTurretAngle(0, subClimber.collidesWithTurret()))
-        .until(() -> subTurret.isTurretAtGoalAngle()).andThen(
-            Commands.runOnce(() -> subClimber.setClimberAngle(prefIntake.intakeStowAngle.getValue()), subClimber)));
+    controller.btn_West.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
+    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
+        .whileTrue(new ManualHoodMovement(subPitch, controller.axis_RightX));
 
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
@@ -181,7 +189,7 @@ public class RobotContainer implements Logged {
                 .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0,
                     subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
-                    () -> subPitch.setPitchAngle(0,
+                    () -> subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
                         subClimber.collidesWithPitch()))
                     .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput()))
                     .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));
@@ -215,7 +223,8 @@ public class RobotContainer implements Logged {
                 () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue(),
                     subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(), subClimber.collidesWithPitch()))));
+            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(),
+                subClimber.collidesWithPitch()))));
 
     // Trap Preset
     // controller.btn_Y.onTrue(Commands.runOnce(() ->
@@ -233,6 +242,7 @@ public class RobotContainer implements Logged {
 
     controller.btn_Y.whileTrue((Commands.runOnce(() -> subClimber.setClimberVoltage(-2))));
     controller.btn_Y.onFalse((Commands.runOnce(() -> subClimber.setClimberVoltage(0))));
+    controller.btn_Y.onFalse((Commands.runOnce(() -> subClimber.configure(true))));
 
   }
 
@@ -252,6 +262,12 @@ public class RobotContainer implements Logged {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public static void updateLoggedPoses() {
+    currentRobotPose = subDrivetrain.getPose3d();
+    turretPose = subTurret.getAngleAsPose3d();
+    hoodPose = turretPose.plus(subPitch.getAngleAsTransform3d());
   }
 
   // --- PDH ---
@@ -337,7 +353,6 @@ public class RobotContainer implements Logged {
     // subDrivetrain.getPose().getRotation().getDegrees());
 
     subLEDs.setLEDBrightness(0.4);
-    subLEDs.clearAnimation();
 
     // Checking Rotation
     if (Math.abs(desiredStartingRotation
@@ -386,7 +401,8 @@ public class RobotContainer implements Logged {
 
     // Light up in Shang Chi color if both translation and rotation are correct
     if (rotationCorrect && XCorrect && YCorrect) {
-      subLEDs.setLEDs(constLEDs.AUTO_ALIGNED_COLOR);
+      subLEDs.setAnimationChunk(8, constLEDs.LED_NUMBER - 8, constLEDs.AUTO_ALIGNED_COLOR);
+
     } else {
       subLEDs.setIndividualLED(rotationColor, 0);
       subLEDs.setIndividualLED(rotationColor, 3);
@@ -398,6 +414,7 @@ public class RobotContainer implements Logged {
 
       subLEDs.setIndividualLED(YTranslationColor, 5);
       subLEDs.setIndividualLED(YTranslationColor, 6);
+      subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
     }
   }
 

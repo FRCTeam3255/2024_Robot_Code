@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 
 /*
@@ -38,11 +39,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public static class constClimber {
-    public static final NeutralModeValue CLIMBER_NEUTRAL_MODE = NeutralModeValue.Brake;
-    public static final boolean ABS_ENCODER_INVERT = false;
-    public static final double ABS_ENCODER_OFFSET = 0.021475;
     public static final double GEAR_RATIO = 327.6;
-    public static final double ABS_TO_MECH_RATIO = (1080 / 510);
   }
 
   public static class constControllers {
@@ -181,8 +178,35 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_PITCH = new Transform3d(
-        new Translation3d(-0, 0, 0),
+        new Translation3d(-Units.inchesToMeters(3.5), 0, Units.inchesToMeters(12.03)),
         new Rotation3d(0, 0, 0));
+
+    /**
+     * <p>
+     * Determines the necessary angle for the shooter depending on the distance from
+     * the SPEAKER.
+     * </p>
+     * <b>KEY:</b> The distance (in meters) of the center of the turret to the
+     * SPEAKER
+     * <br>
+     * <br>
+     * <b>VALUE:</b> The angle (in degrees) for the hood to go up by
+     * 
+     */
+    public static final InterpolatingDoubleTreeMap DISTANCE_MAP = new InterpolatingDoubleTreeMap();
+
+    // Comments indicate where we placed the robot directly in line with the SPEAKER
+    static {
+      DISTANCE_MAP.put(1.3373, 56.0); // Subwoofer
+      DISTANCE_MAP.put(2.295, 41.0); // Starting Line
+      DISTANCE_MAP.put(3.3073, 31.0); // Spike Mark
+      DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
+      DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
+      DISTANCE_MAP.put(6.5973, 19.9); // Mid Centerline
+      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :)
+
+      // edge of bumper to center of turret = 42.29cm = 0.4229 m
+    }
   }
 
   /**
@@ -192,7 +216,6 @@ public final class Constants {
     /**
      * Volts
      */
-    public static final double MAX_VOLTAGE = 12;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
     // @formatter:off
@@ -268,10 +291,8 @@ public final class Constants {
      */
     public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
         new Translation3d(Units.inchesToMeters(1), 0, 0),
-        new Rotation3d(0, 0, Units.degreesToRadians(180)));
+        new Rotation3d(0, 0, 0));
 
-    // TODO: figure out why its 180 because it makes no sense and theres probably a
-    // bug somewhere
   }
 
   public static class constVision {
@@ -304,9 +325,6 @@ public final class Constants {
   }
 
   public static class constTransfer {
-    public static final double CURRENT_LIMIT_CEILING_AMPS = 40;
-    public static final double CURRENT_LIMIT_AFTER_SEC = 10;
-    public static final double CURRENT_LIMIT_FLOOR_AMPS = 8;
   }
 
   /**

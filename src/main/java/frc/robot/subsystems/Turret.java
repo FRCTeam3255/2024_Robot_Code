@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 import java.util.Optional;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -14,8 +16,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,22 +26,27 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
-import frc.robot.Constants.constTransfer;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
+import monologue.Annotations.Log;
+import monologue.Logged;
 
-public class Turret extends SubsystemBase {
+public class Turret extends SubsystemBase implements Logged {
   TalonFX turretMotor;
   DutyCycleEncoder absoluteEncoder;
   TalonFXConfiguration turretConfig;
 
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
+  MotionMagicVoltage motionMagicRequest;
 
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
 
-  public double desiredLockingAngle = 0;
+  @Log.NT
+  Pose3d actualPose = new Pose3d();
+
+  Rotation2d desiredLockingAngle = new Rotation2d();
 
   final Transform2d robotToTurret = new Transform2d(
       constTurret.ROBOT_TO_TURRET.getX(),
@@ -60,15 +68,22 @@ public class Turret extends SubsystemBase {
 
     positionRequest = new PositionVoltage(0);
     voltageRequest = new VoltageOut(0);
+    motionMagicRequest = new MotionMagicVoltage(0);
 
     configure();
   }
 
   public void configure() {
+    turretConfig.Slot0.kS = prefTurret.turretS.getValue();
     turretConfig.Slot0.kV = prefTurret.turretV.getValue();
+    turretConfig.Slot0.kA = prefTurret.turretA.getValue();
     turretConfig.Slot0.kP = prefTurret.turretP.getValue();
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
+
+    turretConfig.MotionMagic.MotionMagicCruiseVelocity = 160; // rps
+    turretConfig.MotionMagic.MotionMagicAcceleration = 160; // rps/s
+    turretConfig.MotionMagic.MotionMagicJerk = 1600; // rps/s/s
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
@@ -85,7 +100,6 @@ public class Turret extends SubsystemBase {
 
     turretMotor.setInverted(prefTurret.turretInverted.getValue());
     turretMotor.getConfigurator().apply(turretConfig);
-    turretMotor.setInverted(invertAbsEncoder);
   }
   // "Set" Methods
 
@@ -101,7 +115,7 @@ public class Turret extends SubsystemBase {
     if (hasCollision) {
       angle = 0;
     }
-    turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
+    turretMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   public void setTurretSoftwareLimits(boolean reverse, boolean forward) {
@@ -134,8 +148,16 @@ public class Turret extends SubsystemBase {
     turretMotor.set(speed);
   }
 
+  /**
+   * Sets the desired goal angle of the turret. It will check if the given angle
+   * is possible before setting it.
+   * 
+   * @param angle The angle, in degrees
+   */
   public void setTurretGoalAngle(double angle) {
-    desiredTurretAngle = angle;
+    if (isAnglePossible(angle)) {
+      desiredTurretAngle = angle;
+    }
   }
 
   public double getTurretCurrent() {
@@ -156,7 +178,7 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean isTurretLocked() {
-    return isTurretAtAngle(desiredLockingAngle);
+    return isTurretAtAngle(desiredLockingAngle.getDegrees());
   }
 
   public void setTurretNeutralOutput() {
@@ -226,7 +248,7 @@ public class Turret extends SubsystemBase {
    * 
    * Returns empty if there is nothing set to be locked onto.
    * 
-   * @param robotPose      The current pose of the robot
+   * @param robotPose      The current pose of the robot (field relative)
    * @param fieldPoses     The poses of the field elements, matching your alliance
    *                       color
    * @param lockedLocation The location that we are locked onto
@@ -242,26 +264,24 @@ public class Turret extends SubsystemBase {
         return Optional.empty();
 
       case SPEAKER:
-        if (robotPose.getY() < 4.1) {
-          targetPose = fieldPoses[6];
-          break;
-        } else if (robotPose.getY() > 6.9) {
-          targetPose = fieldPoses[7];
-          break;
-        }
         targetPose = fieldPoses[0];
         break;
     }
 
-    Rotation2d rotation = robotPose.getRotation().plus(robotToTurret.getRotation().unaryMinus());
-    Translation2d translation = robotPose.getTranslation().plus(robotToTurret.getTranslation());
-    Pose2d turretPose = new Pose2d(translation, rotation);
+    // Get the turret pose (field relative)
+    Pose2d turretPose = robotPose.transformBy(robotToTurret);
 
+    // Move the turret pose to be relative to the target (the target is now 0,0)
     Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
-    Rotation2d desiredAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
 
-    // TODO: figure out why this is a unary Minus (i REALLY done goofed somewhere)
-    return Optional.of(desiredAngle.rotateBy(turretPose.getRotation().unaryMinus()));
+    // Get the angle of 0,0 to the turret pose
+    desiredLockingAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
+
+    // Account for robot rotation
+    desiredLockingAngle = desiredLockingAngle
+        .rotateBy(robotPose.getRotation().unaryMinus().minus(new Rotation2d().fromDegrees(180)));
+
+    return Optional.of(desiredLockingAngle);
   }
 
   /**
@@ -273,13 +293,23 @@ public class Turret extends SubsystemBase {
         && angle >= Units.rotationsToDegrees(prefTurret.turretReverseLimit.getValue()));
   }
 
+  public Pose3d getAngleAsPose3d() {
+    return new Pose3d(new Translation3d(),
+        new Rotation3d(0, 0, Units.degreesToRadians(desiredTurretAngle)));
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Turret/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Turret/Angle (Degrees)", getAngle());
     SmartDashboard.putNumber("Turret/Desired Angle (Degrees)", desiredTurretAngle);
-    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
     SmartDashboard.putBoolean("Turret/Is At Desired Angle", isTurretAtGoalAngle());
+    SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredLockingAngle.getDegrees());
+
+    actualPose = new Pose3d(new Translation3d(),
+        new Rotation3d(0, 0, Units.degreesToRadians(getAngle())));
+
+    SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
   }
 }
