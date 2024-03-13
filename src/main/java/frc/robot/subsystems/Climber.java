@@ -43,6 +43,7 @@ public class Climber extends SubsystemBase {
 
   public void configure() {
     climberMotor.getConfigurator().apply(new TalonFXConfiguration());
+    climberConfig.Slot0.kV = prefClimber.climberMotorV.getValue();
     climberConfig.Slot0.kP = prefClimber.climberMotorP.getValue();
     climberConfig.Slot0.kI = prefClimber.climberMotorI.getValue();
     climberConfig.Slot0.kD = prefClimber.climberMotorD.getValue();
@@ -50,8 +51,12 @@ public class Climber extends SubsystemBase {
     climberConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
     climberConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
 
-    climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
+    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = prefClimber.climberSupplyCurrentLimitEnable.getValue();
+    climberConfig.CurrentLimits.SupplyCurrentLimit = prefClimber.climberSupplyCurrentLimitCelingAmps.getValue();
+    climberConfig.CurrentLimits.SupplyCurrentThreshold = prefClimber.climberSupplyCurrentThreshold.getValue();
+    climberConfig.CurrentLimits.SupplyTimeThreshold = prefClimber.climberSupplyTimeThreshold.getValue();
+    climberMotor.getConfigurator().apply(climberConfig);
   }
 
   public boolean isClimberAtPosition(double desiredPosition, double tolerance) {

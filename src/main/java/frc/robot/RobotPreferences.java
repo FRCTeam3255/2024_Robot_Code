@@ -4,7 +4,6 @@ import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.constDrivetrain;
 
 /*
  * @formatter:off
@@ -410,6 +409,7 @@ public class RobotPreferences {
 
   public static final class prefClimber {
     // all values placeholder for now in climber
+    public static final SN_DoublePreference climberMotorV = new SN_DoublePreference("climberMotorV", 0.4);
     public static final SN_DoublePreference climberMotorP = new SN_DoublePreference("climberMotorP", 0.4);
     public static final SN_DoublePreference climberMotorI = new SN_DoublePreference("climberMotorI", 0.4);
     public static final SN_DoublePreference climberMotorD = new SN_DoublePreference("clismberMotorD", 0.4);
@@ -422,6 +422,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity", 2);
     public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference("climberMotorUpSpeed", 10);
     public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference("climberMotorDownSpeed", 5);
+
+    public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
+        "climberSupplyCurrentLimitEnable", true);
+    public static final SN_DoublePreference climberSupplyCurrentLimitCelingAmps = new SN_DoublePreference(
+        "climberSupplyCurrentLimitCelingAmps", 0.01);
+    public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
+        "climberSupplyCurrentThreshold", 0.1);
+    public static final SN_DoublePreference climberSupplyTimeThreshold = new SN_DoublePreference(
+        "climberSupplyTimeThreshold", 0.1);
 
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberinverted", false);
   }
