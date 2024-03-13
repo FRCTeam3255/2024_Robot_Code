@@ -78,6 +78,11 @@ public class LEDs extends SubsystemBase {
     CANdle.setLEDs(0, 0, 0, 0, startIdx, count);
   }
 
+  public void setAnimationChunk(int startIdx, int count, int[] rgb) {
+    CANdle.setLEDs(rgb[0], rgb[1], rgb[2], 0, startIdx, count);
+
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

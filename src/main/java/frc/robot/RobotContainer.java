@@ -401,7 +401,8 @@ public class RobotContainer implements Logged {
 
     // Light up in Shang Chi color if both translation and rotation are correct
     if (rotationCorrect && XCorrect && YCorrect) {
-      subLEDs.setLEDs(constLEDs.AUTO_ALIGNED_COLOR);
+      subLEDs.setAnimationChunk(8, constLEDs.LED_NUMBER - 8, constLEDs.AUTO_ALIGNED_COLOR);
+
     } else {
       subLEDs.setIndividualLED(rotationColor, 0);
       subLEDs.setIndividualLED(rotationColor, 3);
@@ -413,7 +414,7 @@ public class RobotContainer implements Logged {
 
       subLEDs.setIndividualLED(YTranslationColor, 5);
       subLEDs.setIndividualLED(YTranslationColor, 6);
-      subLEDs.clearAnimationChunk(8, 0);
+      subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
     }
   }
 
