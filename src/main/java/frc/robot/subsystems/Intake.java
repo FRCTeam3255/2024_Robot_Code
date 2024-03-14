@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
+import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
