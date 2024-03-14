@@ -36,6 +36,22 @@ public class Transfer extends SubsystemBase {
     configure();
   }
 
+  public boolean intakeSourceGamePieceDetection() {
+    transferCurrent = transferMotor.getStatorCurrent().getValue();
+    transferVelocity = transferMotor.getVelocity().getValue();
+
+    if (hasGamePiece ||
+
+        (transferCurrent <= prefTransfer.intakeSourceHasGamePieceCurrent.getValue())
+            && (transferVelocity <= prefTransfer.intakeSourceHasGamePieceVelocity.getValue())) {
+      hasGamePiece = true;
+    } else {
+      hasGamePiece = false;
+    }
+
+    return hasGamePiece;
+  }
+
   public void configure() {
     feederMotor.configFactoryDefault();
     transferMotor.getConfigurator().apply(new TalonFXConfiguration());

@@ -149,13 +149,6 @@ public class RobotPreferences {
      * The time that we wait to get a game piece in auto
      * <b> Units: </b> Seconds
      */
-    public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
-        "intakeSourceGamePieceGetTime",
-        0.5);
-    public static final SN_DoublePreference intakeSourceHasGamePieceVelocity = new SN_DoublePreference(
-        "intakeSourceHasGamePieceVelocity", 16.5);
-    public static final SN_DoublePreference intakeSourceHasGamePieceCurrent = new SN_DoublePreference(
-        "intakeSourceHasGamePieceCurrent", 7);
 
   }
 
@@ -348,6 +341,14 @@ public class RobotPreferences {
     public static final SN_DoublePreference feederShootSpeed = new SN_DoublePreference(
         "feederShootSpeed", 1);
     public static final SN_DoublePreference transferShootSpeed = new SN_DoublePreference("transferShootSpeed", 0.2);
+
+    public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
+        "intakeSourceGamePieceGetTime",
+        0.5);
+    public static final SN_DoublePreference intakeSourceHasGamePieceVelocity = new SN_DoublePreference(
+        "intakeSourceHasGamePieceVelocity", 16.5);
+    public static final SN_DoublePreference intakeSourceHasGamePieceCurrent = new SN_DoublePreference(
+        "intakeSourceHasGamePieceCurrent", 7);
 
     // -- Game Piece Detection --
     /**
