@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapLEDs;
 
-// CANdle CANdle;
-
 public class LEDs extends SubsystemBase {
   CANdle CANdle;
 
@@ -71,6 +69,18 @@ public class LEDs extends SubsystemBase {
     setLEDBrightness(0);
     CANdle.clearAnimation(0);
     CANdle.setLEDs(0, 0, 0, 0, 0, 0);
+  }
+
+  /**
+   * Clears a specified chunk of LEDs of the current animation or color
+   */
+  public void clearAnimationChunk(int startIdx, int count) {
+    CANdle.setLEDs(0, 0, 0, 0, startIdx, count);
+  }
+
+  public void setAnimationChunk(int startIdx, int count, int[] rgb) {
+    CANdle.setLEDs(rgb[0], rgb[1], rgb[2], 0, startIdx, count);
+
   }
 
   @Override

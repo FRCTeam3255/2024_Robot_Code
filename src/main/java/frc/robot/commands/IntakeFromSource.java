@@ -26,7 +26,7 @@ public class IntakeFromSource extends Command {
 
   double lastDesiredSpeedLeft;
   double lastDesiredSpeedRight;
-  double lastDesiredPitch;
+  double lastDesiredPitch = prefPitch.pitchReverseLimit.getValue();
   double lastDesiredAngle;
 
   /** Creates a new ShooterIntake. */
@@ -44,10 +44,9 @@ public class IntakeFromSource extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    lastDesiredPitch = subPitch.getPitchAngle();
     lastDesiredSpeedLeft = subShooter.getLeftShooterVelocity();
     lastDesiredSpeedRight = subShooter.getRightShooterVelocity();
-
-    lastDesiredPitch = subPitch.getPitchAngle();
 
     subShooter.setDesiredVelocities(prefShooter.leftShooterIntakeVelocity.getValue(),
         prefShooter.rightShooterIntakeVelocity.getValue());

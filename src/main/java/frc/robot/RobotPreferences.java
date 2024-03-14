@@ -395,10 +395,12 @@ public class RobotPreferences {
 
   public static final class prefTurret {
     // -- PID & Configs--
-    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0);
-    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 60);
+    public static final SN_DoublePreference turretS = new SN_DoublePreference("turretS", 0.25);
+    public static final SN_DoublePreference turretA = new SN_DoublePreference("turretA", 0.1);
+    public static final SN_DoublePreference turretV = new SN_DoublePreference("turretV", 0.0);
+    public static final SN_DoublePreference turretP = new SN_DoublePreference("turretP", 150);
     public static final SN_DoublePreference turretI = new SN_DoublePreference("turretI", 0);
-    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 0);
+    public static final SN_DoublePreference turretD = new SN_DoublePreference("turretD", 5);
 
     /**
      * <b>Units:</b> Degrees
@@ -423,7 +425,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-79));
 
-    public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", true);
+    public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
 
     // -- Zeroing --
     public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);

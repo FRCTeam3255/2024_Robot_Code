@@ -6,9 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -18,8 +16,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,7 +31,6 @@ import frc.robot.RobotPreferences.prefPitch;
 public class Pitch extends SubsystemBase {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
-  MotionMagicConfigs motionMagicConfig;
   double desiredPitchAngle;
   Rotation2d desiredLockingAngle = new Rotation2d();
   PositionVoltage positionRequest;
@@ -102,7 +100,8 @@ public class Pitch extends SubsystemBase {
   }
 
   /**
-   * Sets the angle of the pitch motor
+   * Sets the angle of the pitch motor. The angle will not be set if the angle is
+   * not possible.
    * 
    * @param angle        The angle to set the pitch motor to. <b> Units: </b>
    *                     Degrees
@@ -113,8 +112,10 @@ public class Pitch extends SubsystemBase {
     if (hasCollision && angle >= prefPitch.pitchMaxIntake.getValue()) {
       angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
     }
-    desiredPitchAngle = angle;
-    pitchMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
+    if (isAnglePossible(angle)) {
+      desiredPitchAngle = angle;
+      pitchMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
+    }
   }
 
   public void setPitchGoalAngle(double angle) {
@@ -219,7 +220,6 @@ public class Pitch extends SubsystemBase {
       LockedLocation lockedLocation) {
 
     Pose3d targetPose;
-
     switch (lockedLocation) {
       default:
         return Optional.empty();
@@ -230,18 +230,21 @@ public class Pitch extends SubsystemBase {
     }
 
     // Get the pitch pose (field relative)
-    Pose3d pitchPose = new Pose3d(robotPose).transformBy(robotToPitch);
+    Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
 
     // Get distances from the pitch pose to the target pose and then calculate the
     // required angle
     // Theres probably a WPILib method for this but im eppy
     double distX = Math.abs(targetPose.getX() - pitchPose.getX());
     double distY = Math.abs(targetPose.getY() - pitchPose.getY());
-    double distZ = Math.abs(targetPose.getZ() - pitchPose.getZ());
-
-    desiredLockingAngle = new Rotation2d(Math.hypot(distX, distY), distZ);
+    desiredLockingAngle = Rotation2d.fromDegrees(constPitch.DISTANCE_MAP.get(Math.hypot(distX, distY)));
 
     return Optional.of(desiredLockingAngle);
+  }
+
+  public Transform3d getAngleAsTransform3d() {
+    return new Transform3d(new Translation3d(),
+        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), 0));
   }
 
   @Override

@@ -34,6 +34,7 @@ public class Shoot extends Command {
   @Override
   public void end(boolean interrupted) {
     subShooter.setShootingNeutralOutput();
+    subShooter.setIgnoreFlywheelSpeed(false);
   }
 
   // Returns true when the command should end.

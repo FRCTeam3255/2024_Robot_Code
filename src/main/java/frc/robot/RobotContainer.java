@@ -10,6 +10,7 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,7 +26,6 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
@@ -43,6 +43,7 @@ import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.UnaliveShooter;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
@@ -88,6 +89,14 @@ public class RobotContainer implements Logged {
   int[] XTranslationColor;
   int[] YTranslationColor;
 
+  // Poses
+  @Log.NT
+  static Pose3d currentRobotPose;
+  @Log.NT
+  static Pose3d turretPose = new Pose3d();
+  @Log.NT
+  static Pose3d hoodPose = new Pose3d();
+
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
@@ -115,7 +124,7 @@ public class RobotContainer implements Logged {
 
     // Register Autonomous Named Commands
     NamedCommands.registerCommand("IntakeGamePiece",
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter));
 
     // View controls at:
     // src\main\assets\controllerMap2024.png
@@ -158,7 +167,7 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch));
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter));
     controller.btn_LeftBumper
         .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
         .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
@@ -173,19 +182,11 @@ public class RobotContainer implements Logged {
 
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
-            .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())));
+            .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
+            .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)));
 
-    controller.btn_RightBumper.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(
-            Commands.runOnce(() -> subShooter.setDesiredVelocities(0,
-                0))
-                .alongWith(Commands.runOnce(() -> subTurret.setTurretAngle(0,
-                    subClimber.collidesWithTurret())))
-                .alongWith(Commands.runOnce(
-                    () -> subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
-                        subClimber.collidesWithPitch()))
-                    .alongWith(Commands.runOnce(() -> subClimber.setNeutralOutput()))
-                    .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));
+    controller.btn_RightBumper.onTrue(new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
@@ -193,7 +194,8 @@ public class RobotContainer implements Logged {
     // Lock Speaker
     controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue()))));
+            prefShooter.rightShooterSpeakerVelocity.getValue())))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Amp Preset
     controller.btn_B.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -204,7 +206,8 @@ public class RobotContainer implements Logged {
                     subClimber.collidesWithTurret())))
                 .alongWith(Commands.runOnce(
                     () -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue(),
-                        subClimber.collidesWithPitch())))));
+                        subClimber.collidesWithPitch()))))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -217,7 +220,8 @@ public class RobotContainer implements Logged {
                     subClimber.collidesWithTurret())))
         .alongWith(Commands.runOnce(
             () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue(),
-                subClimber.collidesWithPitch()))));
+                subClimber.collidesWithPitch())))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(true))));
 
     // Trap Preset
     // controller.btn_Y.onTrue(Commands.runOnce(() ->
@@ -255,6 +259,12 @@ public class RobotContainer implements Logged {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public static void updateLoggedPoses() {
+    currentRobotPose = subDrivetrain.getPose3d();
+    turretPose = subTurret.getAngleAsPose3d();
+    hoodPose = turretPose.plus(subPitch.getAngleAsTransform3d());
   }
 
   // --- PDH ---
@@ -340,7 +350,6 @@ public class RobotContainer implements Logged {
     // subDrivetrain.getPose().getRotation().getDegrees());
 
     subLEDs.setLEDBrightness(0.4);
-    subLEDs.clearAnimation();
 
     // Checking Rotation
     if (Math.abs(desiredStartingRotation
@@ -389,7 +398,8 @@ public class RobotContainer implements Logged {
 
     // Light up in Shang Chi color if both translation and rotation are correct
     if (rotationCorrect && XCorrect && YCorrect) {
-      subLEDs.setLEDs(constLEDs.AUTO_ALIGNED_COLOR);
+      subLEDs.setAnimationChunk(8, constLEDs.LED_NUMBER - 8, constLEDs.AUTO_ALIGNED_COLOR);
+
     } else {
       subLEDs.setIndividualLED(rotationColor, 0);
       subLEDs.setIndividualLED(rotationColor, 3);
@@ -401,6 +411,7 @@ public class RobotContainer implements Logged {
 
       subLEDs.setIndividualLED(YTranslationColor, 5);
       subLEDs.setIndividualLED(YTranslationColor, 6);
+      subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
     }
   }
 
