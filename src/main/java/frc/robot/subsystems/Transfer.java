@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapTransfer;
@@ -82,6 +83,15 @@ public class Transfer extends SubsystemBase {
     }
 
     return hasGamePiece;
+  }
+
+  public void repositionGamePiece() {
+    double time = Timer.getFPGATimestamp();
+
+    while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue()) {
+      setTransferMotorSpeed(prefTransfer.transferRepositionSpeed.getValue());
+    }
+    setTransferNeutralOutput();
   }
 
   /**

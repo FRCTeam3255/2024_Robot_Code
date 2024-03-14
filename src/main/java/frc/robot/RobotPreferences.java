@@ -153,12 +153,12 @@ public class RobotPreferences {
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 100); // Original: 70. With 0 G,
-                                                                                             // P
-                                                                                             // is 500
+    public static final SN_DoublePreference pitchS = new SN_DoublePreference("pitchS", 0.4);
+    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
+    public static final SN_DoublePreference pitchA = new SN_DoublePreference("pitchA", 0.1);
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300); // 100
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
-    public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
 
     /**
      * Takes a percentage of the controller joystick input to set as the manual
@@ -171,14 +171,14 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pitchIsAtAngleTolerance = new SN_DoublePreference("pitchIsAtAngleTolerance",
-        1);
+        0.5);
 
     /**
      * Maximum when the intake is up
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pitchMaxIntake = new SN_DoublePreference("pitchMaxIntake",
-        25);
+        31);
 
     /**
      * <p>
@@ -212,7 +212,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchForwardLimit = new SN_DoublePreference("pitchForwardLimit",
-        Units.degreesToRotations(56));
+        Units.degreesToRotations(62));
     /**
      * <p>
      * The minimum soft limit of the pitch motor
@@ -220,41 +220,48 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchReverseLimit = new SN_DoublePreference("pitchReverseLimit",
-        Units.degreesToRotations(0));
+        Units.degreesToRotations(6));
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 51.5);
+    public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 57.5);
+
+    public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 24);
 
     public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
-        55);
+        61);
+
+    public static final SN_DoublePreference pitchCenterAngle = new SN_DoublePreference("pitchCenterAngle", 22);
 
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 41);
+    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 47);
 
-    public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 42.6);
+    public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 48.6);
   }
 
   public static final class prefShooter {
-    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", 0.15);
-    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.4);
+    public static final SN_DoublePreference leftShooterS = new SN_DoublePreference("leftShooterS", 0.4);
+    public static final SN_DoublePreference leftShooterV = new SN_DoublePreference("leftShooterV", 0.12);
+    public static final SN_DoublePreference leftShooterA = new SN_DoublePreference("leftShooterA", 0.1);
+    public static final SN_DoublePreference leftShooterP = new SN_DoublePreference("leftShooterP", 0.6);
     public static final SN_DoublePreference leftShooterI = new SN_DoublePreference("leftShooterI", 0);
-    public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0);
+    public static final SN_DoublePreference leftShooterD = new SN_DoublePreference("leftShooterD", 0.01);
 
-    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.15); // 0.15 //
-                                                                                                            // (1/80)
-    public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.4);
+    public static final SN_DoublePreference rightShooterS = new SN_DoublePreference("rightShooterS", 0.4);
+    public static final SN_DoublePreference rightShooterV = new SN_DoublePreference("rightShooterV", 0.1175);
+    public static final SN_DoublePreference rightShooterA = new SN_DoublePreference("rightShooterA", 0.1);
+    public static final SN_DoublePreference rightShooterP = new SN_DoublePreference("rightShooterP", 0.6);
     public static final SN_DoublePreference rightShooterI = new SN_DoublePreference("rightShooterI", 0);
-    public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0);
+    public static final SN_DoublePreference rightShooterD = new SN_DoublePreference("rightShooterD", 0.01);
 
     /**
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
-        "shooterUpToSpeedTolerance", 3);
+        "shooterUpToSpeedTolerance", 0.7);
 
     public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
         "leftShooterIntakeVelocity",
@@ -297,13 +304,13 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference leftShooterAmpVelocity = new SN_DoublePreference(
-        "leftShooterAmpVelocity", 6.7);
+        "leftShooterAmpVelocity", 35);
     /**
      * Preset: Shooting while touching the amp velocity
      * <b>Units:</b> Rotations per second
      */
     public static final SN_DoublePreference rightShooterAmpVelocity = new SN_DoublePreference(
-        "rightShooterAmpVelocity", 6.7);
+        "rightShooterAmpVelocity", 35);
 
     /**
      * Preset: Shooting into the trap velocity
@@ -322,7 +329,6 @@ public class RobotPreferences {
 
   public static final class prefTransfer {
     // -- Speeds --
-
     public static final SN_DoublePreference feederIntakeGroundSpeed = new SN_DoublePreference(
         "feederIntakeGroundSpeed", -1);
     public static final SN_DoublePreference transferIntakeGroundSpeed = new SN_DoublePreference(
@@ -340,7 +346,7 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference feederShootSpeed = new SN_DoublePreference(
         "feederShootSpeed", 1);
-    public static final SN_DoublePreference transferShootSpeed = new SN_DoublePreference("transferShootSpeed", 0.2);
+    public static final SN_DoublePreference transferShootSpeed = new SN_DoublePreference("transferShootSpeed", 0.5);
 
     public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
         "intakeSourceGamePieceGetTime",
@@ -355,21 +361,35 @@ public class RobotPreferences {
      * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
      */
     public static final SN_DoublePreference feederHasGamePieceCurrent = new SN_DoublePreference(
-        "feederHasGamePieceCurrent", -7);
+        "feederHasGamePieceCurrent", -6);
 
     /**
      * The value that the transfer current must be <b>ABOVE</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
-        "transferHasGamePieceCurrent", 7);
+        "transferHasGamePieceCurrent", 6);
 
     /**
      * The value that the transfer velocity must be <b>BELOW</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
-        "transferHasGamePieceVelocity", 16.5);
+        "transferHasGamePieceVelocity", 18);
+
+    /**
+     * The period of time that we spend pushing the note back towards the intake
+     * <b>Units:</b> Seconds
+     */
+    public static final SN_DoublePreference transferRepositionTime = new SN_DoublePreference("transferRepositionTime",
+        0.1);
+
+    /**
+     * The speed that we push the note back towards the intake
+     * <b>Units:</b> Percent Output
+     */
+    public static final SN_DoublePreference transferRepositionSpeed = new SN_DoublePreference("transferRepositionSpeed",
+        -0.3);
 
   }
 
