@@ -27,8 +27,10 @@ import frc.robot.Constants.constPitch;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap.mapPitch;
 import frc.robot.RobotPreferences.prefPitch;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Pitch extends SubsystemBase {
+public class Pitch extends SubsystemBase implements Logged {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
   double desiredPitchAngle;
@@ -40,6 +42,9 @@ public class Pitch extends SubsystemBase {
   boolean INVERT_MOTOR;
   double GEAR_RATIO;
   Transform3d robotToPitch = constPitch.ROBOT_TO_PITCH;
+
+  @Log.NT
+  double distanceFromSpeaker = 0;
 
   public Pitch() {
     pitchMotor = new TalonFX(mapPitch.PITCH_MOTOR_CAN, "rio");
@@ -237,7 +242,8 @@ public class Pitch extends SubsystemBase {
     // Theres probably a WPILib method for this but im eppy
     double distX = Math.abs(targetPose.getX() - pitchPose.getX());
     double distY = Math.abs(targetPose.getY() - pitchPose.getY());
-    desiredLockingAngle = Rotation2d.fromDegrees(constPitch.DISTANCE_MAP.get(Math.hypot(distX, distY)));
+    distanceFromSpeaker = Math.hypot(distX, distY);
+    desiredLockingAngle = Rotation2d.fromDegrees(constPitch.DISTANCE_MAP.get(distanceFromSpeaker));
 
     return Optional.of(desiredLockingAngle);
   }
