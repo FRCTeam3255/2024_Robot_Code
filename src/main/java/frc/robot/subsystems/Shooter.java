@@ -16,8 +16,10 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.constShooter;
 import frc.robot.RobotMap.mapShooter;
 import frc.robot.RobotPreferences.prefShooter;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Shooter extends SubsystemBase {
+public class Shooter extends SubsystemBase implements Logged {
   TalonFX leftMotor, rightMotor;
   TalonFXConfiguration leftConfig, rightConfig;
 
@@ -26,6 +28,9 @@ public class Shooter extends SubsystemBase {
   VelocityVoltage velocityRequest;
 
   boolean leftInvert, rightInvert;
+
+  @Log.NT
+  private boolean ignoreFlywheelSpeed = false;
 
   /**
    * <b> Units: </b>
@@ -143,8 +148,9 @@ public class Shooter extends SubsystemBase {
    *         desired velocities
    */
   public boolean areBothShootersUpToSpeed() {
-    return isLeftShooterUpToSpeed()
-        && isRightShooterUpToSpeed() && (getLeftShooterVelocity() != 0 || getRightShooterVelocity() != 0);
+    return (isLeftShooterUpToSpeed()
+        && isRightShooterUpToSpeed() && (getLeftShooterVelocity() != 0 || getRightShooterVelocity() != 0))
+        || ignoreFlywheelSpeed;
   }
 
   public void setLeftDesiredVelocity(double desiredVelocity) {
@@ -162,6 +168,10 @@ public class Shooter extends SubsystemBase {
   public void setDesiredVelocities(double desiredLeftVelocity, double desiredRightVelocity) {
     setLeftDesiredVelocity(desiredLeftVelocity);
     setRightDesiredVelocity(desiredRightVelocity);
+  }
+
+  public void setIgnoreFlywheelSpeed(boolean ignoreFlywheelSpeed) {
+    this.ignoreFlywheelSpeed = ignoreFlywheelSpeed;
   }
 
   @Override
