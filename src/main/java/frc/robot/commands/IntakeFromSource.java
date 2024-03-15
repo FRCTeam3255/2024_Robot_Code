@@ -4,12 +4,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
+
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
@@ -22,10 +25,9 @@ public class IntakeFromSource extends Command {
   Turret subTurret;
   Climber subClimber;
 
-  double lastDesiredSpeedLeft;
-  double lastDesiredSpeedRight;
   double lastDesiredPitch = prefPitch.pitchReverseLimit.getValue();
   double lastDesiredAngle;
+  double lastDesiredTurret;
 
   /** Creates a new ShooterIntake. */
   public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret,
@@ -43,17 +45,11 @@ public class IntakeFromSource extends Command {
   @Override
   public void initialize() {
     lastDesiredPitch = subPitch.getPitchAngle();
-    lastDesiredSpeedLeft = subShooter.getLeftShooterVelocity();
-    lastDesiredSpeedRight = subShooter.getRightShooterVelocity();
 
     subShooter.setDesiredVelocities(prefShooter.leftShooterIntakeVelocity.getValue(),
         prefShooter.rightShooterIntakeVelocity.getValue());
-    subShooter.getUpToSpeed();
 
-    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
-
-    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), subClimber.collidesWithPitch());
+    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), false);
 
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
 
@@ -62,20 +58,38 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    subShooter.getUpToSpeed();
+    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (!RobotState.isAutonomous()) {
+      subTransfer.setNeutralMode();
+    }
+    if (!interrupted) {
+      subTransfer.repositionGamePiece();
+
+      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+          prefShooter.rightShooterSubVelocity.getValue());
+    } else {
+      subTransfer.setTransferNeutralOutput();
+      subShooter.setDesiredVelocities(0, 0);
+    }
+
+    subShooter.getUpToSpeed();
     subTransfer.setFeederNeutralOutput();
-    subTransfer.setTransferNeutralOutput();
-    subShooter.setDesiredVelocities(lastDesiredSpeedLeft, lastDesiredSpeedRight);
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
+    subPitch.setPitchAngle(lastDesiredPitch, false);
+    subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
+    subClimber.setNeutralOutput();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return subTransfer.calcGamePieceCollected();
   }
 }
