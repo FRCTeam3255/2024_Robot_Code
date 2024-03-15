@@ -81,10 +81,10 @@ public class Pitch extends SubsystemBase implements Logged {
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue();
 
-    pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    pitchConfig.CurrentLimits.SupplyCurrentThreshold = 50;
-    pitchConfig.CurrentLimits.SupplyCurrentLimit = 30;
-    pitchConfig.CurrentLimits.SupplyCurrentThreshold = 0.1;
+    pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = prefPitch.pitchEnableCurrentLimiting.getValue();
+    pitchConfig.CurrentLimits.SupplyCurrentThreshold = prefPitch.pitchCurrentThreshold.getValue();
+    pitchConfig.CurrentLimits.SupplyCurrentLimit = prefPitch.pitchCurrentLimit.getValue();
+    pitchConfig.CurrentLimits.SupplyTimeThreshold = prefPitch.pitchCurrentTimeThreshold.getValue();
 
     pitchConfig.Feedback.SensorToMechanismRatio = GEAR_RATIO;
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
