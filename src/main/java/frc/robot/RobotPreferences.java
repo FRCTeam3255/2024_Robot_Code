@@ -110,6 +110,14 @@ public class RobotPreferences {
      * <b> Units: </b> Percent Output
      */
     public static final SN_DoublePreference climberDownSpeed = new SN_DoublePreference("climberDownSpeed", -0.2);
+
+    // - Positions -
+    /**
+     * <b> Units: </b> Meters
+     */
+    public static final SN_DoublePreference climberIsAtPositionTolerance = new SN_DoublePreference(
+        "climberIsAtPositionTolerance", 0.2);
+
   }
 
   public static final class prefDrivetrain {

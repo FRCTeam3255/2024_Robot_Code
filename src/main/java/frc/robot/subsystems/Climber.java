@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.frcteam3255.utils.SN_Math;
@@ -86,8 +87,8 @@ public class Climber extends SubsystemBase {
    * Sets the climber to the given position using Motion Magic. The position will
    * be clamped to be within our software limits prior to being set.
    * 
-   * @param position The position to go to. <b> Units: </b> Meters per
-   *                 second
+   * @param position The position to go to. <b> Units: </b> Meters
+   * 
    */
   public void setPosition(double position) {
     position = SN_Math.metersToRotations(MathUtil.clamp(position, prefClimber.climberMinPos.getValue(),
@@ -132,6 +133,10 @@ public class Climber extends SubsystemBase {
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
     climberMotor.getConfigurator().apply(climberConfig);
     climberMotor.setInverted(prefClimber.climberInverted.getValue());
+  }
+
+  public void setNeutralOutput() {
+    climberMotor.setControl(new NeutralOut());
   }
 
   // -- Get --
