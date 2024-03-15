@@ -46,8 +46,8 @@ public class IntakeFromSource extends Command {
   public void initialize() {
     lastDesiredPitch = subPitch.getPitchAngle();
 
-    subShooter.setDesiredVelocities(prefShooter.leftShooterIntakeVelocity.getValue(),
-        prefShooter.rightShooterIntakeVelocity.getValue());
+    subShooter.setDesiredVelocities(prefShooter.leftShooterIntakeVoltage.getValue(),
+        prefShooter.rightShooterIntakeVoltage.getValue());
 
     subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), false);
 
@@ -58,6 +58,8 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    subShooter.setLeftShooterIntakeVoltage(prefShooter.leftShooterIntakeVoltage.getValue());
+    subShooter.setRightShooterIntakeVoltage(prefShooter.rightShooterIntakeVoltage.getValue());
     subShooter.getUpToSpeed();
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());

@@ -303,12 +303,20 @@ public class RobotPreferences {
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
         "shooterUpToSpeedTolerance", 0.7);
 
-    public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
-        "leftShooterIntakeVelocity",
+    public static final SN_DoublePreference leftShooterIntakeVoltage = new SN_DoublePreference(
+        "leftShooterIntakeVoltage",
         -10);
-    public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
-        "rightShooterIntakeVelocity",
+    public static final SN_DoublePreference rightShooterIntakeVoltage = new SN_DoublePreference(
+        "rightShooterIntakeVoltage",
         -10);
+    public static final SN_DoublePreference leftShooterSubVoltage = new SN_DoublePreference(
+        "leftShooterSubVelocity", 35);
+    /**
+     * Preset: Shooting while touching the subwoofer velocity
+     * <b>Units:</b> Rotations per second
+     */
+    public static final SN_DoublePreference rightShooterSubVoltage = new SN_DoublePreference(
+        "rightShooterSubVelocity", 35);
 
     /**
      * <b>Units:</b> Meters per second

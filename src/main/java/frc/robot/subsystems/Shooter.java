@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +27,7 @@ public class Shooter extends SubsystemBase implements Logged {
   MotionMagicVelocityVoltage motionMagicRequest;
 
   VelocityVoltage velocityRequest;
-
+  VoltageOut voltageRequest;
   boolean leftInvert, rightInvert;
 
   @Log.NT
@@ -101,6 +102,15 @@ public class Shooter extends SubsystemBase implements Logged {
       leftMotor.setControl(motionMagicRequest.withVelocity(desiredLeftVelocity));
       rightMotor.setControl(motionMagicRequest.withVelocity(desiredRightVelocity));
     }
+  }
+
+  public void setLeftShooterIntakeVoltage(double voltage) {
+    leftMotor.setControl(voltageRequest.withOutput(voltage));
+
+  }
+
+  public void setRightShooterIntakeVoltage(double voltage) {
+    rightMotor.setControl(voltageRequest.withOutput(voltage));
   }
 
   /**
