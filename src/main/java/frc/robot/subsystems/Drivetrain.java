@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
@@ -39,11 +38,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   // Struct logging - Allows for logging data that SmartDashboard alone can't log,
   // but must be called on the variable's creation
   @Log.NT
-  private SwerveModuleState[] loggedDesiredStates;
+  private static SwerveModuleState[] loggedDesiredStates;
   @Log.NT
-  private SwerveModuleState[] loggedActualStates;
-  @Log.NT
-  private Pose3d currentRobotPose;
+  private static SwerveModuleState[] loggedActualStates;
 
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -108,10 +105,10 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue();
     driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
 
-    driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 50;
-    driveConfiguration.CurrentLimits.SupplyCurrentLimit = 40;
-    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
+    driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.driveEnableCurrentLimiting.getValue();
+    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.driveCurrentThreshold.getValue();
+    driveConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.driveCurrentThreshold.getValue();
+    driveConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.driveCurrentTimeThreshold.getValue();
 
     driveConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
     driveConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
@@ -122,10 +119,10 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     steerConfiguration.Slot0.kI = prefDrivetrain.steerI.getValue();
     steerConfiguration.Slot0.kD = prefDrivetrain.steerD.getValue();
 
-    steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 40;
-    steerConfiguration.CurrentLimits.SupplyCurrentLimit = 30;
-    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = 0.1;
+    steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.steerEnableCurrentLimiting.getValue();
+    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.steerCurrentThreshold.getValue();
+    steerConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.steerCurrentLimit.getValue();
+    steerConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.steerCurrentTimeThreshold.getValue();
 
     steerConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
     steerConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
@@ -164,7 +161,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   public void updateMonologueValues() {
     loggedDesiredStates = getDesiredModuleStates();
     loggedActualStates = getActualModuleStates();
-    currentRobotPose = new Pose3d(getPose());
   }
 
   /**
@@ -192,6 +188,10 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()));
 
     return yawSetpoint;
+  }
+
+  public Pose3d getPose3d() {
+    return new Pose3d(getPose());
   }
 
   @Override

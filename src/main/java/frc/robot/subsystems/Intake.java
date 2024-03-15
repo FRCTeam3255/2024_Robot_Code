@@ -44,11 +44,14 @@ public class Intake extends SubsystemBase {
   public void configure() {
     // Roller
     rollerConfig = new TalonFXConfiguration();
-
-    rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    rollerConfig.CurrentLimits.SupplyCurrentThreshold = 40;
-    rollerConfig.CurrentLimits.SupplyCurrentLimit = 30;
-    rollerConfig.CurrentLimits.SupplyCurrentThreshold = 0.1;
+    // rollerConfig.CurrentLimits.SupplyCurrentLimitEnable =
+    // prefIntake.intakeEnableCurrentLimiting.getValue();
+    // rollerConfig.CurrentLimits.SupplyCurrentThreshold =
+    // prefIntake.intakeCurrentThreshold.getValue();
+    // rollerConfig.CurrentLimits.SupplyCurrentLimit =
+    // prefIntake.intakeCurrentLimit.getValue();
+    // rollerConfig.CurrentLimits.SupplyTimeThreshold =
+    // prefIntake.intakeCurrentTimeThreshold.getValue();
 
     // Pivot
     pivotConfig.Slot0.kG = prefIntake.pivotG.getValue();
@@ -86,10 +89,6 @@ public class Intake extends SubsystemBase {
    */
   public void setNeutralOutput() {
     rollerMotor.setControl(new NeutralOut());
-  }
-
-  private double getRollerPercentOutput() {
-    return rollerMotor.get();
   }
 
   @Override

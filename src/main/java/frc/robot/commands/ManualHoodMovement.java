@@ -7,42 +7,38 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.prefTurret;
-import frc.robot.subsystems.Turret;
+import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.subsystems.Pitch;
 
-public class ManualTurretMovement extends Command {
-  Turret subTurret;
-
+public class ManualHoodMovement extends Command {
+  Pitch subPitch;
   DoubleSupplier xAxis;
 
-  /** Creates a new ManualTurretMovement. */
-  public ManualTurretMovement(Turret subTurret, DoubleSupplier xAxis) {
-    this.subTurret = subTurret;
+  /** Creates a new ManualHoodMovement. */
+  public ManualHoodMovement(Pitch subPitch, DoubleSupplier xAxis) {
+    this.subPitch = subPitch;
     this.xAxis = xAxis;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subTurret);
+    addRequirements(subPitch);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subTurret.setTurretSoftwareLimits(false, false);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subTurret.setTurretGoalAngle(subTurret.getAngle());
-    subTurret.setTurretSpeed(-xAxis.getAsDouble() * prefTurret.turretPercentageSpeed.getValue());
+    subPitch.setPitchGoalAngle(subPitch.getPitchAngle());
+    subPitch.setPitchSpeed(xAxis.getAsDouble() * prefPitch.pitchPercentageSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subTurret.setTurretSoftwareLimits(true, true);
-
+    subPitch.setPitchAngle(subPitch.getPitchAngle(), false);
   }
 
   // Returns true when the command should end.

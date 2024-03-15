@@ -77,13 +77,13 @@ public class Drive extends Command {
     } else {
       // Otherwise, check if snapping is being requested
       if (northTrigger.getAsBoolean()) {
-        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(180));
+        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(0));
       } else if (eastTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(90));
       } else if (southTrigger.getAsBoolean()) {
-        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(0));
+        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(180));
       } else if (westTrigger.getAsBoolean()) {
-        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(-90));
+        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(270));
       }
     }
 

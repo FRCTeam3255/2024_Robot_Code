@@ -44,13 +44,13 @@ public class LockTurret extends Command {
   @Override
   public void initialize() {
     desiredAngle = Rotation2d.fromDegrees(subTurret.getAngle());
-
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // This is in initialize in case the alliance changes after command init
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS();
     robotPose = subDrivetrain.getPose();
 
     Optional<Rotation2d> calculatedAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
@@ -61,10 +61,8 @@ public class LockTurret extends Command {
       if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
         subTurret.setTurretAngle(desiredAngle.getDegrees());
       }
-      subTurret.desiredLockingAngle = desiredAngle.getDegrees();
 
     }
-    SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredAngle.getDegrees());
   }
 
   // Called once the command ends or is interrupted.
