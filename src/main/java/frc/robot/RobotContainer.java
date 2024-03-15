@@ -43,7 +43,7 @@ import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.ZeroPitch;
-import frc.robot.commands.ZeroTurret;
+import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
 import frc.robot.subsystems.Climber;
@@ -134,12 +134,12 @@ public class RobotContainer implements Logged {
 
     // Climb Up
     controller.btn_LeftTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberSpeed(prefClimber.climberUpSpeed.getValue()),
+        Commands.run(() -> subClimber.setClimberVelocity(prefClimber.climberUpSpeed.getValue()),
             subClimber));
 
     // Climb Down
     controller.btn_RightTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberSpeed(prefClimber.climberDownSpeed.getValue()),
+        Commands.run(() -> subClimber.setClimberVelocity(prefClimber.climberDownSpeed.getValue()),
             subClimber));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
@@ -170,7 +170,7 @@ public class RobotContainer implements Logged {
                 .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(0))
                     .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));
 
-    controller.btn_Back.onTrue(new ZeroTurret(subTurret));
+    controller.btn_Back.onTrue(new ZeroClimber(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
 
     // Lock Speaker

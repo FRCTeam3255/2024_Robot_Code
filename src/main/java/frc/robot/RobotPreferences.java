@@ -32,19 +32,14 @@ public class RobotPreferences {
 
     // - Motion Magic -
     /**
-     * <b> Units: </b> Rotations per second (rps)
-     */
-    public static final SN_DoublePreference climberCruiseVelocity = new SN_DoublePreference("climberCruiseVelocity",
-        80);
-    /**
      * <b> Units: </b> Rotations per second per second (rps/s)
      */
     public static final SN_DoublePreference climberAcceleration = new SN_DoublePreference(
-        "climberAcceleration", 160);
+        "climberAcceleration", 400);
     /**
      * <b> Units: </b> Rotations per second per second per second (rps/s/s)
      */
-    public static final SN_DoublePreference climberJerk = new SN_DoublePreference("climberJerk", 1600);
+    public static final SN_DoublePreference climberJerk = new SN_DoublePreference("climberJerk", 4000);
 
     // - Soft Limits -
     /**

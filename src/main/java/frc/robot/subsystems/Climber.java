@@ -5,14 +5,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.hardware.core.CoreTalonFX;
-import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -23,7 +21,8 @@ import frc.robot.RobotPreferences.prefClimber;
 public class Climber extends SubsystemBase {
   TalonFX climberMotor;
   TalonFXConfiguration climberConfig;
-  MotionMagicVoltage motionMagicRequest;
+  MotionMagicVoltage motionMagicPositionalRequest;
+  MotionMagicVelocityVoltage motionMagicVelocityRequest;
 
   double desiredPosition;
 
@@ -31,7 +30,8 @@ public class Climber extends SubsystemBase {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
     climberConfig = new TalonFXConfiguration();
 
-    motionMagicRequest = new MotionMagicVoltage(0);
+    motionMagicPositionalRequest = new MotionMagicVoltage(0);
+    motionMagicVelocityRequest = new MotionMagicVelocityVoltage(0);
 
     configure();
   }
@@ -39,6 +39,8 @@ public class Climber extends SubsystemBase {
   public void configure() {
     climberMotor.getConfigurator().apply(new TalonFXConfiguration());
 
+    // TODO: Determine if these PID values will magically work for positional and
+    // velocity control :D
     // PID
     climberConfig.Slot0.GravityType = constClimber.GRAVITY_TYPE;
 
@@ -48,7 +50,6 @@ public class Climber extends SubsystemBase {
     climberConfig.Slot0.kD = prefClimber.climberD.getValue();
 
     // Motion Magic
-    climberConfig.MotionMagic.MotionMagicCruiseVelocity = prefClimber.climberCruiseVelocity.getValue();
     climberConfig.MotionMagic.MotionMagicAcceleration = prefClimber.climberAcceleration.getValue();
     climberConfig.MotionMagic.MotionMagicJerk = prefClimber.climberJerk.getValue();
 
@@ -88,16 +89,17 @@ public class Climber extends SubsystemBase {
 
     desiredPosition = position;
 
-    climberMotor.setControl(motionMagicRequest.withPosition(position));
+    climberMotor.setControl(motionMagicPositionalRequest.withPosition(position));
   }
 
   /**
-   * Set the current speed of the climber.
+   * Set the current velocity of the climber using Motion Magic.
    * 
-   * @param speed The desired speed. <b> Units: </b> Percent Output (-1.0 -> 1.0)
+   * @param speed The desired speed. <b> Units: </b> Rotations Per Second
    */
-  public void setClimberSpeed(double speed) {
-    climberMotor.set(speed);
+  public void setClimberVelocity(double speed) {
+    climberMotor.setControl(motionMagicVelocityRequest.withVelocity(speed));
+
   }
 
   // -- Get --
