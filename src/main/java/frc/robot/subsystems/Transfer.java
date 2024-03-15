@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapTransfer;
 import frc.robot.RobotPreferences.prefTransfer;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -17,13 +19,16 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-public class Transfer extends SubsystemBase {
+public class Transfer extends SubsystemBase implements Logged {
   TalonSRX feederMotor;
   TalonFX transferMotor;
   CurrentLimitsConfigs transferCurrentLimitConfigs;
 
+  @Log.NT
   double transferCurrent;
+  @Log.NT
   double feederCurrent;
+  @Log.NT
   double transferVelocity;
 
   public boolean hasGamePiece;
@@ -40,11 +45,12 @@ public class Transfer extends SubsystemBase {
   public boolean intakeSourceGamePieceDetection() {
     transferCurrent = transferMotor.getStatorCurrent().getValue();
     transferVelocity = transferMotor.getVelocity().getValue();
+    feederCurrent = feederMotor.getStatorCurrent();
 
     if (hasGamePiece ||
-
-        (transferCurrent <= prefTransfer.intakeSourceHasGamePieceCurrent.getValue())
-            && (transferVelocity <= prefTransfer.intakeSourceHasGamePieceVelocity.getValue())) {
+        (feederCurrent <= prefTransfer.sourceFeederHasGamePieceCurrent.getValue())
+            && (transferCurrent >= prefTransfer.sourceTransferHasGamePieceCurrent.getValue())
+            && (transferVelocity <= prefTransfer.sourceTransferHasGamePieceVelocity.getValue())) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;

@@ -340,7 +340,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference feederIntakeSourceSpeed = new SN_DoublePreference(
         "feederIntakeSourceSpeed", -1);
     public static final SN_DoublePreference transferIntakeSourceSpeed = new SN_DoublePreference(
-        "transferIntakeSourceSpeed", -.5);
+        "transferIntakeSourceSpeed", 0.2);
 
     public static final SN_DoublePreference feederSpitOutSpeed = new SN_DoublePreference(
         "feederSpitOutSpeed", -.2);
@@ -354,10 +354,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
         "intakeSourceGamePieceGetTime",
         0.5);
-    public static final SN_DoublePreference intakeSourceHasGamePieceVelocity = new SN_DoublePreference(
-        "intakeSourceHasGamePieceVelocity", 16.5);
-    public static final SN_DoublePreference intakeSourceHasGamePieceCurrent = new SN_DoublePreference(
-        "intakeSourceHasGamePieceCurrent", 7);
 
     // -- Game Piece Detection --
     /**
@@ -379,6 +375,13 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
         "transferHasGamePieceVelocity", 18);
+
+    public static final SN_DoublePreference sourceFeederHasGamePieceCurrent = new SN_DoublePreference(
+        "sourceFeederHasGamePieceCurrent", -6);
+    public static final SN_DoublePreference sourceTransferHasGamePieceCurrent = new SN_DoublePreference(
+        "sourceTransferHasGamePieceCurrent", 6);
+    public static final SN_DoublePreference sourceTransferHasGamePieceVelocity = new SN_DoublePreference(
+        "sourceTransferHasGamePieceVelocity", 18);
 
     /**
      * The period of time that we spend pushing the note back towards the intake

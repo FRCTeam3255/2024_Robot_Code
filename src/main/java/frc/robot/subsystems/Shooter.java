@@ -95,7 +95,7 @@ public class Shooter extends SubsystemBase implements Logged {
    * speeds.
    */
   public void getUpToSpeed() {
-    if (desiredLeftVelocity <= 0 && desiredRightVelocity <= 0) {
+    if (desiredLeftVelocity == 0 && desiredRightVelocity == 0) {
       setShootingNeutralOutput();
     } else {
       leftMotor.setControl(motionMagicRequest.withVelocity(desiredLeftVelocity));

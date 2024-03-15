@@ -47,7 +47,6 @@ public class IntakeGroundGamePiece extends Command {
   public void initialize() {
     lastDesiredTurret = subTurret.getAngle();
     lastDesiredPitch = subPitch.getPitchAngle();
-    // moved climber pivot to init since its pid
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
     subClimber.configure(false);
   }

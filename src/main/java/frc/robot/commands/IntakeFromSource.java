@@ -25,8 +25,6 @@ public class IntakeFromSource extends Command {
   Turret subTurret;
   Climber subClimber;
 
-  double lastDesiredSpeedLeft;
-  double lastDesiredSpeedRight;
   double lastDesiredPitch = prefPitch.pitchReverseLimit.getValue();
   double lastDesiredAngle;
   double lastDesiredTurret;
@@ -47,15 +45,9 @@ public class IntakeFromSource extends Command {
   @Override
   public void initialize() {
     lastDesiredPitch = subPitch.getPitchAngle();
-    lastDesiredSpeedLeft = subShooter.getLeftShooterVelocity();
-    lastDesiredSpeedRight = subShooter.getRightShooterVelocity();
 
     subShooter.setDesiredVelocities(prefShooter.leftShooterIntakeVelocity.getValue(),
         prefShooter.rightShooterIntakeVelocity.getValue());
-    subShooter.getUpToSpeed();
-
-    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
 
     subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), subClimber.collidesWithPitch());
 
@@ -66,18 +58,9 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subTransfer.intakeSourceGamePieceDetection()) {
-      subTransfer.setTransferNeutralOutput();
-
-      subTransfer.setFeederNeutralOutput();
-      subShooter.setShootingNeutralOutput();
-    }
-
-    else {
-      subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
-
-    }
+    subShooter.getUpToSpeed();
+    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
   }
 
   // Called once the command ends or is interrupted.
@@ -91,10 +74,12 @@ public class IntakeFromSource extends Command {
 
       subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
           prefShooter.rightShooterSubVelocity.getValue());
-      subShooter.getUpToSpeed();
     } else {
       subTransfer.setTransferNeutralOutput();
+      subShooter.setDesiredVelocities(0, 0);
     }
+
+    subShooter.getUpToSpeed();
     subTransfer.setFeederNeutralOutput();
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
     subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
@@ -105,6 +90,6 @@ public class IntakeFromSource extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.intakeSourceGamePieceDetection();
+    return subTransfer.calcGamePieceCollected();
   }
 }
