@@ -175,9 +175,9 @@ public class RobotContainer implements Logged {
     controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
-            .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)));
+            .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)));
 
-    controller.btn_RightBumper.onTrue(new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)
+    controller.btn_RightBumper.onTrue(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));

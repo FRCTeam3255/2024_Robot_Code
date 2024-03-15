@@ -54,6 +54,7 @@ public class Intake extends SubsystemBase {
     // prefIntake.intakeCurrentTimeThreshold.getValue();
 
     // Pivot
+    pivotConfig = new TalonFXConfiguration();
     pivotConfig.Slot0.kG = prefIntake.pivotG.getValue();
     pivotConfig.Slot0.kP = prefIntake.pivotP.getValue();
     pivotConfig.Slot0.kI = prefIntake.pivotI.getValue();
