@@ -78,6 +78,16 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity", 2);
 
+    /**
+     * <p>
+     * The value that the climber reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical >:(
+     * </p>
+     * <b>Units:</b> Meters
+     */
+    public static final SN_DoublePreference climberSensorZeroedPos = new SN_DoublePreference("climberSensorZeroedPos",
+        0);
+
     // - Current Limiting -
     public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
         "climberSupplyCurrentLimitEnable", true);

@@ -25,7 +25,6 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefClimber;
-import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
@@ -42,8 +41,9 @@ import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroClimber;
+import frc.robot.commands.ZeroPitch;
+import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
 import frc.robot.subsystems.Climber;
@@ -134,12 +134,12 @@ public class RobotContainer implements Logged {
 
     // Climb Up
     controller.btn_LeftTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberVelocity(prefClimber.climberUpSpeed.getValue()),
+        Commands.run(() -> subClimber.setVelocity(prefClimber.climberUpSpeed.getValue()),
             subClimber));
 
     // Climb Down
     controller.btn_RightTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberVelocity(prefClimber.climberDownSpeed.getValue()),
+        Commands.run(() -> subClimber.setVelocity(prefClimber.climberDownSpeed.getValue()),
             subClimber));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
@@ -170,7 +170,7 @@ public class RobotContainer implements Logged {
                 .alongWith(Commands.runOnce(() -> subPitch.setPitchAngle(0))
                     .alongWith(Commands.runOnce(() -> subLEDs.clearAnimation(), subLEDs)))));
 
-    controller.btn_Back.onTrue(new ZeroClimber(subTurret));
+    controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
 
     // Lock Speaker
@@ -247,14 +247,6 @@ public class RobotContainer implements Logged {
     }
   }
 
-  /**
-   * Sets all applicable subsystem's last desired location to their current
-   * location
-   */
-  public Command clearSubsystemMovements() {
-    return new InstantCommand((() -> subTurret.setTurretNeutralOutput()));
-  }
-
   // --- Locking Logic ---
 
   public static void setLockedLocation(LockedLocation location) {
@@ -278,6 +270,24 @@ public class RobotContainer implements Logged {
    */
   public static Command zeroPitch() {
     return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+  }
+
+  /**
+   * Returns the command to zero the climber. This will make the climber move
+   * itself
+   * downwards until it sees a current spike and cancel any incoming commands that
+   * require the pitch motor. If the zeroing does not end within 3 seconds, it
+   * will interrupt itself.
+   * 
+   * @return The command to zero the pitch
+   */
+  public static Command zeroClimber() {
+    return new ZeroClimber(subClimber).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withTimeout(3);
+  }
+
+  public static Command stowIntake() {
+    return Command();
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {

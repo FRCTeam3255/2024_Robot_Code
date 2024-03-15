@@ -20,6 +20,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private boolean hasAutonomousRun = false;
+
   @Override
   public void robotInit() {
     SN_Preferences.useDefaults();
@@ -68,11 +70,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.clearSubsystemMovements().schedule();
 
+    RobotContainer.zeroClimber().schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    hasAutonomousRun = true;
   }
 
   @Override
@@ -88,7 +91,10 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.clearSubsystemMovements().schedule();
+
+    if (!hasAutonomousRun) {
+      RobotContainer.zeroClimber().schedule();
+    }
   }
 
   @Override

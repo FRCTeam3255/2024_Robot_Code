@@ -7,10 +7,12 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -21,8 +23,10 @@ import frc.robot.RobotPreferences.prefClimber;
 public class Climber extends SubsystemBase {
   TalonFX climberMotor;
   TalonFXConfiguration climberConfig;
+
   MotionMagicVoltage motionMagicPositionalRequest;
   MotionMagicVelocityVoltage motionMagicVelocityRequest;
+  VoltageOut voltageRequest;
 
   double desiredPosition;
 
@@ -32,6 +36,7 @@ public class Climber extends SubsystemBase {
 
     motionMagicPositionalRequest = new MotionMagicVoltage(0);
     motionMagicVelocityRequest = new MotionMagicVelocityVoltage(0);
+    voltageRequest = new VoltageOut(0);
 
     configure();
   }
@@ -83,7 +88,7 @@ public class Climber extends SubsystemBase {
    * @param position The position to go to. <b> Units: </b> Meters per
    *                 second
    */
-  public void setClimberPosition(double position) {
+  public void setPosition(double position) {
     position = SN_Math.metersToRotations(MathUtil.clamp(position, prefClimber.climberMinPos.getValue(),
         prefClimber.climberMaxPos.getValue()), 1, 1);
 
@@ -97,9 +102,35 @@ public class Climber extends SubsystemBase {
    * 
    * @param speed The desired speed. <b> Units: </b> Rotations Per Second
    */
-  public void setClimberVelocity(double speed) {
+  public void setVelocity(double speed) {
     climberMotor.setControl(motionMagicVelocityRequest.withVelocity(speed));
 
+  }
+
+  /**
+   * Sets the voltage of the climber motor
+   * 
+   * @param voltage The voltage to set the climber motor to. <b> Units: </b>
+   *                Volts
+   */
+  public void setVoltage(double voltage) {
+    climberMotor.setControl(voltageRequest.withOutput(voltage));
+  }
+
+  /**
+   * Sets the current position of the climber to read as the given value
+   * 
+   * @param position The position to set the climber to. <b> Units: </b> Meters
+   */
+  public void setSensorAngle(double position) {
+    climberMotor.setPosition(SN_Math.metersToRotations(position, 1, 1));
+  }
+
+  public void setSoftwareLimits(boolean reverse, boolean forward) {
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    climberMotor.getConfigurator().apply(climberConfig);
+    climberMotor.setInverted(prefClimber.climberInverted.getValue());
   }
 
   // -- Get --
@@ -108,21 +139,21 @@ public class Climber extends SubsystemBase {
    * @return The current velocity of the climber. <b> Units: </b> Meters per
    *         second
    */
-  public double getClimberVelocity() {
+  public double getVelocity() {
     return SN_Math.rotationsToMeters(climberMotor.getVelocity().getValueAsDouble(), 1, 1);
   }
 
   /**
    * @return The current applied (output) voltage. <b> Units: </b> Volts
    */
-  public double getClimberVoltage() {
+  public double getVoltage() {
     return climberMotor.getMotorVoltage().getValueAsDouble();
   }
 
   /**
    * @return The current position of the climber. <b> Units: </b> Meters
    */
-  public double getClimberPosition() {
+  public double getPosition() {
     return SN_Math.rotationsToMeters(climberMotor.getPosition().getValueAsDouble(), 1, 1);
   }
 
@@ -137,18 +168,18 @@ public class Climber extends SubsystemBase {
    *                  position. <b> Units: </b> Meters
    * @return If we are at that position
    */
-  public boolean isClimberAtPosition(double position, double tolerance) {
+  public boolean isAtPosition(double position, double tolerance) {
     if (Robot.isSimulation()) {
       return desiredPosition == position;
     }
-    return tolerance >= Math.abs(getClimberPosition() - position);
+    return tolerance >= Math.abs(getPosition() - position);
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Climber/Velocity DPS", getClimberVelocity());
-    SmartDashboard.putNumber("Climber/Voltage", getClimberVoltage());
-    SmartDashboard.putNumber("Climber/Current Position", getClimberPosition());
+    SmartDashboard.putNumber("Climber/Velocity DPS", getVelocity());
+    SmartDashboard.putNumber("Climber/Voltage", getVoltage());
+    SmartDashboard.putNumber("Climber/Current Position", getPosition());
     SmartDashboard.putNumber("Climber/Desired Position", desiredPosition);
 
   }
