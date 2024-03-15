@@ -97,10 +97,6 @@ public class Turret extends SubsystemBase {
    */
   public void setTurretAngle(double angle) {
     desiredTurretAngle = angle;
-    // need to add colision check TODO
-    // if (hasCollision) {
-    // angle = 0;
-    // }
     turretMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
   }
 

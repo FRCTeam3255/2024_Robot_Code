@@ -44,7 +44,10 @@ public class RobotMap {
 
   // MOTORS: 20 -> 29
   public static class mapIntake {
-    public static final int INTAKE_ROLLER_MOTOR_CAN = 20;
+    public static final int ROLLER_CAN = 20;
+    public static final int PIVOT_CAN = 21;
+    public static final int ABSOLUTE_ENCODER_DIO = 2;
+
   }
 
   public static class mapLEDs {

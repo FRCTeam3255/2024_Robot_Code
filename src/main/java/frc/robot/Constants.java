@@ -128,6 +128,10 @@ public final class Constants {
   }
 
   public static class constIntake {
+    // TODO: Update
+    public static final double ABS_ENCODER_OFFSET = 0.0;
+    public static final boolean ABS_ENCODER_INVERT = false;
+    public static final double GEAR_RATIO = 0.0;
   }
 
   public static class constLEDs {

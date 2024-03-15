@@ -286,10 +286,6 @@ public class RobotContainer implements Logged {
         .withTimeout(3);
   }
 
-  public static Command stowIntake() {
-    return Command();
-  }
-
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
     startingPosition = autoChooser.getSelected().getInitialPose().get();
 

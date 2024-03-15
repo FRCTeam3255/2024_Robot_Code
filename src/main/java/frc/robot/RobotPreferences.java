@@ -180,6 +180,32 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
+    // - Configs -
+    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 1);
+    public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
+    public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
+
+    // - Soft Limits -
+    /**
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotMaxPos = new SN_DoublePreference("pivotMaxPos", 10);
+
+    /**
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotMinPos = new SN_DoublePreference("pivotMinPos", 0);
+
+    // - Game Piece Detection -
+    /**
+     * The time that we wait to get a game piece in auto
+     * <b> Units: </b> Seconds
+     */
+    public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
+        0.5);
+
+    // - Speeds -
     /**
      * <b> Units: </b> Percent Output
      */
@@ -189,6 +215,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
 
+    // - Angles -
     /**
      * <b> Units: </b> Degrees
      */
@@ -196,16 +223,11 @@ public class RobotPreferences {
         "intakeStowAngle", 5);
 
     /**
-     * The intake's pivot motor position when we are intaking
+     * The intake's pivot motor position when we are intaking from the ground
      * <b> Units: </b> Degrees
      */
-
-    /**
-     * The time that we wait to get a game piece in auto
-     * <b> Units: </b> Seconds
-     */
-    public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
-        0.5);
+    public static final SN_DoublePreference intakeGroundAngle = new SN_DoublePreference(
+        "intakeGroundAngle", 10);
 
   }
 
