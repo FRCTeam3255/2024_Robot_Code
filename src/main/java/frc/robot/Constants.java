@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants.constDrivetrain.pracBot;
 
 /*
  * @formatter:off
@@ -132,6 +133,7 @@ public final class Constants {
     public static final double ABS_ENCODER_OFFSET = 0.0;
     public static final boolean ABS_ENCODER_INVERT = false;
     public static final double GEAR_RATIO = 0.0;
+    public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;
   }
 
   public static class constLEDs {

@@ -199,10 +199,49 @@ public class RobotPreferences {
 
   public static final class prefIntake {
     // - Configs -
+    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0);
     public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0);
+    public static final SN_DoublePreference pivotA = new SN_DoublePreference("pivotA", 0);
     public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 1);
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
+
+    public static final SN_BooleanPreference pivotInverted = new SN_BooleanPreference("pivotInverted", false);
+
+    // - Motion Magic -
+    /**
+     * <b> Units: </b> Rotations per second (rps)
+     */
+    public static final SN_DoublePreference pivotCruiseVelocity = new SN_DoublePreference("pivotCruiseVelocity", 80);
+
+    /**
+     * <b> Units: </b> Rotations per second per second (rps/s)
+     */
+    public static final SN_DoublePreference pivotAcceleration = new SN_DoublePreference(
+        "pivotAcceleration", 160);
+    /**
+     * <b> Units: </b> Rotations per second per second per second (rps/s/s)
+     */
+    public static final SN_DoublePreference pivotJerk = new SN_DoublePreference("climberJerk", 1600);
+
+    // - Current Limiting -
+    public static final SN_BooleanPreference rollerEnableCurrentLimiting = new SN_BooleanPreference(
+        "rollerEnableCurrentLimiting", true);
+    public static final SN_DoublePreference rollerCurrentThreshold = new SN_DoublePreference("rollerCurrentThreshold",
+        40);
+    public static final SN_DoublePreference rollerCurrentLimit = new SN_DoublePreference("rollerCurrentLimit",
+        30);
+    public static final SN_DoublePreference rollerCurrentTimeThreshold = new SN_DoublePreference(
+        "rollerCurrentTimeThreshold", 0.1);
+
+    public static final SN_BooleanPreference pivotEnableCurrentLimiting = new SN_BooleanPreference(
+        "pivotEnableCurrentLimiting", true);
+    public static final SN_DoublePreference pivotCurrentThreshold = new SN_DoublePreference("pivotCurrentThreshold",
+        40);
+    public static final SN_DoublePreference pivotCurrentLimit = new SN_DoublePreference("pivotCurrentLimit",
+        30);
+    public static final SN_DoublePreference pivotCurrentTimeThreshold = new SN_DoublePreference(
+        "pivotCurrentTimeThreshold", 0.1);
 
     // - Soft Limits -
     /**

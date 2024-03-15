@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -27,6 +28,7 @@ public class Intake extends SubsystemBase {
   boolean invertAbsEncoder;
 
   PositionVoltage positionRequest;
+  MotionMagicVoltage motionMagicRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.ROLLER_CAN, "rio");
@@ -37,42 +39,85 @@ public class Intake extends SubsystemBase {
     invertAbsEncoder = constIntake.ABS_ENCODER_INVERT;
 
     positionRequest = new PositionVoltage(0);
+    motionMagicRequest = new MotionMagicVoltage(0);
 
     configure();
   }
 
   public void configure() {
-    // Roller
+    // - Roller -
     rollerConfig = new TalonFXConfiguration();
-    // rollerConfig.CurrentLimits.SupplyCurrentLimitEnable =
-    // prefIntake.intakeEnableCurrentLimiting.getValue();
-    // rollerConfig.CurrentLimits.SupplyCurrentThreshold =
-    // prefIntake.intakeCurrentThreshold.getValue();
-    // rollerConfig.CurrentLimits.SupplyCurrentLimit =
-    // prefIntake.intakeCurrentLimit.getValue();
-    // rollerConfig.CurrentLimits.SupplyTimeThreshold =
-    // prefIntake.intakeCurrentTimeThreshold.getValue();
+    rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = prefIntake.rollerEnableCurrentLimiting.getValue();
+    rollerConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.rollerCurrentThreshold.getValue();
+    rollerConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.rollerCurrentLimit.getValue();
+    rollerConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.rollerCurrentTimeThreshold.getValue();
 
-    // Pivot
+    // - Pivot -
     pivotConfig = new TalonFXConfiguration();
+    pivotConfig.Slot0.kS = prefIntake.pivotS.getValue();
     pivotConfig.Slot0.kG = prefIntake.pivotG.getValue();
+    pivotConfig.Slot0.kA = prefIntake.pivotA.getValue();
     pivotConfig.Slot0.kP = prefIntake.pivotP.getValue();
     pivotConfig.Slot0.kI = prefIntake.pivotI.getValue();
     pivotConfig.Slot0.kD = prefIntake.pivotD.getValue();
 
+    // Motion Magic
+    pivotConfig.MotionMagic.MotionMagicCruiseVelocity = prefIntake.pivotCruiseVelocity.getValue();
+    pivotConfig.MotionMagic.MotionMagicAcceleration = prefIntake.pivotAcceleration.getValue();
+    pivotConfig.MotionMagic.MotionMagicJerk = prefIntake.pivotJerk.getValue();
+
     // Soft Limits
     pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefIntake.pivotMaxPos.getValue();
-
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.pivotMinPos.getValue();
 
-    pivotConfig.Feedback.SensorToMechanismRatio = constIntake.GEAR_RATIO;
+    // Current Limiting
+    pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = prefIntake.pivotEnableCurrentLimiting.getValue();
+    pivotConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.pivotCurrentThreshold.getValue();
+    pivotConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.pivotCurrentLimit.getValue();
+    pivotConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.pivotCurrentTimeThreshold.getValue();
 
-    // Supply current limiting
-    // set inverted
+    pivotConfig.Feedback.SensorToMechanismRatio = constIntake.GEAR_RATIO;
+    pivotConfig.MotorOutput.NeutralMode = constIntake.PIVOT_NEUTRAL_MODE;
+
+    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
 
     rollerMotor.getConfigurator().apply(rollerConfig);
+    pivotMotor.getConfigurator().apply(pivotConfig);
+  }
+
+  // - Get -
+  /**
+   * Get the raw position of the absolute encoder (without offset)
+   * 
+   * @return Position in rotations (no offset)
+   */
+  public double getRawAbsoluteEncoder() {
+    return absoluteEncoder.getAbsolutePosition();
+  }
+
+  /**
+   * Get the current position of the absolute encoder (with offset applied)
+   * 
+   * @return Position in rotations (with offset)
+   */
+  public double getAbsoluteEncoder() {
+    double rotations = getRawAbsoluteEncoder();
+
+    rotations -= absoluteEncoderOffset;
+
+    return rotations;
+  }
+
+  // - Set -
+  /**
+   * Reset the pivot encoder motor to absolute encoder's value
+   */
+  public void resetPivotToAbsolute() {
+    double rotations = getAbsoluteEncoder();
+
+    pivotMotor.setPosition((invertAbsEncoder) ? -rotations : rotations);
   }
 
   /**

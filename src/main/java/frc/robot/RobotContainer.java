@@ -134,6 +134,7 @@ public class RobotContainer implements Logged {
 
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
+    subIntake.resetPivotToAbsolute();
     subLEDs.clearAnimation();
   }
 
