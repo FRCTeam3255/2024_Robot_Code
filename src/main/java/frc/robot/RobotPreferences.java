@@ -428,11 +428,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberSupplyCurrentLimitCelingAmps = new SN_DoublePreference(
         "climberSupplyCurrentLimitCelingAmps", 0.01);
     public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
-        "climberSupplyCurrentThreshold", 0.1);
+        "climberSupplyCurrentThreshold", 5);
     public static final SN_DoublePreference climberSupplyTimeThreshold = new SN_DoublePreference(
         "climberSupplyTimeThreshold", 0.1);
 
     public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberinverted", false);
+    public static final SN_DoublePreference targetCruiseVelocity = new SN_DoublePreference("targetCruiseVelocity", 80);
+    public static final SN_DoublePreference targetAccelerationVelocity = new SN_DoublePreference(
+        "targetAccelerationVelocity", 160);
+    public static final SN_DoublePreference targetJerk = new SN_DoublePreference("targetJerk", 1600);
   }
 
   public static final class prefVision {

@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import javax.xml.namespace.QName;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.core.CoreTalonFX;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
@@ -26,6 +28,8 @@ public class Climber extends SubsystemBase {
 
   double desiredPosition;
 
+  CoreTalonFX m_talonFX;
+
   public Climber() {
 
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
@@ -39,6 +43,11 @@ public class Climber extends SubsystemBase {
 
     desiredPosition = position;
 
+    // create a Motion Magic request, voltage output
+    final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+
+    // set target position to 100 rotations
+    m_talonFX.setControl(m_request.withPosition(100));
   }
 
   public void configure() {
@@ -57,6 +66,15 @@ public class Climber extends SubsystemBase {
     climberConfig.CurrentLimits.SupplyCurrentThreshold = prefClimber.climberSupplyCurrentThreshold.getValue();
     climberConfig.CurrentLimits.SupplyTimeThreshold = prefClimber.climberSupplyTimeThreshold.getValue();
     climberMotor.getConfigurator().apply(climberConfig);
+
+    var talonFXConfigs = new TalonFXConfiguration();
+
+    var motionMagicConfigs = talonFXConfigs.MotionMagic;
+    motionMagicConfigs.MotionMagicCruiseVelocity = 80;
+    motionMagicConfigs.MotionMagicAcceleration = 160;
+    motionMagicConfigs.MotionMagicJerk = 1600;
+
+    m_talonFX.getConfigurator().apply(talonFXConfigs);
   }
 
   public boolean isClimberAtPosition(double desiredPosition, double tolerance) {
