@@ -25,6 +25,7 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefClimber;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
@@ -313,6 +314,10 @@ public class RobotContainer implements Logged {
   public static Command zeroClimber() {
     return new ZeroClimber(subClimber).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
         .withTimeout(3);
+  }
+
+  public static Command stowIntakePivot() {
+    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.intakeStowAngle.getValue()));
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
