@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.RobotPreferences.prefPitch;
@@ -28,6 +29,7 @@ public class IntakeFromSource extends Command {
   double lastDesiredSpeedRight;
   double lastDesiredPitch = prefPitch.pitchReverseLimit.getValue();
   double lastDesiredAngle;
+  double lastDesiredTurret;
 
   /** Creates a new ShooterIntake. */
   public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret,
@@ -81,10 +83,22 @@ public class IntakeFromSource extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (!RobotState.isAutonomous()) {
+      subTransfer.setNeutralMode();
+    }
+    if (!interrupted) {
+      subTransfer.repositionGamePiece();
+
+      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+          prefShooter.rightShooterSubVelocity.getValue());
+      subShooter.getUpToSpeed();
+    } else {
+      subTransfer.setTransferNeutralOutput();
+    }
     subTransfer.setFeederNeutralOutput();
-    subTransfer.setTransferNeutralOutput();
-    subShooter.setDesiredVelocities(lastDesiredSpeedLeft, lastDesiredSpeedRight);
     subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
+    subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
+    subClimber.setNeutralOutput();
 
   }
 

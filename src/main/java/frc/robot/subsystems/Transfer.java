@@ -162,6 +162,10 @@ public class Transfer extends SubsystemBase {
     return feederMotor.getMotorOutputPercent();
   }
 
+  public void setNeutralMode() {
+    transferMotor.setControl(new NeutralOut());
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
