@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix.led.ColorFlowAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -296,9 +297,10 @@ public final class Constants {
   }
 
   public static class constClimber {
-    // place holder values
-    public static final double CIRCUMFERENCE = 90;
+    // TODO: Update
     public static final double GEAR_RATIO = 5;
+    public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
+    public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
   }
 
   public static class constTransfer {

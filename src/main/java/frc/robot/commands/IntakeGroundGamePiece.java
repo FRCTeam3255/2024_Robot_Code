@@ -44,7 +44,7 @@ public class IntakeGroundGamePiece extends Command {
   @Override
   public void execute() {
 
-    subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
+    subIntake.setIntakeRollerSpeed(prefIntake.intakeRollerSpeed.getValue());
 
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
@@ -55,7 +55,7 @@ public class IntakeGroundGamePiece extends Command {
   @Override
   public void end(boolean interrupted) {
     if (!RobotState.isAutonomous()) {
-      subIntake.setNeutralMode();
+      subIntake.setNeutralOutput();
     }
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();

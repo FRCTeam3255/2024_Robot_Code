@@ -23,6 +23,90 @@ import edu.wpi.first.math.util.Units;
  * are exempt from this
  */
 public class RobotPreferences {
+  public static final class prefClimber {
+    // - PID -
+    public static final SN_DoublePreference climberG = new SN_DoublePreference("climberG", 0);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 1);
+    public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
+    public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
+
+    // - Motion Magic -
+    /**
+     * <b> Units: </b> Rotations per second (rps)
+     */
+    public static final SN_DoublePreference climberCruiseVelocity = new SN_DoublePreference("climberCruiseVelocity",
+        80);
+    /**
+     * <b> Units: </b> Rotations per second per second (rps/s)
+     */
+    public static final SN_DoublePreference climberAcceleration = new SN_DoublePreference(
+        "climberAcceleration", 160);
+    /**
+     * <b> Units: </b> Rotations per second per second per second (rps/s/s)
+     */
+    public static final SN_DoublePreference climberJerk = new SN_DoublePreference("climberJerk", 1600);
+
+    // - Soft Limits -
+    /**
+     * <b> Units: </b> Meters
+     */
+    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 1);
+    /**
+     * <b> Units: </b> Meters
+     */
+    public static final SN_DoublePreference climberMinPos = new SN_DoublePreference("climberMinPos", 0);
+
+    // - Zeroing -
+    /**
+     * <p>
+     * The voltage supplied to the motor in order to zero
+     * </p>
+     * <b>Units:</b> Volts
+     */
+    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage",
+        -1);
+
+    /**
+     * <p>
+     * The elapsed time required to consider the climber motor as zeroed
+     * </p>
+     * <b>Units:</b> Seconds
+     */
+    public static final SN_DoublePreference climberZeroedTime = new SN_DoublePreference("climberZeroedTime", 4);
+
+    /**
+     * <p>
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     * </p>
+     * <b>Units:</b> Meters per second
+     */
+    public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity", 2);
+
+    // - Current Limiting -
+    public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
+        "climberSupplyCurrentLimitEnable", true);
+    public static final SN_DoublePreference climberSupplyCurrentLimitCeilingAmps = new SN_DoublePreference(
+        "climberSupplyCurrentLimitCeilingAmps", 0.01);
+    public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
+        "climberSupplyCurrentThreshold", 5);
+    public static final SN_DoublePreference climberSupplyTimeThreshold = new SN_DoublePreference(
+        "climberSupplyTimeThreshold", 0.1);
+
+    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", false);
+
+    // - Speeds -
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 0.2);
+
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference climberDownSpeed = new SN_DoublePreference("climberDownSpeed", -0.2);
+  }
+
   public static final class prefDrivetrain {
     // This PID is implemented on each module, not the Drivetrain subsystem.
     public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.18);
@@ -121,9 +205,7 @@ public class RobotPreferences {
   }
 
   public static final class prefPitch {
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 100); // Original: 70. With 0 G,
-                                                                                             // P
-                                                                                             // is 500
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 100);
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
     public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
@@ -297,7 +379,6 @@ public class RobotPreferences {
         false);
 
     // -- Speeds --
-
     public static final SN_DoublePreference feederIntakeGroundSpeed = new SN_DoublePreference(
         "feederIntakeGroundSpeed", -1);
     public static final SN_DoublePreference transferIntakeGroundSpeed = new SN_DoublePreference(
@@ -405,38 +486,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretAmpPresetPos = new SN_DoublePreference("turretAmpPresetPos", 0);
     public static final SN_DoublePreference turretTrapPresetPos = new SN_DoublePreference("turretTrapPresetPos", 0);
 
-  }
-
-  public static final class prefClimber {
-    // all values placeholder for now in climber
-    public static final SN_DoublePreference climberMotorV = new SN_DoublePreference("climberMotorV", 0.4);
-    public static final SN_DoublePreference climberMotorP = new SN_DoublePreference("climberMotorP", 0.4);
-    public static final SN_DoublePreference climberMotorI = new SN_DoublePreference("climberMotorI", 0.4);
-    public static final SN_DoublePreference climberMotorD = new SN_DoublePreference("clismberMotorD", 0.4);
-
-    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 40);
-    public static final SN_DoublePreference climberMinPos = new SN_DoublePreference("climberMinPos", 10);
-    public static final SN_DoublePreference climberEncoderCountsPerMeter = new SN_DoublePreference(
-        "climberEncoderCountsPerMeter", 3);
-    public static final SN_DoublePreference climberZeroedTime = new SN_DoublePreference("climberZeroedTime", 4);
-    public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity", 2);
-    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference("climberMotorUpSpeed", 10);
-    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference("climberMotorDownSpeed", 5);
-
-    public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
-        "climberSupplyCurrentLimitEnable", true);
-    public static final SN_DoublePreference climberSupplyCurrentLimitCelingAmps = new SN_DoublePreference(
-        "climberSupplyCurrentLimitCelingAmps", 0.01);
-    public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
-        "climberSupplyCurrentThreshold", 5);
-    public static final SN_DoublePreference climberSupplyTimeThreshold = new SN_DoublePreference(
-        "climberSupplyTimeThreshold", 0.1);
-
-    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberinverted", false);
-    public static final SN_DoublePreference targetCruiseVelocity = new SN_DoublePreference("targetCruiseVelocity", 80);
-    public static final SN_DoublePreference targetAccelerationVelocity = new SN_DoublePreference(
-        "targetAccelerationVelocity", 160);
-    public static final SN_DoublePreference targetJerk = new SN_DoublePreference("targetJerk", 1600);
   }
 
   public static final class prefVision {

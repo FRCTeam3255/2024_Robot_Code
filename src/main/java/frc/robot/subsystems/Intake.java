@@ -33,20 +33,17 @@ public class Intake extends SubsystemBase {
   /**
    * Sets the speed of all of the motors on the intake to the given values.
    * 
-   * @param intakeSpeed    This is applied to the roller motor. <b> Units: </b>
-   *                       Speed from
-   *                       -1.0 to 1.0.
-   * @param centeringSpeed This is applied to both centering motors. <b> Units:
-   *                       </b> Speed from -1.0 to 1.0.
+   * @param speed This is applied to the roller motor. <b> Units: </b>
+   *              Percent Output (-1.0 to 1.0)
    */
-  public void setIntakeMotorsSpeed(double intakeSpeed) {
-    rollerMotor.set(intakeSpeed);
+  public void setIntakeRollerSpeed(double speed) {
+    rollerMotor.set(speed);
   }
 
   /**
-   * Sets all of the motors to neutral.
+   * Sets the rollers to neutral.
    */
-  public void setNeutralMode() {
+  public void setNeutralOutput() {
     rollerMotor.setControl(new NeutralOut());
   }
 
@@ -56,7 +53,5 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    // This method will be called once per scheduler run
   }
 }

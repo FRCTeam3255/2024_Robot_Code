@@ -4,12 +4,11 @@
 
 package frc.robot.subsystems;
 
-import javax.xml.namespace.QName;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.core.CoreTalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
@@ -22,89 +21,133 @@ import frc.robot.RobotMap.*;
 import frc.robot.RobotPreferences.prefClimber;
 
 public class Climber extends SubsystemBase {
-  /** Creates a new Climber. */
   TalonFX climberMotor;
   TalonFXConfiguration climberConfig;
+  MotionMagicVoltage motionMagicRequest;
 
   double desiredPosition;
 
-  CoreTalonFX m_talonFX;
-
   public Climber() {
-
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
+    climberConfig = new TalonFXConfiguration();
+
+    motionMagicRequest = new MotionMagicVoltage(0);
 
     configure();
   }
 
+  public void configure() {
+    climberMotor.getConfigurator().apply(new TalonFXConfiguration());
+
+    // PID
+    climberConfig.Slot0.GravityType = constClimber.GRAVITY_TYPE;
+
+    climberConfig.Slot0.kG = prefClimber.climberG.getValue();
+    climberConfig.Slot0.kP = prefClimber.climberP.getValue();
+    climberConfig.Slot0.kI = prefClimber.climberI.getValue();
+    climberConfig.Slot0.kD = prefClimber.climberD.getValue();
+
+    // Motion Magic
+    climberConfig.MotionMagic.MotionMagicCruiseVelocity = prefClimber.climberCruiseVelocity.getValue();
+    climberConfig.MotionMagic.MotionMagicAcceleration = prefClimber.climberAcceleration.getValue();
+    climberConfig.MotionMagic.MotionMagicJerk = prefClimber.climberJerk.getValue();
+
+    // Software Limits
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMaxPos.getValue();
+
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMinPos.getValue();
+
+    // Current Limiting
+    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = prefClimber.climberSupplyCurrentLimitEnable.getValue();
+    climberConfig.CurrentLimits.SupplyCurrentLimit = prefClimber.climberSupplyCurrentLimitCeilingAmps.getValue();
+    climberConfig.CurrentLimits.SupplyCurrentThreshold = prefClimber.climberSupplyCurrentThreshold.getValue();
+    climberConfig.CurrentLimits.SupplyTimeThreshold = prefClimber.climberSupplyTimeThreshold.getValue();
+
+    // Other jazz
+    climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
+    climberConfig.MotorOutput.NeutralMode = constClimber.NEUTRAL_MODE;
+
+    climberMotor.setInverted(prefClimber.climberInverted.getValue());
+    climberMotor.getConfigurator().apply(climberConfig);
+  }
+
+  // -- Set --
+
+  /**
+   * Sets the climber to the given position using Motion Magic. The position will
+   * be clamped to be within our software limits prior to being set.
+   * 
+   * @param position The position to go to. <b> Units: </b> Meters per
+   *                 second
+   */
   public void setClimberPosition(double position) {
     position = SN_Math.metersToRotations(MathUtil.clamp(position, prefClimber.climberMinPos.getValue(),
-        prefClimber.climberMaxPos.getValue()), constClimber.CIRCUMFERENCE, constClimber.GEAR_RATIO);
+        prefClimber.climberMaxPos.getValue()), 1, 1);
 
     desiredPosition = position;
 
-    // create a Motion Magic request, voltage output
-    final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
-
-    // set target position to 100 rotations
-    m_talonFX.setControl(m_request.withPosition(100));
+    climberMotor.setControl(motionMagicRequest.withPosition(position));
   }
 
-  public void configure() {
-    climberMotor.getConfigurator().apply(new TalonFXConfiguration());
-    climberConfig.Slot0.kV = prefClimber.climberMotorV.getValue();
-    climberConfig.Slot0.kP = prefClimber.climberMotorP.getValue();
-    climberConfig.Slot0.kI = prefClimber.climberMotorI.getValue();
-    climberConfig.Slot0.kD = prefClimber.climberMotorD.getValue();
-
-    climberConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
-    climberConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
-
-    climberMotor.setInverted(prefClimber.climberInverted.getValue());
-    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = prefClimber.climberSupplyCurrentLimitEnable.getValue();
-    climberConfig.CurrentLimits.SupplyCurrentLimit = prefClimber.climberSupplyCurrentLimitCelingAmps.getValue();
-    climberConfig.CurrentLimits.SupplyCurrentThreshold = prefClimber.climberSupplyCurrentThreshold.getValue();
-    climberConfig.CurrentLimits.SupplyTimeThreshold = prefClimber.climberSupplyTimeThreshold.getValue();
-    climberMotor.getConfigurator().apply(climberConfig);
-
-    var talonFXConfigs = new TalonFXConfiguration();
-
-    var motionMagicConfigs = talonFXConfigs.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = 80;
-    motionMagicConfigs.MotionMagicAcceleration = 160;
-    motionMagicConfigs.MotionMagicJerk = 1600;
-
-    m_talonFX.getConfigurator().apply(talonFXConfigs);
-  }
-
-  public boolean isClimberAtPosition(double desiredPosition, double tolerance) {
-    if (Robot.isSimulation()) {
-      return true;
-    }
-    return tolerance >= Math.abs(getClimberPositionMeters() - desiredPosition);
-  }
-
-  public double getClimberVelocity() {
-    return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
-  }
-
-  public double getClimberVoltage() {
-    return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
-  }
-
-  public double getClimberPositionMeters() {
-    return desiredPosition / prefClimber.climberEncoderCountsPerMeter.getValue();
-  }
-
+  /**
+   * Set the current speed of the climber.
+   * 
+   * @param speed The desired speed. <b> Units: </b> Percent Output (-1.0 -> 1.0)
+   */
   public void setClimberSpeed(double speed) {
     climberMotor.set(speed);
+  }
+
+  // -- Get --
+
+  /**
+   * @return The current velocity of the climber. <b> Units: </b> Meters per
+   *         second
+   */
+  public double getClimberVelocity() {
+    return SN_Math.rotationsToMeters(climberMotor.getVelocity().getValueAsDouble(), 1, 1);
+  }
+
+  /**
+   * @return The current applied (output) voltage. <b> Units: </b> Volts
+   */
+  public double getClimberVoltage() {
+    return climberMotor.getMotorVoltage().getValueAsDouble();
+  }
+
+  /**
+   * @return The current position of the climber. <b> Units: </b> Meters
+   */
+  public double getClimberPosition() {
+    return SN_Math.rotationsToMeters(climberMotor.getPosition().getValueAsDouble(), 1, 1);
+  }
+
+  /**
+   * Calculate if the climber motor is within tolerance to a given position. In
+   * simulation, this will return true if our desired position
+   * matches the given position
+   * 
+   * @param position  The position to check if we are at.<b> Units: </b>
+   *                  Meters
+   * @param tolerance Our tolerance for determining if we are at that
+   *                  position. <b> Units: </b> Meters
+   * @return If we are at that position
+   */
+  public boolean isClimberAtPosition(double position, double tolerance) {
+    if (Robot.isSimulation()) {
+      return desiredPosition == position;
+    }
+    return tolerance >= Math.abs(getClimberPosition() - position);
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Climber/Velocity DPS", getClimberVelocity());
     SmartDashboard.putNumber("Climber/Voltage", getClimberVoltage());
-    SmartDashboard.putNumber("Climber/Position", getClimberPositionMeters());
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Climber/Current Position", getClimberPosition());
+    SmartDashboard.putNumber("Climber/Desired Position", desiredPosition);
+
   }
 }

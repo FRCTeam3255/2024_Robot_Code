@@ -132,15 +132,14 @@ public class RobotContainer implements Logged {
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_South.onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(subwooferRobotPose)));
 
-    // // Climb Up
-
+    // Climb Up
     controller.btn_LeftTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberSpeed(prefClimber.climberMotorUpSpeed.getValue()),
+        Commands.run(() -> subClimber.setClimberSpeed(prefClimber.climberUpSpeed.getValue()),
             subClimber));
 
     // Climb Down
     controller.btn_RightTrigger.whileTrue(
-        Commands.run(() -> subClimber.setClimberSpeed(prefClimber.climberMotorDownSpeed.getValue()),
+        Commands.run(() -> subClimber.setClimberSpeed(prefClimber.climberDownSpeed.getValue()),
             subClimber));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
@@ -198,21 +197,6 @@ public class RobotContainer implements Logged {
                 () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue())))
         .alongWith(Commands.runOnce(
             () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue()))));
-
-    // Trap Preset
-    // controller.btn_Y.onTrue(Commands.runOnce(() ->
-    // setLockedLocation(LockedLocation.NONE)).alongWith(
-    // Commands.runOnce(() ->
-    // subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
-    // prefShooter.rightShooterTrapVelocity.getValue())))
-    // .alongWith(
-    // Commands.runOnce(
-    // () -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue(),
-    // subClimber.collidesWithTurret())))
-    // .alongWith(Commands.runOnce(
-    // () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(),
-    // subClimber.collidesWithPitch()))));
-
   }
 
   private void configureAutoSelector() {
