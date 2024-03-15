@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constIntake;
@@ -24,7 +25,7 @@ public class Intake extends SubsystemBase {
 
   TalonFXConfiguration rollerConfig, pivotConfig;
 
-  double absoluteEncoderOffset;
+  double absoluteEncoderOffset, desiredPivotAngle;
   boolean invertAbsEncoder;
 
   PositionVoltage positionRequest;
@@ -40,6 +41,8 @@ public class Intake extends SubsystemBase {
 
     positionRequest = new PositionVoltage(0);
     motionMagicRequest = new MotionMagicVoltage(0);
+
+    desiredPivotAngle = prefIntake.pivotMinPos.getValue();
 
     configure();
   }
@@ -118,6 +121,16 @@ public class Intake extends SubsystemBase {
     double rotations = getAbsoluteEncoder();
 
     pivotMotor.setPosition((invertAbsEncoder) ? -rotations : rotations);
+  }
+
+  /**
+   * Sets the physical angle of the pivot
+   * 
+   * @param angle The angle to set the pivot to. <b> Units: </b> Degrees
+   */
+  public void setPivotAngle(double angle) {
+    desiredPivotAngle = angle;
+    pivotMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
   /**

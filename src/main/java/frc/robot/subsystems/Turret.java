@@ -106,9 +106,7 @@ public class Turret extends SubsystemBase implements Logged {
   /**
    * Sets the physical angle of the turret
    * 
-   * @param angle        The angle to set the turret to. <b> Units: </b> Degrees
-   * @param hasCollision If there is a collision with the turret. If this is true,
-   *                     the turret will not turn
+   * @param angle The angle to set the turret to. <b> Units: </b> Degrees
    */
   public void setTurretAngle(double angle) {
     desiredTurretAngle = angle;

@@ -108,10 +108,8 @@ public class Pitch extends SubsystemBase implements Logged {
    * Sets the angle of the pitch motor. The angle will not be set if the angle is
    * not possible.
    * 
-   * @param angle        The angle to set the pitch motor to. <b> Units: </b>
-   *                     Degrees
-   * @param hasCollision If there is a collision with the pitch. If this is true,
-   *                     the pitch will not turn above 30 degrees
+   * @param angle The angle to set the pitch motor to. <b> Units: </b>
+   *              Degrees
    */
   public void setPitchAngle(double angle) {
     if (angle >= prefPitch.pitchMaxIntake.getValue()) {

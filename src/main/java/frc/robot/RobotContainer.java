@@ -144,16 +144,6 @@ public class RobotContainer implements Logged {
         .onTrue(
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS()[6].toPose2d())));
 
-    // Climb Up
-    controller.btn_LeftTrigger.whileTrue(
-        Commands.run(() -> subClimber.setVelocity(prefClimber.climberUpSpeed.getValue()),
-            subClimber));
-
-    // Climb Down
-    controller.btn_RightTrigger.whileTrue(
-        Commands.run(() -> subClimber.setVelocity(prefClimber.climberDownSpeed.getValue()),
-            subClimber));
-
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
   }
