@@ -10,38 +10,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapIntake;
-import frc.robot.RobotPreferences.prefIntake;
 
 public class Intake extends SubsystemBase {
   TalonFX rollerMotor;
   TalonFXConfiguration rollerConfig;
-  double intakeCurrent;
-  double intakeVelocity;
-  public boolean hasGamePiece;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.INTAKE_ROLLER_MOTOR_CAN, "rio");
     configure();
-  }
-
-  public boolean intakeSourceGamePieceDetection() {
-    intakeCurrent = rollerMotor.getStatorCurrent().getValue();
-    intakeVelocity = rollerMotor.getVelocity().getValue();
-
-    if (hasGamePiece ||
-
-        (intakeCurrent <= prefIntake.intakeSourceHasGamePieceCurrent.getValue())
-            && (intakeVelocity <= prefIntake.intakeSourceHasGamePieceVelocity.getValue())) {
-      hasGamePiece = true;
-    } else {
-      hasGamePiece = false;
-    }
-
-    return hasGamePiece;
-  }
-
-  public void setIntakeNeutralOutput() {
-    rollerMotor.setControl(new NeutralOut());
   }
 
   public void configure() {
