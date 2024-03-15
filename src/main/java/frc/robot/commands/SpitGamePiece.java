@@ -38,7 +38,7 @@ public class SpitGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalIntake.setIntakeRollerSpeed(prefIntake.intakeSpitOutSpeed.getValue());
+    globalIntake.setIntakeRollerSpeed(prefIntake.rollerSpitSpeed.getValue());
 
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
@@ -50,7 +50,7 @@ public class SpitGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalIntake.setNeutralOutput();
+    globalIntake.setRollerNeutralOutput();
     globalTransfer.setTransferNeutralOutput();
     globalTransfer.setFeederNeutralOutput();
   }

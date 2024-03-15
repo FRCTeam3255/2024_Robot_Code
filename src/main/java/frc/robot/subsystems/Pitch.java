@@ -227,6 +227,9 @@ public class Pitch extends SubsystemBase implements Logged {
       default:
         return Optional.empty();
 
+      case AMP:
+        return Optional.of(Rotation2d.fromRotations(prefPitch.pitchReverseLimit.getValue()));
+
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;

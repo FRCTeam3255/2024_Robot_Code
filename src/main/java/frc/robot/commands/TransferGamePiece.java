@@ -5,7 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.LockedLocation;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
@@ -17,15 +21,17 @@ public class TransferGamePiece extends Command {
   Turret subTurret;
   Shooter subShooter;
   Pitch subPitch;
+  Intake subIntake;
 
   public TransferGamePiece(Shooter subShooter, Turret subTurret,
-      Transfer subTransfer, Pitch subPitch) {
+      Transfer subTransfer, Pitch subPitch, Intake subIntake) {
     this.subTransfer = subTransfer;
     this.subShooter = subShooter;
     this.subPitch = subPitch;
     this.subTurret = subTurret;
+    this.subIntake = subIntake;
 
-    addRequirements(subTransfer);
+    addRequirements(subTransfer, subIntake);
   }
 
   // Called when the command is initially scheduled.
@@ -36,19 +42,24 @@ public class TransferGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subShooter.areBothShootersUpToSpeed()
-        && subPitch.isPitchAtGoalAngle()
-        && subTurret.isTurretAtGoalAngle()) {
+    if (RobotContainer.getLockedLocation() != LockedLocation.AMP) {
+      if (subShooter.areBothShootersUpToSpeed()
+          && subPitch.isPitchAtGoalAngle()
+          && subTurret.isTurretAtGoalAngle()) {
 
-      subTransfer.setGamePieceCollected(false);
-      subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
-      return;
+        subTransfer.setGamePieceCollected(false);
+        subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
+        subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
+        return;
+      }
     } else {
-      subTransfer.setFeederMotorSpeed(0);
-      subTransfer.setTransferMotorSpeed(0);
-      return;
+      // TODO: Do we want to check if we are actually at the desired intake pivot
+      // position before amping?
+      subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue());
     }
+    subTransfer.setFeederMotorSpeed(0);
+    subTransfer.setTransferMotorSpeed(0);
+    return;
 
   }
 

@@ -164,7 +164,8 @@ public class RobotContainer implements Logged {
     controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
         .whileTrue(new ManualHoodMovement(subPitch, controller.axis_RightX));
 
-    controller.btn_RightTrigger.whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch))
+    controller.btn_RightTrigger
+        .whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
             .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)));
@@ -317,7 +318,7 @@ public class RobotContainer implements Logged {
   }
 
   public static Command stowIntakePivot() {
-    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.intakeStowAngle.getValue()));
+    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue()));
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {

@@ -258,6 +258,9 @@ public class Turret extends SubsystemBase implements Logged {
       default:
         return Optional.empty();
 
+      case AMP:
+        return Optional.of(Rotation2d.fromDegrees(0));
+
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;

@@ -25,6 +25,8 @@ import edu.wpi.first.math.util.Units;
 public class RobotPreferences {
   public static final class prefClimber {
     // - PID -
+    public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
+    public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0);
     public static final SN_DoublePreference climberG = new SN_DoublePreference("climberG", 0);
     public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 1);
     public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
@@ -274,25 +276,48 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 1);
+    public static final SN_DoublePreference rollerIntakeSpeed = new SN_DoublePreference("rollerIntakeSpeed", 1);
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
+    public static final SN_DoublePreference rollerSpitSpeed = new SN_DoublePreference("rollerSpitSpeed", -1);
+
+    public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -1);
+
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference rollerStageAmpNoteSpeed = new SN_DoublePreference(
+        "rollerStageAmpNoteSpeed", -0.5);
 
     // - Angles -
     /**
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference intakeStowAngle = new SN_DoublePreference(
-        "intakeStowAngle", 5);
+    public static final SN_DoublePreference pivotStowAngle = new SN_DoublePreference(
+        "pivotStowAngle", 5);
 
     /**
-     * The intake's pivot motor position when we are intaking from the ground
+     * The pivot motor position when we are intaking from the ground
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference intakeGroundAngle = new SN_DoublePreference(
-        "intakeGroundAngle", 10);
+    public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
+        "pivotGroundIntakeAngle", 10);
+
+    /**
+     * The pivot motor position when we are transferring the note from the shooter
+     * to the intake in order to prep amp
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotTransferToAmpAngle = new SN_DoublePreference("pivotTransferToAmpAngle",
+        10);
+
+    /**
+     * The pivot motor position when are placing in the amp
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
+        10);
 
   }
 
@@ -505,6 +530,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
         "intakeSourceGamePieceGetTime",
         0.5);
+
+    public static final SN_DoublePreference feederStageAmpNoteSpeed = new SN_DoublePreference("feederStageAmpNoteSpeed",
+        -0.5);
+    public static final SN_DoublePreference transferStageAmpNoteSpeed = new SN_DoublePreference(
+        "transferStageAmpNoteSpeed",
+        -0.5);
 
     // -- Game Piece Detection --
     /**

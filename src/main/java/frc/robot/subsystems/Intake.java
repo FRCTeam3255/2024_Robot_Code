@@ -146,8 +146,26 @@ public class Intake extends SubsystemBase {
   /**
    * Sets the rollers to neutral.
    */
-  public void setNeutralOutput() {
+  public void setRollerNeutralOutput() {
     rollerMotor.setControl(new NeutralOut());
+  }
+
+  /**
+   * Sets the pivot to neutral.
+   */
+  public void setPivotNeutralOutput() {
+    pivotMotor.setControl(new NeutralOut());
+  }
+
+  /**
+   * Calculates if we have a game piece stored in the intake, making us ready to
+   * amplify.
+   * 
+   * @return If we have a game piece.
+   */
+  public boolean calcGamePieceReadyToAmp() {
+    // TODO: Add Logic
+    return false;
   }
 
   @Override

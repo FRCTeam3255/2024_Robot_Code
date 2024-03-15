@@ -50,8 +50,9 @@ public class Climber extends SubsystemBase {
     // PID
     climberConfig.Slot0.GravityType = constClimber.GRAVITY_TYPE;
 
-    // TODO: ADD KS AND KV
+    climberConfig.Slot0.kS = prefClimber.climberS.getValue();
     climberConfig.Slot0.kG = prefClimber.climberG.getValue();
+    climberConfig.Slot0.kV = prefClimber.climberV.getValue();
     climberConfig.Slot0.kP = prefClimber.climberP.getValue();
     climberConfig.Slot0.kI = prefClimber.climberI.getValue();
     climberConfig.Slot0.kD = prefClimber.climberD.getValue();
