@@ -13,7 +13,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -26,7 +25,6 @@ public class Climber extends SubsystemBase {
   TalonFXConfiguration climberConfig;
 
   MotionMagicVoltage motionMagicPositionalRequest;
-  MotionMagicVelocityVoltage motionMagicVelocityRequest;
   VoltageOut voltageRequest;
 
   double desiredPosition;
@@ -36,7 +34,6 @@ public class Climber extends SubsystemBase {
     climberConfig = new TalonFXConfiguration();
 
     motionMagicPositionalRequest = new MotionMagicVoltage(0);
-    motionMagicVelocityRequest = new MotionMagicVelocityVoltage(0);
     voltageRequest = new VoltageOut(0);
 
     configure();
@@ -45,11 +42,8 @@ public class Climber extends SubsystemBase {
   public void configure() {
     climberMotor.getConfigurator().apply(new TalonFXConfiguration());
 
-    // TODO: Determine if these PID values will magically work for positional and
-    // velocity control :D
     // PID
     climberConfig.Slot0.GravityType = constClimber.GRAVITY_TYPE;
-
     climberConfig.Slot0.kS = prefClimber.climberS.getValue();
     climberConfig.Slot0.kG = prefClimber.climberG.getValue();
     climberConfig.Slot0.kV = prefClimber.climberV.getValue();
@@ -58,6 +52,7 @@ public class Climber extends SubsystemBase {
     climberConfig.Slot0.kD = prefClimber.climberD.getValue();
 
     // Motion Magic
+    climberConfig.MotionMagic.MotionMagicCruiseVelocity = prefClimber.climberCruiseVelocity.getValue();
     climberConfig.MotionMagic.MotionMagicAcceleration = prefClimber.climberAcceleration.getValue();
     climberConfig.MotionMagic.MotionMagicJerk = prefClimber.climberJerk.getValue();
 
@@ -101,13 +96,12 @@ public class Climber extends SubsystemBase {
   }
 
   /**
-   * Set the current velocity of the climber using Motion Magic.
+   * Set the current percent output of the climber.
    * 
-   * @param speed The desired speed. <b> Units: </b> Rotations Per Second
+   * @param speed The desired percent output. (-1.0 -> 1.0)
    */
-  public void setVelocity(double speed) {
-    climberMotor.setControl(motionMagicVelocityRequest.withVelocity(speed));
-
+  public void setPercentOutput(double speed) {
+    climberMotor.set(speed);
   }
 
   /**
