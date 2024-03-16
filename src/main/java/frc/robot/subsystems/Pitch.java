@@ -248,9 +248,10 @@ public class Pitch extends SubsystemBase implements Logged {
     return Optional.of(desiredLockingAngle);
   }
 
-  public Transform3d getAngleAsTransform3d() {
-    return new Transform3d(new Translation3d(),
-        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), 0));
+  public Pose3d getAngleAsTransform3d() {
+    return new Pose3d(new Translation3d(0, 0, 0), // 0.1, 0, 0.242
+        new Rotation3d(0, Units.rotationsToDegrees(getPitchAngle()),
+            0));
   }
 
   @Override

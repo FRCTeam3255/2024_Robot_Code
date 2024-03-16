@@ -284,7 +284,9 @@ public class RobotContainer implements Logged {
   public static void updateLoggedPoses() {
     currentRobotPose = subDrivetrain.getPose3d();
     turretPose = subTurret.getAngleAsPose3d();
-    hoodPose = turretPose.plus(subPitch.getAngleAsTransform3d());
+    Pose3d tempPose = subPitch.getAngleAsTransform3d();
+    hoodPose = new Pose3d(turretPose.getTranslation().plus(tempPose.getTranslation()),
+        turretPose.getRotation().rotateBy(tempPose.getRotation()));
   }
 
   // --- PDH ---
