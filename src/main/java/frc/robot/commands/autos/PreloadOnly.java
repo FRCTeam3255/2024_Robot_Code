@@ -4,11 +4,7 @@
 
 package frc.robot.commands.autos;
 
-import java.util.Optional;
 import java.util.function.Supplier;
-
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,7 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.LockedLocation;
+import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
+import frc.robot.RobotContainer;
+import frc.robot.commands.IntakeGroundGamePiece;
+import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.UnaliveShooter;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -33,6 +36,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
   Shooter subShooter;
   Transfer subTransfer;
   Turret subTurret;
+  Climber subClimber;
 
   double FIELD_LENGTH = FieldConstants.FIELD_LENGTH;
 
@@ -58,7 +62,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
    *                         to Choreo for this
    */
   public PreloadOnly(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret, int startingPosition) {
+      Transfer subTransfer, Turret subTurret, Climber subClimber, int startingPosition) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
@@ -66,6 +70,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
+    this.subClimber = subClimber;
     this.startingPosition = startingPosition;
 
     addCommands(
@@ -73,7 +78,27 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
-        Commands.runOnce(() -> SmartDashboard.putNumber("STARTING POS", startingPosition)));
+        Commands.runOnce(() -> SmartDashboard.putNumber("STARTING POS", startingPosition)),
+
+        // throw out that intake
+        // Intake until we have the game piece
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter),
+
+        // Aim
+        Commands.parallel(
+            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                prefShooter.rightShooterSpeakerVelocity.getValue())),
+            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+
+        // Shoot
+        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch).until(() -> !subTransfer.hasGamePiece),
+        Commands.parallel(
+            Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
+            Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())),
+        new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)
+
+    );
   }
 
   public Supplier<Pose2d> getInitialPose() {
