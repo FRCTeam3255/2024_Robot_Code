@@ -88,7 +88,9 @@ public class RobotContainer implements Logged {
   int[] rotationColor;
   int[] XTranslationColor;
   int[] YTranslationColor;
-
+  int[] previousRotationColor;
+  int[] previousXTranslationColor;
+  int[] previousYTranslationColor;
   // Poses
   @Log.NT
   static Pose3d currentRobotPose;
@@ -402,17 +404,24 @@ public class RobotContainer implements Logged {
       subLEDs.setAnimationChunk(8, constLEDs.LED_NUMBER - 8, constLEDs.AUTO_ALIGNED_COLOR);
 
     } else {
-      subLEDs.setIndividualLED(rotationColor, 0);
-      subLEDs.setIndividualLED(rotationColor, 3);
-      subLEDs.setIndividualLED(rotationColor, 4);
-      subLEDs.setIndividualLED(rotationColor, 7);
-
-      subLEDs.setIndividualLED(XTranslationColor, 1);
-      subLEDs.setIndividualLED(XTranslationColor, 2);
-
-      subLEDs.setIndividualLED(YTranslationColor, 5);
-      subLEDs.setIndividualLED(YTranslationColor, 6);
-      subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
+      if (previousRotationColor != rotationColor) {
+        subLEDs.setIndividualLED(rotationColor, 0);
+        subLEDs.setIndividualLED(rotationColor, 3);
+        subLEDs.setIndividualLED(rotationColor, 4);
+        subLEDs.setIndividualLED(rotationColor, 7);
+        previousRotationColor = rotationColor;
+      }
+      if (previousXTranslationColor != XTranslationColor) {
+        subLEDs.setIndividualLED(XTranslationColor, 1);
+        subLEDs.setIndividualLED(XTranslationColor, 2);
+        previousXTranslationColor = XTranslationColor;
+      }
+      if (previousYTranslationColor != YTranslationColor) {
+        subLEDs.setIndividualLED(YTranslationColor, 5);
+        subLEDs.setIndividualLED(YTranslationColor, 6);
+        subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
+        previousYTranslationColor = YTranslationColor;
+      }
     }
   }
 
