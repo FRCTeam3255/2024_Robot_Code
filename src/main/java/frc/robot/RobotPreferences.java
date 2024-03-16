@@ -305,10 +305,10 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference leftShooterIntakeVoltage = new SN_DoublePreference(
         "leftShooterIntakeVoltage",
-        -10);
+        -3);
     public static final SN_DoublePreference rightShooterIntakeVoltage = new SN_DoublePreference(
         "rightShooterIntakeVoltage",
-        -10);
+        -3);
 
     /**
      * <b>Units:</b> Meters per second
