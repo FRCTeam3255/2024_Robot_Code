@@ -320,10 +320,10 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
         "leftShooterIntakeVelocity",
-        -3);
+        -10);
     public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
         "rightShooterIntakeVelocity",
-        -3);
+        -10);
 
     /**
      * <b>Units:</b> Meters per second
