@@ -147,13 +147,15 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS()[6].toPose2d())));
 
     controller.btn_LeftTrigger
-        .onTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter)
-            .until(() -> getLockedLocation() == LockedLocation.AMP)
-            .andThen(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue()))))
+        // .onTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter)
+        // .until(() -> getLockedLocation() == LockedLocation.AMP)
+        // .andThen(Commands.run(() ->
+        // subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue()))))
+        .whileTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())))
         .onFalse(Commands.run(() -> subClimber.setPercentOutput(0)));
 
     controller.btn_RightTrigger
-        .onTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberDownSpeed.getValue())))
+        .whileTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberDownSpeed.getValue())))
         .onFalse(Commands.run(() -> subClimber.setPercentOutput(0)));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))

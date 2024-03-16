@@ -41,7 +41,7 @@ import frc.robot.Constants.constDrivetrain.pracBot;
 public final class Constants {
   public static class constClimber {
     public static final double GEAR_RATIO = 18.56;
-    public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
+    public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
   }
 
@@ -135,8 +135,7 @@ public final class Constants {
   }
 
   public static class constIntake {
-    // TODO: Update
-    public static final double ABS_ENCODER_OFFSET = 0.0;
+    public static final double ABS_ENCODER_OFFSET = 0.102385;
     public static final boolean ABS_ENCODER_INVERT = false;
     public static final double GEAR_RATIO = 28.13;
     public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;

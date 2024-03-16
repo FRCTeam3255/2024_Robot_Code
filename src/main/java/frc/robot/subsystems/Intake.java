@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constIntake;
 import frc.robot.RobotMap.mapIntake;
@@ -201,5 +202,9 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Intake/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
+    SmartDashboard.putNumber("Intake/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
+    SmartDashboard.putNumber("Intake/Angle (Degrees)", getPivotAngle());
+
   }
 }

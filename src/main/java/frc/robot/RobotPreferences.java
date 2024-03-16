@@ -53,13 +53,13 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Meters
      */
-    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 1);
+    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 2.8);
     /**
      * <b> Units: </b> Meters
      */
     public static final SN_DoublePreference climberMinPos = new SN_DoublePreference("climberMinPos", 0);
 
-    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", false);
+    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
 
     // - Zeroing -
     /**
@@ -77,7 +77,7 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Seconds
      */
-    public static final SN_DoublePreference climberZeroedTime = new SN_DoublePreference("climberZeroedTime", 4);
+    public static final SN_DoublePreference climberZeroedTime = new SN_DoublePreference("climberZeroedTime", 1);
 
     /**
      * <p>
@@ -86,7 +86,8 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Meters per second
      */
-    public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity", 2);
+    public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity",
+        0.2);
 
     /**
      * <p>
@@ -263,7 +264,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference pivotMaxPos = new SN_DoublePreference("pivotMaxPos", 10);
+    public static final SN_DoublePreference pivotMaxPos = new SN_DoublePreference("pivotMaxPos", 112);
 
     /**
      * <b> Units: </b> Degrees

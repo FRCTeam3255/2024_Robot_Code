@@ -177,10 +177,10 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Climber/Velocity DPS", getVelocity());
+    SmartDashboard.putNumber("Climber/Velocity", getVelocity());
     SmartDashboard.putNumber("Climber/Voltage", getVoltage());
-    SmartDashboard.putNumber("Climber/Current Position", getPosition());
-    SmartDashboard.putNumber("Climber/Desired Position", desiredPosition);
+    SmartDashboard.putNumber("Climber/Current Position (Meters)", getPosition());
+    SmartDashboard.putNumber("Climber/Desired Position (Meters)", desiredPosition);
 
   }
 }
