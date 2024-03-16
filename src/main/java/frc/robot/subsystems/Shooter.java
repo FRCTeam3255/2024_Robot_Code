@@ -111,6 +111,7 @@ public class Shooter extends SubsystemBase implements Logged {
 
   public void setRightShooterIntakeVoltage(double voltage) {
     rightMotor.setControl(voltageRequest.withOutput(voltage));
+    leftMotor.setControl(voltageRequest.withOutput(voltage));
   }
 
   /**
@@ -178,6 +179,11 @@ public class Shooter extends SubsystemBase implements Logged {
   public void setDesiredVelocities(double desiredLeftVelocity, double desiredRightVelocity) {
     setLeftDesiredVelocity(desiredLeftVelocity);
     setRightDesiredVelocity(desiredRightVelocity);
+  }
+
+  public void setDesiredVoltage(double desiredLeftVoltage, double desiredRightVoltage) {
+    setLeftDesiredVelocity(desiredLeftVoltage);
+    setRightDesiredVelocity(desiredRightVoltage);
   }
 
   public void setIgnoreFlywheelSpeed(boolean ignoreFlywheelSpeed) {

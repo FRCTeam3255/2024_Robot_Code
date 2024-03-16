@@ -309,14 +309,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference rightShooterIntakeVoltage = new SN_DoublePreference(
         "rightShooterIntakeVoltage",
         -10);
-    public static final SN_DoublePreference leftShooterSubVoltage = new SN_DoublePreference(
-        "leftShooterSubVelocity", 35);
-    /**
-     * Preset: Shooting while touching the subwoofer velocity
-     * <b>Units:</b> Rotations per second
-     */
-    public static final SN_DoublePreference rightShooterSubVoltage = new SN_DoublePreference(
-        "rightShooterSubVelocity", 35);
 
     /**
      * <b>Units:</b> Meters per second
