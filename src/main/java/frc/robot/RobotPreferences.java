@@ -375,7 +375,7 @@ public class RobotPreferences {
         "transferIntakeGroundSpeed", 0.2);
 
     public static final SN_DoublePreference feederIntakeSourceSpeed = new SN_DoublePreference(
-        "feederIntakeSourceSpeed", 1);
+        "feederIntakeSourceSpeed", -1);
     public static final SN_DoublePreference transferIntakeSourceSpeed = new SN_DoublePreference(
         "transferIntakeSourceSpeed", 0.2);
 
