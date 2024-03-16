@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constIntake;
 import frc.robot.RobotMap.mapIntake;
@@ -108,6 +109,15 @@ public class Intake extends SubsystemBase {
   }
 
   /**
+   * @return The current angle of the roller. This will not wrap between
+   *         rotations.
+   *         <b> Units: </b> Degrees
+   */
+  public double getRollerAngle() {
+    return Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
+  }
+
+  /**
    * Get the current position of the absolute encoder (with offset applied)
    * 
    * @return Position in rotations (with offset)
@@ -135,14 +145,15 @@ public class Intake extends SubsystemBase {
   /**
    * Calculates if we have a game piece stored in the intake, making us ready to
    * amplify.
-   * 
+   *
+   * @param initPosition The initial position of the rollers, in rotations
    * @return If we have a game piece.
    */
-  public boolean calcGamePieceReadyToAmp() {
-    // TODO: Add Logic
-    return false;
+  public boolean calcGamePieceReadyToAmp(double initPosition) {
+    double finalPosition = Units.rotationsToDegrees(initPosition) + prefIntake.rollerRotationsToAmp.getValue();
+    double currentPosition = Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
 
-    // Run until encoder count i gueeess
+    return finalPosition - currentPosition >= 0;
   }
 
   // - Set -

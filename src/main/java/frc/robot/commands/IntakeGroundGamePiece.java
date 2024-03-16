@@ -53,7 +53,7 @@ public class IntakeGroundGamePiece extends Command {
 
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
     subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
-    subIntake.setPivotAngle(prefIntake.pivotMinPos.getValue());
+    subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
     subClimber.setPosition(prefClimber.climberMinPos.getValue());
   }
 
@@ -65,7 +65,10 @@ public class IntakeGroundGamePiece extends Command {
       subClimber.setNeutralOutput();
     }
 
-    subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
+    if (subIntake.isPivotAtAngle(prefIntake.pivotGroundIntakeAngle.getValue())) {
+      subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
+    }
+
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
   }
@@ -82,6 +85,8 @@ public class IntakeGroundGamePiece extends Command {
       subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
           prefShooter.rightShooterSubVelocity.getValue());
       subShooter.getUpToSpeed();
+
+      subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue());
     } else {
       subTransfer.setTransferNeutralOutput();
     }

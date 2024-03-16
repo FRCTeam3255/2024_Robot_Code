@@ -305,28 +305,42 @@ public class RobotPreferences {
         0.5);
 
     /**
+     * <p>
+     * The amount of degrees to turn before considering the note to be in the amp
+     * </p>
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference rollerRotationsToAmp = new SN_DoublePreference("rollerRotationsToAmp", 360);
+
+    /**
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotStowAngle = new SN_DoublePreference(
         "pivotStowAngle", 5);
 
     /**
+     * <p>
      * The pivot motor position when we are intaking from the ground
+     * </p>
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
         "pivotGroundIntakeAngle", 10);
 
     /**
+     * <p>
      * The pivot motor position when we are transferring the note from the shooter
      * to the intake in order to prep amp
+     * </p>
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotTransferToAmpAngle = new SN_DoublePreference("pivotTransferToAmpAngle",
         10);
 
     /**
+     * <p>
      * The pivot motor position when are placing in the amp
+     * </p>
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",

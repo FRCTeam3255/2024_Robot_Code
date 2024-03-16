@@ -24,7 +24,7 @@ public class PrepAmp extends Command {
   Turret subTurret;
   Shooter subShooter;
 
-  double lastTurretAngle, lastHoodAngle, lastIntakeAngle;
+  double lastTurretAngle, lastHoodAngle, lastIntakeAngle, initRollerAngle;
 
   public PrepAmp(Intake subIntake, Pitch subPitch, Transfer subTransfer, Turret subTurret, Shooter subShooter) {
     this.subIntake = subIntake;
@@ -41,6 +41,7 @@ public class PrepAmp extends Command {
     lastTurretAngle = subTurret.getAngle();
     lastHoodAngle = subPitch.getPitchAngle();
     lastIntakeAngle = subIntake.getPivotAngle();
+    initRollerAngle = subIntake.getRollerAngle();
 
     subTurret.setTurretAngle(0);
     subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
@@ -80,6 +81,7 @@ public class PrepAmp extends Command {
   public boolean isFinished() {
     // End immediately if we already have a note ready to amp.
     // Otherwise, end when we determine that we have a game piece in the intake
-    return subIntake.calcGamePieceReadyToAmp() || RobotContainer.getLockedLocation() == LockedLocation.AMP;
+    return subIntake.calcGamePieceReadyToAmp(initRollerAngle)
+        || RobotContainer.getLockedLocation() == LockedLocation.AMP;
   }
 }
