@@ -184,6 +184,8 @@ public class Shooter extends SubsystemBase implements Logged {
   public void setDesiredVoltage(double desiredLeftVoltage, double desiredRightVoltage) {
     setLeftDesiredVelocity(desiredLeftVoltage);
     setRightDesiredVelocity(desiredRightVoltage);
+    setLeftShooterIntakeVoltage(leftVoltage);
+    setRightShooterIntakeVoltage(rightVoltage);
   }
 
   public void setIgnoreFlywheelSpeed(boolean ignoreFlywheelSpeed) {

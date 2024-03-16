@@ -46,7 +46,7 @@ public class IntakeFromSource extends Command {
   public void initialize() {
     lastDesiredPitch = subPitch.getPitchAngle();
 
-    subShooter.setDesiredVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
+    subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
         prefShooter.rightShooterIntakeVoltage.getValue());
 
     subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), false);
@@ -58,7 +58,7 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subShooter.setDesiredVoltage(prefShooter.rightShooterIntakeVoltage.getValue(),
+    subShooter.setVoltage(prefShooter.rightShooterIntakeVoltage.getValue(),
         prefShooter.leftShooterIntakeVoltage.getValue());
     subShooter.getUpToSpeed();
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
@@ -74,11 +74,11 @@ public class IntakeFromSource extends Command {
     if (!interrupted) {
       subTransfer.repositionGamePiece();
 
-      subShooter.setDesiredVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
+      subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
           prefShooter.rightShooterIntakeVoltage.getValue());
     } else {
       subTransfer.setTransferNeutralOutput();
-      subShooter.setDesiredVoltage(0, 0);
+      subShooter.setVoltage(0, 0);
     }
 
     subShooter.getUpToSpeed();
