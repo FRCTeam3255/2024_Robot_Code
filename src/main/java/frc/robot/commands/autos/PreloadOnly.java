@@ -17,6 +17,9 @@ import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeGroundGamePiece;
+import frc.robot.commands.LockPitch;
+import frc.robot.commands.LockTurret;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.UnaliveShooter;
 import frc.robot.subsystems.Climber;
@@ -82,20 +85,34 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
         // throw out that intake
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter).withTimeout(2),
+        // TODO: REMOVE TIME OUT
+        // Redundant call (makes it easier for sim testing)
+        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
-        // Aim
-        Commands.parallel(
-            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-                prefShooter.rightShooterSpeakerVelocity.getValue())),
-            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+        Commands.race(
+            new Shoot(subShooter, subLEDs).repeatedly(),
+            new LockTurret(subTurret, subDrivetrain, subClimber).repeatedly(),
+            new LockPitch(subPitch, subDrivetrain, subClimber).repeatedly(),
 
-        // Shoot
-        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch).until(() -> !subTransfer.hasGamePiece),
-        Commands.parallel(
-            Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-            Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())),
+            // Shooting the game piece
+            Commands.sequence(
+                // Aim
+                Commands.parallel(
+                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+                    Commands
+                        .runOnce(
+                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                                prefShooter.rightShooterSpeakerVelocity.getValue())),
+                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+
+                // Shoot
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2), // TODO; REMOVE
+                Commands.parallel(
+                    Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
+                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
+
         new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)
 
     );
