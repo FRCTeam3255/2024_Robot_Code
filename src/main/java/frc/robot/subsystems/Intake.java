@@ -141,6 +141,8 @@ public class Intake extends SubsystemBase {
   public boolean calcGamePieceReadyToAmp() {
     // TODO: Add Logic
     return false;
+
+    // Run until encoder count i gueeess
   }
 
   // - Set -
