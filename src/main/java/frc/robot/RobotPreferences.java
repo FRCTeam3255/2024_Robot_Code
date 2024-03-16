@@ -53,13 +53,15 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Meters
      */
-    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 2.8);
+    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 2.9);
+    public static final SN_BooleanPreference climberForwardLimitEnable = new SN_BooleanPreference(
+        "climberForwardLimitEnable", true);
     /**
      * <b> Units: </b> Meters
      */
     public static final SN_DoublePreference climberMinPos = new SN_DoublePreference("climberMinPos", 0);
-
-    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
+    public static final SN_BooleanPreference climberReverseLimitEnable = new SN_BooleanPreference(
+        "climberReverseLimitEnable", true);
 
     // - Zeroing -
     /**
@@ -101,7 +103,7 @@ public class RobotPreferences {
 
     // - Current Limiting -
     public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
-        "climberSupplyCurrentLimitEnable", true);
+        "climberSupplyCurrentLimitEnable", false);
     public static final SN_DoublePreference climberSupplyCurrentLimitCeilingAmps = new SN_DoublePreference(
         "climberSupplyCurrentLimitCeilingAmps", 0.01);
     public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(

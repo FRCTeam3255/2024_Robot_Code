@@ -12,6 +12,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
+import com.frcteam3255.preferences.SN_BooleanPreference;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -43,6 +44,10 @@ public final class Constants {
     public static final double GEAR_RATIO = 18.56;
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
+
+    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
+
+    public static final InvertedValue MOTOR_INVERTED = InvertedValue.Clockwise_Positive;
   }
 
   public static class constControllers {

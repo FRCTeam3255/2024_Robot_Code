@@ -147,16 +147,18 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS()[6].toPose2d())));
 
     controller.btn_LeftTrigger
-        // .onTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter)
-        // .until(() -> getLockedLocation() == LockedLocation.AMP)
-        // .andThen(Commands.run(() ->
-        // subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue()))))
-        .whileTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())))
+        .whileTrue(
+            Commands.either(
+                new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter),
+                Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())),
+                () -> getLockedLocation() == LockedLocation.AMP))
         .onFalse(Commands.run(() -> subClimber.setPercentOutput(0)));
 
     controller.btn_RightTrigger
+        .onTrue(Commands.runOnce(() -> subClimber.setCurrentLimiting(false)))
         .whileTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberDownSpeed.getValue())))
-        .onFalse(Commands.run(() -> subClimber.setPercentOutput(0)));
+        .onFalse(Commands.run(() -> subClimber.setPercentOutput(0))
+            .alongWith(Commands.runOnce(() -> subClimber.setCurrentLimiting(false))));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));

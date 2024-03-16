@@ -56,10 +56,10 @@ public class Climber extends SubsystemBase {
     climberConfig.MotionMagic.MotionMagicJerk = prefClimber.climberJerk.getValue();
 
     // Software Limits
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = prefClimber.climberForwardLimitEnable.getValue();
     climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMaxPos.getValue();
 
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = prefClimber.climberReverseLimitEnable.getValue();
     climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMinPos.getValue();
 
     // Current Limiting
@@ -72,11 +72,22 @@ public class Climber extends SubsystemBase {
     climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
     climberConfig.MotorOutput.NeutralMode = constClimber.NEUTRAL_MODE;
 
-    climberMotor.setInverted(prefClimber.climberInverted.getValue());
+    climberConfig.MotorOutput.Inverted = constClimber.MOTOR_INVERTED;
     climberMotor.getConfigurator().apply(climberConfig);
   }
 
   // -- Set --
+
+  public void setCurrentLimiting(boolean enabled) {
+    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = enabled;
+    climberMotor.getConfigurator().apply(climberConfig);
+  }
+
+  public void setSoftwareLimits(boolean reverse, boolean forward) {
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    climberMotor.getConfigurator().apply(climberConfig);
+  }
 
   /**
    * Sets the climber to the given position using Motion Magic. The position will
@@ -120,13 +131,6 @@ public class Climber extends SubsystemBase {
    */
   public void setSensorAngle(double position) {
     climberMotor.setPosition(SN_Math.metersToRotations(position, 1, 1));
-  }
-
-  public void setSoftwareLimits(boolean reverse, boolean forward) {
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
-    climberMotor.getConfigurator().apply(climberConfig);
-    climberMotor.setInverted(prefClimber.climberInverted.getValue());
   }
 
   public void setNeutralOutput() {
