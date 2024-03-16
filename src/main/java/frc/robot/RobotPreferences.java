@@ -190,11 +190,21 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300); // 100
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
-    public static final SN_DoublePreference MotionMagicCruiseVelocity = new SN_DoublePreference(
-        "MotionMagicCruiseVelocity", 80);
-    public static final SN_DoublePreference MotionMagicAcceleration = new SN_DoublePreference("MotionMagicAcceleration",
+    /**
+     * <b> Units: </b> Rotations per second (rps)
+     */
+    public static final SN_DoublePreference pitchCruiseVelocity = new SN_DoublePreference(
+        "pitchCruiseVelocity", 80);
+    /**
+     * <b> Units: </b> Rotations per second per second (rps/s)
+     */
+    public static final SN_DoublePreference pitchAcceleration = new SN_DoublePreference(
+        "pitchAcceleration",
         160);
-    public static final SN_DoublePreference MotionMagicJerk = new SN_DoublePreference("MotionMagicJerk", 1600);
+    /**
+     * <b> Units: </b> Rotations per second per second per second (rps/s/s)
+     */
+    public static final SN_DoublePreference pitchJerk = new SN_DoublePreference("pitchJerk", 1600);
 
     /**
      * Takes a percentage of the controller joystick input to set as the manual
@@ -310,10 +320,10 @@ public class RobotPreferences {
 
     public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
         "leftShooterIntakeVelocity",
-        -10);
+        -3);
     public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
         "rightShooterIntakeVelocity",
-        -10);
+        -3);
 
     /**
      * <b>Units:</b> Meters per second
@@ -459,11 +469,20 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretCurrentTimeThreshold = new SN_DoublePreference(
         "turretCurrentTimeThreshold", 0.1);
 
-    public static final SN_DoublePreference MotionMagicCruiseVelocity = new SN_DoublePreference(
-        "MotionMagicCruiseVelocity", 80);
-    public static final SN_DoublePreference MotionMagicAcceleration = new SN_DoublePreference("MotionMagicAcceleration",
+    /**
+     * <b> Units: </b> Rotations per second per second (rps)
+     */
+    public static final SN_DoublePreference turretCruiseVelocity = new SN_DoublePreference(
+        "turretCruiseVelocity", 80);
+    /**
+     * <b> Units: </b> Rotations per second per second (rps/s)
+     */
+    public static final SN_DoublePreference turretAcceleration = new SN_DoublePreference("turretAcceleration",
         160);
-    public static final SN_DoublePreference MotionMagicJerk = new SN_DoublePreference("MotionMagicJerk", 1600);
+    /**
+     * <b> Units: </b> Rotations per second per second per second (rps/s/s)
+     */
+    public static final SN_DoublePreference turretJerk = new SN_DoublePreference("turretJerk", 1600);
 
     /**
      * <b>Units:</b> Degrees

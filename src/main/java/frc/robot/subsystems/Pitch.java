@@ -71,11 +71,11 @@ public class Pitch extends SubsystemBase implements Logged {
     pitchConfig.Slot0.kI = prefPitch.pitchI.getValue();
     pitchConfig.Slot0.kD = prefPitch.pitchD.getValue();
 
-    pitchConfig.MotionMagic.MotionMagicCruiseVelocity = prefPitch.MotionMagicCruiseVelocity.getValue();
+    pitchConfig.MotionMagic.MotionMagicCruiseVelocity = prefPitch.pitchCruiseVelocity.getValue();
     // Target cruise velocity of 80 rps
-    pitchConfig.MotionMagic.MotionMagicAcceleration = prefPitch.MotionMagicAcceleration.getValue();
+    pitchConfig.MotionMagic.MotionMagicAcceleration = prefPitch.pitchAcceleration.getValue();
     // Target acceleration of 160 rps/s (0.5 seconds)
-    pitchConfig.MotionMagic.MotionMagicJerk = prefPitch.MotionMagicJerk.getValue();
+    pitchConfig.MotionMagic.MotionMagicJerk = prefPitch.pitchJerk.getValue();
     // Target jerk of 1600 rps/s/s (0.1 seconds)
 
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
