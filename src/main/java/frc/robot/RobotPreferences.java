@@ -190,6 +190,11 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300); // 100
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
+    public static final SN_DoublePreference MotionMagicCruiseVelocity = new SN_DoublePreference(
+        "MotionMagicCruiseVelocity", 80);
+    public static final SN_DoublePreference MotionMagicAcceleration = new SN_DoublePreference("MotionMagicAcceleration",
+        160);
+    public static final SN_DoublePreference MotionMagicJerk = new SN_DoublePreference("MotionMagicJerk", 1600);
 
     /**
      * Takes a percentage of the controller joystick input to set as the manual
@@ -453,6 +458,12 @@ public class RobotPreferences {
         30);
     public static final SN_DoublePreference turretCurrentTimeThreshold = new SN_DoublePreference(
         "turretCurrentTimeThreshold", 0.1);
+
+    public static final SN_DoublePreference MotionMagicCruiseVelocity = new SN_DoublePreference(
+        "MotionMagicCruiseVelocity", 80);
+    public static final SN_DoublePreference MotionMagicAcceleration = new SN_DoublePreference("MotionMagicAcceleration",
+        160);
+    public static final SN_DoublePreference MotionMagicJerk = new SN_DoublePreference("MotionMagicJerk", 1600);
 
     /**
      * <b>Units:</b> Degrees

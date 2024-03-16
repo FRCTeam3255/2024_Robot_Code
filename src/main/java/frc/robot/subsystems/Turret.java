@@ -81,9 +81,9 @@ public class Turret extends SubsystemBase implements Logged {
     turretConfig.Slot0.kI = prefTurret.turretI.getValue();
     turretConfig.Slot0.kD = prefTurret.turretD.getValue();
 
-    turretConfig.MotionMagic.MotionMagicCruiseVelocity = 160; // rps
-    turretConfig.MotionMagic.MotionMagicAcceleration = 160; // rps/s
-    turretConfig.MotionMagic.MotionMagicJerk = 1600; // rps/s/s
+    turretConfig.MotionMagic.MotionMagicCruiseVelocity = prefTurret.MotionMagicCruiseVelocity.getValue(); // rps
+    turretConfig.MotionMagic.MotionMagicAcceleration = prefTurret.MotionMagicAcceleration.getValue(); // rps/s
+    turretConfig.MotionMagic.MotionMagicJerk = prefTurret.MotionMagicJerk.getValue(); // rps/s/s
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefTurret.turretForwardLimit.getValue();
