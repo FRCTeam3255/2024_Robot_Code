@@ -52,7 +52,7 @@ public class IntakeFromSource extends Command {
     subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), false);
 
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
-    subShooter.setDesiredVelocities(0, 0);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -76,7 +76,6 @@ public class IntakeFromSource extends Command {
     } else {
       subTransfer.setTransferNeutralOutput();
       subShooter.setDesiredVelocities(0, 0);
-      subShooter.setVoltage(0, 0);
     }
 
     subShooter.getUpToSpeed();
@@ -90,6 +89,6 @@ public class IntakeFromSource extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.intakeSourceGamePieceDetection();
+    return subTransfer.calcGamePieceCollected();
   }
 }
