@@ -101,6 +101,13 @@ public class Intake extends SubsystemBase {
   }
 
   /**
+   * @return The current angle of the pivot. <b> Units: </b> Degrees
+   */
+  public double getPivotAngle() {
+    return Units.rotationsToDegrees(pivotMotor.getPosition().getValueAsDouble());
+  }
+
+  /**
    * Get the current position of the absolute encoder (with offset applied)
    * 
    * @return Position in rotations (with offset)
@@ -111,6 +118,29 @@ public class Intake extends SubsystemBase {
     rotations -= absoluteEncoderOffset;
 
     return rotations;
+  }
+
+  /**
+   * @param angle The angle to check if we are at <b>Units:</b> Degrees
+   * @return If we are within our tolerance to that angle
+   */
+  public boolean isPivotAtAngle(double angle) {
+    if (Math.abs(getPivotAngle() - angle) <= prefIntake.pivotIsAtAngleTolerance.getValue()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Calculates if we have a game piece stored in the intake, making us ready to
+   * amplify.
+   * 
+   * @return If we have a game piece.
+   */
+  public boolean calcGamePieceReadyToAmp() {
+    // TODO: Add Logic
+    return false;
   }
 
   // - Set -
@@ -155,17 +185,6 @@ public class Intake extends SubsystemBase {
    */
   public void setPivotNeutralOutput() {
     pivotMotor.setControl(new NeutralOut());
-  }
-
-  /**
-   * Calculates if we have a game piece stored in the intake, making us ready to
-   * amplify.
-   * 
-   * @return If we have a game piece.
-   */
-  public boolean calcGamePieceReadyToAmp() {
-    // TODO: Add Logic
-    return false;
   }
 
   @Override

@@ -91,7 +91,7 @@ public class RobotPreferences {
     /**
      * <p>
      * The value that the climber reports when it is at it's zeroed position. This
-     * may not necessarily be 0 due to mechanical >:(
+     * may not necessarily be 0 due to mechanical slop
      * </p>
      * <b>Units:</b> Meters
      */
@@ -297,6 +297,13 @@ public class RobotPreferences {
         "rollerStageAmpNoteSpeed", -0.5);
 
     // - Angles -
+
+    /**
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference pivotIsAtAngleTolerance = new SN_DoublePreference("pivotIsAtAngleTolerance",
+        0.5);
+
     /**
      * <b> Units: </b> Degrees
      */
@@ -389,6 +396,16 @@ public class RobotPreferences {
      * <b>Units:</b> Seconds
      */
     public static final SN_DoublePreference pitchZeroedTime = new SN_DoublePreference("pitchZeroedTime", 0.25);
+
+    /**
+     * <p>
+     * The value that the pitch reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical slop
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference pitchZeroedSensorAngle = new SN_DoublePreference("pitchZeroedSensorAngle",
+        Units.degreesToRotations(6));
 
     /**
      * <p>

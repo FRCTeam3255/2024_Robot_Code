@@ -47,7 +47,7 @@ public class ZeroPitch extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subPitch.setPitchSensorAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+      subPitch.setPitchSensorAngle(Units.rotationsToDegrees(prefPitch.pitchZeroedSensorAngle.getValue()));
     }
   }
 

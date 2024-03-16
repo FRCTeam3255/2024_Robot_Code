@@ -53,9 +53,11 @@ public class TransferGamePiece extends Command {
         return;
       }
     } else {
-      // TODO: Do we want to check if we are actually at the desired intake pivot
-      // position before amping?
-      subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue());
+      subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getValue());
+      if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceAmpAngle.getValue())) {
+        subTransfer.setGamePieceCollected(false);
+        subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue());
+      }
     }
     subTransfer.setFeederMotorSpeed(0);
     subTransfer.setTransferMotorSpeed(0);
