@@ -41,6 +41,7 @@ import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualHoodMovement;
 import frc.robot.commands.ManualTurretMovement;
 import frc.robot.commands.Panic;
+import frc.robot.commands.RepositionGamePiece;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.UnaliveShooter;
@@ -168,7 +169,9 @@ public class RobotContainer implements Logged {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter));
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter))
+        .whileFalse(
+            new RepositionGamePiece(subTransfer, subShooter).unless(() -> !subTransfer.calcGamePieceCollected()));
     controller.btn_LeftBumper
         .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
         .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
