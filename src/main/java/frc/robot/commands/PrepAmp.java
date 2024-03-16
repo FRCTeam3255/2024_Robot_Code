@@ -41,7 +41,7 @@ public class PrepAmp extends Command {
     lastTurretAngle = subTurret.getAngle();
     lastHoodAngle = subPitch.getPitchAngle();
     lastIntakeAngle = subIntake.getPivotAngle();
-    initRollerAngle = subIntake.getRollerAngle();
+    initRollerAngle = -3255;
 
     subTurret.setTurretAngle(0);
     subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
@@ -55,6 +55,11 @@ public class PrepAmp extends Command {
 
   @Override
   public void execute() {
+    // Begin our timer when our pivot is at the transfer position
+    if (initRollerAngle == -3255 && subIntake.isPivotAtAngle(prefIntake.pivotTransferToAmpAngle.getValue())) {
+      initRollerAngle = subIntake.getRollerAngle();
+    }
+
     // Stage note in the intake until the game piece is collected in there
     subIntake.setIntakeRollerSpeed(prefIntake.rollerStageAmpNoteSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());

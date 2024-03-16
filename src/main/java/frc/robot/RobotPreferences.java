@@ -28,7 +28,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0);
     public static final SN_DoublePreference climberG = new SN_DoublePreference("climberG", 0);
-    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 1);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0);
     public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
     public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
