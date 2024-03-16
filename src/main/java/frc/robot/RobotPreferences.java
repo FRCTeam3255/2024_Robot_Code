@@ -216,14 +216,15 @@ public class RobotPreferences {
 
   public static final class prefIntake {
     // - Configs -
-    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0);
-    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0);
-    public static final SN_DoublePreference pivotA = new SN_DoublePreference("pivotA", 0);
-    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 1);
+    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.4);
+    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0.0);
+    public static final SN_DoublePreference pivotA = new SN_DoublePreference("pivotA", 0.1);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 30);
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
     public static final SN_BooleanPreference pivotInverted = new SN_BooleanPreference("pivotInverted", false);
+    public static final SN_BooleanPreference rollerInverted = new SN_BooleanPreference("rollerInverted", true);
 
     // - Motion Magic -
     /**
@@ -264,7 +265,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference pivotMaxPos = new SN_DoublePreference("pivotMaxPos", 112);
+    public static final SN_DoublePreference pivotMaxPos = new SN_DoublePreference("pivotMaxPos", 106);
 
     /**
      * <b> Units: </b> Degrees
@@ -303,7 +304,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pivotIsAtAngleTolerance = new SN_DoublePreference("pivotIsAtAngleTolerance",
-        0.5);
+        4);
 
     /**
      * <p>
@@ -317,7 +318,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotStowAngle = new SN_DoublePreference(
-        "pivotStowAngle", 5);
+        "pivotStowAngle", 30.5);
 
     /**
      * <p>
@@ -326,7 +327,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
-        "pivotGroundIntakeAngle", 10);
+        "pivotGroundIntakeAngle", 105);
 
     /**
      * <p>
@@ -336,7 +337,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotTransferToAmpAngle = new SN_DoublePreference("pivotTransferToAmpAngle",
-        10);
+        11.4);
 
     /**
      * <p>
@@ -345,7 +346,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
-        10);
+        11.4);
 
   }
 

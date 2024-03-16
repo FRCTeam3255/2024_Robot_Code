@@ -210,6 +210,8 @@ public class RobotContainer implements Logged {
             () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(true))));
 
+    // STOW
+    controller.btn_Y.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
   }
 
   private void configureAutoSelector() {

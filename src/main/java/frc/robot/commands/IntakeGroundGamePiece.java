@@ -65,9 +65,7 @@ public class IntakeGroundGamePiece extends Command {
       subClimber.setNeutralOutput();
     }
 
-    if (subIntake.isPivotAtAngle(prefIntake.pivotGroundIntakeAngle.getValue())) {
-      subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
-    }
+    subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
 
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());

@@ -72,9 +72,11 @@ public class Intake extends SubsystemBase {
 
     // Soft Limits
     pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefIntake.pivotMaxPos.getValue();
+    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
+        .degreesToRotations(prefIntake.pivotMaxPos.getValue());
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.pivotMinPos.getValue();
+    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units
+        .degreesToRotations(prefIntake.pivotMinPos.getValue());
 
     // Current Limiting
     pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = prefIntake.pivotEnableCurrentLimiting.getValue();
@@ -85,10 +87,10 @@ public class Intake extends SubsystemBase {
     pivotConfig.Feedback.SensorToMechanismRatio = constIntake.GEAR_RATIO;
     pivotConfig.MotorOutput.NeutralMode = constIntake.PIVOT_NEUTRAL_MODE;
 
-    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
-
     rollerMotor.getConfigurator().apply(rollerConfig);
     pivotMotor.getConfigurator().apply(pivotConfig);
+    rollerMotor.setInverted(prefIntake.rollerInverted.getValue());
+    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
   }
 
   // - Get -
