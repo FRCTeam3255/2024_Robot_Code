@@ -58,8 +58,7 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subShooter.setVoltage(prefShooter.rightShooterIntakeVoltage.getValue(),
-        prefShooter.leftShooterIntakeVoltage.getValue());
+
     subShooter.getUpToSpeed();
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
@@ -74,11 +73,11 @@ public class IntakeFromSource extends Command {
     if (!interrupted) {
       subTransfer.repositionGamePiece();
 
-      subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
-          prefShooter.rightShooterIntakeVoltage.getValue());
+      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+          prefShooter.rightShooterSubVelocity.getValue());
     } else {
       subTransfer.setTransferNeutralOutput();
-      subShooter.setVoltage(0, 0);
+      subShooter.setDesiredVelocities(0, 0);
     }
 
     subShooter.getUpToSpeed();
