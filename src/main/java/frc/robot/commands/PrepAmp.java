@@ -41,7 +41,6 @@ public class PrepAmp extends Command {
     lastTurretAngle = subTurret.getAngle();
     lastHoodAngle = subPitch.getPitchAngle();
     lastIntakeAngle = subIntake.getPivotAngle();
-    initRollerAngle = -3255;
 
     subTurret.setTurretAngle(0);
     subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
@@ -50,20 +49,18 @@ public class PrepAmp extends Command {
     subShooter.getUpToSpeed();
     subShooter.setIgnoreFlywheelSpeed(false); // Here b/c we call it whenever we change presets
 
+    subIntake.setRollerSensorAngle(0);
     subIntake.setPivotAngle(prefIntake.pivotTransferToAmpAngle.getValue());
   }
 
   @Override
   public void execute() {
     // Begin our timer when our pivot is at the transfer position
-    if (initRollerAngle == -3255 && subIntake.isPivotAtAngle(prefIntake.pivotTransferToAmpAngle.getValue())) {
-      initRollerAngle = subIntake.getRollerAngle();
+    if (subIntake.isPivotAtAngle(prefIntake.pivotTransferToAmpAngle.getValue())) {
+      subIntake.setIntakeRollerSpeed(prefIntake.rollerStageAmpNoteSpeed.getValue());
+      subTransfer.setFeederMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
     }
-
-    // Stage note in the intake until the game piece is collected in there
-    subIntake.setIntakeRollerSpeed(prefIntake.rollerStageAmpNoteSpeed.getValue());
-    subTransfer.setFeederMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
   }
 
   @Override
@@ -86,7 +83,7 @@ public class PrepAmp extends Command {
   public boolean isFinished() {
     // End immediately if we already have a note ready to amp.
     // Otherwise, end when we determine that we have a game piece in the intake
-    return subIntake.calcGamePieceReadyToAmp(initRollerAngle)
+    return subIntake.calcGamePieceReadyToAmp()
         || RobotContainer.getLockedLocation() == LockedLocation.AMP;
   }
 }

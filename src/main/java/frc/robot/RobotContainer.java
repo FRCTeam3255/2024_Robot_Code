@@ -196,7 +196,7 @@ public class RobotContainer implements Logged {
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Amp Preset
-    controller.btn_B.onTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter));
+    controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))

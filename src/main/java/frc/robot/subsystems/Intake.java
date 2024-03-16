@@ -148,14 +148,12 @@ public class Intake extends SubsystemBase {
    * Calculates if we have a game piece stored in the intake, making us ready to
    * amplify.
    *
-   * @param initPosition The initial position of the rollers, in rotations
    * @return If we have a game piece.
    */
-  public boolean calcGamePieceReadyToAmp(double initPosition) {
-    double finalPosition = Units.rotationsToDegrees(initPosition) + prefIntake.rollerRotationsToAmp.getValue();
+  public boolean calcGamePieceReadyToAmp() {
     double currentPosition = Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
 
-    return finalPosition - currentPosition >= 0;
+    return currentPosition <= -prefIntake.rollerRotationsToAmp.getValue();
   }
 
   // - Set -
@@ -202,11 +200,23 @@ public class Intake extends SubsystemBase {
     pivotMotor.setControl(new NeutralOut());
   }
 
+  /**
+   * Sets the current angle of the roller motor to read as the given value
+   * 
+   * @param angle The angle to set the roller motor to. <b> Units: </b> Degrees
+   */
+  public void setRollerSensorAngle(double angle) {
+    rollerMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Intake/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Intake/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
     SmartDashboard.putNumber("Intake/Angle (Degrees)", getPivotAngle());
+
+    SmartDashboard.putNumber("Intake/Roller Angle (Degrees)", getRollerAngle());
+    SmartDashboard.putBoolean("Intake/Calc GP ready amp", calcGamePieceReadyToAmp());
 
   }
 }

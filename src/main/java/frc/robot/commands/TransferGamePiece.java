@@ -70,6 +70,7 @@ public class TransferGamePiece extends Command {
   public void end(boolean interrupted) {
     subTransfer.setFeederMotorSpeed(0);
     subTransfer.setTransferMotorSpeed(0);
+    subIntake.setIntakeRollerSpeed(0);
   }
 
   // Returns true when the command should end.

@@ -7,6 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
@@ -55,6 +58,10 @@ public class IntakeGroundGamePiece extends Command {
     subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
     subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
     subClimber.setPosition(prefClimber.climberMinPos.getValue());
+
+    if (RobotContainer.getLockedLocation() == LockedLocation.AMP) {
+      RobotContainer.setLockedLocation(LockedLocation.NONE);
+    }
   }
 
   @Override
@@ -64,9 +71,9 @@ public class IntakeGroundGamePiece extends Command {
       climberReachedBottom = true;
       subClimber.setNeutralOutput();
     }
-
-    subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
-
+    if (subIntake.isPivotAtAngle(prefIntake.pivotGroundIntakeAngle.getValue())) {
+      subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
+    }
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
   }

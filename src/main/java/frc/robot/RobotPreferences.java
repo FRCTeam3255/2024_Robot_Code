@@ -304,7 +304,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pivotIsAtAngleTolerance = new SN_DoublePreference("pivotIsAtAngleTolerance",
-        4);
+        10);
 
     /**
      * <p>
@@ -312,7 +312,8 @@ public class RobotPreferences {
      * </p>
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference rollerRotationsToAmp = new SN_DoublePreference("rollerRotationsToAmp", 360);
+    public static final SN_DoublePreference rollerRotationsToAmp = new SN_DoublePreference("rollerRotationsToAmp",
+        21000);
 
     /**
      * <b> Units: </b> Degrees
@@ -337,7 +338,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotTransferToAmpAngle = new SN_DoublePreference("pivotTransferToAmpAngle",
-        11.4);
+        105);
 
     /**
      * <p>
