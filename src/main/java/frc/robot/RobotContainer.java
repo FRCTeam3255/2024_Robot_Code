@@ -48,6 +48,7 @@ import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
+import frc.robot.commands.autos.PreloadOnly;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Annotations.Log;
@@ -247,6 +248,20 @@ public class RobotContainer implements Logged {
   private void configureAutoSelector() {
     autoChooser.setDefaultOption("Default Auto",
         new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber));
+
+    // PRELOAD ONLY
+    autoChooser.setDefaultOption("Preload S1",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, 0));
+    autoChooser.setDefaultOption("Preload S2",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, 1));
+    autoChooser.setDefaultOption("Preload S3",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, 2));
+    autoChooser.setDefaultOption("Preload S4",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, 3));
+    autoChooser.setDefaultOption("Preload S5",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, 4));
+
+    SmartDashboard.putData(autoChooser);
   }
 
   public Command getAutonomousCommand() {
