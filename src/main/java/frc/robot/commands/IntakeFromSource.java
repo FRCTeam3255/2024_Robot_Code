@@ -58,8 +58,6 @@ public class IntakeFromSource extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    subShooter.getUpToSpeed();
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
   }

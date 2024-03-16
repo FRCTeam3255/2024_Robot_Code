@@ -56,7 +56,7 @@ public class Shooter extends SubsystemBase implements Logged {
 
     rightInvert = (RobotContainer.isPracticeBot()) ? constShooter.pracBot.RIGHT_INVERT
         : constShooter.RIGHT_INVERT;
-
+    voltageRequest = new VoltageOut(0);
     velocityRequest = new VelocityVoltage(0).withSlot(0);
     motionMagicRequest = new MotionMagicVelocityVoltage(0);
 
@@ -111,7 +111,6 @@ public class Shooter extends SubsystemBase implements Logged {
 
   public void setRightShooterIntakeVoltage(double voltage) {
     rightMotor.setControl(voltageRequest.withOutput(voltage));
-    leftMotor.setControl(voltageRequest.withOutput(voltage));
   }
 
   /**
