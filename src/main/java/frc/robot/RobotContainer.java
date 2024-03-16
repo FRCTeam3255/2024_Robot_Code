@@ -194,18 +194,7 @@ public class RobotContainer implements Logged {
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Amp Preset
-    // controller.btn_B.onTrue(Commands.runOnce(() ->
-    // setLockedLocation(LockedLocation.NONE))
-    // .alongWith(
-    // Commands.runOnce(() ->
-    // subShooter.setDesiredVelocities(prefShooter.leftShooterAmpVelocity.getValue(),
-    // prefShooter.rightShooterAmpVelocity.getValue()))
-    // .alongWith(Commands.runOnce(() ->
-    // subTurret.setTurretAngle(prefTurret.turretAmpPresetPos.getValue())))
-    // .alongWith(Commands.runOnce(
-    // () -> subPitch.setPitchAngle(prefPitch.pitchAmpAngle.getValue()))))
-    // .alongWith(Commands.runOnce(() ->
-    // subShooter.setIgnoreFlywheelSpeed(false))));
+    controller.btn_B.onTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter));
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -218,20 +207,6 @@ public class RobotContainer implements Logged {
         .alongWith(Commands.runOnce(
             () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(true))));
-
-    // Trap Preset
-    // controller.btn_Y.onTrue(Commands.runOnce(() ->
-    // setLockedLocation(LockedLocation.NONE)).alongWith(
-    // Commands.runOnce(() ->
-    // subShooter.setDesiredVelocities(prefShooter.leftShooterTrapVelocity.getValue(),
-    // prefShooter.rightShooterTrapVelocity.getValue())))
-    // .alongWith(
-    // Commands.runOnce(
-    // () -> subTurret.setTurretAngle(prefTurret.turretTrapPresetPos.getValue(),
-    // subClimber.collidesWithTurret())))
-    // .alongWith(Commands.runOnce(
-    // () -> subPitch.setPitchAngle(prefPitch.pitchTrapAngle.getValue(),
-    // subClimber.collidesWithPitch()))));
 
   }
 

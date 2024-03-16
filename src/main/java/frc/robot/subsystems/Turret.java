@@ -135,7 +135,7 @@ public class Turret extends SubsystemBase implements Logged {
   }
 
   /**
-   * Sets the speed of the turet motor
+   * Sets the speed of the turret motor
    * 
    * @param speed The speed to set the turret motor to (-1 to 1)
    */
