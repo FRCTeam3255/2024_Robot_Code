@@ -409,11 +409,15 @@ public class RobotContainer implements Logged {
         subLEDs.setIndividualLED(rotationColor, 3);
         subLEDs.setIndividualLED(rotationColor, 4);
         subLEDs.setIndividualLED(rotationColor, 7);
+        subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
+        previousYTranslationColor = YTranslationColor;
         previousRotationColor = rotationColor;
       }
       if (previousXTranslationColor != XTranslationColor) {
         subLEDs.setIndividualLED(XTranslationColor, 1);
         subLEDs.setIndividualLED(XTranslationColor, 2);
+        subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
+        previousYTranslationColor = YTranslationColor;
         previousXTranslationColor = XTranslationColor;
       }
       if (previousYTranslationColor != YTranslationColor) {
