@@ -181,9 +181,7 @@ public class Shooter extends SubsystemBase implements Logged {
     setRightDesiredVelocity(desiredRightVelocity);
   }
 
-  public void setDesiredVoltage(double desiredLeftVoltage, double desiredRightVoltage) {
-    setLeftDesiredVelocity(desiredLeftVoltage);
-    setRightDesiredVelocity(desiredRightVoltage);
+  public void setVoltage(double leftVoltage, double rightVoltage) {
     setLeftShooterIntakeVoltage(leftVoltage);
     setRightShooterIntakeVoltage(rightVoltage);
   }
