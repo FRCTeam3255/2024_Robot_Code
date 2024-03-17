@@ -108,7 +108,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
-                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2), // TODO; REMOVE
+                    .until(() -> !subTransfer.hasGamePiece), 
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),

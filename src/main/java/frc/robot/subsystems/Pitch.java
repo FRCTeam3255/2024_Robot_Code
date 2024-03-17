@@ -235,6 +235,7 @@ public class Pitch extends SubsystemBase implements Logged {
     }
 
     // Get the pitch pose (field relative)
+
     Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
 
     // Get distances from the pitch pose to the target pose and then calculate the
@@ -248,10 +249,9 @@ public class Pitch extends SubsystemBase implements Logged {
     return Optional.of(desiredLockingAngle);
   }
 
-  public Pose3d getAngleAsTransform3d() {
-    return new Pose3d(new Translation3d(0, 0, 0), // 0.1, 0, 0.242
-        new Rotation3d(0, Units.rotationsToDegrees(getPitchAngle()),
-            0));
+  public Pose3d getAngleAsTransform3d(double turretRotation) {
+    return new Pose3d(new Translation3d(-0.1, 0, 0.36),
+        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), turretRotation));
   }
 
   @Override

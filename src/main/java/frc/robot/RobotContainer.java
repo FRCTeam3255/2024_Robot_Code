@@ -12,6 +12,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -96,6 +98,12 @@ public class RobotContainer implements Logged {
   static Pose3d turretPose = new Pose3d();
   @Log.NT
   static Pose3d hoodPose = new Pose3d();
+  @Log.NT
+  static Pose3d carriagePose;
+  @Log.NT
+  static Pose3d intakePose;
+
+  static double climberPos = 0;
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -172,6 +180,9 @@ public class RobotContainer implements Logged {
     controller.btn_LeftBumper
         .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
         .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+
+    controller.btn_LeftBumper.onTrue(Commands.runOnce(() -> climberPos = 2));
+    controller.btn_RightBumper.onTrue(Commands.runOnce(() -> climberPos = 0));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North
@@ -284,9 +295,16 @@ public class RobotContainer implements Logged {
   public static void updateLoggedPoses() {
     currentRobotPose = subDrivetrain.getPose3d();
     turretPose = subTurret.getAngleAsPose3d();
-    Pose3d tempPose = subPitch.getAngleAsTransform3d();
-    hoodPose = new Pose3d(turretPose.getTranslation().plus(tempPose.getTranslation()),
-        turretPose.getRotation().rotateBy(tempPose.getRotation()));
+    Pose3d tempPose = subPitch.getAngleAsTransform3d(turretPose.getRotation().getZ());
+    hoodPose = tempPose;
+
+    // currentRobotPose = new Pose3d();
+    // turretPose = new Pose3d();
+    // hoodPose = new Pose3d();
+    carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) * climberPos), 0,
+        ((Math.sin(Units.degreesToRadians(78.75))) * climberPos),
+        new Rotation3d());
+    intakePose = new Pose3d();
   }
 
   // --- PDH ---
