@@ -179,6 +179,7 @@ public class RobotContainer implements Logged {
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North
         .whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret, subClimber));
+    // .whileFalse(new RepositionGamePiece(subTransfer, subShooter));
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch, subClimber));
     controller.btn_West.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
     controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
