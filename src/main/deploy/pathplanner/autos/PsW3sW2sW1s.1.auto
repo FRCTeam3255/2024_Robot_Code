@@ -5,7 +5,7 @@
       "x": 1.44,
       "y": 4.098365783691406
     },
-    "rotation": -7.001498277952742e-28
+    "rotation": 179.99984796050427
   },
   "command": {
     "type": "sequential",
@@ -15,18 +15,6 @@
           "type": "path",
           "data": {
             "pathName": "PsW3sW2sW1s.1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "PsW3sW2sW1s.2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "PsW3sW2sW1s.3"
           }
         }
       ]

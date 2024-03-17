@@ -5,7 +5,7 @@
       "x": 1.4642982482910156,
       "y": 7.331196784973144
     },
-    "rotation": -1.3392769334155004e-26
+    "rotation": 179.99469134034814
   },
   "command": {
     "type": "sequential",
@@ -32,6 +32,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Wing Down",
   "choreoAuto": true
 }

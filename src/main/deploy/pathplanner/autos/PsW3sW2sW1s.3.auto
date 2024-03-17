@@ -2,27 +2,15 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.44,
-      "y": 4.098365783691406
+      "x": 2.3282,
+      "y": 5.220333290100099
     },
-    "rotation": -7.001498277952742e-28
+    "rotation": 225.00002808595252
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "path",
-          "data": {
-            "pathName": "PsW3sW2sW1s.1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "PsW3sW2sW1s.2"
-          }
-        },
         {
           "type": "path",
           "data": {

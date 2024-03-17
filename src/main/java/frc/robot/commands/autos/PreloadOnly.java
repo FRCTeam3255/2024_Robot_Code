@@ -84,15 +84,15 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
         // throw out that intake
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter).withTimeout(2),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(2),
         // TODO: REMOVE TIME OUT
         // Redundant call (makes it easier for sim testing)
         Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
         Commands.race(
             new Shoot(subShooter, subLEDs).repeatedly(),
-            new LockTurret(subTurret, subDrivetrain, subClimber).repeatedly(),
-            new LockPitch(subPitch, subDrivetrain, subClimber).repeatedly(),
+            new LockTurret(subTurret, subDrivetrain).repeatedly(),
+            new LockPitch(subPitch, subDrivetrain).repeatedly(),
 
             // Shooting the game piece
             Commands.sequence(
@@ -106,13 +106,13 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
                     Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
 
                 // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch)
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
                     .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
 
-        new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)
+        new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)
 
     );
   }
