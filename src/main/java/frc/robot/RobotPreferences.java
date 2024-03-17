@@ -488,12 +488,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
         "shooterUpToSpeedTolerance", 0.7);
 
-    public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
-        "leftShooterIntakeVelocity",
-        -10);
-    public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
-        "rightShooterIntakeVelocity",
-        -10);
+    public static final SN_DoublePreference leftShooterIntakeVoltage = new SN_DoublePreference(
+        "leftShooterIntakeVoltage",
+        -3);
+    public static final SN_DoublePreference rightShooterIntakeVoltage = new SN_DoublePreference(
+        "rightShooterIntakeVoltage",
+        -3);
 
     /**
      * <b>Units:</b> Meters per second
