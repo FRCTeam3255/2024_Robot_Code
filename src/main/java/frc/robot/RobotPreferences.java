@@ -24,34 +24,110 @@ import edu.wpi.first.math.util.Units;
  */
 public class RobotPreferences {
   public static final class prefClimber {
-    public static final SN_DoublePreference climberGtele = new SN_DoublePreference("climberGtele", 0);
-    public static final SN_DoublePreference climberPtele = new SN_DoublePreference("climberPtele", 0);
-    public static final SN_DoublePreference climberItele = new SN_DoublePreference("climberItele", 0);
-    public static final SN_DoublePreference climberDtele = new SN_DoublePreference("climberDtele", 0);
+    // - PID -
+    public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
+    public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0);
+    public static final SN_DoublePreference climberG = new SN_DoublePreference("climberG", 0);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0);
+    public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
+    public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
+
+    // - Motion Magic -
+    /**
+     * <b> Units: </b> Rotations per second (rps)
+     */
+    public static final SN_DoublePreference climberCruiseVelocity = new SN_DoublePreference(
+        "climberCruiseVelocity", 80);
 
     /**
-     * <b>Units:</b> Degrees
+     * <b> Units: </b> Rotations per second per second (rps/s)
      */
-    public static final SN_DoublePreference climberMotorForwardLimit = new SN_DoublePreference(
-        "climberMotorForwardLimit", 75);
+    public static final SN_DoublePreference climberAcceleration = new SN_DoublePreference(
+        "climberAcceleration", 160);
     /**
-     * <b>Units:</b> Degrees
+     * <b> Units: </b> Rotations per second per second per second (rps/s/s)
      */
-    public static final SN_DoublePreference climberMotorReverseLimit = new SN_DoublePreference(
-        "climberMotorReverseLimit", 0);
+    public static final SN_DoublePreference climberJerk = new SN_DoublePreference("climberJerk", 1600);
 
-    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
+    // - Soft Limits -
+    /**
+     * <b> Units: </b> Meters
+     */
+    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 2.99);
+    public static final SN_BooleanPreference climberForwardLimitEnable = new SN_BooleanPreference(
+        "climberForwardLimitEnable", true);
+    /**
+     * <b> Units: </b> Meters
+     */
+    public static final SN_DoublePreference climberMinPos = new SN_DoublePreference("climberMinPos", 0);
+    public static final SN_BooleanPreference climberReverseLimitEnable = new SN_BooleanPreference(
+        "climberReverseLimitEnable", true);
+
+    // - Zeroing -
+    /**
+     * <p>
+     * The voltage supplied to the motor in order to zero
+     * </p>
+     * <b>Units:</b> Volts
+     */
+    public static final SN_DoublePreference climberZeroingVoltage = new SN_DoublePreference("climberZeroingVoltage",
+        -1);
 
     /**
-     * <b>Units:</b> Degrees
+     * <p>
+     * The elapsed time required to consider the climber motor as zeroed
+     * </p>
+     * <b>Units:</b> Seconds
      */
-    public static final SN_DoublePreference climberAtAngleTolerance = new SN_DoublePreference("climberAtAngleTolerance",
-        5);
+    public static final SN_DoublePreference climberZeroedTime = new SN_DoublePreference("climberZeroedTime", 1);
 
-    public static final SN_DoublePreference climberMotorUpSpeed = new SN_DoublePreference(
-        "climberMotorUpSpeed", 0.2);
-    public static final SN_DoublePreference climberMotorDownSpeed = new SN_DoublePreference(
-        "climberMotorDownSpeed", -0.2);
+    /**
+     * <p>
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     * </p>
+     * <b>Units:</b> Meters per second
+     */
+    public static final SN_DoublePreference climberZeroedVelocity = new SN_DoublePreference("climberZeroedVelocity",
+        0.2);
+
+    /**
+     * <p>
+     * The value that the climber reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical slop
+     * </p>
+     * <b>Units:</b> Meters
+     */
+    public static final SN_DoublePreference climberSensorZeroedPos = new SN_DoublePreference("climberSensorZeroedPos",
+        0);
+
+    // - Current Limiting -
+    public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
+        "climberSupplyCurrentLimitEnable", false);
+    public static final SN_DoublePreference climberSupplyCurrentLimitCeilingAmps = new SN_DoublePreference(
+        "climberSupplyCurrentLimitCeilingAmps", 0.01);
+    public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
+        "climberSupplyCurrentThreshold", 5);
+    public static final SN_DoublePreference climberSupplyTimeThreshold = new SN_DoublePreference(
+        "climberSupplyTimeThreshold", 0.1);
+
+    // - Speeds -
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 0.2);
+
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference climberDownSpeed = new SN_DoublePreference("climberDownSpeed", -0.25);
+
+    // - Positions -
+    /**
+     * <b> Units: </b> Meters
+     */
+    public static final SN_DoublePreference climberIsAtPositionTolerance = new SN_DoublePreference(
+        "climberIsAtPositionTolerance", 0.2);
 
   }
 
@@ -141,53 +217,152 @@ public class RobotPreferences {
   }
 
   public static final class prefIntake {
+    // - Configs -
+    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.4);
+    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0.0);
+    public static final SN_DoublePreference pivotA = new SN_DoublePreference("pivotA", 0.1);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 30);
+    public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
+    public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
-    public static final SN_BooleanPreference intakeEnableCurrentLimiting = new SN_BooleanPreference(
-        "intakeEnableCurrentLimiting", true);
-    public static final SN_DoublePreference intakeCurrentThreshold = new SN_DoublePreference("intakeCurrentThreshold",
+    public static final SN_BooleanPreference pivotInverted = new SN_BooleanPreference("pivotInverted", false);
+    public static final SN_BooleanPreference rollerInverted = new SN_BooleanPreference("rollerInverted", true);
+
+    // - Motion Magic -
+    /**
+     * <b> Units: </b> Rotations per second (rps)
+     */
+    public static final SN_DoublePreference pivotCruiseVelocity = new SN_DoublePreference("pivotCruiseVelocity", 80);
+
+    /**
+     * <b> Units: </b> Rotations per second per second (rps/s)
+     */
+    public static final SN_DoublePreference pivotAcceleration = new SN_DoublePreference(
+        "pivotAcceleration", 160);
+    /**
+     * <b> Units: </b> Rotations per second per second per second (rps/s/s)
+     */
+    public static final SN_DoublePreference pivotJerk = new SN_DoublePreference("climberJerk", 1600);
+
+    // - Current Limiting -
+    public static final SN_BooleanPreference rollerEnableCurrentLimiting = new SN_BooleanPreference(
+        "rollerEnableCurrentLimiting", true);
+    public static final SN_DoublePreference rollerCurrentThreshold = new SN_DoublePreference("rollerCurrentThreshold",
         40);
-    public static final SN_DoublePreference intakeCurrentLimit = new SN_DoublePreference("intakeCurrentThreshold",
+    public static final SN_DoublePreference rollerCurrentLimit = new SN_DoublePreference("rollerCurrentLimit",
         30);
-    public static final SN_DoublePreference intakeCurrentTimeThreshold = new SN_DoublePreference(
-        "intakeCurrentTimeThreshold", 0.1);
+    public static final SN_DoublePreference rollerCurrentTimeThreshold = new SN_DoublePreference(
+        "rollerCurrentTimeThreshold", 0.1);
 
+    public static final SN_BooleanPreference pivotEnableCurrentLimiting = new SN_BooleanPreference(
+        "pivotEnableCurrentLimiting", true);
+    public static final SN_DoublePreference pivotCurrentThreshold = new SN_DoublePreference("pivotCurrentThreshold",
+        40);
+    public static final SN_DoublePreference pivotCurrentLimit = new SN_DoublePreference("pivotCurrentLimit",
+        30);
+    public static final SN_DoublePreference pivotCurrentTimeThreshold = new SN_DoublePreference(
+        "pivotCurrentTimeThreshold", 0.1);
+
+    // - Soft Limits -
     /**
-     * <b> Units: </b> Percent Output
+     * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference intakeRollerSpeed = new SN_DoublePreference("intakeRollerSpeed", 1);
-    /**
-     * <b> Units: </b> Percent Output
-     */
-    public static final SN_DoublePreference intakeSpitOutSpeed = new SN_DoublePreference("intakeSpitOutSpeed", -1);
+    public static final SN_DoublePreference pivotMaxPos = new SN_DoublePreference("pivotMaxPos", 106);
 
     /**
      * <b> Units: </b> Degrees
      */
-    public static final SN_DoublePreference intakeStowAngle = new SN_DoublePreference(
-        "intakeStowAngle", 5);
+    public static final SN_DoublePreference pivotMinPos = new SN_DoublePreference("pivotMinPos", 0);
 
+    // - Game Piece Detection -
     /**
-     * The intake's pivot motor position when we are intaking
-     * <b> Units: </b> Degrees
+     * The time that we wait to get a game piece in auto
+     * <b> Units: </b> Seconds
      */
-    public static final SN_DoublePreference intakeIntakingAngle = new SN_DoublePreference(
-        "intakeIntakingAngle", prefClimber.climberMotorForwardLimit.getValue() - 0.5);
-
-    public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
-        "intakeSourceGamePieceGetTime",
+    public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
         0.5);
-    public static final SN_DoublePreference intakeSourceHasGamePieceVelocity = new SN_DoublePreference(
-        "intakeSourceHasGamePieceVelocity", 16.5);
-    public static final SN_DoublePreference intakeSourceHasGamePieceCurrent = new SN_DoublePreference(
-        "intakeSourceHasGamePieceCurrent", 7);
+
+    // - Speeds -
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference rollerIntakeSpeed = new SN_DoublePreference("rollerIntakeSpeed", 1);
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference rollerSpitSpeed = new SN_DoublePreference("rollerSpitSpeed", -1);
+
+    public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.5);
+    // TODO: AMP IS -0.2. MAKE A PREFERENCE AND LOGIC FOR TRAP
+
+    /**
+     * <b> Units: </b> Percent Output
+     */
+    public static final SN_DoublePreference rollerStageAmpNoteSpeed = new SN_DoublePreference(
+        "rollerStageAmpNoteSpeed", -0.5);
+
+    // - Angles -
+
+    /**
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference pivotIsAtAngleTolerance = new SN_DoublePreference("pivotIsAtAngleTolerance",
+        10);
+
+    /**
+     * <p>
+     * The amount of degrees to turn before considering the note to be in the amp
+     * </p>
+     * <b>Units:</b> Degrees
+     */
+    public static final SN_DoublePreference rollerRotationsToAmp = new SN_DoublePreference("rollerRotationsToAmp",
+        21000);
+
+    /**
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotStowAngle = new SN_DoublePreference(
+        "pivotStowAngle", 30.5);
+
+    /**
+     * <p>
+     * The pivot motor position when we are intaking from the ground
+     * </p>
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
+        "pivotGroundIntakeAngle", 105);
+
+    /**
+     * <p>
+     * The pivot motor position when we are transferring the note from the shooter
+     * to the intake in order to prep amp
+     * </p>
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotTransferToAmpAngle = new SN_DoublePreference("pivotTransferToAmpAngle",
+        105);
+
+    /**
+     * <p>
+     * The pivot motor position when are placing in the amp
+     * </p>
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
+        11.4);
+
+    // TODO: SEPERATE TRAP PRESET : AMP IS 11.4
+    // TRAP IS 33.2
 
   }
 
   public static final class prefPitch {
+
     public static final SN_DoublePreference pitchS = new SN_DoublePreference("pitchS", 0.4);
     public static final SN_DoublePreference pitchG = new SN_DoublePreference("pitchG", 0.36);
     public static final SN_DoublePreference pitchA = new SN_DoublePreference("pitchA", 0.1);
-    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300); // 100
+    public static final SN_DoublePreference pitchP = new SN_DoublePreference("pitchP", 300);
     public static final SN_DoublePreference pitchI = new SN_DoublePreference("pitchI", 0);
     public static final SN_DoublePreference pitchD = new SN_DoublePreference("pitchD", 0);
 
@@ -247,6 +422,16 @@ public class RobotPreferences {
 
     /**
      * <p>
+     * The value that the pitch reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical slop
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference pitchZeroedSensorAngle = new SN_DoublePreference("pitchZeroedSensorAngle",
+        Units.degreesToRotations(6));
+
+    /**
+     * <p>
      * The maximum soft limit of the pitch motor
      * </p>
      * <b>Units:</b> Rotations
@@ -303,12 +488,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference shooterUpToSpeedTolerance = new SN_DoublePreference(
         "shooterUpToSpeedTolerance", 0.7);
 
-    public static final SN_DoublePreference leftShooterIntakeVelocity = new SN_DoublePreference(
-        "leftShooterIntakeVelocity",
-        -10);
-    public static final SN_DoublePreference rightShooterIntakeVelocity = new SN_DoublePreference(
-        "rightShooterIntakeVelocity",
-        -10);
+    public static final SN_DoublePreference leftShooterIntakeVoltage = new SN_DoublePreference(
+        "leftShooterIntakeVoltage",
+        -3);
+    public static final SN_DoublePreference rightShooterIntakeVoltage = new SN_DoublePreference(
+        "rightShooterIntakeVoltage",
+        -3);
 
     /**
      * <b>Units:</b> Meters per second
@@ -391,6 +576,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference intakeSourceGamePieceGetTime = new SN_DoublePreference(
         "intakeSourceGamePieceGetTime",
         0.5);
+
+    public static final SN_DoublePreference feederStageAmpNoteSpeed = new SN_DoublePreference("feederStageAmpNoteSpeed",
+        -0.5);
+    public static final SN_DoublePreference transferStageAmpNoteSpeed = new SN_DoublePreference(
+        "transferStageAmpNoteSpeed",
+        -0.5);
 
     // -- Game Piece Detection --
     /**

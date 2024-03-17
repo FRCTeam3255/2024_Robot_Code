@@ -14,13 +14,6 @@ public class RobotMap {
   // MOTORS: 30 -> 39
   public static class mapClimber {
     public static final int CLIMBER_MOTOR_CAN = 30;
-    public static final int CLIMBER_ABSOLUTE_ENCODER_DIO = 2;
-  }
-
-  // MOTORS: 50 -> 59
-  public static class mapTransfer {
-    public static final int FEEDER_MOTOR_CAN = 50;
-    public static final int TRANSFER_MOTOR_CAN = 51;
   }
 
   // MOTORS: 00 -> 09
@@ -51,7 +44,10 @@ public class RobotMap {
 
   // MOTORS: 20 -> 29
   public static class mapIntake {
-    public static final int INTAKE_ROLLER_MOTOR_CAN = 20;
+    public static final int ROLLER_CAN = 20;
+    public static final int PIVOT_CAN = 21;
+    public static final int ABSOLUTE_ENCODER_DIO = 2;
+
   }
 
   public static class mapLEDs {
@@ -73,6 +69,12 @@ public class RobotMap {
   public static class mapTurret {
     public static final int TURRET_MOTOR_CAN = 40;
     public static final int TURRET_ABSOLUTE_ENCODER_DIO = 1;
+  }
+
+  // MOTORS: 50 -> 59
+  public static class mapTransfer {
+    public static final int FEEDER_MOTOR_CAN = 50;
+    public static final int TRANSFER_MOTOR_CAN = 51;
   }
 
   public static class mapVision {

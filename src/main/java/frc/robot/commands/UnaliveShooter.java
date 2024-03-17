@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefPitch;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
@@ -22,17 +21,15 @@ public class UnaliveShooter extends InstantCommand {
   Shooter subShooter;
   Turret subTurret;
   Pitch subPitch;
-  Climber subClimber;
   LEDs subLEDs;
 
-  public UnaliveShooter(Shooter subShooter, Turret subTurret, Pitch subPitch, Climber subClimber, LEDs subLEDs) {
+  public UnaliveShooter(Shooter subShooter, Turret subTurret, Pitch subPitch, LEDs subLEDs) {
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
-    this.subClimber = subClimber;
     this.subLEDs = subLEDs;
 
-    addRequirements(subShooter, subTurret, subPitch, subClimber, subLEDs);
+    addRequirements(subShooter, subTurret, subPitch, subLEDs);
   }
 
   // Called when the command is initially scheduled.
@@ -40,10 +37,8 @@ public class UnaliveShooter extends InstantCommand {
   public void initialize() {
     RobotContainer.setLockedLocation(LockedLocation.NONE);
     subShooter.setDesiredVelocities(0, 0);
-    subTurret.setTurretAngle(0, subClimber.collidesWithTurret());
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
-        subClimber.collidesWithPitch());
-    subClimber.setNeutralOutput();
+    subTurret.setTurretAngle(0);
+    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
     subLEDs.clearAnimation();
     subShooter.setIgnoreFlywheelSpeed(false);
   }

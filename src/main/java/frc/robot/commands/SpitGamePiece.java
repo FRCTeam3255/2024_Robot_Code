@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefTransfer;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Transfer;
@@ -19,16 +18,13 @@ public class SpitGamePiece extends Command {
   Intake globalIntake;
   Transfer globalTransfer;
   Pitch subPitch;
-  Climber subClimber;
 
   double lastDesiredPitch;
 
-  public SpitGamePiece(Intake subIntake, Transfer subTransfer, Pitch subPitch, Climber subClimber) {
+  public SpitGamePiece(Intake subIntake, Transfer subTransfer, Pitch subPitch) {
     globalIntake = subIntake;
     globalTransfer = subTransfer;
     this.subPitch = subPitch;
-    this.subClimber = subClimber;
-
     addRequirements(globalIntake, globalTransfer, subPitch);
   }
 
@@ -42,23 +38,21 @@ public class SpitGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalIntake.setIntakeMotorsSpeed(prefIntake.intakeSpitOutSpeed.getValue());
+    globalIntake.setIntakeRollerSpeed(prefIntake.rollerSpitSpeed.getValue());
 
     globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
     globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
 
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
-        subClimber.collidesWithPitch());
+    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalIntake.setNeutralMode();
+    globalIntake.setRollerNeutralOutput();
     globalTransfer.setTransferNeutralOutput();
     globalTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
   }
 
   // Returns true when the command should end.

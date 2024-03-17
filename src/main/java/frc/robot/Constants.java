@@ -7,10 +7,12 @@ package frc.robot;
 import com.ctre.phoenix.led.ColorFlowAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
+import com.frcteam3255.preferences.SN_BooleanPreference;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -18,6 +20,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants.constDrivetrain.pracBot;
 
 /*
  * @formatter:off
@@ -37,9 +40,14 @@ import edu.wpi.first.math.util.Units;
  * are exempt from this
  */
 public final class Constants {
-
   public static class constClimber {
-    public static final double GEAR_RATIO = 327.6;
+    public static final double GEAR_RATIO = 18.56;
+    public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
+    public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
+
+    public static final SN_BooleanPreference climberInverted = new SN_BooleanPreference("climberInverted", true);
+
+    public static final InvertedValue MOTOR_INVERTED = InvertedValue.Clockwise_Positive;
   }
 
   public static class constControllers {
@@ -83,10 +91,10 @@ public final class Constants {
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.155518;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.039062;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.399658;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.418945;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.152832;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.032471;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.107666;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.095215;
 
     /**
      * <p>
@@ -132,6 +140,10 @@ public final class Constants {
   }
 
   public static class constIntake {
+    public static final double ABS_ENCODER_OFFSET = 0.102385;
+    public static final boolean ABS_ENCODER_INVERT = false;
+    public static final double GEAR_RATIO = 28.13;
+    public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;
   }
 
   public static class constLEDs {
@@ -331,6 +343,6 @@ public final class Constants {
    * Locations that the robot can attempt to lock onto.
    */
   public enum LockedLocation {
-    NONE, SPEAKER
+    NONE, SPEAKER, AMP
   }
 }
