@@ -91,6 +91,8 @@ public class RobotContainer implements Logged {
   int[] previousRotationColor;
   int[] previousXTranslationColor;
   int[] previousYTranslationColor;
+  int[] previousRotationCorrect;
+  int[] desiredRotationCorrect;
   // Poses
   @Log.NT
   static Pose3d currentRobotPose;
@@ -400,9 +402,9 @@ public class RobotContainer implements Logged {
     }
 
     // Light up in Shang Chi color if both translation and rotation are correct
-    if (rotationCorrect && XCorrect && YCorrect) {
+    if ((rotationCorrect && XCorrect && YCorrect) && (previousRotationCorrect != desiredRotationCorrect)) {
       subLEDs.setAnimationChunk(8, constLEDs.LED_NUMBER - 8, constLEDs.AUTO_ALIGNED_COLOR);
-
+      previousRotationCorrect = desiredRotationCorrect;
     } else {
       if (previousRotationColor != rotationColor) {
         subLEDs.setIndividualLED(rotationColor, 0);
@@ -410,14 +412,12 @@ public class RobotContainer implements Logged {
         subLEDs.setIndividualLED(rotationColor, 4);
         subLEDs.setIndividualLED(rotationColor, 7);
         subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
-        previousYTranslationColor = YTranslationColor;
         previousRotationColor = rotationColor;
       }
       if (previousXTranslationColor != XTranslationColor) {
         subLEDs.setIndividualLED(XTranslationColor, 1);
         subLEDs.setIndividualLED(XTranslationColor, 2);
         subLEDs.clearAnimationChunk(8, constLEDs.LED_NUMBER - 8);
-        previousYTranslationColor = YTranslationColor;
         previousXTranslationColor = XTranslationColor;
       }
       if (previousYTranslationColor != YTranslationColor) {
