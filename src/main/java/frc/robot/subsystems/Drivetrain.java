@@ -194,6 +194,11 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     return new Pose3d(getPose());
   }
 
+  // public Rotation2d getClostestChain(double robotX, double robotY){
+  // double distanceFromLeftChain = Math.hypot(robotx + , robotY)
+
+  // }
+
   @Override
   public void periodic() {
     super.periodic();
