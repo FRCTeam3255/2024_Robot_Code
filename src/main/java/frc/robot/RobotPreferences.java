@@ -53,7 +53,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Meters
      */
-    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 2.9);
+    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 2.99);
     public static final SN_BooleanPreference climberForwardLimitEnable = new SN_BooleanPreference(
         "climberForwardLimitEnable", true);
     /**
@@ -120,7 +120,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference climberDownSpeed = new SN_DoublePreference("climberDownSpeed", -0.2);
+    public static final SN_DoublePreference climberDownSpeed = new SN_DoublePreference("climberDownSpeed", -0.3);
 
     // - Positions -
     /**
@@ -292,7 +292,8 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference rollerSpitSpeed = new SN_DoublePreference("rollerSpitSpeed", -1);
 
-    public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.2);
+    public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.5);
+    // TODO: AMP IS -0.2. MAKE A PREFERENCE AND LOGIC FOR TRAP
 
     /**
      * <b> Units: </b> Percent Output
@@ -350,6 +351,9 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
         11.4);
+
+    // TODO: SEPERATE TRAP PRESET : AMP IS 11.4
+    // TRAP IS 33.2
 
   }
 

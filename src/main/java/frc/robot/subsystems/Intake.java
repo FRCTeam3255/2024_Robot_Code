@@ -9,6 +9,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -89,7 +90,19 @@ public class Intake extends SubsystemBase {
 
     rollerMotor.getConfigurator().apply(rollerConfig);
     pivotMotor.getConfigurator().apply(pivotConfig);
+    // TODO: MOVE THESE TO THE CONFIG
     rollerMotor.setInverted(prefIntake.rollerInverted.getValue());
+    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
+  }
+
+  public void setPivotBrake(boolean enabled) {
+    if (enabled) {
+      pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    } else {
+      pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    }
+
+    pivotMotor.getConfigurator().apply(pivotConfig);
     pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
   }
 
