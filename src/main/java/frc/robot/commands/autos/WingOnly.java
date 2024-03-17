@@ -6,6 +6,9 @@ package frc.robot.commands.autos;
 
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,7 +34,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
 
-public class PreloadOnly extends SequentialCommandGroup implements AutoInterface {
+public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   Drivetrain subDrivetrain;
   Intake subIntake;
   LEDs subLEDs;
@@ -43,29 +46,13 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
   double FIELD_LENGTH = FieldConstants.FIELD_LENGTH;
 
-  int startingPosition = 0;
-  // BLUE
-  Pose2d S1B = new Pose2d(0.602, 6.747, Rotation2d.fromRadians(-2.094));
-  Pose2d S2B = new Pose2d(1.360, 5.563, Rotation2d.fromRadians(3.142));
-  Pose2d S3B = new Pose2d(0.602, 4.348, Rotation2d.fromRadians(2.094395));
-  Pose2d S4B = new Pose2d(1.438, 3.359, Rotation2d.fromRadians(3.142));
-  Pose2d S5B = new Pose2d(1.438, 2.059, Rotation2d.fromRadians(3.142));
-  Pose2d[] startingPositionsBlue = { S1B, S2B, S3B, S4B, S5B };
-
-  // RED
-  Pose2d S1R = new Pose2d(FIELD_LENGTH - 0.602, 6.747, Rotation2d.fromRadians(-2.879793));
-  Pose2d S2R = new Pose2d(FIELD_LENGTH - 1.360, 5.563, Rotation2d.fromRadians(0));
-  Pose2d S3R = new Pose2d(FIELD_LENGTH - 0.602, 4.348, Rotation2d.fromRadians(2.879793));
-  Pose2d S4R = new Pose2d(FIELD_LENGTH - 1.438, 3.359, Rotation2d.fromRadians(0));
-  Pose2d S5R = new Pose2d(FIELD_LENGTH - 1.438, 2.059, Rotation2d.fromRadians(0));
-  Pose2d[] startingPositionsRed = { S1R, S2R, S3R, S4R, S5R };
+  boolean goesDown = false;
 
   /**
-   * @param startingPosition Your desired starting position. 0 -> 4. Please refer
-   *                         to Choreo for this
+   * @param i If your path goes up or down
    */
-  public PreloadOnly(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret, Climber subClimber, int startingPosition) {
+  public WingOnly(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
+      Transfer subTransfer, Turret subTurret, Climber subClimber, boolean goesDown) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
@@ -74,7 +61,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
     this.subClimber = subClimber;
-    this.startingPosition = startingPosition;
+    this.goesDown = goesDown;
 
     addCommands(
         Commands.runOnce(
@@ -112,15 +99,19 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
 
-        new UnaliveShooter(subShooter, subTurret, subPitch, subClimber, subLEDs)
+        new UnaliveShooter(subShooter, subTurret, subPitch, subClim ber, subLEDs),
 
-    );
+        new PathPlannerAuto(determinePathName()));
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> (FieldConstants.isRedAlliance())
-        ? startingPositionsRed[startingPosition]
-        : startingPositionsBlue[startingPosition];
+    return () -> (!FieldConstants.isRedAlliance())
+        ? PathPlannerAuto.getStaringPoseFromAutoFile(determinePathName())
+        : PathPlannerPath.fromPathFile(determinePathName()).flipPath().getPreviewStartingHolonomicPose();
+  }
+
+  public String determinePathName() {
+    return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
   }
 
   public Command getAutonomousCommand() {

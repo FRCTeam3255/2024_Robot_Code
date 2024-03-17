@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.44,
+      "y": 4.098365783691406
+    },
+    "rotation": -7.001498277952742e-28
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PsW3sW2sW1s.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PsW3sW2sW1s.2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PsW3sW2sW1s.3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}
