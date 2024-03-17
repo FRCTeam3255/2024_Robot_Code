@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefClimber;
@@ -90,8 +89,6 @@ public class IntakeGroundGamePiece extends Command {
       subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
           prefShooter.rightShooterSubVelocity.getValue());
       subShooter.getUpToSpeed();
-
-      subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue());
     } else {
       subTransfer.setTransferNeutralOutput();
     }

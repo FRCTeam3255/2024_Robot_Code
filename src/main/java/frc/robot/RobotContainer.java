@@ -152,11 +152,6 @@ public class RobotContainer implements Logged {
                 new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter),
                 Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())),
                 () -> getLockedLocation() != LockedLocation.AMP).repeatedly())
-        // .whileTrue(
-        // Commands.run(() -> subIntake.setPivotBrake(false))
-        // .alongWith(Commands.runOnce(() -> subIntake.setPivotNeutralOutput()))
-        // .unless(() -> (subClimber.getPosition() < 2.5)).repeatedly())
-
         .onFalse(Commands.runOnce(() -> subClimber.setPercentOutput(0)));
 
     controller.btn_RightTrigger
