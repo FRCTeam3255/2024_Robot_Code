@@ -106,15 +106,10 @@ public class Turret extends SubsystemBase implements Logged {
   /**
    * Sets the physical angle of the turret
    * 
-   * @param angle        The angle to set the turret to. <b> Units: </b> Degrees
-   * @param hasCollision If there is a collision with the turret. If this is true,
-   *                     the turret will not turn
+   * @param angle The angle to set the turret to. <b> Units: </b> Degrees
    */
-  public void setTurretAngle(double angle, boolean hasCollision) {
+  public void setTurretAngle(double angle) {
     desiredTurretAngle = angle;
-    if (hasCollision) {
-      angle = 0;
-    }
     turretMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
@@ -140,7 +135,7 @@ public class Turret extends SubsystemBase implements Logged {
   }
 
   /**
-   * Sets the speed of the turet motor
+   * Sets the speed of the turret motor
    * 
    * @param speed The speed to set the turret motor to (-1 to 1)
    */
@@ -262,6 +257,9 @@ public class Turret extends SubsystemBase implements Logged {
     switch (lockedLocation) {
       default:
         return Optional.empty();
+
+      case AMP:
+        return Optional.of(Rotation2d.fromDegrees(0));
 
       case SPEAKER:
         targetPose = fieldPoses[0];

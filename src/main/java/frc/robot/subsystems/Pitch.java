@@ -108,13 +108,11 @@ public class Pitch extends SubsystemBase implements Logged {
    * Sets the angle of the pitch motor. The angle will not be set if the angle is
    * not possible.
    * 
-   * @param angle        The angle to set the pitch motor to. <b> Units: </b>
-   *                     Degrees
-   * @param hasCollision If there is a collision with the pitch. If this is true,
-   *                     the pitch will not turn above 30 degrees
+   * @param angle The angle to set the pitch motor to. <b> Units: </b>
+   *              Degrees
    */
-  public void setPitchAngle(double angle, boolean hasCollision) {
-    if (hasCollision && angle >= prefPitch.pitchMaxIntake.getValue()) {
+  public void setPitchAngle(double angle) {
+    if (angle >= prefPitch.pitchMaxIntake.getValue()) {
       angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
     }
     if (isAnglePossible(angle)) {
@@ -228,6 +226,9 @@ public class Pitch extends SubsystemBase implements Logged {
     switch (lockedLocation) {
       default:
         return Optional.empty();
+
+      case AMP:
+        return Optional.of(Rotation2d.fromRotations(prefPitch.pitchReverseLimit.getValue()));
 
       case SPEAKER:
         targetPose = fieldPoses[0];
