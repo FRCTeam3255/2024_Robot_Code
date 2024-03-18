@@ -320,8 +320,9 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(-9.82), Units.inchesToMeters(8)),
-        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-25)));
+        new Translation3d(Units.inchesToMeters(14.5) - 0.045, -(Units.inchesToMeters(14.5) - 0.114),
+            Units.inchesToMeters(8.125)),
+        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(19)));
 
     /**
      * The position, in meters, of the center of the camera lens relative to the
@@ -332,8 +333,10 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(9.82), Units.inchesToMeters(8)),
-        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
+        new Translation3d(Units.inchesToMeters(14.5) - 0.045, Units.inchesToMeters(14.5) - 0.114,
+            Units.inchesToMeters(8.125)),
+        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(19)));
+
   }
 
   public static class constTransfer {

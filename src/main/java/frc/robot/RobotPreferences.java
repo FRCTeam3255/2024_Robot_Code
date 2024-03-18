@@ -213,7 +213,7 @@ public class RobotPreferences {
      * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference measurementStdDevsHeading = new SN_DoublePreference(
-        "measurementStdDevsHeading", 10);
+        "measurementStdDevsHeading", 0.1);
   }
 
   public static final class prefIntake {
@@ -703,7 +703,7 @@ public class RobotPreferences {
      * <b>Units:</b> Meters
      */
     public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
-        "visionStdDevsPosition", 5);
+        "visionStdDevsPosition", 3);
 
     /**
      * <p>
@@ -712,7 +712,7 @@ public class RobotPreferences {
      * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
-        "visionStdDevsHeading", 500);
+        "visionStdDevsHeading", 0.9);
 
     /**
      * The translational tolerance of how off we want to be to count as correct
