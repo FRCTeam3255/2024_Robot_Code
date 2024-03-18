@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import com.frcteam3255.joystick.SN_SwitchboardStick;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -36,6 +37,7 @@ import frc.robot.commands.IntakeFromSource;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootingPreset;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualHoodMovement;
@@ -71,6 +73,7 @@ public class RobotContainer implements Logged {
   // Controllers
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
+  private final SN_SwitchboardStick conNumpad = new SN_SwitchboardStick(mapControllers.NUMPAD_USB);
 
   // Subsystems
   private final static Climber subClimber = new Climber();
@@ -132,6 +135,7 @@ public class RobotContainer implements Logged {
     // src\main\assets\controllerMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureNumpadBindings(conNumpad);
     configureAutoSelector();
 
     subDrivetrain.resetModulesToAbsolute();
@@ -214,6 +218,33 @@ public class RobotContainer implements Logged {
 
     // STOW
     controller.btn_Y.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
+  }
+
+  private void configureNumpadBindings(SN_SwitchboardStick switchboardStick) {
+    // Peninsula preset (behind the podium)
+    switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+            prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true)));
+
+    // Panama Canal preset (starting line)
+    switchboardStick.btn_2.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+            prefTurret.turretPanamaCanalPresetPos.getValue(), prefPitch.pitchPanamaCanalAngle.getValue(), true)));
+
+    // 254 Shuffling preset (centerline to amp zone corner)
+    switchboardStick.btn_3.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+            prefTurret.turretNoteShufflingPresetPos.getValue(), prefPitch.pitchNoteShufflingAngle.getValue(), true)));
+
+    // Podium preset
+    switchboardStick.btn_4.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+            prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true)));
+
+    // Leapfrog preset (about 34 inches from the subwoofer)
+    switchboardStick.btn_5.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true)));
   }
 
   private void configureAutoSelector() {
