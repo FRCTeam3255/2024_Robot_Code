@@ -514,42 +514,5 @@
       "timestamp": 4.667392949347003
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 0.8127499323221844,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeGamePiece"
-        }
-      }
-    },
-    {
-      "timestamp": 1.9873383416304247,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeGamePiece"
-        }
-      }
-    },
-    {
-      "timestamp": 3.1684268168452645,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeGamePiece"
-        }
-      }
-    },
-    {
-      "timestamp": 4.305166016243279,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeGamePiece"
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }

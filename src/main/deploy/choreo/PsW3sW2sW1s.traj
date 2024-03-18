@@ -280,40 +280,5 @@
       "timestamp": 2.233394326324368
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 0.5987031193038469,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeGamePiece"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "timestamp": 1.3946625959557204,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeGamePiece"
-        }
-      }
-    },
-    {
-      "timestamp": 2.233394326324368,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeGamePiece"
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }
