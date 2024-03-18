@@ -100,9 +100,91 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
 
+        // Go get W1
         new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
+        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determinePathName() + ".1")),
 
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determinePathName())));
+        // Shoot W1
+        Commands.race(
+            new Shoot(subShooter, subLEDs).repeatedly(),
+            new LockTurret(subTurret, subDrivetrain).repeatedly(),
+            new LockPitch(subPitch, subDrivetrain).repeatedly(),
+
+            // Shooting the game piece
+            Commands.sequence(
+                // Aim
+                Commands.parallel(
+                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+                    Commands
+                        .runOnce(
+                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                                prefShooter.rightShooterSpeakerVelocity.getValue())),
+                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+
+                // Shoot
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                Commands.parallel(
+                    Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
+                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
+
+        // Go get W2
+        new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
+        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determinePathName() + ".2")),
+
+        // Shoot W2
+        Commands.race(
+            new Shoot(subShooter, subLEDs).repeatedly(),
+            new LockTurret(subTurret, subDrivetrain).repeatedly(),
+            new LockPitch(subPitch, subDrivetrain).repeatedly(),
+
+            // Shooting the game piece
+            Commands.sequence(
+                // Aim
+                Commands.parallel(
+                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+                    Commands
+                        .runOnce(
+                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                                prefShooter.rightShooterSpeakerVelocity.getValue())),
+                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+
+                // Shoot
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                Commands.parallel(
+                    Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
+                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
+
+        // Go get W3
+        new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
+        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determinePathName() + ".3")),
+
+        // Shoot W3
+        Commands.race(
+            new Shoot(subShooter, subLEDs).repeatedly(),
+            new LockTurret(subTurret, subDrivetrain).repeatedly(),
+            new LockPitch(subPitch, subDrivetrain).repeatedly(),
+
+            // Shooting the game piece
+            Commands.sequence(
+                // Aim
+                Commands.parallel(
+                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+                    Commands
+                        .runOnce(
+                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                                prefShooter.rightShooterSpeakerVelocity.getValue())),
+                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+
+                // Shoot
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                Commands.parallel(
+                    Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
+                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))))
+
+    );
   }
 
   public Supplier<Pose2d> getInitialPose() {
