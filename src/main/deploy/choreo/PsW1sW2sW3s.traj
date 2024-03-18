@@ -311,9 +311,16 @@
     {
       "timestamp": 0.6581064849887158,
       "command": {
-        "type": "named",
+        "type": "sequential",
         "data": {
-          "name": "IntakeGamePiece"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGamePiece"
+              }
+            }
+          ]
         }
       }
     },

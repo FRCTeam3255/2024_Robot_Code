@@ -6,6 +6,7 @@ package frc.robot.commands.autos;
 
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -49,7 +50,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   boolean goesDown = false;
 
   /**
-   * @param i If your path goes up or down
+   * @param goesDown If your path goes up or down
    */
   public WingOnly(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret, Climber subClimber, boolean goesDown) {
@@ -101,7 +102,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
         new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
 
-        new PathPlannerAuto(determinePathName() + ".1"));
+        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determinePathName())));
   }
 
   public Supplier<Pose2d> getInitialPose() {

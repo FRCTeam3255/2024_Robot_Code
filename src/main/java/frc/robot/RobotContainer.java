@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -13,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -99,15 +101,23 @@ public class RobotContainer implements Logged {
   @Log.NT
   static Pose3d currentRobotPose;
   @Log.NT
-  static Pose3d turretPose = new Pose3d();
+  static Pose3d desiredTurretPose;
   @Log.NT
-  static Pose3d hoodPose = new Pose3d();
+  static Pose3d desiredHoodPose;
   @Log.NT
-  static Pose3d carriagePose;
+  static Pose3d desiredCarriagePose;
   @Log.NT
-  static Pose3d intakePose;
+  static Pose3d desiredIntakePose;
 
-  static double climberPos = 0;
+  @Log.NT
+  static Pose3d actualTurretPose;
+  @Log.NT
+  static Pose3d actualCarriagePose;
+  @Log.NT
+  static Pose3d actualIntakePose;
+
+  @Log.NT
+  boolean hasNamedCommandRun = false;
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -135,7 +145,10 @@ public class RobotContainer implements Logged {
             conDriver.btn_RightBumper));
 
     // Register Autonomous Named Commands
-    NamedCommands.registerCommand("IntakeGamePiece",
+    // NamedCommands.registerCommand("IntakeGroundGamePiece",
+    // new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch,
+    // subShooter, subClimber));
+    NamedCommands.registerCommand("IntakeGroundGamePiece",
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber));
 
     // View controls at:
@@ -180,9 +193,6 @@ public class RobotContainer implements Logged {
     controller.btn_LeftBumper
         .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
         .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
-
-    controller.btn_LeftBumper.onTrue(Commands.runOnce(() -> climberPos = 2));
-    controller.btn_RightBumper.onTrue(Commands.runOnce(() -> climberPos = 0));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
     controller.btn_North
@@ -272,17 +282,29 @@ public class RobotContainer implements Logged {
 
   public static void updateLoggedPoses() {
     currentRobotPose = subDrivetrain.getPose3d();
-    turretPose = subTurret.getAngleAsPose3d();
-    Pose3d tempPose = subPitch.getAngleAsTransform3d(turretPose.getRotation().getZ());
-    hoodPose = tempPose;
-
-    // currentRobotPose = new Pose3d();
-    // turretPose = new Pose3d();
-    // hoodPose = new Pose3d();
-    carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) * climberPos), 0,
-        ((Math.sin(Units.degreesToRadians(78.75))) * climberPos),
+    desiredTurretPose = subTurret.getDesiredAngleAsPose3d();
+    desiredHoodPose = subPitch.getDesiredAngleAsPose3d(desiredTurretPose.getRotation().getZ());
+    // I CANNOT EXPLAIN THESE THINGS
+    desiredCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+        subClimber.getDesiredPosition()) / 7, 0,
+        ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getDesiredPosition()) / 7,
         new Rotation3d());
-    intakePose = new Pose3d();
+    desiredIntakePose = new Pose3d(desiredCarriagePose.getX() + -0.197, desiredCarriagePose.getY(),
+        desiredCarriagePose.getZ() + 0.305,
+        new Rotation3d(0,
+            -Units.degreesToRadians(subIntake.getDesiredPivotAngle()), 0).plus(desiredCarriagePose.getRotation()));
+
+    // Actual Poses
+    actualTurretPose = new Pose3d(new Translation3d(),
+        new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
+    actualCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+        subClimber.getPosition()) / 7, 0,
+        ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
+        new Rotation3d());
+    actualIntakePose = new Pose3d(actualCarriagePose.getX() + -0.197, actualCarriagePose.getY(),
+        actualCarriagePose.getZ() + 0.305,
+        new Rotation3d(0,
+            -Units.degreesToRadians(subIntake.getPivotAngle()), 0).plus(actualCarriagePose.getRotation()));
   }
 
   // --- PDH ---

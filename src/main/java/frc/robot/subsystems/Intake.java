@@ -15,11 +15,14 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.constIntake;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Intake extends SubsystemBase {
+public class Intake extends SubsystemBase implements Logged {
   TalonFX rollerMotor;
   TalonFX pivotMotor;
 
@@ -27,7 +30,9 @@ public class Intake extends SubsystemBase {
 
   TalonFXConfiguration rollerConfig, pivotConfig;
 
-  double absoluteEncoderOffset, desiredPivotAngle;
+  @Log.NT
+  double desiredPivotAngle;
+  double absoluteEncoderOffset;
   boolean invertAbsEncoder;
 
   PositionVoltage positionRequest;
@@ -167,6 +172,10 @@ public class Intake extends SubsystemBase {
     double currentPosition = Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
 
     return currentPosition <= -prefIntake.rollerRotationsToAmp.getValue();
+  }
+
+  public double getDesiredPivotAngle() {
+    return desiredPivotAngle;
   }
 
   // - Set -

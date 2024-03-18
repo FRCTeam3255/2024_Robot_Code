@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -250,7 +251,7 @@ public class Pitch extends SubsystemBase implements Logged {
     return Optional.of(desiredLockingAngle);
   }
 
-  public Pose3d getAngleAsTransform3d(double turretRotation) {
+  public Pose3d getDesiredAngleAsPose3d(double turretRotation) {
     return new Pose3d(new Translation3d(-0.1, 0, 0.36),
         new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), turretRotation));
   }
