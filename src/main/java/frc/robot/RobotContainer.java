@@ -260,9 +260,13 @@ public class RobotContainer implements Logged {
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             4));
 
-    autoChooser.addOption("Wing Down",
+    autoChooser.addOption("Wing Only Down",
         new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             true));
+
+    autoChooser.addOption("Wing Only Up",
+        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            false));
 
     SmartDashboard.putData(autoChooser);
   }
@@ -280,6 +284,7 @@ public class RobotContainer implements Logged {
     return !isPracticeBot.get();
   }
 
+  // TODO: Clean these up maybe idk idc
   public static void updateLoggedPoses() {
     currentRobotPose = subDrivetrain.getPose3d();
     desiredTurretPose = subTurret.getDesiredAngleAsPose3d();
