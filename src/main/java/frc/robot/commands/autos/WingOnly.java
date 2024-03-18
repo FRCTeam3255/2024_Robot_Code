@@ -11,8 +11,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -72,10 +70,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
         // throw out that intake
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(2),
-        // TODO: REMOVE TIME OUT
-        // Redundant call (makes it easier for sim testing)
-        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
         Commands.race(
             new Shoot(subShooter, subLEDs).repeatedly(),
@@ -95,7 +90,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                    .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -123,7 +118,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                    .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -151,7 +146,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                    .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -179,7 +174,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                    .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))))

@@ -73,22 +73,5 @@
       "timestamp": 0.6712632008363534
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 0.6712632008363534,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeGamePiece"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }

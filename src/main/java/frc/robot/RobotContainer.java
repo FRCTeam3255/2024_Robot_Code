@@ -55,7 +55,7 @@ import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
 import frc.robot.commands.autos.PreloadOnly;
-import frc.robot.commands.autos.WingOnly;
+import frc.robot.commands.autos.Centerline;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import monologue.Annotations.Log;
@@ -145,9 +145,9 @@ public class RobotContainer implements Logged {
             conDriver.btn_RightBumper));
 
     // Register Autonomous Named Commands
-    // NamedCommands.registerCommand("IntakeGroundGamePiece",
-    // new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch,
-    // subShooter, subClimber));
+    NamedCommands.registerCommand("IntakeGamePiece",
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch,
+            subShooter, subClimber));
     NamedCommands.registerCommand("IntakeGroundGamePiece",
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber));
 
@@ -260,13 +260,21 @@ public class RobotContainer implements Logged {
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             4));
 
+    // Wing ONLY
     autoChooser.addOption("Wing Only Down",
-        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+        new Centerline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             true));
 
     autoChooser.addOption("Wing Only Up",
-        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+        new Centerline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             false));
+
+    // Centerline ONLY
+    autoChooser.addOption("Centerline Down", new Centerline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
+        subTransfer, subTurret, subClimber, true));
+
+    autoChooser.addOption("Centerline Up", new Centerline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter,
+        subTransfer, subTurret, subClimber, false));
 
     SmartDashboard.putData(autoChooser);
   }

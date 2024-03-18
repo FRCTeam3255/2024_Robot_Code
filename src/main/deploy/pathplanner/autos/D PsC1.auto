@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.446,
+      "y": 6.263
+    },
+    "rotation": -179.99998015215715
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D PsC1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Centerline Down",
+  "choreoAuto": true
+}

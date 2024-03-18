@@ -4,6 +4,8 @@
   "holonomicMode": true,
   "pathFolders": [],
   "autoFolders": [
+    "Centerline Down",
+    "Centerline Up",
     "Wing Down",
     "Wing Up"
   ],
