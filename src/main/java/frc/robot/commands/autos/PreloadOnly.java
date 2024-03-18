@@ -84,7 +84,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
         // throw out that intake
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(2),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         // TODO: REMOVE TIME OUT
         // Redundant call (makes it easier for sim testing)
         Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),

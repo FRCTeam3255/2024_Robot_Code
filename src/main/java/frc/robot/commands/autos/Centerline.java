@@ -70,7 +70,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
         // throw out that intake
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(2),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
         // Shoot Preload
         Commands.race(
@@ -91,7 +91,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                    .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -124,7 +124,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
                         // Shoot
                         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                            .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                            .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                             Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -160,7 +160,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
                         // Shoot
                         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                            .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                            .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                             Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -197,7 +197,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
                         // Shoot
                         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                            .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                            .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                             Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -234,7 +234,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
                         // Shoot
                         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                            .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                            .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                             Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
@@ -269,7 +269,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece).withTimeout(2),
+                    .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()))))
 
