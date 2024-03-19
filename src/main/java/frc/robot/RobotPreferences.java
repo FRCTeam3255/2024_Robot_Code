@@ -316,7 +316,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference rollerRotationsToAmp = new SN_DoublePreference("rollerRotationsToAmp",
-        21000);
+        4000);
 
     /**
      * <b> Units: </b> Degrees
