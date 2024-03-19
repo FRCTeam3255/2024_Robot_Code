@@ -194,10 +194,18 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     return new Pose3d(getPose());
   }
 
-  // public Rotation2d getClostestChain(double robotX, double robotY){
-  // double distanceFromLeftChain = Math.hypot(robotx + , robotY)
-
-  // }
+  public double getClosestChain(double robotX, double robotY) {
+    double distanceFromLeftChain = Math.hypot(robotX, robotY);
+    double distanceFromRightChain = Math.hypot(robotX, robotY);
+    double distanceFromCenterChain = Math.hypot(robotX, robotY);
+    if (distanceFromLeftChain < distanceFromCenterChain && distanceFromLeftChain < distanceFromRightChain) {
+      return distanceFromLeftChain;
+    } else if (distanceFromCenterChain < distanceFromLeftChain && distanceFromCenterChain < distanceFromRightChain) {
+      return distanceFromCenterChain;
+    } else {
+      return distanceFromCenterChain;
+    }
+  }
 
   @Override
   public void periodic() {
