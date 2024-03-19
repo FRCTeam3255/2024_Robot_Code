@@ -234,7 +234,8 @@ public class RobotContainer implements Logged {
 
     // Podium preset
     switchboardStick.btn_4.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
             prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true)));
 
     // Leapfrog preset (about 34 inches from the subwoofer)
@@ -242,6 +243,13 @@ public class RobotContainer implements Logged {
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
             prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true)));
+
+    // Shoot from amp
+    switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+            prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true)));
+
   }
 
   private void configureAutoSelector() {
