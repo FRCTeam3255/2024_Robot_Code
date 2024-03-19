@@ -239,7 +239,8 @@ public class RobotContainer implements Logged {
 
     // Leapfrog preset (about 34 inches from the subwoofer)
     switchboardStick.btn_5.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
             prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true)));
   }
 

@@ -471,7 +471,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchNoteShufflingAngle = new SN_DoublePreference("pitchNoteShufflingAngle",
         0);
     public static final SN_DoublePreference pitchPodiumAngle = new SN_DoublePreference("pitchPodiumAngle", 0);
-    public static final SN_DoublePreference pitchLeapfrogAngle = new SN_DoublePreference("pitchLeapfrogAngle", 0);
+    public static final SN_DoublePreference pitchLeapfrogAngle = new SN_DoublePreference("pitchLeapfrogAngle", 40);
 
   }
 
