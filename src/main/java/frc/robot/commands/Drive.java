@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,10 +23,11 @@ public class Drive extends Command {
   DoubleSupplier xAxis, yAxis, rotationAxis;
   boolean isPracticeBot, isOpenLoop;
   Trigger slowMode, northTrigger, eastTrigger, southTrigger, westTrigger, sourceTrigger, trapTrigger;
-  double driveSpeed, xVelocity, yVelocity, rVelocity, slowMultiplier, robotY;
+  double driveSpeed, xVelocity, yVelocity, rVelocity, slowMultiplier, robotY, robotX;
   Translation2d translationVelocity;
-  Rotation2d sourceAngle, leftStageAngle, rightStageAngle, centerStageAngle;
+  Rotation2d sourceAngle;
   Pose3d[] fieldPositions;
+  Pose2d leftStageAngle, rightStageAngle, centerStageAngle;
 
   public Drive(
       Drivetrain subDrivetrain,
@@ -66,9 +68,9 @@ public class Drive extends Command {
     fieldPositions = FieldConstants.GET_FIELD_POSITIONS();
 
     sourceAngle = fieldPositions[2].getRotation().toRotation2d();
-    leftStageAngle = fieldPositions[3].getRotation().toRotation2d();
-    centerStageAngle = fieldPositions[4].getRotation().toRotation2d();
-    rightStageAngle = fieldPositions[5].getRotation().toRotation2d();
+    leftStageAngle = fieldPositions[3].toPose2d();
+    centerStageAngle = fieldPositions[4].toPose2d();
+    rightStageAngle = fieldPositions[5].toPose2d();
   }
 
   @Override
@@ -105,12 +107,18 @@ public class Drive extends Command {
 
         // Current implementation: This will snap to the left or right chain. If we want
         // to snap to the center chain, just use cardinal directons
+        robotX = subDrivetrain.getPose().getX();
         robotY = subDrivetrain.getPose().getY();
-        if (robotY > 4.114171028137207) { // TODO: MAKE CONSTANT (AFTER PHR)
-          rVelocity = subDrivetrain.getVelocityToSnap(leftStageAngle);
-        } else {
-          rVelocity = subDrivetrain.getVelocityToSnap(rightStageAngle);
-        }
+
+        subDrivetrain.getPose().relativeTo(leftStageAngle);
+
+        Pose2d rightStagePoseFromBot = rightStageAngle.relativeTo(subDrivetrain.getPose());
+        Pose2d centerStagePoseFromBot = centerStageAngle.relativeTo(subDrivetrain.getPose());
+        Pose2d leftStagePoseFromBot = leftStageAngle.relativeTo(subDrivetrain.getPose());
+        // rVelocity = subDrivetrain.getVelocityToSnap(
+        // subDrivetrain.getClosestChain(rightStagePoseFromBot, leftStagePoseFromBot,
+        // centerStagePoseFromBot));
+
       }
     }
 
