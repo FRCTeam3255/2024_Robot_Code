@@ -172,7 +172,8 @@ public class RobotContainer implements Logged {
             .unless(() -> RobotContainer.getLockedLocation() != LockedLocation.AMP));
 
     controller.btn_LeftBumper
-        .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
+        .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+            .alongWith(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue()))))
         .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
 
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
@@ -196,9 +197,12 @@ public class RobotContainer implements Logged {
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
 
     // Lock Speaker
-    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER)).alongWith(
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue())))
+    controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER))
+        .alongWith(
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                prefShooter.rightShooterSpeakerVelocity.getValue())))
+        .alongWith(
+            Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Amp Preset
