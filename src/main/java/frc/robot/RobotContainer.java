@@ -158,7 +158,7 @@ public class RobotContainer implements Logged {
         .onTrue(Commands.runOnce(() -> subClimber.setCurrentLimiting(false)))
         .whileTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberDownSpeed.getValue())))
         .onFalse(Commands.run(() -> subClimber.setPercentOutput(0))
-            .alongWith(Commands.runOnce(() -> subClimber.setCurrentLimiting(false))));
+            .alongWith(Commands.runOnce(() -> subClimber.setCurrentLimiting(true))));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
         .whileFalse(Commands.runOnce(() -> subLEDs.clearAnimation()));
