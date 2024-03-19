@@ -466,7 +466,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 48.6);
 
     public static final SN_DoublePreference pitchBehindPodiumAngle = new SN_DoublePreference("pitchBehindPodiumAngle",
-        0);
+        27);
     public static final SN_DoublePreference pitchPanamaCanalAngle = new SN_DoublePreference("pitchPanamaCanalAngle", 0);
     public static final SN_DoublePreference pitchNoteShufflingAngle = new SN_DoublePreference("pitchNoteShufflingAngle",
         0);
@@ -474,6 +474,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchLeapfrogAngle = new SN_DoublePreference("pitchLeapfrogAngle", 40);
     public static final SN_DoublePreference pitchShootFromAmpAngle = new SN_DoublePreference("pitchShootFromAmpAngle",
         38);
+    public static final SN_DoublePreference pitchWingPresetAngle = new SN_DoublePreference("pitchWingPresetAngle",
+        21);
 
   }
 
@@ -704,7 +706,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretTrapPresetPos = new SN_DoublePreference("turretTrapPresetPos", 0);
 
     public static final SN_DoublePreference turretBehindPodiumPresetPos = new SN_DoublePreference(
-        "turretBehindPodiumPresetPos", 0);
+        "turretBehindPodiumPresetPos", -25.136719);
     public static final SN_DoublePreference turretPanamaCanalPresetPos = new SN_DoublePreference(
         "turretPanamaCanalPresetPos", 0);
     public static final SN_DoublePreference turretNoteShufflingPresetPos = new SN_DoublePreference(
@@ -716,6 +718,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretShootFromAmpPresetPos = new SN_DoublePreference(
         "turretLeapfrogPresetPos",
         -49);
+    public static final SN_DoublePreference turretWingPresetPos = new SN_DoublePreference(
+        "turretWingPresetPos",
+        0);
+
   }
 
   public static final class prefVision {

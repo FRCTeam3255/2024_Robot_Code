@@ -219,17 +219,23 @@ public class RobotContainer implements Logged {
   private void configureNumpadBindings(SN_SwitchboardStick switchboardStick) {
     // Peninsula preset (behind the podium)
     switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+
             prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true)));
 
-    // Panama Canal preset (starting line)
+    // TODO: Panama Canal preset (starting line)
     switchboardStick.btn_2.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+
             prefTurret.turretPanamaCanalPresetPos.getValue(), prefPitch.pitchPanamaCanalAngle.getValue(), true)));
 
-    // 254 Shuffling preset (centerline to amp zone corner)
+    // TODO: 254 Shuffling preset (centerline to amp zone corner)
     switchboardStick.btn_3.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, 0, 0,
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+
             prefTurret.turretNoteShufflingPresetPos.getValue(), prefPitch.pitchNoteShufflingAngle.getValue(), true)));
 
     // Podium preset
@@ -250,6 +256,11 @@ public class RobotContainer implements Logged {
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
             prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true)));
 
+    // wing preset
+    switchboardStick.btn_7.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+            prefTurret.turretWingPresetPos.getValue(), prefPitch.pitchWingPresetAngle.getValue(), true)));
   }
 
   private void configureAutoSelector() {
