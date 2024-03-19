@@ -206,15 +206,11 @@ public class RobotContainer implements Logged {
 
     // Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(
-            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-                prefShooter.rightShooterSubVelocity.getValue())))
-        .alongWith(
-            Commands.runOnce(
-                () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue())))
-        .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue())))
-        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(true))));
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSubVelocity.getValue(),
+            prefShooter.rightShooterSubVelocity.getValue(),
+            prefTurret.turretSubPresetPos.getValue(),
+            prefPitch.pitchSubAngle.getValue(), true)));
 
     // STOW
     controller.btn_Y.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));

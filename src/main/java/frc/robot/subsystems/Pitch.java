@@ -112,9 +112,10 @@ public class Pitch extends SubsystemBase implements Logged {
    *              Degrees
    */
   public void setPitchAngle(double angle) {
-    if (angle >= prefPitch.pitchMaxIntake.getValue()) {
-      angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
-    }
+    // if (angle >= prefPitch.pitchMaxIntake.getValue()) {
+    // angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ?
+    // prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
+    // }
     if (isAnglePossible(angle)) {
       desiredPitchAngle = angle;
       pitchMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));

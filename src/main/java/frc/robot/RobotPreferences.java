@@ -462,7 +462,7 @@ public class RobotPreferences {
     /**
      * <b>Units:</b> Degrees
      */
-    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 47);
+    public static final SN_DoublePreference pitchSubAngle = new SN_DoublePreference("pitchSubAngle", 55);
     public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 48.6);
 
     public static final SN_DoublePreference pitchBehindPodiumAngle = new SN_DoublePreference("pitchBehindPodiumAngle",
