@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     RobotContainer.zeroClimber().schedule();
-    // RobotContainer.stowIntakePivot().schedule();
+    RobotContainer.stowIntakePivot().schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
 
     if (!hasAutonomousRun) {
       RobotContainer.zeroClimber().schedule();
-      // RobotContainer.stowIntakePivot().schedule();
+      RobotContainer.stowIntakePivot().schedule();
     }
   }
 
