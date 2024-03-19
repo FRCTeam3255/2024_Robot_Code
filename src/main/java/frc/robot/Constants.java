@@ -322,7 +322,7 @@ public final class Constants {
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
         new Translation3d(Units.inchesToMeters(14.5) - 0.045, -(Units.inchesToMeters(14.5) - 0.114),
             Units.inchesToMeters(8.125)),
-        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(19)));
+        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(-19)));
 
     /**
      * The position, in meters, of the center of the camera lens relative to the
