@@ -7318,7 +7318,7 @@
                 {
                     "name": "IntakeGamePiece",
                     "target": 3,
-                    "targetTimestamp": 3.7673490835155494,
+                    "targetTimestamp": null,
                     "offset": 0,
                     "command": {
                         "type": "named",
@@ -7330,7 +7330,7 @@
                 {
                     "name": "IntakeGamePiece",
                     "target": 9,
-                    "targetTimestamp": 8.140799633474911,
+                    "targetTimestamp": null,
                     "offset": 0,
                     "command": {
                         "type": "named",
@@ -7342,7 +7342,7 @@
                 {
                     "name": "IntakeGamePiece",
                     "target": 14,
-                    "targetTimestamp": 11.274676766947398,
+                    "targetTimestamp": null,
                     "offset": 0,
                     "command": {
                         "type": "named",
@@ -7354,7 +7354,7 @@
                 {
                     "name": "IntakeGamePiece",
                     "target": 18,
-                    "targetTimestamp": 14.41075298964891,
+                    "targetTimestamp": null,
                     "offset": 0,
                     "command": {
                         "type": "named",
@@ -8311,6 +8311,15 @@
                     "translationConstrained": true,
                     "headingConstrained": true,
                     "controlIntervalCount": 40
+                },
+                {
+                    "x": 15.831777572631836,
+                    "y": 6.69611120223999,
+                    "heading": -1.0496856238629728,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 40
                 }
             ],
             "trajectory": [],
@@ -8377,6 +8386,15 @@
                     "x": 0.6018335223197937,
                     "y": 4.348438262939453,
                     "heading": 2.094395,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 40
+                },
+                {
+                    "x": 15.96010684967041,
+                    "y": 4.353140354156494,
+                    "heading": 1.0496856238629728,
                     "isInitialGuess": false,
                     "translationConstrained": true,
                     "headingConstrained": true,
