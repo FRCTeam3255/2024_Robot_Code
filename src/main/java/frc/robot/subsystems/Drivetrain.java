@@ -42,6 +42,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   @Log.NT
   private static SwerveModuleState[] loggedActualStates;
 
+  @Log.NT
+  double desiredSnappingRot = 0;
+
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
           mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
@@ -181,7 +184,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    * @return The desired velocity needed to snap. <b>Units:</b> Radians per Second
    */
   public double getVelocityToSnap(Rotation2d desiredYaw) {
-    double yawSetpoint = yawSnappingController.calculate(getRotation().getRadians(), desiredYaw.getRadians());
+    desiredSnappingRot = desiredYaw.getDegrees();
+    double yawSetpoint = yawSnappingController.calculate(getRotation().getRadians(),
+        (desiredYaw.getDegrees() < 0) ? (2 * Math.PI) + desiredYaw.getRadians() : desiredYaw.getRadians());
 
     // limit the PID output to our maximum rotational speed
     yawSetpoint = MathUtil.clamp(yawSetpoint, -Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()),
@@ -194,19 +199,24 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     return new Pose3d(getPose());
   }
 
-  public Pose2d getClosestChain(Pose2d rightStagePose, Pose2d leftStagePose, Pose2d centerStagePose) {
-    double distanceFromLeftChain = Math.hypot(leftStagePose.getX(), leftStagePose.getY());
-    double distanceFromRightChain = Math.hypot(rightStagePose.getX(), rightStagePose.getY());
-    double distanceFromCenterChain = Math.hypot(centerStagePose.getX(), centerStagePose.getY());
+  public Rotation2d getDesiredRotForChain(Pose2d rightStagePose, Pose2d leftStagePose, Pose2d centerStagePose) {
+    Pose2d curPose = getPose();
+
+    Pose2d rightStagePoseFromBot = rightStagePose.relativeTo(curPose);
+    Pose2d centerStagePoseFromBot = centerStagePose.relativeTo(curPose);
+    Pose2d leftStagePoseFromBot = leftStagePose.relativeTo(curPose);
+
+    double distanceFromLeftChain = Math.hypot(leftStagePoseFromBot.getX(), leftStagePoseFromBot.getY());
+    double distanceFromRightChain = Math.hypot(rightStagePoseFromBot.getX(), rightStagePoseFromBot.getY());
+    double distanceFromCenterChain = Math.hypot(centerStagePoseFromBot.getX(), centerStagePoseFromBot.getY());
 
     if (distanceFromLeftChain < distanceFromCenterChain && distanceFromLeftChain < distanceFromRightChain) {
-      return leftStagePose;
+      return leftStagePose.getRotation();
     } else if (distanceFromCenterChain < distanceFromLeftChain && distanceFromCenterChain < distanceFromRightChain) {
-      return centerStagePose;
+      return centerStagePose.getRotation();
     } else {
-      return rightStagePose;
+      return rightStagePose.getRotation();
     }
-
   }
 
   @Override

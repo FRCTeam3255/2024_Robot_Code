@@ -25,9 +25,8 @@ public class Drive extends Command {
   Trigger slowMode, northTrigger, eastTrigger, southTrigger, westTrigger, sourceTrigger, trapTrigger;
   double driveSpeed, xVelocity, yVelocity, rVelocity, slowMultiplier, robotY, robotX;
   Translation2d translationVelocity;
-  Rotation2d sourceAngle;
   Pose3d[] fieldPositions;
-  Pose2d leftStageAngle, rightStageAngle, centerStageAngle;
+  Pose2d sourcePose, leftStage, rightStage, centerStage;
 
   public Drive(
       Drivetrain subDrivetrain,
@@ -67,10 +66,10 @@ public class Drive extends Command {
     driveSpeed = (isPracticeBot) ? constDrivetrain.pracBot.DRIVE_SPEED : constDrivetrain.DRIVE_SPEED;
     fieldPositions = FieldConstants.GET_FIELD_POSITIONS();
 
-    sourceAngle = fieldPositions[2].getRotation().toRotation2d();
-    leftStageAngle = fieldPositions[3].toPose2d();
-    centerStageAngle = fieldPositions[4].toPose2d();
-    rightStageAngle = fieldPositions[5].toPose2d();
+    sourcePose = fieldPositions[2].toPose2d();
+    leftStage = fieldPositions[3].toPose2d();
+    centerStage = fieldPositions[4].toPose2d();
+    rightStage = fieldPositions[5].toPose2d();
   }
 
   @Override
@@ -92,33 +91,28 @@ public class Drive extends Command {
     } else {
       // Otherwise, check if snapping is being requested
       if (northTrigger.getAsBoolean()) {
-        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(0));
+        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(180));
+
       } else if (eastTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(90));
+
       } else if (southTrigger.getAsBoolean()) {
-        rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(180));
+        if (subDrivetrain.getRotation().getDegrees() > 180) {
+          rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(355));
+        } else {
+          rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(5));
+        }
+
       } else if (westTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(270));
+
       } else if (sourceTrigger.getAsBoolean()) {
-        rVelocity = subDrivetrain.getVelocityToSnap(sourceAngle);
+        rVelocity = subDrivetrain.getVelocityToSnap(sourcePose.getRotation());
+
       } else if (trapTrigger.getAsBoolean()) {
-        // TODO: MAKE THIS USE MATH INSTEAD OF SCUFFING IT
-        // https://www.desmos.com/calculator/l1ntqvcuv3
-
-        // Current implementation: This will snap to the left or right chain. If we want
-        // to snap to the center chain, just use cardinal directons
-        robotX = subDrivetrain.getPose().getX();
-        robotY = subDrivetrain.getPose().getY();
-
-        subDrivetrain.getPose().relativeTo(leftStageAngle);
-
-        Pose2d rightStagePoseFromBot = rightStageAngle.relativeTo(subDrivetrain.getPose());
-        Pose2d centerStagePoseFromBot = centerStageAngle.relativeTo(subDrivetrain.getPose());
-        Pose2d leftStagePoseFromBot = leftStageAngle.relativeTo(subDrivetrain.getPose());
-        // rVelocity = subDrivetrain.getVelocityToSnap(
-        // subDrivetrain.getClosestChain(rightStagePoseFromBot, leftStagePoseFromBot,
-        // centerStagePoseFromBot));
-
+        rVelocity = subDrivetrain.getVelocityToSnap(
+            subDrivetrain.getDesiredRotForChain(rightStage, leftStage,
+                centerStage));
       }
     }
 
