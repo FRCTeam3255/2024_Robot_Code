@@ -5,49 +5,48 @@
 // Concept credit: FRC team 2910, Jack in the Bot
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.prefPitch;
-import frc.robot.subsystems.Pitch;
+import frc.robot.RobotPreferences.prefClimber;
+import frc.robot.subsystems.Climber;
 
-public class ZeroPitch extends Command {
-  Pitch subPitch;
+public class ZeroClimber extends Command {
+  Climber subClimber;
 
   double zeroingTimestamp;
 
-  public ZeroPitch(Pitch subPitch) {
-    this.subPitch = subPitch;
+  public ZeroClimber(Climber subClimber) {
+    this.subClimber = subClimber;
 
-    addRequirements(subPitch);
+    addRequirements(subClimber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subPitch.setPitchSoftwareLimits(false, true);
+    subClimber.setSoftwareLimits(false, true);
 
-    subPitch.setPitchVoltage(0);
+    subClimber.setVoltage(0);
     zeroingTimestamp = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subPitch.setPitchVoltage(prefPitch.pitchZeroingVoltage.getValue());
+    subClimber.setVoltage(prefClimber.climberZeroingVoltage.getValue());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subPitch.setPitchSoftwareLimits(true, true);
+    subClimber.setSoftwareLimits(true, true);
 
     // Stop all movement
-    subPitch.setPitchVoltage(0);
+    subClimber.setVoltage(0);
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subPitch.setPitchSensorAngle(Units.rotationsToDegrees(prefPitch.pitchZeroedSensorAngle.getValue()));
+      subClimber.setSensorAngle(prefClimber.climberSensorZeroedPos.getValue());
     }
   }
 
@@ -55,7 +54,7 @@ public class ZeroPitch extends Command {
   @Override
   public boolean isFinished() {
     // If the current velocity is low enough to be considered as zeroed
-    if (Math.abs(subPitch.getPitchVelocity()) <= Math.abs(prefPitch.pitchZeroedVelocity.getValue())) {
+    if (Math.abs(subClimber.getVelocity()) <= Math.abs(prefClimber.climberZeroedVelocity.getValue())) {
       // And this is the first loop it has happened, begin the timer
       if (zeroingTimestamp == 0) {
         zeroingTimestamp = Timer.getFPGATimestamp();
@@ -64,7 +63,7 @@ public class ZeroPitch extends Command {
 
       // If this isn't the first loop, return if it has been below the threshold for
       // long enough
-      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefPitch.pitchZeroedTime.getValue();
+      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefClimber.climberZeroedTime.getValue();
     }
 
     // If the above wasn't true, we have gained too much velocity, so we aren't at 0

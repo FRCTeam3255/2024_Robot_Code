@@ -11,8 +11,6 @@ import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
-import frc.robot.subsystems.Climber;
-
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
@@ -23,20 +21,17 @@ public class IntakeFromSource extends Command {
   Transfer subTransfer;
   Pitch subPitch;
   Turret subTurret;
-  Climber subClimber;
 
   double lastDesiredPitch = prefPitch.pitchReverseLimit.getValue();
   double lastDesiredAngle;
   double lastDesiredTurret;
 
   /** Creates a new ShooterIntake. */
-  public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret,
-      Climber subClimber) {
+  public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret) {
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subPitch = subPitch;
     this.subTurret = subTurret;
-    this.subClimber = subClimber;
 
     addRequirements(subShooter, subPitch, subTurret, subTransfer);
   }
@@ -49,10 +44,8 @@ public class IntakeFromSource extends Command {
     subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
         prefShooter.rightShooterIntakeVoltage.getValue());
 
-    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue(), false);
-
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
-
+    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue());
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -80,10 +73,8 @@ public class IntakeFromSource extends Command {
 
     subShooter.getUpToSpeed();
     subTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, false);
-    subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
-    subClimber.setNeutralOutput();
-
+    subPitch.setPitchAngle(lastDesiredPitch);
+    subTurret.setTurretAngle(lastDesiredTurret);
   }
 
   // Returns true when the command should end.
