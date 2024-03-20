@@ -375,8 +375,7 @@ public class RobotContainer implements Logged {
   }
 
   public static Command stowIntakePivot() {
-    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue()))
-        .unless(() -> subIntake.getPivotAngle() > prefIntake.pivotStowAngle.getValue());
+    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue()));
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
