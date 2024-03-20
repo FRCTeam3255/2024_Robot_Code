@@ -262,7 +262,22 @@ public class Turret extends SubsystemBase {
 
       case SHUFFLE:
         targetPose = fieldPoses[7];
-        break;
+
+        // Get the turret pose (field relative) knowing that we are at the centerline
+        Pose2d turretPose = robotPose.transformBy(robotToTurret);
+        turretPose = new Pose2d(8.274689674377441, turretPose.getY(), turretPose.getRotation());
+
+        // Move the turret pose to be relative to the target (the target is now 0,0)
+        Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
+
+        // Get the angle of 0,0 to the turret pose
+        desiredLockingAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
+
+        // Account for robot rotation
+        desiredLockingAngle = desiredLockingAngle
+            .rotateBy(robotPose.getRotation().unaryMinus().minus(Rotation2d.fromDegrees(180)));
+
+        return Optional.of(desiredLockingAngle);
     }
 
     // Get the turret pose (field relative)
