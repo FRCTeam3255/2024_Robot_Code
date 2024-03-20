@@ -58,9 +58,6 @@ public class IntakeGroundGamePiece extends Command {
     subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
     subClimber.setPosition(prefClimber.climberMinPos.getValue());
 
-    if (RobotContainer.getLockedLocation() == LockedLocation.AMP) {
-      RobotContainer.setLockedLocation(LockedLocation.NONE);
-    }
   }
 
   @Override
