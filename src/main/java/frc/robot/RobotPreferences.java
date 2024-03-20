@@ -698,21 +698,39 @@ public class RobotPreferences {
   public static final class prefVision {
     /**
      * <p>
-     * Pose estimator standard deviation for vision data
+     * Pose estimator standard deviation for vision data using Multi-tag
      * <p>
      * <b>Units:</b> Meters
      */
-    public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
-        "visionStdDevsPosition", 3);
+    public static final SN_DoublePreference multiTagStdDevsPosition = new SN_DoublePreference(
+        "multiTagStdDevsPosition", 3);
 
     /**
      * <p>
-     * Pose estimator standard deviation for vision data
+     * Pose estimator standard deviation for vision data using Multi-Tag
      * </p>
      * <b>Units:</b> Radians
      */
-    public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
-        "visionStdDevsHeading", 0.9);
+    public static final SN_DoublePreference multiTagStdDevsHeading = new SN_DoublePreference(
+        "multiTagStdDevsHeading", 0.9);
+
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data using Single-tag
+     * <p>
+     * <b>Units:</b> Meters
+     */
+    public static final SN_DoublePreference singleTagStdDevsPosition = new SN_DoublePreference(
+        "singleTagStdDevsPosition", 10);
+
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data using Single-Tag
+     * </p>
+     * <b>Units:</b> Radians
+     */
+    public static final SN_DoublePreference singleTagStdDevsHeading = new SN_DoublePreference(
+        "singleTagStdDevsHeading", 3);
 
     /**
      * The translational tolerance of how off we want to be to count as correct

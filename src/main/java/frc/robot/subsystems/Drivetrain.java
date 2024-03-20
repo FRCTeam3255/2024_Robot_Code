@@ -12,12 +12,14 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.FieldConstants;
@@ -84,9 +86,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
             Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
             Units.degreesToRadians(prefDrivetrain.measurementStdDevsHeading.getValue())),
         VecBuilder.fill(
-            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
-            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
-            Units.degreesToRadians(prefVision.visionStdDevsHeading.getValue())),
+            Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
+            Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
+            Units.degreesToRadians(prefVision.multiTagStdDevsHeading.getValue())),
         new PIDConstants(prefDrivetrain.autoDriveP.getValue(),
             prefDrivetrain.autoDriveI.getValue(),
             prefDrivetrain.autoDriveD.getValue()),
@@ -172,8 +174,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    * @param timestamp     The timestamp of that pose estimate (not necessarily the
    *                      current timestamp)
    */
-  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp) {
-    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp);
+  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp, Vector<N3> stdevs) {
+    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp, stdevs);
   }
 
   /**
