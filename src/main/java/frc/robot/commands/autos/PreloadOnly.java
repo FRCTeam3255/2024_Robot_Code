@@ -84,27 +84,29 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
             prefShooter.rightShooterSpeakerVelocity.getValue())),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
+        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // throw out that intake
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
         Commands.race(
-            new LockTurret(subTurret, subDrivetrain).repeatedly(),
-            new LockPitch(subPitch, subDrivetrain).repeatedly(),
-
             // Shooting the game piece
             Commands.sequence(
                 // Aim
                 Commands.parallel(
-                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
+                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
+                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
+
                 Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece),
-                Commands.waitSeconds(0.3),
+                    .until(() -> subTransfer.calcGPShotAuto()),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
                     Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()),

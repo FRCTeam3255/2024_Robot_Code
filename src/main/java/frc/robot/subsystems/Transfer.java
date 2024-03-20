@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -106,6 +107,12 @@ public class Transfer extends SubsystemBase implements Logged {
     setTransferNeutralOutput();
   }
 
+  public boolean calcGPShotAuto() {
+    double currentPosition = Units.rotationsToDegrees(transferMotor.getPosition().getValueAsDouble());
+
+    return currentPosition >= prefTransfer.transferRotationsShot.getValue();
+  }
+
   /**
    * Set if we have a game piece without recalculating it based off of current
    * 
@@ -172,11 +179,23 @@ public class Transfer extends SubsystemBase implements Logged {
     transferMotor.setControl(new NeutralOut());
   }
 
+  /**
+   * Sets the current angle of the transfer motor to read as the given value
+   * 
+   * @param angle The angle to set the transfer motor to. <b> Units: </b> Degrees
+   */
+  public void setTransferSensorAngle(double angle) {
+    transferMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("Transfer/Transfer Rotations",
+        Units.rotationsToDegrees(transferMotor.getPosition().getValueAsDouble()));
+
     // Key is intentional - shows in SmartDashboard
     SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected());
   }

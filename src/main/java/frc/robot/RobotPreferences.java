@@ -645,6 +645,16 @@ public class RobotPreferences {
     public static final SN_DoublePreference transferRepositionSpeed = new SN_DoublePreference("transferRepositionSpeed",
         -0.3);
 
+    /**
+     * <p>
+     * The amount of degrees to turn before considering the note to have been shot
+     * in auto
+     * </p>
+     */
+    public static final SN_DoublePreference transferRotationsShot = new SN_DoublePreference(
+        "transferRotationsShot",
+        8000);
+
   }
 
   public static final class prefTurret {

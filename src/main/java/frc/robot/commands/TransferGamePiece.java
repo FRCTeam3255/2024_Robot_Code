@@ -38,6 +38,7 @@ public class TransferGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subTransfer.setTransferSensorAngle(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -60,6 +61,7 @@ public class TransferGamePiece extends Command {
         subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue());
       }
     }
+    subTransfer.setTransferSensorAngle(0);
     subTransfer.setFeederMotorSpeed(0);
     subTransfer.setTransferMotorSpeed(0);
     return;
