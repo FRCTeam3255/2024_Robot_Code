@@ -262,15 +262,5 @@
       "timestamp": 2.0230808815392494
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 1.7090088506135923,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeGamePiece"
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }
