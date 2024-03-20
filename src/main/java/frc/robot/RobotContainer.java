@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import com.frcteam3255.joystick.SN_SwitchboardStick;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -36,6 +37,7 @@ import frc.robot.commands.IntakeFromSource;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootingPreset;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualHoodMovement;
@@ -71,6 +73,7 @@ public class RobotContainer implements Logged {
   // Controllers
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
+  private final SN_SwitchboardStick conNumpad = new SN_SwitchboardStick(mapControllers.NUMPAD_USB);
 
   // Subsystems
   private final static Climber subClimber = new Climber();
@@ -132,6 +135,7 @@ public class RobotContainer implements Logged {
     // src\main\assets\controllerMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureNumpadBindings(conNumpad);
     configureAutoSelector();
 
     subDrivetrain.resetModulesToAbsolute();
@@ -165,63 +169,117 @@ public class RobotContainer implements Logged {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
+    // Left Trigger = Intake
     controller.btn_LeftTrigger
         .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber))
         .onTrue(Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.NONE))
             .alongWith(Commands.runOnce(() -> subTransfer.hasGamePiece = false))
             .unless(() -> RobotContainer.getLockedLocation() != LockedLocation.AMP));
 
+    // Left Bumper = Enable both Manuals
+    // Left Stick = Manual Hood
+    // Right Stick = Manual Turret
     controller.btn_LeftBumper
         .onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
             .alongWith(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue()))))
-        .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX));
+        .whileTrue(new ManualTurretMovement(subTurret, controller.axis_RightX))
+        .whileTrue(new ManualHoodMovement(subPitch, controller.axis_LeftY));
 
+    // Left Stick Press = Panic
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
-    controller.btn_North
-        .whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch));
-    controller.btn_West.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
-    controller.btn_East.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE)))
-        .whileTrue(new ManualHoodMovement(subPitch, controller.axis_RightX));
 
+    // D-PAD North: Intake from Source
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
+    // D-PAD East: GP Override
+    controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
+    // D-PAD South: Eject
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch));
+    // D-PAD West: Stow
+    controller.btn_Y.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
+
+    // Right Trigger = Shoot
     controller.btn_RightTrigger
-        .whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake))
+        .whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer,
+            subPitch, subIntake))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
             .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)));
 
+    // Right Bumper = Unalive Shooter
     controller.btn_RightBumper.onTrue(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
-    controller.btn_Back.onTrue(new ZeroTurret(subTurret));
-    controller.btn_Start.onTrue(new ZeroPitch(subPitch));
-
-    // Lock Speaker
+    // A: Lock Speaker
     controller.btn_A.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SPEAKER))
         .alongWith(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
                 prefShooter.rightShooterSpeakerVelocity.getValue())))
-        .alongWith(
-            Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
-
-    // Amp Preset
+    // B: Prep Amp
     controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter));
-
-    // Subwoofer Preset
+    // X: Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
-        .alongWith(
-            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-                prefShooter.rightShooterSubVelocity.getValue())))
-        .alongWith(
-            Commands.runOnce(
-                () -> subTurret.setTurretAngle(prefTurret.turretSubPresetPos.getValue())))
-        .alongWith(Commands.runOnce(
-            () -> subPitch.setPitchAngle(prefPitch.pitchSubAngle.getValue())))
-        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(true))));
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSubVelocity.getValue(),
+            prefShooter.rightShooterSubVelocity.getValue(),
+            prefTurret.turretSubPresetPos.getValue(),
+            prefPitch.pitchSubAngle.getValue(), true)));
+    // Y: Pass Note (with Vision)
+    // TODO: WRITE THIS COMMAND
 
-    // STOW
-    controller.btn_Y.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
+    // Back/Start are Zero turret and pitch
+    controller.btn_Back.onTrue(new ZeroTurret(subTurret));
+    controller.btn_Start.onTrue(new ZeroPitch(subPitch));
+  }
+
+  private void configureNumpadBindings(SN_SwitchboardStick switchboardStick) {
+    // TODO: the REAL Panama Canal preset
+    // switchboardStick.btn_3.onTrue(Commands.runOnce(() ->
+    // setLockedLocation(LockedLocation.NONE))
+    // .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+    // prefShooter.leftShooterSpeakerVelocity.getValue(),
+    // prefShooter.rightShooterSpeakerVelocity.getValue(),
+
+    // prefTurret.turretPanamaCanalPresetPos.getValue(),
+    // prefPitch.pitchPanamaCanalAngle.getValue(), true)))
+
+    // Gulf of Mexico
+    switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+            prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true)));
+
+    // "Leapfrog" or starting-line preset
+    switchboardStick.btn_2.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true)));
+
+    // Podium preset (the new panama canal)
+    switchboardStick.btn_3.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+            prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true)));
+
+    // Peninsula preset (behind the podium)
+    switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+
+            prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true)));
+
+    // Wing
+    switchboardStick.btn_8.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
+            prefTurret.turretWingPresetPos.getValue(), prefPitch.pitchWingPresetAngle.getValue(), true)));
+
+    // 254 Shuffling preset (centerline corner to amp zone corner)
+    switchboardStick.btn_9.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
+        .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
+            prefShooter.leftShooterShuffleVelocity.getValue(), prefShooter.rightShooterShuffleVelocity.getValue(),
+
+            prefTurret.turretNoteShufflingPresetPos.getValue(), prefPitch.pitchNoteShufflingAngle.getValue(), true)));
   }
 
   private void configureAutoSelector() {
