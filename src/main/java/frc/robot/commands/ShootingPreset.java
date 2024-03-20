@@ -5,7 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefIntake;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
@@ -14,6 +15,7 @@ public class ShootingPreset extends Command {
   Shooter subShooter;
   Turret subTurret;
   Pitch subPitch;
+  Intake subIntake;
 
   double desiredLeftVelocity;
   double desiredRightVelocity;
@@ -22,11 +24,13 @@ public class ShootingPreset extends Command {
   boolean ignoreFlywheelSpeed;
 
   /** Creates a new ShootingPreset. */
-  public ShootingPreset(Shooter subShooter, Turret subTurret, Pitch subPitch, double desiredLeftVelocity,
+  public ShootingPreset(Shooter subShooter, Turret subTurret, Pitch subPitch, Intake subIntake,
+      double desiredLeftVelocity,
       double desiredRightVelocity, double desiredTurretAngle, double desiredPitchAngle, boolean ignoreFlywheelSpeed) {
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
+    this.subIntake = subIntake;
 
     this.desiredLeftVelocity = desiredLeftVelocity;
     this.desiredRightVelocity = desiredRightVelocity;
@@ -40,6 +44,7 @@ public class ShootingPreset extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
     subShooter.setDesiredVelocities(desiredLeftVelocity, desiredRightVelocity);
     subTurret.setTurretAngle(desiredTurretAngle);
     subPitch.setPitchAngle(desiredPitchAngle);
