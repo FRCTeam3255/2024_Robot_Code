@@ -198,28 +198,16 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     double distanceFromLeftChain = Math.hypot(leftStagePose.getX(), leftStagePose.getY());
     double distanceFromRightChain = Math.hypot(rightStagePose.getX(), rightStagePose.getY());
     double distanceFromCenterChain = Math.hypot(centerStagePose.getX(), centerStagePose.getY());
-    // boolean isLeftChainCloser = false;
-    // boolean isRightChainCloser = false;
-    // boolean isCenterChainCloser = false;
 
     if (distanceFromLeftChain < distanceFromCenterChain && distanceFromLeftChain < distanceFromRightChain) {
-      // isLeftChainCloser = true;
       return leftStagePose;
     } else if (distanceFromCenterChain < distanceFromLeftChain && distanceFromCenterChain < distanceFromRightChain) {
-      // isRightChainCloser = true;
       return centerStagePose;
     } else {
-      // isCenterChainCloser = true;
       return rightStagePose;
     }
 
   }
-
-  // boolean snapToChain(){
-  // if (isLeftChainCloser == true) {
-
-  // }
-  // }
 
   @Override
   public void periodic() {
