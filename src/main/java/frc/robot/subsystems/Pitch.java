@@ -235,10 +235,15 @@ public class Pitch extends SubsystemBase implements Logged {
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
+
+      case SHUFFLE:
+        Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
+        desiredLockingAngle = Rotation2d.fromDegrees(constPitch.SHUFFLE_MAP.get(pitchPose.getY()));
+
+        return Optional.of(desiredLockingAngle);
     }
 
     // Get the pitch pose (field relative)
-
     Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
 
     // Get distances from the pitch pose to the target pose and then calculate the

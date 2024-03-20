@@ -219,6 +219,33 @@ public final class Constants {
 
       // edge of bumper to center of turret = 42.29cm = 0.4229 m
     }
+
+    /**
+     * <p>
+     * Determines the necessary angle for the shooter to shuffle notes depending on
+     * the Y-location of the robot.
+     * </p>
+     * <b>KEY:</b> The Y position (in meters) of the center of the turret to the
+     * SPEAKER
+     * <br>
+     * <br>
+     * <b>VALUE:</b> The angle (in degrees) for the hood to go up by
+     * 
+     */
+    public static final InterpolatingDoubleTreeMap SHUFFLE_MAP = new InterpolatingDoubleTreeMap();
+
+    static {
+      SHUFFLE_MAP.put(8.732940673828125, 0.0); // Outside of field (top)
+      SHUFFLE_MAP.put(6.384957313537598, 0.0); // In front of Speaker basically
+
+      // TODO: THESE ONES ARE GUESSES
+      SHUFFLE_MAP.put(3.2638726234436035, 28.0); // In front of Stage basically
+      SHUFFLE_MAP.put(2.421677827835083, 30.0); // In front of Stage basically
+
+      SHUFFLE_MAP.put(0.42119738459587097, 36.0); // Preset Value
+      SHUFFLE_MAP.put(-0.5405449271202087, 36.0); // Outside of field (bottom)
+
+    }
   }
 
   /**
@@ -346,6 +373,6 @@ public final class Constants {
    * Locations that the robot can attempt to lock onto.
    */
   public enum LockedLocation {
-    NONE, SPEAKER, AMP
+    NONE, SPEAKER, AMP, SHUFFLE
   }
 }

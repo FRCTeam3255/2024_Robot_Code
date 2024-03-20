@@ -259,6 +259,10 @@ public class Turret extends SubsystemBase {
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
+
+      case SHUFFLE:
+        targetPose = fieldPoses[7];
+        break;
     }
 
     // Get the turret pose (field relative)
@@ -272,7 +276,7 @@ public class Turret extends SubsystemBase {
 
     // Account for robot rotation
     desiredLockingAngle = desiredLockingAngle
-        .rotateBy(robotPose.getRotation().unaryMinus().minus(new Rotation2d().fromDegrees(180)));
+        .rotateBy(robotPose.getRotation().unaryMinus().minus(Rotation2d.fromDegrees(180)));
 
     return Optional.of(desiredLockingAngle);
   }

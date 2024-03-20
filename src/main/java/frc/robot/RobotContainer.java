@@ -247,8 +247,13 @@ public class RobotContainer implements Logged {
             prefShooter.rightShooterSubVelocity.getValue(),
             prefTurret.turretSubPresetPos.getValue(),
             prefPitch.pitchSubAngle.getValue(), true)));
+
     // Y: Pass Note (with Vision)
-    // TODO: WRITE THIS COMMAND
+    controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SHUFFLE))
+        .alongWith(
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterShuffleVelocity.getValue(),
+                prefShooter.rightShooterShuffleVelocity.getValue())))
+        .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
     // Back/Start are Zero turret and pitch
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
@@ -256,15 +261,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureNumpadBindings(SN_SwitchboardStick switchboardStick) {
-    // TODO: the REAL Panama Canal preset
-    // switchboardStick.btn_3.onTrue(Commands.runOnce(() ->
-    // setLockedLocation(LockedLocation.NONE))
-    // .alongWith(new ShootingPreset(subShooter, subTurret, subPitch,
-    // prefShooter.leftShooterSpeakerVelocity.getValue(),
-    // prefShooter.rightShooterSpeakerVelocity.getValue(),
-
-    // prefTurret.turretPanamaCanalPresetPos.getValue(),
-    // prefPitch.pitchPanamaCanalAngle.getValue(), true)))
 
     // Gulf of Mexico
     switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
