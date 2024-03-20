@@ -9,7 +9,9 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -64,6 +66,8 @@ public class Intake extends SubsystemBase implements Logged {
 
     // - Pivot -
     pivotConfig = new TalonFXConfiguration();
+    pivotConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+    pivotConfig.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
     pivotConfig.Slot0.kS = prefIntake.pivotS.getValue();
     pivotConfig.Slot0.kG = prefIntake.pivotG.getValue();
     pivotConfig.Slot0.kA = prefIntake.pivotA.getValue();

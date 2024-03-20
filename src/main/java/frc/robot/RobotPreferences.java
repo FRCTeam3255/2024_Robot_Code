@@ -218,10 +218,10 @@ public class RobotPreferences {
 
   public static final class prefIntake {
     // - Configs -
-    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.4);
+    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.5);
     public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0.0);
     public static final SN_DoublePreference pivotA = new SN_DoublePreference("pivotA", 0.1);
-    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 30);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 10);
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
@@ -331,7 +331,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
-        "pivotGroundIntakeAngle", 105);
+        "pivotGroundIntakeAngle", 104);
 
     /**
      * <p>

@@ -59,9 +59,9 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
   Pose2d S5R = new Pose2d(FIELD_LENGTH - 1.438, 2.059, Rotation2d.fromRadians(0));
   Pose2d[] startingPositionsRed = { S1R, S2R, S3R, S4R, S5R };
 
-  /**
+  /*
    * @param startingPosition Your desired starting position. 0 -> 4. Please refer
-   *                         to Choreo for this
+   * to Choreo for this
    */
   public PreloadOnly(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
       Transfer subTransfer, Turret subTurret, Climber subClimber, int startingPosition) {
@@ -81,15 +81,15 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
 
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+            prefShooter.rightShooterSpeakerVelocity.getValue())),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+
         // throw out that intake
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
-        // TODO: REMOVE TIME OUT
-        // Redundant call (makes it easier for sim testing)
-        Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)),
 
         Commands.race(
-            new Shoot(subShooter, subLEDs).repeatedly(),
             new LockTurret(subTurret, subDrivetrain).repeatedly(),
             new LockPitch(subPitch, subDrivetrain).repeatedly(),
 
@@ -98,18 +98,17 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
                 // Aim
                 Commands.parallel(
                     Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                    Commands
-                        .runOnce(
-                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                prefShooter.rightShooterSpeakerVelocity.getValue())),
                     Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+                Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
                     .until(() -> !subTransfer.hasGamePiece),
+                Commands.waitSeconds(0.3),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
+                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()),
+                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))),
 
         new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)
 

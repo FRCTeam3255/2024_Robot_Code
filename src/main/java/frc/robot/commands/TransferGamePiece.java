@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
@@ -68,9 +69,11 @@ public class TransferGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subTransfer.setFeederMotorSpeed(0);
-    subTransfer.setTransferMotorSpeed(0);
-    subIntake.setIntakeRollerSpeed(0);
+    if (!RobotState.isAutonomous()) {
+      subTransfer.setFeederMotorSpeed(0);
+      subTransfer.setTransferMotorSpeed(0);
+      subIntake.setIntakeRollerSpeed(0);
+    }
   }
 
   // Returns true when the command should end.
