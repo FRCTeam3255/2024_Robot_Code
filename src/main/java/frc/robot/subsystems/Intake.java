@@ -8,16 +8,17 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.Constants.constIntake;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
@@ -39,6 +40,7 @@ public class Intake extends SubsystemBase implements Logged {
 
   PositionVoltage positionRequest;
   MotionMagicVoltage motionMagicRequest;
+  VoltageOut voltageRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.ROLLER_CAN, "rio");
@@ -50,6 +52,7 @@ public class Intake extends SubsystemBase implements Logged {
 
     positionRequest = new PositionVoltage(0);
     motionMagicRequest = new MotionMagicVoltage(0);
+    voltageRequest = new VoltageOut(0);
 
     desiredPivotAngle = prefIntake.pivotMinPos.getValue();
 
@@ -63,6 +66,7 @@ public class Intake extends SubsystemBase implements Logged {
     rollerConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.rollerCurrentThreshold.getValue();
     rollerConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.rollerCurrentLimit.getValue();
     rollerConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.rollerCurrentTimeThreshold.getValue();
+    rollerConfig.MotorOutput.Inverted = constIntake.ROLLER_INVERT;
 
     // - Pivot -
     pivotConfig = new TalonFXConfiguration();
@@ -96,12 +100,25 @@ public class Intake extends SubsystemBase implements Logged {
 
     pivotConfig.Feedback.SensorToMechanismRatio = constIntake.GEAR_RATIO;
     pivotConfig.MotorOutput.NeutralMode = constIntake.PIVOT_NEUTRAL_MODE;
+    pivotConfig.MotorOutput.Inverted = constIntake.PIVOT_INVERT;
 
     rollerMotor.getConfigurator().apply(rollerConfig);
     pivotMotor.getConfigurator().apply(pivotConfig);
-    // TODO: MOVE THESE TO THE CONFIG
-    rollerMotor.setInverted(prefIntake.rollerInverted.getValue());
-    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
+  }
+
+  public void setPivotCurrentLimiting(boolean enabled) {
+    pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = enabled;
+    pivotMotor.getConfigurator().apply(pivotConfig);
+  }
+
+  public void setPivotSoftwareLimits(boolean reverse, boolean forward) {
+    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    pivotMotor.getConfigurator().apply(pivotConfig);
+  }
+
+  public void setPivotVoltage(double voltage) {
+    pivotMotor.setControl(voltageRequest.withOutput(voltage));
   }
 
   public void setPivotBrake(boolean enabled) {
@@ -112,7 +129,6 @@ public class Intake extends SubsystemBase implements Logged {
     }
 
     pivotMotor.getConfigurator().apply(pivotConfig);
-    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
   }
 
   // - Get -
@@ -152,6 +168,14 @@ public class Intake extends SubsystemBase implements Logged {
     rotations -= absoluteEncoderOffset;
 
     return rotations;
+  }
+
+  /**
+   * @return The current velocity of the pivot motor. <b> Units: </b> Degrees per
+   *         second
+   */
+  public double getPitchVelocity() {
+    return Units.rotationsToDegrees(pivotMotor.getVelocity().getValueAsDouble());
   }
 
   /**
@@ -233,6 +257,15 @@ public class Intake extends SubsystemBase implements Logged {
    */
   public void setRollerSensorAngle(double angle) {
     rollerMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
+  /**
+   * Sets the current angle of the pivot motor to read as the given value
+   * 
+   * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
+   */
+  public void setPivotSensorAngle(double angle) {
+    pivotMotor.setPosition(Units.degreesToRotations(angle));
   }
 
   @Override

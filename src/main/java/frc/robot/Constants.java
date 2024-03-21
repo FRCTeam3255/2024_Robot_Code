@@ -120,7 +120,7 @@ public final class Constants {
         SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
         SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
-    public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
+    public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive; // false
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
     public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.CounterClockwise_Positive;
 
@@ -140,10 +140,14 @@ public final class Constants {
   }
 
   public static class constIntake {
-    public static final double ABS_ENCODER_OFFSET = 0.102385;
-    public static final boolean ABS_ENCODER_INVERT = false;
+    public static final double ABS_ENCODER_OFFSET = 0.102385; // NEW OFFSET
+    public static final boolean ABS_ENCODER_INVERT = true;
     public static final double GEAR_RATIO = 28.13;
     public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;
+
+    public static final InvertedValue ROLLER_INVERT = InvertedValue.Clockwise_Positive;
+    public static final InvertedValue PIVOT_INVERT = InvertedValue.Clockwise_Positive;
+
   }
 
   public static class constLEDs {

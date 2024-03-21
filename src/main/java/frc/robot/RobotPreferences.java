@@ -225,9 +225,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
-    public static final SN_BooleanPreference pivotInverted = new SN_BooleanPreference("pivotInverted", false);
-    public static final SN_BooleanPreference rollerInverted = new SN_BooleanPreference("rollerInverted", true);
-
     // - Motion Magic -
     /**
      * <b> Units: </b> Rotations per second (rps)
@@ -262,6 +259,42 @@ public class RobotPreferences {
         30);
     public static final SN_DoublePreference pivotCurrentTimeThreshold = new SN_DoublePreference(
         "pivotCurrentTimeThreshold", 0.1);
+
+    // - Zeroing -
+    /**
+     * <p>
+     * The voltage supplied to the motor in order to zero
+     * </p>
+     * <b>Units:</b> Volts
+     */
+    public static final SN_DoublePreference pivotZeroingVoltage = new SN_DoublePreference("pivotZeroingVoltage", -1);
+
+    /**
+     * <p>
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     * </p>
+     * <b>Units:</b> Degrees per second
+     */
+    public static final SN_DoublePreference pivotZeroedVelocity = new SN_DoublePreference("pivotZeroedVelocity", 0.01);
+
+    /**
+     * <p>
+     * The elapsed time required to consider the pivot motor as zeroed
+     * </p>
+     * <b>Units:</b> Seconds
+     */
+    public static final SN_DoublePreference pivotZeroedTime = new SN_DoublePreference("pivotZeroedTime", 0.25);
+
+    /**
+     * <p>
+     * The value that the pitch reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical slop
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference pitchZeroedSensorAngle = new SN_DoublePreference("pitchZeroedSensorAngle",
+        Units.degreesToRotations(6));
 
     // - Soft Limits -
     /**
@@ -322,7 +355,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotStowAngle = new SN_DoublePreference(
-        "pivotStowAngle", 30.5);
+        "pivotStowAngle", 75.5);
 
     /**
      * <p>
@@ -331,7 +364,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
-        "pivotGroundIntakeAngle", 105);
+        "pivotGroundIntakeAngle", 1);
 
     /**
      * <p>
@@ -341,7 +374,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotTransferToAmpAngle = new SN_DoublePreference("pivotTransferToAmpAngle",
-        105);
+        1);
 
     /**
      * <p>
@@ -350,7 +383,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
-        11.4);
+        94.6);
 
     // TODO: SEPERATE TRAP PRESET : AMP IS 11.4
     // TRAP IS 33.2

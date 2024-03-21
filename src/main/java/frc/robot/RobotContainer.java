@@ -50,8 +50,9 @@ import frc.robot.commands.Panic;
 import frc.robot.commands.PrepAmp;
 import frc.robot.commands.SetLEDS;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.ZeroClimber;
+import frc.robot.commands.ZeroIntake;
 import frc.robot.commands.UnaliveShooter;
+import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
@@ -278,6 +279,9 @@ public class RobotContainer implements Logged {
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
             prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true)));
+
+    // ZERO INTAKE
+    switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake));
 
     // Peninsula preset (behind the podium)
     switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
