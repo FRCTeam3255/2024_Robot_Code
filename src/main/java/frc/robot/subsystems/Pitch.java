@@ -174,7 +174,9 @@ public class Pitch extends SubsystemBase implements Logged {
     }
   }
 
-  // -- Get --
+  public boolean isPitchLocked() {
+    return isPitchAtAngle(desiredLockingAngle.getDegrees());
+  }
 
   /**
    * @return The current applied (output) voltage. <b> Units: </b> Volts

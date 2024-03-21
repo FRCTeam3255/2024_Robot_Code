@@ -641,21 +641,21 @@ public class RobotPreferences {
      * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
      */
     public static final SN_DoublePreference feederHasGamePieceCurrent = new SN_DoublePreference(
-        "feederHasGamePieceCurrent", -6);
+        "feederHasGamePieceCurrent", -7);
 
     /**
      * The value that the transfer current must be <b>ABOVE</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
-        "transferHasGamePieceCurrent", 6);
+        "transferHasGamePieceCurrent", 7);
 
     /**
      * The value that the transfer velocity must be <b>BELOW</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
-        "transferHasGamePieceVelocity", 18);
+        "transferHasGamePieceVelocity", 16);
 
     public static final SN_DoublePreference sourceFeederHasGamePieceCurrent = new SN_DoublePreference(
         "sourceFeederHasGamePieceCurrent", -6);
@@ -686,7 +686,7 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference transferRotationsShot = new SN_DoublePreference(
         "transferRotationsShot",
-        8000);
+        6000);
 
   }
 

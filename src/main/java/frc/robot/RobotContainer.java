@@ -58,6 +58,7 @@ import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
 import frc.robot.commands.autos.PreloadOnly;
+import frc.robot.commands.autos.WingOnly;
 import frc.robot.commands.autos.Centerline;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -328,11 +329,11 @@ public class RobotContainer implements Logged {
 
     // Wing ONLY
     autoChooser.addOption("Wing Only Down",
-        new Centerline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             true));
 
     autoChooser.addOption("Wing Only Up",
-        new Centerline(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             false));
 
     // // Centerline ONLY
@@ -464,6 +465,7 @@ public class RobotContainer implements Logged {
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
     startingPosition = autoChooser.getSelected().getInitialPose().get();
+    subDrivetrain.resetPoseToPose(startingPosition);
 
     double desiredStartingPositionX = startingPosition.getX();
     double desiredStartingPositionY = startingPosition.getY();

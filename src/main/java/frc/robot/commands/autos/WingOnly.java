@@ -73,35 +73,34 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
         Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
         // throw out that intake
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
+        // PRELOAD
         Commands.race(
             // Shooting the game piece
             Commands.sequence(
                 // Aim
                 Commands.parallel(
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
-                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
-
+                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
+                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
                 Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
                     .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.parallel(
-                    Commands.runOnce(
-                        () -> subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(
-                        () -> subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))),
+                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))),
 
         new PathPlannerAuto(determinePathName() + ".1"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
+
+        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
+        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W3
         Commands.race(
@@ -109,25 +108,22 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             Commands.sequence(
                 // Aim
                 Commands.parallel(
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
-                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
-
+                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
+                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
                 Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
                     .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.parallel(
-                    Commands.runOnce(
-                        () -> subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(
-                        () -> subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))),
+                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))),
 
         new PathPlannerAuto(determinePathName() + ".2"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
+
+        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
+        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W2
         Commands.race(
@@ -135,25 +131,22 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             Commands.sequence(
                 // Aim
                 Commands.parallel(
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
-                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
-
+                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
+                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
                 Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
                     .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.parallel(
-                    Commands.runOnce(
-                        () -> subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(
-                        () -> subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))),
-
+                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))),
         new PathPlannerAuto(determinePathName() + ".3"),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch,
+            subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
+
+        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
+        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W3
         Commands.race(
@@ -161,21 +154,14 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             Commands.sequence(
                 // Aim
                 Commands.parallel(
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
-                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
-
+                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
+                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
                 Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
                     .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.parallel(
-                    Commands.runOnce(
-                        () -> subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(
-                        () -> subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))))
+                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))
 
     );
   }
@@ -187,7 +173,8 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   }
 
   public String determinePathName() {
-    return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
+    // return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
+    return "PsW1sW2sW3s";
   }
 
   public Command getAutonomousCommand() {

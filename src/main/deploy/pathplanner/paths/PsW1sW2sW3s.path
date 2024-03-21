@@ -11,7 +11,7 @@
         "x": 1.6549529498390765,
         "y": 7.276946352133994
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     },
     {
@@ -88,7 +88,7 @@
   "reversed": false,
   "folder": "Wing Down",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true
