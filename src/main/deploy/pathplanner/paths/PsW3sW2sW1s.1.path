@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.464,
-        "y": 7.331
+        "x": 1.441,
+        "y": 4.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6589529498390765,
-        "y": 7.277946352133994
+        "x": 1.7059404206853392,
+        "y": 4.101004377463341
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.32,
-        "y": 7.015
+        "x": 2.18,
+        "y": 4.098
       },
       "prevControl": {
-        "x": 1.9881171135753923,
-        "y": 7.238534936608613
+        "x": 2.033532296771704,
+        "y": 4.085404764316372
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "W1",
-      "waypointRelativePos": 0.6,
+      "name": " W3",
+      "waypointRelativePos": 0.4,
       "command": {
         "type": "parallel",
         "data": {
@@ -56,12 +56,12 @@
     "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 180.0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Wing Down",
+  "folder": "Wing Up",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

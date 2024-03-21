@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.42,
-      "y": 7.33
+      "x": 2.18,
+      "y": 4.1
     },
     "rotation": 180.0
   },
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PsW1sW2sW3s.1"
+            "pathName": "PsW3sW2sW1s.2"
           }
         }
       ]
     }
   },
-  "folder": "Wing Down",
+  "folder": "Wing Up",
   "choreoAuto": false
 }

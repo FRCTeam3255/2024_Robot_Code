@@ -6,8 +6,6 @@ package frc.robot.commands.autos;
 
 import java.util.function.Supplier;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,9 +19,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.LockTurret;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.UnaliveShooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -115,42 +111,15 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
                         () -> subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
                     Commands.runOnce(
                         () -> subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))),
-
-        new PathPlannerAuto("PsW1sW2sW3s.1"),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
-        Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
-
-        Commands.race(
-            // Shooting the game piece
-            Commands.sequence(
-                // Aim
-                Commands.parallel(
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
-                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
-
-                Commands.runOnce(() -> subShooter.getUpToSpeed()),
-
-                // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.parallel(
-                    Commands.runOnce(
-                        () -> subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(
-                        () -> subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue())),
                     Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))))
 
     );
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    // return () -> (FieldConstants.isRedAlliance())
-    // ? startingPositionsRed[startingPosition]
-    // : startingPositionsBlue[startingPosition];
-    return () -> new Pose2d(1.42, 7.33, Rotation2d.fromDegrees(180));
-
+    return () -> (FieldConstants.isRedAlliance())
+        ? startingPositionsRed[startingPosition]
+        : startingPositionsBlue[startingPosition];
   }
 
   public Command getAutonomousCommand() {

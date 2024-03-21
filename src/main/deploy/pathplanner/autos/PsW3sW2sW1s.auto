@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4405436515808103,
-      "y": 4.099990367889404
+      "x": 1.44,
+      "y": 4.1
     },
-    "rotation": 179.99984796050427
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -14,12 +14,24 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PsW3sW2sW1s"
+            "pathName": "PsW3sW2sW1s.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PsW3sW2sW1s.2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PsW3sW2sW1s.3"
           }
         }
       ]
     }
   },
   "folder": "Wing Up",
-  "choreoAuto": true
+  "choreoAuto": false
 }
