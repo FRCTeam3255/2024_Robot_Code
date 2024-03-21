@@ -375,7 +375,7 @@ public class RobotContainer implements Logged {
   }
 
   public static Command stowIntakePivot() {
-    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue()))
+    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue()), subIntake)
         .unless(() -> subIntake.getPivotAngle() > prefIntake.pivotStowAngle.getValue());
   }
 

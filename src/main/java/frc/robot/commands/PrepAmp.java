@@ -44,11 +44,11 @@ public class PrepAmp extends Command {
 
     subTurret.setTurretAngle(0);
     subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
-
+    // Brings turret to center
     subShooter.setDesiredVelocities(0, 0);
     subShooter.getUpToSpeed();
     subShooter.setIgnoreFlywheelSpeed(false); // Here b/c we call it whenever we change presets
-
+    // sets shooter speed to 0
     subIntake.setRollerSensorAngle(0);
     subIntake.setPivotAngle(prefIntake.pivotTransferToAmpAngle.getValue());
   }
