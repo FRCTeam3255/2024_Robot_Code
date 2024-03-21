@@ -97,7 +97,7 @@ public class Drive extends Command {
         rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(90));
 
       } else if (southTrigger.getAsBoolean()) {
-        if (subDrivetrain.getRotation().getDegrees() > 180) {
+        if (getDrivetrainRotation().getAsDouble() > 180) {
           rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(355));
         } else {
           rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(5));
@@ -110,9 +110,19 @@ public class Drive extends Command {
         rVelocity = subDrivetrain.getVelocityToSnap(sourcePose.getRotation());
 
       } else if (trapTrigger.getAsBoolean()) {
-        rVelocity = subDrivetrain.getVelocityToSnap(
-            subDrivetrain.getDesiredRotForChain(rightStage, leftStage,
-                centerStage));
+        Rotation2d desiredRotation = subDrivetrain.getDesiredRotForChain(rightStage, leftStage, centerStage);
+
+        if (desiredRotation.getDegrees() == 0) {
+          if (getDrivetrainRotation().getAsDouble() > 180) {
+            rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(355));
+          } else {
+            rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(5));
+          }
+        } else {
+          rVelocity = subDrivetrain.getVelocityToSnap(
+              subDrivetrain.getDesiredRotForChain(rightStage, leftStage,
+                  centerStage));
+        }
       }
     }
 
@@ -127,5 +137,9 @@ public class Drive extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public DoubleSupplier getDrivetrainRotation() {
+    return () -> subDrivetrain.getRotation().getDegrees();
   }
 }
