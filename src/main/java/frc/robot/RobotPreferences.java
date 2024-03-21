@@ -218,10 +218,10 @@ public class RobotPreferences {
 
   public static final class prefIntake {
     // - Configs -
-    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.5);
-    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0.0);
+    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.2);
+    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0.6);
     public static final SN_DoublePreference pivotA = new SN_DoublePreference("pivotA", 0.1);
-    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 10);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 30); // 10
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
 
@@ -235,7 +235,7 @@ public class RobotPreferences {
      * <b> Units: </b> Rotations per second per second (rps/s)
      */
     public static final SN_DoublePreference pivotAcceleration = new SN_DoublePreference(
-        "pivotAcceleration", 160);
+        "pivotAcceleration", 260);
     /**
      * <b> Units: </b> Rotations per second per second per second (rps/s/s)
      */
@@ -294,7 +294,7 @@ public class RobotPreferences {
      * <b>Units:</b> Rotations
      */
     public static final SN_DoublePreference pitchZeroedSensorAngle = new SN_DoublePreference("pitchZeroedSensorAngle",
-        Units.degreesToRotations(6));
+        Units.degreesToRotations(0));
 
     // - Soft Limits -
     /**
@@ -340,7 +340,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pivotIsAtAngleTolerance = new SN_DoublePreference("pivotIsAtAngleTolerance",
-        10);
+        5);
 
     /**
      * <p>

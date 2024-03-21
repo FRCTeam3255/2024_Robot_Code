@@ -60,7 +60,6 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
     this.subClimber = subClimber;
     this.goesDown = goesDown;
 
-    // CURRENTLY ONLY SHOOTS 1 GP
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
@@ -188,8 +187,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   }
 
   public String determinePathName() {
-    // return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
-    return "PsW1sW2sW3s";
+    return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
   }
 
   public Command getAutonomousCommand() {

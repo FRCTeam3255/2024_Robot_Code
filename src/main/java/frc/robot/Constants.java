@@ -140,7 +140,7 @@ public final class Constants {
   }
 
   public static class constIntake {
-    public static final double ABS_ENCODER_OFFSET = 0.102385; // NEW OFFSET
+    public static final double ABS_ENCODER_OFFSET = 0.420915;
     public static final boolean ABS_ENCODER_INVERT = true;
     public static final double GEAR_RATIO = 28.13;
     public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;

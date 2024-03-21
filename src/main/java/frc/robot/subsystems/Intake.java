@@ -174,7 +174,7 @@ public class Intake extends SubsystemBase implements Logged {
    * @return The current velocity of the pivot motor. <b> Units: </b> Degrees per
    *         second
    */
-  public double getPitchVelocity() {
+  public double getPivotVelocity() {
     return Units.rotationsToDegrees(pivotMotor.getVelocity().getValueAsDouble());
   }
 
