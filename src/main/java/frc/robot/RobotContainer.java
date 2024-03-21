@@ -223,7 +223,7 @@ public class RobotContainer implements Logged {
             prefShooter.leftShooterSubVelocity.getValue(),
             prefShooter.rightShooterSubVelocity.getValue(),
             prefTurret.turretSubPresetPos.getValue(),
-            prefPitch.pitchSubAngle.getValue(), true)));
+            prefPitch.pitchSubAngle.getValue(), true, controller, null, false)));
     // Y: Pass Note (with Vision)
     // TODO: WRITE THIS COMMAND
 
@@ -247,38 +247,44 @@ public class RobotContainer implements Logged {
     switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true)));
+            prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true,
+            conDriver, null, false)));
 
     // "Leapfrog" or starting-line preset
     switchboardStick.btn_2.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true)));
+            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true, conDriver,
+            null, false)));
 
     // Podium preset (the new panama canal)
     switchboardStick.btn_3.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true)));
+            prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true, conDriver, null,
+            false)));
 
     // Peninsula preset (behind the podium)
     switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
 
-            prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true)));
+            prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true,
+            conDriver, null, false)));
 
     // Wing
     switchboardStick.btn_8.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretWingPresetPos.getValue(), prefPitch.pitchWingPresetAngle.getValue(), true)));
+            prefTurret.turretWingPresetPos.getValue(), prefPitch.pitchWingPresetAngle.getValue(), true, conDriver, null,
+            false)));
 
     // 254 Shuffling preset (centerline corner to amp zone corner)
     switchboardStick.btn_9.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterShuffleVelocity.getValue(), prefShooter.rightShooterShuffleVelocity.getValue(),
-            prefTurret.turretNoteShufflingPresetPos.getValue(), prefPitch.pitchNoteShufflingAngle.getValue(), true)));
+            prefTurret.turretNoteShufflingPresetPos.getValue(), prefPitch.pitchNoteShufflingAngle.getValue(), true,
+            conDriver, null, false)));
   }
 
   private void configureAutoSelector() {

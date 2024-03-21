@@ -304,6 +304,7 @@ public class Turret extends SubsystemBase implements Logged {
     SmartDashboard.putNumber("Turret/Desired Angle (Degrees)", desiredTurretAngle);
     SmartDashboard.putBoolean("Turret/Is At Desired Angle", isTurretAtGoalAngle());
     SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredLockingAngle.getDegrees());
+    SmartDashboard.putNumber("Turret Angle (Degrees)", getAngle());
 
     actualPose = new Pose3d(new Translation3d(),
         new Rotation3d(0, 0, Units.degreesToRadians(getAngle())));

@@ -195,7 +195,9 @@ public class Shooter extends SubsystemBase implements Logged {
     SmartDashboard.putNumber("Shooter/Left/Velocity RPS", getLeftShooterVelocity());
     SmartDashboard.putNumber("Shooter/Left/Desired Velocity RPS", desiredLeftVelocity);
     SmartDashboard.putBoolean("Shooter/Left/Up to Speed", isLeftShooterUpToSpeed());
+    SmartDashboard.putNumber("Shooter Left RPS", getLeftShooterVelocity());
 
+    SmartDashboard.putNumber("Shooter Right RPS", getRightShooterVelocity());
     SmartDashboard.putNumber("Shooter/Right/Velocity RPS", getRightShooterVelocity());
     SmartDashboard.putNumber("Shooter/Right/Desired Velocity RPS", desiredRightVelocity);
     SmartDashboard.putBoolean("Shooter/Right/Up to Speed", isRightShooterUpToSpeed());

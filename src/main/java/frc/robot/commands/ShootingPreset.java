@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import com.frcteam3255.joystick.SN_XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Intake;
@@ -20,13 +21,21 @@ public class ShootingPreset extends Command {
   double desiredLeftVelocity;
   double desiredRightVelocity;
   double desiredTurretAngle;
+
   double desiredPitchAngle;
   boolean ignoreFlywheelSpeed;
+
+  String presetName;
+  boolean tuningMode;
+
+  SN_XboxController controller;
 
   /** Creates a new ShootingPreset. */
   public ShootingPreset(Shooter subShooter, Turret subTurret, Pitch subPitch, Intake subIntake,
       double desiredLeftVelocity,
-      double desiredRightVelocity, double desiredTurretAngle, double desiredPitchAngle, boolean ignoreFlywheelSpeed) {
+
+      double desiredRightVelocity, double desiredTurretAngle, double desiredPitchAngle, boolean ignoreFlywheelSpeed,
+      SN_XboxController controller, String presetName, boolean tuningMode) {
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
@@ -37,7 +46,9 @@ public class ShootingPreset extends Command {
     this.desiredTurretAngle = desiredTurretAngle;
     this.desiredPitchAngle = desiredPitchAngle;
     this.ignoreFlywheelSpeed = ignoreFlywheelSpeed;
-
+    this.controller = controller;
+    this.tuningMode = tuningMode;
+    this.presetName = presetName;
     addRequirements(subShooter, subTurret, subPitch);
   }
 
@@ -54,6 +65,34 @@ public class ShootingPreset extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (tuningMode == true) {
+      if (controller.btn_North.getAsBoolean() == true) {
+        desiredPitchAngle += 1;
+        initialize();
+      }
+      if (controller.btn_South.getAsBoolean() == true) {
+        desiredPitchAngle -= 1;
+      }
+
+      if (controller.btn_East.getAsBoolean() == true) {
+        desiredTurretAngle += 1;
+      }
+
+      if (controller.btn_SouthWest.getAsBoolean() == true) {
+        desiredTurretAngle -= 1;
+      }
+
+      if (controller.btn_A.getAsBoolean() == true) {
+        desiredRightVelocity += 5;
+        desiredLeftVelocity += 5;
+      }
+
+      if (controller.btn_B.getAsBoolean() == true) {
+        desiredRightVelocity -= 5;
+        desiredLeftVelocity -= 5;
+      }
+
+    }
     subShooter.getUpToSpeed();
   }
 
