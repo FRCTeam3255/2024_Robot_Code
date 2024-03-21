@@ -229,7 +229,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Rotations per second (rps)
      */
-    public static final SN_DoublePreference pivotCruiseVelocity = new SN_DoublePreference("pivotCruiseVelocity", 80);
+    public static final SN_DoublePreference pivotCruiseVelocity = new SN_DoublePreference("pivotCruiseVelocity", 160);
 
     /**
      * <b> Units: </b> Rotations per second per second (rps/s)
