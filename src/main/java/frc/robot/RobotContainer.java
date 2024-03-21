@@ -218,7 +218,7 @@ public class RobotContainer implements Logged {
     // D-PAD South: Eject
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch));
     // D-PAD West: Stow
-    controller.btn_Y.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
+    controller.btn_West.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
 
     // Right Trigger = Shoot
     controller.btn_RightTrigger
@@ -240,7 +240,6 @@ public class RobotContainer implements Logged {
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
     // B: Prep Amp
     controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter));
-    // X: Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSubVelocity.getValue(),

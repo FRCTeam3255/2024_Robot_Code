@@ -83,9 +83,9 @@ public final class Constants {
 
       public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
           SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-          0.10033,
+          0.10033 * Math.PI,
           SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
-          DRIVE_SPEED);
+          SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
     }
 
@@ -116,9 +116,9 @@ public final class Constants {
 
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-        SN_SwerveConstants.MK4I.KRAKEN.L3.wheelCircumference,
+        0.10033 * Math.PI,
         SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
-        DRIVE_SPEED);
+        SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
     public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
@@ -237,11 +237,9 @@ public final class Constants {
     static {
       SHUFFLE_MAP.put(8.732940673828125, 0.0); // Outside of field (top)
       SHUFFLE_MAP.put(6.384957313537598, 0.0); // In front of Speaker basically
-
-      // TODO: THESE ONES ARE GUESSES
-      SHUFFLE_MAP.put(3.2638726234436035, 28.0); // In front of Stage basically
-      SHUFFLE_MAP.put(2.421677827835083, 30.0); // In front of Stage basically
-
+      SHUFFLE_MAP.put(3.165, 33.0);
+      SHUFFLE_MAP.put(2.45, 30.0);
+      SHUFFLE_MAP.put(2.07, 36.0);
       SHUFFLE_MAP.put(0.42119738459587097, 36.0); // Preset Value
       SHUFFLE_MAP.put(-0.5405449271202087, 36.0); // Outside of field (bottom)
 

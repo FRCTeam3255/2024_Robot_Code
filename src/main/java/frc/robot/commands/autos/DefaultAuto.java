@@ -48,7 +48,8 @@ public class DefaultAuto extends SequentialCommandGroup implements AutoInterface
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory("box")));
+
+        new PathPlannerAuto("New New Auto"));
   }
 
   public Supplier<Pose2d> getInitialPose() {

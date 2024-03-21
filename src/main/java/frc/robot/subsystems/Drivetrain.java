@@ -95,7 +95,7 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         new PIDConstants(prefDrivetrain.autoSteerP.getValue(),
             prefDrivetrain.autoSteerI.getValue(),
             prefDrivetrain.autoSteerD.getValue()),
-        new ReplanningConfig(),
+        new ReplanningConfig(false, true),
         () -> FieldConstants.isRedAlliance(),
         Robot.isSimulation());
   }

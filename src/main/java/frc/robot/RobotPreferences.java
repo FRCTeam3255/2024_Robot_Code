@@ -165,16 +165,16 @@ public class RobotPreferences {
         (1 / 15.1));
 
     // This PID is implemented on the Drivetrain subsystem
-    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 1);
+    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 8);
     public static final SN_DoublePreference autoDriveI = new SN_DoublePreference("autoDriveI", 0);
-    public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0.1);
+    public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0.0);
 
-    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 2);
+    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 2.5);
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
     // Teleop Snapping to Rotation (Yaw)
-    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 2);
+    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 4);
     public static final SN_DoublePreference yawSnapI = new SN_DoublePreference("yawSnapI", 0);
     public static final SN_DoublePreference yawSnapD = new SN_DoublePreference("yawSnapD", 0);
 
@@ -331,7 +331,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
-        "pivotGroundIntakeAngle", 104);
+        "pivotGroundIntakeAngle", 105);
 
     /**
      * <p>
