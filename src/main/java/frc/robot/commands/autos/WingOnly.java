@@ -68,63 +68,82 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
 
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+            prefShooter.rightShooterSpeakerVelocity.getValue())),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
+        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+
         // throw out that intake
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
         Commands.race(
-            new Shoot(subShooter, subLEDs).repeatedly(),
-            new LockTurret(subTurret, subDrivetrain).repeatedly(),
-            new LockPitch(subPitch, subDrivetrain).repeatedly(),
-
             // Shooting the game piece
             Commands.sequence(
                 // Aim
                 Commands.parallel(
-                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                    Commands
-                        .runOnce(
-                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                prefShooter.rightShooterSpeakerVelocity.getValue())),
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
+                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
+                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
+
+                Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece),
+                    .until(() -> subTransfer.calcGPShotAuto()),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
+                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()),
+                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))),
 
-        // Go get W1
         new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determinePathName() + ".1")),
+        new PathPlannerAuto("PsW1sW2sW3s.1"),
+
+        // TODO: FIX EVERYTHING AFTER THIS
 
         // Shoot W1
-        Commands.race(
-            new Shoot(subShooter, subLEDs).repeatedly(),
-            new LockTurret(subTurret, subDrivetrain).repeatedly(),
-            new LockPitch(subPitch, subDrivetrain).repeatedly(),
+        Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            getInitialPose().get().getRotation().getDegrees())),
 
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+            prefShooter.rightShooterSpeakerVelocity.getValue())),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
+        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+
+        // throw out that intake
+        // Intake until we have the game piece
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+
+        Commands.race(
             // Shooting the game piece
             Commands.sequence(
                 // Aim
                 Commands.parallel(
-                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                    Commands
-                        .runOnce(
-                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                prefShooter.rightShooterSpeakerVelocity.getValue())),
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
+                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
+                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
+
+                Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> !subTransfer.hasGamePiece),
+                    .until(() -> subTransfer.calcGPShotAuto()),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
+                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()),
+                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))),
 
-        // Go get W2
         new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
+        // TODO: FIX EVERYTHING AFTER THIS
+
         AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determinePathName() + ".2")),
 
         // Shoot W2

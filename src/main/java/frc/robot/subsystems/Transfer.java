@@ -34,6 +34,8 @@ public class Transfer extends SubsystemBase implements Logged {
 
   public boolean hasGamePiece;
 
+  public boolean hasRepositioned = false;
+
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
     feederMotor = new TalonSRX(mapTransfer.FEEDER_MOTOR_CAN);
@@ -93,6 +95,7 @@ public class Transfer extends SubsystemBase implements Logged {
   }
 
   public void repositionGamePiece() {
+    hasRepositioned = false;
     double time = Timer.getFPGATimestamp();
 
     while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue()) {
@@ -105,6 +108,7 @@ public class Transfer extends SubsystemBase implements Logged {
       setTransferMotorSpeed(-prefTransfer.transferRepositionSpeed.getValue());
     }
     setTransferNeutralOutput();
+    hasRepositioned = true;
   }
 
   public boolean calcGPShotAuto() {

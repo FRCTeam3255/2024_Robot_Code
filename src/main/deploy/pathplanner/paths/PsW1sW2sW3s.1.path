@@ -3,56 +3,52 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 1.42,
+        "y": 7.331818179075788
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.06,
-        "y": 0.0
+        "x": 1.6400000000000008,
+        "y": 7.331818179075788
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.5,
-        "y": 0.0
+        "x": 2.430151368616278,
+        "y": 6.990576641485824
       },
       "prevControl": {
-        "x": 0.28,
-        "y": 0.0
-      },
-      "nextControl": {
-        "x": 0.72,
-        "y": 0.0
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.0,
-        "y": 0.0
-      },
-      "prevControl": {
-        "x": 0.94,
-        "y": 0.0
+        "x": 2.370151368616278,
+        "y": 6.990576641485824
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
     {
+      "name": "w1",
       "waypointRelativePos": 0.5,
-      "rotationDegrees": 180.0,
-      "rotateFast": true
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGroundGamePiece"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
-  "constraintZones": [],
-  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 3.0,
@@ -67,7 +63,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
