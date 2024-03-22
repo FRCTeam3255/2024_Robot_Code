@@ -157,6 +157,20 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     }
   }
 
+  public void setClimbMode() {
+    SwerveModuleState[] desiredStates = {
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)) };
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constDrivetrain.SWERVE_CONSTANTS.maxSpeedMeters);
+
+    for (SN_SwerveModule mod : modules) {
+      mod.setModuleState(desiredStates[mod.moduleNumber], true, true);
+    }
+  }
+
   /**
    * <p>
    * <b>Must be run periodically in order to function properly!</b>

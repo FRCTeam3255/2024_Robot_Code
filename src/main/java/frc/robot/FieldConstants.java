@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -27,13 +28,14 @@ public class FieldConstants {
    * @return An array of field element positions. Your Speaker, Amp, Source, Left
    *         Stage, Center Stage, Right Stage, Subwoofer, Shuffle
    */
-  public static Pose3d[] GET_FIELD_POSITIONS() {
+  public static Supplier<Pose3d[]> GET_FIELD_POSITIONS() {
     if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-      return new Pose3d[] { redConstants.SPEAKER_CENTER, redConstants.AMP, redConstants.SOURCE, redConstants.LEFT_STAGE,
+      return () -> new Pose3d[] { redConstants.SPEAKER_CENTER, redConstants.AMP, redConstants.SOURCE,
+          redConstants.LEFT_STAGE,
           redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, redConstants.SUBWOOFER, redConstants.SHUFFLE };
 
     }
-    return new Pose3d[] { blueConstants.SPEAKER_CENTER, blueConstants.AMP, blueConstants.SOURCE,
+    return () -> new Pose3d[] { blueConstants.SPEAKER_CENTER, blueConstants.AMP, blueConstants.SOURCE,
         blueConstants.LEFT_STAGE,
         blueConstants.CENTER_STAGE, blueConstants.RIGHT_STAGE, blueConstants.SUBWOOFER, blueConstants.SHUFFLE };
   }
@@ -71,7 +73,7 @@ public class FieldConstants {
     // 0.457m = The height of the AMP opening
     // 0.660m = The height between the floor and the bottom of the opening
 
-    private static final Pose3d SOURCE = new Pose3d(new Pose2d(0, 0, Rotation2d.fromDegrees(120)));
+    private static final Pose3d SOURCE = new Pose3d(new Pose2d(0, 0, Rotation2d.fromDegrees(300)));
     private static final Pose3d LEFT_STAGE = new Pose3d(
         new Pose2d(4.541771411895752, 4.736017227172852, Rotation2d.fromDegrees(120)));
     private static final Pose3d CENTER_STAGE = new Pose3d(
@@ -97,7 +99,7 @@ public class FieldConstants {
      */
     private static final Pose3d AMP = new Pose3d(14.706, 8.2112312, (0.457 / 2) + 0.660, new Rotation3d(0, 0, 0));
 
-    private static final Pose3d SOURCE = new Pose3d(new Pose2d(0, 0, Rotation2d.fromDegrees(60)));
+    private static final Pose3d SOURCE = new Pose3d(new Pose2d(0, 0, Rotation2d.fromDegrees(240)));
     private static final Pose3d LEFT_STAGE = new Pose3d(
         new Pose2d(12.0610990524292, 3.4952545166015625, Rotation2d.fromDegrees(300)));
     private static final Pose3d CENTER_STAGE = new Pose3d(

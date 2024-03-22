@@ -175,20 +175,19 @@ public class RobotContainer implements Logged {
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
     controller.btn_South
         .onTrue(
-            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS()[6].toPose2d())));
+            Commands.runOnce(
+                () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
 
     controller.btn_LeftTrigger
         .whileTrue(
-            Commands.either(
-                new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter),
-                Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())),
-                () -> getLockedLocation() != LockedLocation.AMP).repeatedly())
-        .onFalse(Commands.runOnce(() -> subClimber.setPercentOutput(0)));
+            Commands.run((() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())), subClimber))
+        .onFalse(Commands.runOnce(() -> subClimber.setPercentOutput(0), subClimber));
 
     controller.btn_RightTrigger
         .onTrue(Commands.runOnce(() -> subClimber.setCurrentLimiting(false)))
-        .whileTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberDownSpeed.getValue())))
-        .onFalse(Commands.run(() -> subClimber.setPercentOutput(0))
+        .whileTrue(Commands.run(() -> subClimber.setPercentOutput(prefClimber.climberDownSpeed.getValue()), subClimber)
+            .alongWith(Commands.run(() -> subDrivetrain.setClimbMode(), subDrivetrain)))
+        .onFalse(Commands.runOnce(() -> subClimber.setPercentOutput(0), subClimber)
             .alongWith(Commands.runOnce(() -> subClimber.setCurrentLimiting(true))));
 
     controller.btn_RightBumper.whileTrue(Commands.run(() -> subDrivetrain.setDefenseMode(), subDrivetrain))
@@ -227,7 +226,7 @@ public class RobotContainer implements Logged {
     // Right Trigger = Shoot
     controller.btn_RightTrigger
         .whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer,
-            subPitch, subIntake))
+            subPitch, subIntake, subClimber))
         .onFalse(Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
             .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)));

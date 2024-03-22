@@ -15,20 +15,24 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.FieldConstants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.FieldConstants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pitch;
+import frc.robot.subsystems.Turret;
 
-public class LockPitch extends Command {
+public class AimAuto extends Command {
   Pitch subPitch;
+  Turret subTurret;
+
   Drivetrain subDrivetrain;
 
   LockedLocation lockedLocation = LockedLocation.NONE;
 
-  double desiredAngle;
+  double desiredPitchAngle;
+  Rotation2d desiredTurretAngle;
 
   Optional<Alliance> alliance = DriverStation.getAlliance();
 
@@ -37,16 +41,22 @@ public class LockPitch extends Command {
   Pose3d ampPose;
   Pose2d robotPose = new Pose2d();
 
-  public LockPitch(Pitch subPitch, Drivetrain subDrivetrain) {
+  /** Creates a new AimAuto. */
+  public AimAuto(Pitch subPitch, Turret subTurret, Drivetrain subDrivetrain) {
     this.subPitch = subPitch;
+    this.subTurret = subTurret;
     this.subDrivetrain = subDrivetrain;
-    addRequirements(subPitch);
+
+    addRequirements(subPitch, subTurret);
+
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    desiredAngle = subPitch.getPitchAngle();
+    desiredPitchAngle = subPitch.getPitchAngle();
+    desiredTurretAngle = Rotation2d.fromDegrees(subTurret.getAngle());
 
     fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
   }
@@ -54,18 +64,35 @@ public class LockPitch extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
+    SmartDashboard.putString("SPEAKER according to AUTO AIM!!", fieldPoses[0].toString());
+
+    // AIM PITCH
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
+    Optional<Rotation2d> calculatedPitchAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
         RobotContainer.getLockedLocation());
 
-    if (calculatedAngle.isPresent()) {
-      desiredAngle = MathUtil.clamp(
-          calculatedAngle.get().getRotations(),
+    if (calculatedPitchAngle.isPresent()) {
+      desiredPitchAngle = MathUtil.clamp(
+          calculatedPitchAngle.get().getRotations(),
           prefPitch.pitchReverseLimit.getValue(),
           prefPitch.pitchForwardLimit.getValue());
+    }
 
-      subPitch.setPitchAngle(Units.rotationsToDegrees(desiredAngle));
+    subPitch.setPitchAngle(Units.rotationsToDegrees(desiredPitchAngle));
+
+    robotPose = subDrivetrain.getPose();
+
+    Optional<Rotation2d> calculatedTurretAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
+        RobotContainer.getLockedLocation());
+
+    if (calculatedTurretAngle.isPresent()) {
+      desiredTurretAngle = calculatedTurretAngle.get();
+      if (subTurret.isAnglePossible(desiredTurretAngle.getDegrees())) {
+        subTurret.setTurretAngle(desiredTurretAngle.getDegrees());
+      }
+
     }
   }
 
@@ -77,6 +104,6 @@ public class LockPitch extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return subPitch.isPitchLocked() && subTurret.isTurretLocked();
   }
 }

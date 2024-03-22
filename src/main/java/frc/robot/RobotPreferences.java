@@ -103,7 +103,7 @@ public class RobotPreferences {
 
     // - Current Limiting -
     public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
-        "climberSupplyCurrentLimitEnable", false);
+        "climberSupplyCurrentLimitEnable", true);
     public static final SN_DoublePreference climberSupplyCurrentLimitCeilingAmps = new SN_DoublePreference(
         "climberSupplyCurrentLimitCeilingAmps", 0.01);
     public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
@@ -115,7 +115,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 0.2);
+    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 0.4);
 
     /**
      * <b> Units: </b> Percent Output
@@ -326,7 +326,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference rollerSpitSpeed = new SN_DoublePreference("rollerSpitSpeed", -1);
 
     public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.5);
-    // TODO: AMP IS -0.2. MAKE A PREFERENCE AND LOGIC FOR TRAP
+
+    public static final SN_DoublePreference rollerPlaceTrapSpeed = new SN_DoublePreference("rollerPlaceTrapSpeed",
+        -0.45);
 
     /**
      * <b> Units: </b> Percent Output
@@ -340,7 +342,7 @@ public class RobotPreferences {
      * <b>Units:</b> Degrees
      */
     public static final SN_DoublePreference pivotIsAtAngleTolerance = new SN_DoublePreference("pivotIsAtAngleTolerance",
-        5);
+        10);
 
     /**
      * <p>
@@ -385,8 +387,14 @@ public class RobotPreferences {
     public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
         94.6);
 
-    // TODO: SEPERATE TRAP PRESET : AMP IS 11.4
-    // TRAP IS 33.2
+    /**
+     * <p>
+     * The pivot motor position when are placing in the trap
+     * </p>
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotPlaceTrapAngle = new SN_DoublePreference("pivotPlaceTrapAngle",
+        100);
 
   }
 

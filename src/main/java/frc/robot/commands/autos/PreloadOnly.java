@@ -92,26 +92,17 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
-        Commands.race(
-            // Shooting the game piece
-            Commands.sequence(
-                // Aim
-                Commands.parallel(
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-                    new LockTurret(subTurret, subDrivetrain).until(() -> subTurret.isTurretAtGoalAngle()),
-                    new LockPitch(subPitch, subDrivetrain).until(() -> subPitch.isPitchAtGoalAngle())),
+        // PRELOAD
+        // Aim
+        Commands.parallel(
+            new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
+            new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
-                Commands.runOnce(() -> subShooter.getUpToSpeed()),
-
-                // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.parallel(
-                    Commands.runOnce(
-                        () -> subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(
-                        () -> subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue())),
-                    Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))))
+        // Shoot
+        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+            .until(() -> subTransfer.calcGPShotAuto()),
+        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))
 
     );
   }

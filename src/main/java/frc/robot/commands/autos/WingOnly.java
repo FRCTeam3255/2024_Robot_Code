@@ -18,6 +18,7 @@ import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AimAuto;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.LockTurret;
@@ -70,8 +71,6 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             prefShooter.rightShooterSpeakerVelocity.getValue())),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
-        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
@@ -80,88 +79,69 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
         // PRELOAD
-        Commands.race(
-            // Shooting the game piece
-            Commands.sequence(
-                // Aim
-                Commands.parallel(
-                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
-                Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        // Aim
+        Commands.parallel(
+            Commands.run(() -> subTurret.setTurretAngle((FieldConstants.isRedAlliance()) ? -52.837 : 52.837))
+                .until(() -> subTurret.isTurretAtAngle((FieldConstants.isRedAlliance()) ? -52.837 : 52.837)),
+            Commands.run(() -> subPitch.setPitchAngle(42.262))
+                .until(() -> subPitch.isPitchAtAngle(42.26))),
 
-                // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+
+        // Shoot
+        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+            .until(() -> subTransfer.calcGPShotAuto()),
+        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
         new PathPlannerAuto(determinePathName() + ".1"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
 
-        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
-        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W3
-        Commands.race(
-            // Shooting the game piece
-            Commands.sequence(
-                // Aim
-                Commands.parallel(
-                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
-                Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        // Aim
+        new AimAuto(subPitch, subTurret, subDrivetrain),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
-                // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))),
+        // Shoot
+        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+            .until(() -> subTransfer.calcGPShotAuto()),
+        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
+        // GET W2
         new PathPlannerAuto(determinePathName() + ".2"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
 
-        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
-        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W2
-        Commands.race(
-            // Shooting the game piece
-            Commands.sequence(
-                // Aim
-                Commands.parallel(
-                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
-                Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        // Aim
+        new AimAuto(subPitch, subTurret, subDrivetrain),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
-                // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)))),
+        // Shoot
+        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+            .until(() -> subTransfer.calcGPShotAuto()),
+        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+
+        // GET W1
         new PathPlannerAuto(determinePathName() + ".3"),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch,
-            subShooter, subClimber),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
 
-        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
-        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
-        // SHOOT W3
-        Commands.race(
-            // Shooting the game piece
-            Commands.sequence(
-                // Aim
-                Commands.parallel(
-                    new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
-                Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        // SHOOT W1
+        // Aim
+        new AimAuto(subPitch, subTurret, subDrivetrain),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
-                // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
-                    .until(() -> subTransfer.calcGPShotAuto()),
-                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))))
+        // Shoot
+        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+            .until(() -> subTransfer.calcGPShotAuto()),
+        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))
 
     );
   }
@@ -173,8 +153,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   }
 
   public String determinePathName() {
-    // return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
-    return "PsW1sW2sW3s";
+    return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
   }
 
   public Command getAutonomousCommand() {

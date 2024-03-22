@@ -90,7 +90,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                     Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
 
                 // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                     .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
@@ -123,7 +123,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
 
                         // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                             .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
@@ -159,7 +159,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
 
                         // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                             .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
@@ -196,7 +196,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
 
                         // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                             .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
@@ -233,7 +233,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
 
                         // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                             .until(() -> !subTransfer.hasGamePiece),
                         Commands.parallel(
                             Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
@@ -268,7 +268,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                     Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
 
                 // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake)
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                     .until(() -> !subTransfer.hasGamePiece),
                 Commands.parallel(
                     Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()))))

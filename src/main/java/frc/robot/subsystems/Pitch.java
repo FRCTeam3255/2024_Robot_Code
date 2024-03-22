@@ -272,6 +272,7 @@ public class Pitch extends SubsystemBase implements Logged {
     SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
     SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
     SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredLockingAngle.getDegrees());
+    SmartDashboard.putBoolean("Pitch/Is Locked", isPitchLocked());
 
     SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());
   }
