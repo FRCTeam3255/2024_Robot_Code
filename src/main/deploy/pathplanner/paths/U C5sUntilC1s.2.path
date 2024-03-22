@@ -1,0 +1,102 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.4,
+        "y": 3.48
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.95940329635866,
+        "y": 2.9017180400738196
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.796,
+        "y": 1.865
+      },
+      "prevControl": {
+        "x": 4.82030824824113,
+        "y": 1.8727636400151515
+      },
+      "nextControl": {
+        "x": 6.775968977201639,
+        "y": 1.8572023258357009
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.376,
+        "y": 2.432
+      },
+      "prevControl": {
+        "x": 7.0174256945279305,
+        "y": 2.441339457498686
+      },
+      "nextControl": {
+        "x": 7.435979658390011,
+        "y": 2.430437764608979
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.681,
+        "y": 2.432
+      },
+      "prevControl": {
+        "x": 7.621,
+        "y": 2.432
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "W4",
+      "waypointRelativePos": 1.9,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGroundGamePiece"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 270.0,
+    "maxAngularAcceleration": 360.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "Centerline Up",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

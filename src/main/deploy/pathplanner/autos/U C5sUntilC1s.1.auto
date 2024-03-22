@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.438,
-      "y": 2.0593301773071278
+      "x": 7.68,
+      "y": 0.74
     },
     "rotation": 180.0
   },
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "S4Taxi"
+            "pathName": "U C5sUntilC1s.1"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Centerline Up",
   "choreoAuto": false
 }

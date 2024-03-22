@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 7.68,
+      "y": 0.74
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "U C5UntilC1.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "U C5UntilC1.2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "U C5UntilC1.3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "U C5UntilC1.4"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Centerline Up",
+  "choreoAuto": false
+}

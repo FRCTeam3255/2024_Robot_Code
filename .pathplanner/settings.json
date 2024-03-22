@@ -3,7 +3,8 @@
   "robotLength": 0.8762995267982555,
   "holonomicMode": true,
   "pathFolders": [
-    "Centerline",
+    "Centerline Down",
+    "Centerline Up",
     "Wing Down",
     "Wing Up"
   ],
