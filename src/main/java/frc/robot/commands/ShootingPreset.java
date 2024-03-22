@@ -4,7 +4,10 @@
 
 package frc.robot.commands;
 
+import com.frcteam3255.joystick.SN_SwitchboardStick;
 import com.frcteam3255.joystick.SN_XboxController;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotPreferences.prefIntake;
@@ -29,14 +32,14 @@ public class ShootingPreset extends Command {
   String presetName;
   boolean tuningMode;
 
-  SN_XboxController controller;
+  SN_SwitchboardStick controller;
 
   /** Creates a new ShootingPreset. */
   public ShootingPreset(Shooter subShooter, Turret subTurret, Pitch subPitch, Intake subIntake,
       double desiredLeftVelocity,
 
       double desiredRightVelocity, double desiredTurretAngle, double desiredPitchAngle, boolean ignoreFlywheelSpeed,
-      SN_XboxController controller, String presetName, boolean tuningMode) {
+      SN_SwitchboardStick controller, String presetName, boolean tuningMode) {
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
@@ -73,28 +76,42 @@ public class ShootingPreset extends Command {
       }
       if (controller.btn_South.getAsBoolean() == true) {
         desiredPitchAngle -= 1;
+        initialize();
       }
 
       if (controller.btn_East.getAsBoolean() == true) {
         desiredTurretAngle += 1;
+        initialize();
+
       }
 
       if (controller.btn_SouthWest.getAsBoolean() == true) {
         desiredTurretAngle -= 1;
+        initialize();
+
       }
 
       if (controller.btn_A.getAsBoolean() == true) {
         desiredRightVelocity += 5;
         desiredLeftVelocity += 5;
+        initialize();
+
       }
 
       if (controller.btn_B.getAsBoolean() == true) {
         desiredRightVelocity -= 5;
         desiredLeftVelocity -= 5;
+        initialize();
+
       }
 
     }
     subShooter.getUpToSpeed();
+
+    SmartDashboard.putString("PRESET NAME", presetName);
+    SmartDashboard.putNumber("PRESET SHOOTER LEFT VELOCITY", desiredLeftVelocity);
+    SmartDashboard.putNumber("PRESET TURRET ANGLE", desiredTurretAngle);
+    SmartDashboard.putNumber("PRESET HOOD ANGLE", desiredPitchAngle);
   }
 
   // Called once the command ends or is interrupted.
