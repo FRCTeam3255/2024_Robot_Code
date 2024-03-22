@@ -92,6 +92,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             .until(() -> subTransfer.calcGPShotAuto()),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
+        // Get W3
         new PathPlannerAuto(determinePathName() + ".1"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),

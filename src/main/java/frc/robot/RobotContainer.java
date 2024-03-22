@@ -59,6 +59,7 @@ import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
 import frc.robot.commands.autos.PreloadOnly;
+import frc.robot.commands.autos.PreloadTaxi;
 import frc.robot.commands.autos.WingOnly;
 import frc.robot.commands.autos.Centerline;
 import frc.robot.subsystems.Climber;
@@ -316,9 +317,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("Default Auto",
-        new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-
     // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
@@ -333,6 +331,7 @@ public class RobotContainer implements Logged {
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             3, true));
 
+    // "Do Nothing"
     autoChooser.addOption("NO SHOOT S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             0, false));
@@ -346,8 +345,18 @@ public class RobotContainer implements Logged {
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             4, false));
 
+    // Taxi + Preload
+    autoChooser.addOption("Taxi + Preload S4",
+        new PreloadTaxi(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            true));
+
+    // Taxi ONLY
+    autoChooser.addOption("Taxi S5",
+        new PreloadTaxi(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            false));
+
     // Wing ONLY
-    autoChooser.addOption("Wing Only Down",
+    autoChooser.setDefaultOption("Wing Only Down",
         new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             true));
 
