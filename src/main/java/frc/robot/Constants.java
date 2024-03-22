@@ -254,6 +254,9 @@ public final class Constants {
    * General Robot Constants that don't fall under a subsystem
    */
   public static class constRobot {
+
+    public static final boolean TUNING_MODE = false;
+
     /**
      * Volts
      */

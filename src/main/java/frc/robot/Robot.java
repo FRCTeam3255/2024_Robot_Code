@@ -39,6 +39,11 @@ public class Robot extends TimedRobot {
     // Log the DS data and joysticks
     DriverStation.startDataLog(DataLogManager.getLog(), true);
     DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
+
+    SmartDashboard.putString("PRESET NAME", "None! :(");
+    SmartDashboard.putNumber("PRESET SHOOTER LEFT VELOCITY", 0);
+    SmartDashboard.putNumber("PRESET TURRET ANGLE", 0);
+    SmartDashboard.putNumber("PRESET HOOD ANGLE", 0);
   }
 
   @Override

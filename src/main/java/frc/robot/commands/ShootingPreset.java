@@ -4,6 +4,10 @@
 
 package frc.robot.commands;
 
+import com.frcteam3255.joystick.SN_SwitchboardStick;
+import com.frcteam3255.joystick.SN_XboxController;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotPreferences.prefIntake;
@@ -21,13 +25,21 @@ public class ShootingPreset extends Command {
   double desiredLeftVelocity;
   double desiredRightVelocity;
   double desiredTurretAngle;
+
   double desiredPitchAngle;
   boolean ignoreFlywheelSpeed;
+
+  String presetName;
+  boolean tuningMode;
+
+  SN_SwitchboardStick controller;
 
   /** Creates a new ShootingPreset. */
   public ShootingPreset(Shooter subShooter, Turret subTurret, Pitch subPitch, Intake subIntake,
       double desiredLeftVelocity,
-      double desiredRightVelocity, double desiredTurretAngle, double desiredPitchAngle, boolean ignoreFlywheelSpeed) {
+
+      double desiredRightVelocity, double desiredTurretAngle, double desiredPitchAngle, boolean ignoreFlywheelSpeed,
+      SN_SwitchboardStick controller, String presetName, boolean tuningMode) {
     this.subShooter = subShooter;
     this.subTurret = subTurret;
     this.subPitch = subPitch;
@@ -38,7 +50,9 @@ public class ShootingPreset extends Command {
     this.desiredTurretAngle = desiredTurretAngle;
     this.desiredPitchAngle = desiredPitchAngle;
     this.ignoreFlywheelSpeed = ignoreFlywheelSpeed;
-
+    this.controller = controller;
+    this.tuningMode = tuningMode;
+    this.presetName = presetName;
     addRequirements(subShooter, subTurret, subPitch);
   }
 
@@ -55,13 +69,57 @@ public class ShootingPreset extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (tuningMode == true) {
+      if (controller.btn_10.getAsBoolean() == true) {
+        desiredPitchAngle += 0.5;
+        initialize();
+      }
+      if (controller.btn_7.getAsBoolean() == true) {
+        desiredPitchAngle -= 0.5;
+        initialize();
+      }
+
+      if (controller.btn_4.getAsBoolean() == true) {
+        desiredTurretAngle -= 0.5;
+        initialize();
+
+      }
+
+      if (controller.btn_5.getAsBoolean() == true) {
+        desiredTurretAngle += 0.5;
+        initialize();
+
+      }
+
+      if (controller.btn_12.getAsBoolean() == true) {
+        desiredRightVelocity += 0.5;
+        desiredLeftVelocity += 0.5;
+        initialize();
+
+      }
+
+      if (controller.btn_11.getAsBoolean() == true) {
+        desiredRightVelocity -= 0.5;
+        desiredLeftVelocity -= 0.5;
+        initialize();
+
+      }
+
+    }
     subShooter.getUpToSpeed();
+
+    SmartDashboard.putString("PRESET NAME", presetName);
+    SmartDashboard.putNumber("PRESET SHOOTER LEFT VELOCITY", desiredLeftVelocity);
+    SmartDashboard.putNumber("PRESET TURRET ANGLE", desiredTurretAngle);
+    SmartDashboard.putNumber("PRESET HOOD ANGLE", desiredPitchAngle);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     subShooter.setIgnoreFlywheelSpeed(false);
+    SmartDashboard.putString("PRESET NAME", "None! :3");
+
   }
 
   // Returns true when the command should end.

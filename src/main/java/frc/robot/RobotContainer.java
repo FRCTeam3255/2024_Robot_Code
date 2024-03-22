@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
+import frc.robot.Constants.constRobot;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefIntake;
@@ -248,8 +249,7 @@ public class RobotContainer implements Logged {
             prefShooter.leftShooterSubVelocity.getValue(),
             prefShooter.rightShooterSubVelocity.getValue(),
             prefTurret.turretSubPresetPos.getValue(),
-            prefPitch.pitchSubAngle.getValue(), true)));
-
+            prefPitch.pitchSubAngle.getValue(), true, conNumpad, "Subwoofer", constRobot.TUNING_MODE)));
     // Y: Pass Note (with Vision)
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SHUFFLE))
         .alongWith(
@@ -268,41 +268,51 @@ public class RobotContainer implements Logged {
     switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true)));
+            prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true,
+            switchboardStick, "Gulf of Mexico", constRobot.TUNING_MODE)));
 
-    // "Leapfrog" or starting-line preset
+    // "Leapfrog" or starting-line preset or "Spike Mark" (even though it isn't
+    // spike mark)
     switchboardStick.btn_2.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true)));
+            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true,
+            switchboardStick,
+            "Spike", constRobot.TUNING_MODE)));
 
     // Podium preset (the new panama canal)
     switchboardStick.btn_3.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true)));
+            prefTurret.turretPodiumPresetPos.getValue(), prefPitch.pitchPodiumAngle.getValue(), true, switchboardStick,
+            "Podium",
+            constRobot.TUNING_MODE)));
 
     // ZERO INTAKE
-    switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake));
+    switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake).unless(() -> constRobot.TUNING_MODE));
 
     // Peninsula preset (behind the podium)
     switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
 
-            prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true)));
+            prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true,
+            switchboardStick, "Peninsula", constRobot.TUNING_MODE)));
 
     // Wing
     switchboardStick.btn_8.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretWingPresetPos.getValue(), prefPitch.pitchWingPresetAngle.getValue(), true)));
+            prefTurret.turretWingPresetPos.getValue(), prefPitch.pitchWingPresetAngle.getValue(), true,
+            switchboardStick, "Wing",
+            constRobot.TUNING_MODE)));
 
     // 254 Shuffling preset (centerline corner to amp zone corner)
     switchboardStick.btn_9.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterShuffleVelocity.getValue(), prefShooter.rightShooterShuffleVelocity.getValue(),
-            prefTurret.turretNoteShufflingPresetPos.getValue(), prefPitch.pitchNoteShufflingAngle.getValue(), true)));
+            prefTurret.turretNoteShufflingPresetPos.getValue(), prefPitch.pitchNoteShufflingAngle.getValue(), true,
+            switchboardStick, "Shuffle", constRobot.TUNING_MODE)));
   }
 
   private void configureAutoSelector() {
