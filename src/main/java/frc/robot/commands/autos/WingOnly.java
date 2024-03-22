@@ -4,6 +4,7 @@
 
 package frc.robot.commands.autos;
 
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -81,10 +82,10 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         // PRELOAD
         // Aim
         Commands.parallel(
-            Commands.run(() -> subTurret.setTurretAngle((FieldConstants.isRedAlliance()) ? -52.837 : 52.837))
-                .until(() -> subTurret.isTurretAtAngle((FieldConstants.isRedAlliance()) ? -52.837 : 52.837)),
-            Commands.run(() -> subPitch.setPitchAngle(42.262))
-                .until(() -> subPitch.isPitchAtAngle(42.26))),
+            Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle().getAsDouble()))
+                .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle().getAsDouble())),
+            Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
+                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
 
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
@@ -150,6 +151,15 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
     return () -> (!FieldConstants.isRedAlliance())
         ? PathPlannerAuto.getStaringPoseFromAutoFile(determinePathName())
         : PathPlannerPath.fromPathFile(determinePathName()).flipPath().getPreviewStartingHolonomicPose();
+  }
+
+  public DoubleSupplier getTurretInitAngle() {
+    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -52.837 : 52.837)
+        : ((FieldConstants.isRedAlliance()) ? 50.702 : -50.702);
+  }
+
+  public DoubleSupplier getPitchInitAngle() {
+    return () -> (goesDown) ? (42.262) : (46.349);
   }
 
   public String determinePathName() {
