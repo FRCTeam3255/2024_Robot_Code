@@ -64,7 +64,7 @@ public class Drive extends Command {
   @Override
   public void initialize() {
     driveSpeed = (isPracticeBot) ? constDrivetrain.pracBot.DRIVE_SPEED : constDrivetrain.DRIVE_SPEED;
-    fieldPositions = FieldConstants.GET_FIELD_POSITIONS();
+    fieldPositions = FieldConstants.GET_FIELD_POSITIONS().get();
 
     sourcePose = fieldPositions[2].toPose2d();
     leftStage = fieldPositions[3].toPose2d();
@@ -90,20 +90,20 @@ public class Drive extends Command {
     if (rVelocity != 0.0) {
     } else {
       // Otherwise, check if snapping is being requested
-      if (northTrigger.getAsBoolean()) {
+      if (southTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(180));
 
-      } else if (eastTrigger.getAsBoolean()) {
+      } else if (westTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(90));
 
-      } else if (southTrigger.getAsBoolean()) {
+      } else if (northTrigger.getAsBoolean()) {
         if (getDrivetrainRotation().getAsDouble() > 180) {
           rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(355));
         } else {
           rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(5));
         }
 
-      } else if (westTrigger.getAsBoolean()) {
+      } else if (eastTrigger.getAsBoolean()) {
         rVelocity = subDrivetrain.getVelocityToSnap(Rotation2d.fromDegrees(270));
 
       } else if (sourceTrigger.getAsBoolean()) {

@@ -8,8 +8,12 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -18,8 +22,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constIntake;
 import frc.robot.RobotMap.mapIntake;
 import frc.robot.RobotPreferences.prefIntake;
+import monologue.Logged;
+import monologue.Annotations.Log;
 
-public class Intake extends SubsystemBase {
+public class Intake extends SubsystemBase implements Logged {
   TalonFX rollerMotor;
   TalonFX pivotMotor;
 
@@ -27,11 +33,14 @@ public class Intake extends SubsystemBase {
 
   TalonFXConfiguration rollerConfig, pivotConfig;
 
-  double absoluteEncoderOffset, desiredPivotAngle;
+  @Log.NT
+  double desiredPivotAngle;
+  double absoluteEncoderOffset;
   boolean invertAbsEncoder;
 
   PositionVoltage positionRequest;
   MotionMagicVoltage motionMagicRequest;
+  VoltageOut voltageRequest;
 
   public Intake() {
     rollerMotor = new TalonFX(mapIntake.ROLLER_CAN, "rio");
@@ -43,6 +52,7 @@ public class Intake extends SubsystemBase {
 
     positionRequest = new PositionVoltage(0);
     motionMagicRequest = new MotionMagicVoltage(0);
+    voltageRequest = new VoltageOut(0);
 
     desiredPivotAngle = prefIntake.pivotMinPos.getValue();
 
@@ -56,9 +66,12 @@ public class Intake extends SubsystemBase {
     rollerConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.rollerCurrentThreshold.getValue();
     rollerConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.rollerCurrentLimit.getValue();
     rollerConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.rollerCurrentTimeThreshold.getValue();
+    rollerConfig.MotorOutput.Inverted = constIntake.ROLLER_INVERT;
 
     // - Pivot -
     pivotConfig = new TalonFXConfiguration();
+    pivotConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+    pivotConfig.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
     pivotConfig.Slot0.kS = prefIntake.pivotS.getValue();
     pivotConfig.Slot0.kG = prefIntake.pivotG.getValue();
     pivotConfig.Slot0.kA = prefIntake.pivotA.getValue();
@@ -87,12 +100,25 @@ public class Intake extends SubsystemBase {
 
     pivotConfig.Feedback.SensorToMechanismRatio = constIntake.GEAR_RATIO;
     pivotConfig.MotorOutput.NeutralMode = constIntake.PIVOT_NEUTRAL_MODE;
+    pivotConfig.MotorOutput.Inverted = constIntake.PIVOT_INVERT;
 
     rollerMotor.getConfigurator().apply(rollerConfig);
     pivotMotor.getConfigurator().apply(pivotConfig);
-    // TODO: MOVE THESE TO THE CONFIG
-    rollerMotor.setInverted(prefIntake.rollerInverted.getValue());
-    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
+  }
+
+  public void setPivotCurrentLimiting(boolean enabled) {
+    pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = enabled;
+    pivotMotor.getConfigurator().apply(pivotConfig);
+  }
+
+  public void setPivotSoftwareLimits(boolean reverse, boolean forward) {
+    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    pivotMotor.getConfigurator().apply(pivotConfig);
+  }
+
+  public void setPivotVoltage(double voltage) {
+    pivotMotor.setControl(voltageRequest.withOutput(voltage));
   }
 
   public void setPivotBrake(boolean enabled) {
@@ -103,7 +129,6 @@ public class Intake extends SubsystemBase {
     }
 
     pivotMotor.getConfigurator().apply(pivotConfig);
-    pivotMotor.setInverted(prefIntake.pivotInverted.getValue());
   }
 
   // - Get -
@@ -146,6 +171,14 @@ public class Intake extends SubsystemBase {
   }
 
   /**
+   * @return The current velocity of the pivot motor. <b> Units: </b> Degrees per
+   *         second
+   */
+  public double getPivotVelocity() {
+    return Units.rotationsToDegrees(pivotMotor.getVelocity().getValueAsDouble());
+  }
+
+  /**
    * @param angle The angle to check if we are at <b>Units:</b> Degrees
    * @return If we are within our tolerance to that angle
    */
@@ -167,6 +200,10 @@ public class Intake extends SubsystemBase {
     double currentPosition = Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
 
     return currentPosition <= -prefIntake.rollerRotationsToAmp.getValue();
+  }
+
+  public double getDesiredPivotAngle() {
+    return desiredPivotAngle;
   }
 
   // - Set -
@@ -220,6 +257,15 @@ public class Intake extends SubsystemBase {
    */
   public void setRollerSensorAngle(double angle) {
     rollerMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
+  /**
+   * Sets the current angle of the pivot motor to read as the given value
+   * 
+   * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
+   */
+  public void setPivotSensorAngle(double angle) {
+    pivotMotor.setPosition(Units.degreesToRotations(angle));
   }
 
   @Override

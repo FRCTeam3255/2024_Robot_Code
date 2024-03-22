@@ -161,6 +161,10 @@ public class Climber extends SubsystemBase {
     return SN_Math.rotationsToMeters(climberMotor.getPosition().getValueAsDouble(), 1, 1);
   }
 
+  public double getDesiredPosition() {
+    return desiredPosition;
+  }
+
   /**
    * Calculate if the climber motor is within tolerance to a given position. In
    * simulation, this will return true if our desired position

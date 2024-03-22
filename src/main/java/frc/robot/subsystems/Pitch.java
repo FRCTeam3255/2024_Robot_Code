@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -173,7 +174,9 @@ public class Pitch extends SubsystemBase implements Logged {
     }
   }
 
-  // -- Get --
+  public boolean isPitchLocked() {
+    return isPitchAtAngle(desiredLockingAngle.getDegrees());
+  }
 
   /**
    * @return The current applied (output) voltage. <b> Units: </b> Volts
@@ -234,6 +237,12 @@ public class Pitch extends SubsystemBase implements Logged {
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
+
+      case SHUFFLE:
+        Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
+        desiredLockingAngle = Rotation2d.fromDegrees(constPitch.SHUFFLE_MAP.get(pitchPose.getY()));
+
+        return Optional.of(desiredLockingAngle);
     }
 
     // Get the pitch pose (field relative)
@@ -250,9 +259,9 @@ public class Pitch extends SubsystemBase implements Logged {
     return Optional.of(desiredLockingAngle);
   }
 
-  public Transform3d getAngleAsTransform3d() {
-    return new Transform3d(new Translation3d(),
-        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), 0));
+  public Pose3d getDesiredAngleAsPose3d(double turretRotation) {
+    return new Pose3d(new Translation3d(-0.1, 0, 0.36),
+        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), turretRotation));
   }
 
   @Override
@@ -263,6 +272,7 @@ public class Pitch extends SubsystemBase implements Logged {
     SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
     SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
     SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredLockingAngle.getDegrees());
+    SmartDashboard.putBoolean("Pitch/Is Locked", isPitchLocked());
 
     SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());
   }
