@@ -58,12 +58,14 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
   Pose2d S5R = new Pose2d(FIELD_LENGTH - 1.438, 2.059, Rotation2d.fromRadians(0));
   Pose2d[] startingPositionsRed = { S1R, S2R, S3R, S4R, S5R };
 
+  boolean shoots = true;
+
   /*
    * @param startingPosition Your desired starting position. 0 -> 4. Please refer
    * to Choreo for this
    */
   public PreloadOnly(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret, Climber subClimber, int startingPosition) {
+      Transfer subTransfer, Turret subTurret, Climber subClimber, int startingPosition, boolean shoots) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
@@ -73,6 +75,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     this.subTurret = subTurret;
     this.subClimber = subClimber;
     this.startingPosition = startingPosition;
+    this.shoots = shoots;
 
     addCommands(
         Commands.runOnce(
@@ -80,29 +83,30 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
 
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue())),
-        Commands.runOnce(() -> subShooter.getUpToSpeed()),
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
-        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.sequence(
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                prefShooter.rightShooterSpeakerVelocity.getValue())),
+            Commands.runOnce(() -> subShooter.getUpToSpeed()),
+            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+            Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
+            Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
+            Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
-        // throw out that intake
-        // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+            // throw out that intake
+            // Intake until we have the game piece
+            new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
-        // PRELOAD
-        // Aim
-        Commands.parallel(
-            new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
-            new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
-        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+            // PRELOAD
+            // Aim
+            Commands.parallel(
+                new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
+                new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
+            Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
-        // Shoot
-        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()),
-        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))
+            // Shoot
+            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+                .until(() -> subTransfer.calcGPShotAuto()),
+            Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))).unless(() -> !shoots)
 
     );
   }

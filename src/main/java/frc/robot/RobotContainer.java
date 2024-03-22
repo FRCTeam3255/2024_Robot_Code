@@ -322,19 +322,29 @@ public class RobotContainer implements Logged {
     // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            0));
+            0, true));
     autoChooser.addOption("Preload S2",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            1));
+            1, true));
     autoChooser.addOption("Preload S3",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            2));
+            2, true));
     autoChooser.addOption("Preload S4",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            3));
-    autoChooser.addOption("Preload S5",
+            3, true));
+
+    autoChooser.addOption("NO SHOOT S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            4));
+            0, false));
+    autoChooser.addOption("NO SHOOT S3",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            2, false));
+    autoChooser.addOption("NO SHOOT S4",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            3, false));
+    autoChooser.addOption("NO SHOOT S5",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            4, false));
 
     // Wing ONLY
     autoChooser.addOption("Wing Only Down",
