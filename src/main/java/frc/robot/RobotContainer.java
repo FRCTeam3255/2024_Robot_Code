@@ -318,6 +318,10 @@ public class RobotContainer implements Logged {
 
   private void configureAutoSelector() {
     // PRELOAD ONLY
+    autoChooser.addOption("Disruptor",
+        new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+
+    // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             0, true));
