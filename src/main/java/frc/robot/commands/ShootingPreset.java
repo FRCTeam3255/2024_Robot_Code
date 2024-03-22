@@ -71,36 +71,36 @@ public class ShootingPreset extends Command {
   public void execute() {
     if (tuningMode == true) {
       if (controller.btn_10.getAsBoolean() == true) {
-        desiredPitchAngle += 1;
+        desiredPitchAngle += 0.5;
         initialize();
       }
       if (controller.btn_7.getAsBoolean() == true) {
-        desiredPitchAngle -= 1;
+        desiredPitchAngle -= 0.5;
         initialize();
       }
 
       if (controller.btn_4.getAsBoolean() == true) {
-        desiredTurretAngle += 1;
+        desiredTurretAngle -= 0.5;
         initialize();
 
       }
 
       if (controller.btn_5.getAsBoolean() == true) {
-        desiredTurretAngle -= 1;
-        initialize();
-
-      }
-
-      if (controller.btn_11.getAsBoolean() == true) {
-        desiredRightVelocity += 5;
-        desiredLeftVelocity += 5;
+        desiredTurretAngle += 0.5;
         initialize();
 
       }
 
       if (controller.btn_12.getAsBoolean() == true) {
-        desiredRightVelocity -= 5;
-        desiredLeftVelocity -= 5;
+        desiredRightVelocity += 0.5;
+        desiredLeftVelocity += 0.5;
+        initialize();
+
+      }
+
+      if (controller.btn_11.getAsBoolean() == true) {
+        desiredRightVelocity -= 0.5;
+        desiredLeftVelocity -= 0.5;
         initialize();
 
       }
@@ -118,6 +118,8 @@ public class ShootingPreset extends Command {
   @Override
   public void end(boolean interrupted) {
     subShooter.setIgnoreFlywheelSpeed(false);
+    SmartDashboard.putString("PRESET NAME", "None! :3");
+
   }
 
   // Returns true when the command should end.

@@ -289,7 +289,7 @@ public class RobotContainer implements Logged {
             constRobot.TUNING_MODE)));
 
     // ZERO INTAKE
-    switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake));
+    switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake).unless(() -> constRobot.TUNING_MODE));
 
     // Peninsula preset (behind the podium)
     switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
