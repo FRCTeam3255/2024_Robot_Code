@@ -328,7 +328,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.5);
 
     public static final SN_DoublePreference rollerPlaceTrapSpeed = new SN_DoublePreference("rollerPlaceTrapSpeed",
-        -0.45);
+        -1);
 
     /**
      * <b> Units: </b> Percent Output
