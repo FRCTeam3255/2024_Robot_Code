@@ -13,12 +13,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefShooter;
-import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeGroundGamePiece;
-import frc.robot.commands.LockPitch;
-import frc.robot.commands.LockTurret;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -88,9 +85,8 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
                 prefShooter.rightShooterSpeakerVelocity.getValue())),
             Commands.runOnce(() -> subShooter.getUpToSpeed()),
             Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-            Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
-            Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
             Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
             // throw out that intake
             // Intake until we have the game piece
@@ -99,8 +95,11 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             // PRELOAD
             // Aim
             Commands.parallel(
-                new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
-                new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
+                Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle()))
+                    .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle())),
+                Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle()))
+                    .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle()))),
+
             Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
             // Shoot
@@ -115,6 +114,42 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     return () -> (FieldConstants.isRedAlliance())
         ? startingPositionsRed[startingPosition]
         : startingPositionsBlue[startingPosition];
+  }
+
+  public double getTurretInitAngle() {
+    double isRed = (FieldConstants.isRedAlliance()) ? -1 : 1;
+    switch (startingPosition) {
+      case 0: // S1
+        return 12.810 * isRed;
+      case 1: // S2
+        return 0.0 * isRed;
+      case 2: // S3
+        return -13.093 * isRed;
+      case 3: // S4
+        return -61.712 * isRed;
+      case 4: // S5 (We don't run this one EVER)
+        return -3255 * isRed;
+      default:
+        return -3255 * isRed;
+
+    }
+  }
+
+  public double getPitchInitAngle() {
+    switch (startingPosition) {
+      case 0: // S1
+        return 56;
+      case 1: // S2
+        return 56;
+      case 2: // S3
+        return 55.766;
+      case 3: // S4
+        return 38.453;
+      case 4: // S5 (We don't run this one EVER)
+        return -3255;
+      default:
+        return -3255;
+    }
   }
 
   public Command getAutonomousCommand() {
