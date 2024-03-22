@@ -103,7 +103,7 @@ public class RobotPreferences {
 
     // - Current Limiting -
     public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
-        "climberSupplyCurrentLimitEnable", false);
+        "climberSupplyCurrentLimitEnable", true);
     public static final SN_DoublePreference climberSupplyCurrentLimitCeilingAmps = new SN_DoublePreference(
         "climberSupplyCurrentLimitCeilingAmps", 0.01);
     public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
@@ -115,7 +115,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 0.2);
+    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 0.4);
 
     /**
      * <b> Units: </b> Percent Output
@@ -165,16 +165,16 @@ public class RobotPreferences {
         (1 / 15.1));
 
     // This PID is implemented on the Drivetrain subsystem
-    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 1);
+    public static final SN_DoublePreference autoDriveP = new SN_DoublePreference("autoDriveP", 8);
     public static final SN_DoublePreference autoDriveI = new SN_DoublePreference("autoDriveI", 0);
-    public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0.1);
+    public static final SN_DoublePreference autoDriveD = new SN_DoublePreference("autoDriveD", 0.0);
 
-    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 2);
+    public static final SN_DoublePreference autoSteerP = new SN_DoublePreference("autoSteerP", 2.5);
     public static final SN_DoublePreference autoSteerI = new SN_DoublePreference("autoSteerI", 0.0);
     public static final SN_DoublePreference autoSteerD = new SN_DoublePreference("autoSteerD", 0.0);
 
     // Teleop Snapping to Rotation (Yaw)
-    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 2);
+    public static final SN_DoublePreference yawSnapP = new SN_DoublePreference("yawSnapP", 3);
     public static final SN_DoublePreference yawSnapI = new SN_DoublePreference("yawSnapI", 0);
     public static final SN_DoublePreference yawSnapD = new SN_DoublePreference("yawSnapD", 0);
 
@@ -213,32 +213,29 @@ public class RobotPreferences {
      * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference measurementStdDevsHeading = new SN_DoublePreference(
-        "measurementStdDevsHeading", 10);
+        "measurementStdDevsHeading", 0.1);
   }
 
   public static final class prefIntake {
     // - Configs -
-    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.4);
-    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0.0);
+    public static final SN_DoublePreference pivotS = new SN_DoublePreference("pivotS", 0.2);
+    public static final SN_DoublePreference pivotG = new SN_DoublePreference("pivotG", 0.6);
     public static final SN_DoublePreference pivotA = new SN_DoublePreference("pivotA", 0.1);
-    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 30);
+    public static final SN_DoublePreference pivotP = new SN_DoublePreference("pivotP", 30); // 10
     public static final SN_DoublePreference pivotI = new SN_DoublePreference("pivotI", 0);
     public static final SN_DoublePreference pivotD = new SN_DoublePreference("pivotD", 0);
-
-    public static final SN_BooleanPreference pivotInverted = new SN_BooleanPreference("pivotInverted", false);
-    public static final SN_BooleanPreference rollerInverted = new SN_BooleanPreference("rollerInverted", true);
 
     // - Motion Magic -
     /**
      * <b> Units: </b> Rotations per second (rps)
      */
-    public static final SN_DoublePreference pivotCruiseVelocity = new SN_DoublePreference("pivotCruiseVelocity", 80);
+    public static final SN_DoublePreference pivotCruiseVelocity = new SN_DoublePreference("pivotCruiseVelocity", 160);
 
     /**
      * <b> Units: </b> Rotations per second per second (rps/s)
      */
     public static final SN_DoublePreference pivotAcceleration = new SN_DoublePreference(
-        "pivotAcceleration", 160);
+        "pivotAcceleration", 260);
     /**
      * <b> Units: </b> Rotations per second per second per second (rps/s/s)
      */
@@ -262,6 +259,42 @@ public class RobotPreferences {
         30);
     public static final SN_DoublePreference pivotCurrentTimeThreshold = new SN_DoublePreference(
         "pivotCurrentTimeThreshold", 0.1);
+
+    // - Zeroing -
+    /**
+     * <p>
+     * The voltage supplied to the motor in order to zero
+     * </p>
+     * <b>Units:</b> Volts
+     */
+    public static final SN_DoublePreference pivotZeroingVoltage = new SN_DoublePreference("pivotZeroingVoltage", -1);
+
+    /**
+     * <p>
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     * </p>
+     * <b>Units:</b> Degrees per second
+     */
+    public static final SN_DoublePreference pivotZeroedVelocity = new SN_DoublePreference("pivotZeroedVelocity", 0.01);
+
+    /**
+     * <p>
+     * The elapsed time required to consider the pivot motor as zeroed
+     * </p>
+     * <b>Units:</b> Seconds
+     */
+    public static final SN_DoublePreference pivotZeroedTime = new SN_DoublePreference("pivotZeroedTime", 0.25);
+
+    /**
+     * <p>
+     * The value that the pitch reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical slop
+     * </p>
+     * <b>Units:</b> Rotations
+     */
+    public static final SN_DoublePreference pitchZeroedSensorAngle = new SN_DoublePreference("pitchZeroedSensorAngle",
+        Units.degreesToRotations(0));
 
     // - Soft Limits -
     /**
@@ -293,7 +326,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference rollerSpitSpeed = new SN_DoublePreference("rollerSpitSpeed", -1);
 
     public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.5);
-    // TODO: AMP IS -0.2. MAKE A PREFERENCE AND LOGIC FOR TRAP
+
+    public static final SN_DoublePreference rollerPlaceTrapSpeed = new SN_DoublePreference("rollerPlaceTrapSpeed",
+        -0.45);
 
     /**
      * <b> Units: </b> Percent Output
@@ -322,7 +357,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotStowAngle = new SN_DoublePreference(
-        "pivotStowAngle", 30.5);
+        "pivotStowAngle", 75.5);
 
     /**
      * <p>
@@ -331,7 +366,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotGroundIntakeAngle = new SN_DoublePreference(
-        "pivotGroundIntakeAngle", 105);
+        "pivotGroundIntakeAngle", 1);
 
     /**
      * <p>
@@ -341,7 +376,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotTransferToAmpAngle = new SN_DoublePreference("pivotTransferToAmpAngle",
-        105);
+        1);
 
     /**
      * <p>
@@ -350,10 +385,16 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
-        11.4);
+        94.6);
 
-    // TODO: SEPERATE TRAP PRESET : AMP IS 11.4
-    // TRAP IS 33.2
+    /**
+     * <p>
+     * The pivot motor position when are placing in the trap
+     * </p>
+     * <b> Units: </b> Degrees
+     */
+    public static final SN_DoublePreference pivotPlaceTrapAngle = new SN_DoublePreference("pivotPlaceTrapAngle",
+        100);
 
   }
 
@@ -608,21 +649,21 @@ public class RobotPreferences {
      * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
      */
     public static final SN_DoublePreference feederHasGamePieceCurrent = new SN_DoublePreference(
-        "feederHasGamePieceCurrent", -6);
+        "feederHasGamePieceCurrent", -7);
 
     /**
      * The value that the transfer current must be <b>ABOVE</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
-        "transferHasGamePieceCurrent", 6);
+        "transferHasGamePieceCurrent", 7);
 
     /**
      * The value that the transfer velocity must be <b>BELOW</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
-        "transferHasGamePieceVelocity", 18);
+        "transferHasGamePieceVelocity", 16);
 
     public static final SN_DoublePreference sourceFeederHasGamePieceCurrent = new SN_DoublePreference(
         "sourceFeederHasGamePieceCurrent", -6);
@@ -644,6 +685,16 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference transferRepositionSpeed = new SN_DoublePreference("transferRepositionSpeed",
         -0.3);
+
+    /**
+     * <p>
+     * The amount of degrees to turn before considering the note to have been shot
+     * in auto
+     * </p>
+     */
+    public static final SN_DoublePreference transferRotationsShot = new SN_DoublePreference(
+        "transferRotationsShot",
+        6000);
 
   }
 
@@ -735,21 +786,39 @@ public class RobotPreferences {
   public static final class prefVision {
     /**
      * <p>
-     * Pose estimator standard deviation for vision data
+     * Pose estimator standard deviation for vision data using Multi-tag
      * <p>
      * <b>Units:</b> Meters
      */
-    public static final SN_DoublePreference visionStdDevsPosition = new SN_DoublePreference(
-        "visionStdDevsPosition", 5);
+    public static final SN_DoublePreference multiTagStdDevsPosition = new SN_DoublePreference(
+        "multiTagStdDevsPosition", 3);
 
     /**
      * <p>
-     * Pose estimator standard deviation for vision data
+     * Pose estimator standard deviation for vision data using Multi-Tag
      * </p>
      * <b>Units:</b> Radians
      */
-    public static final SN_DoublePreference visionStdDevsHeading = new SN_DoublePreference(
-        "visionStdDevsHeading", 500);
+    public static final SN_DoublePreference multiTagStdDevsHeading = new SN_DoublePreference(
+        "multiTagStdDevsHeading", 0.9);
+
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data using Single-tag
+     * <p>
+     * <b>Units:</b> Meters
+     */
+    public static final SN_DoublePreference singleTagStdDevsPosition = new SN_DoublePreference(
+        "singleTagStdDevsPosition", 10);
+
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data using Single-Tag
+     * </p>
+     * <b>Units:</b> Radians
+     */
+    public static final SN_DoublePreference singleTagStdDevsHeading = new SN_DoublePreference(
+        "singleTagStdDevsHeading", 3);
 
     /**
      * The translational tolerance of how off we want to be to count as correct

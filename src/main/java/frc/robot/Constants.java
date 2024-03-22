@@ -83,9 +83,9 @@ public final class Constants {
 
       public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
           SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-          SN_SwerveConstants.MK4I.KRAKEN.L3.wheelCircumference,
+          0.10033 * Math.PI,
           SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
-          DRIVE_SPEED);
+          SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
     }
 
@@ -116,11 +116,11 @@ public final class Constants {
 
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-        SN_SwerveConstants.MK4I.KRAKEN.L3.wheelCircumference,
+        0.10033 * Math.PI,
         SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
-        DRIVE_SPEED);
+        SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
-    public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
+    public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive; // false
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
     public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.CounterClockwise_Positive;
 
@@ -140,10 +140,14 @@ public final class Constants {
   }
 
   public static class constIntake {
-    public static final double ABS_ENCODER_OFFSET = 0.102385;
-    public static final boolean ABS_ENCODER_INVERT = false;
+    public static final double ABS_ENCODER_OFFSET = 0.420915;
+    public static final boolean ABS_ENCODER_INVERT = true;
     public static final double GEAR_RATIO = 28.13;
     public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;
+
+    public static final InvertedValue ROLLER_INVERT = InvertedValue.Clockwise_Positive;
+    public static final InvertedValue PIVOT_INVERT = InvertedValue.Clockwise_Positive;
+
   }
 
   public static class constLEDs {
@@ -218,6 +222,31 @@ public final class Constants {
       DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :)
 
       // edge of bumper to center of turret = 42.29cm = 0.4229 m
+    }
+
+    /**
+     * <p>
+     * Determines the necessary angle for the shooter to shuffle notes depending on
+     * the Y-location of the robot.
+     * </p>
+     * <b>KEY:</b> The Y position (in meters) of the center of the turret to the
+     * SPEAKER
+     * <br>
+     * <br>
+     * <b>VALUE:</b> The angle (in degrees) for the hood to go up by
+     * 
+     */
+    public static final InterpolatingDoubleTreeMap SHUFFLE_MAP = new InterpolatingDoubleTreeMap();
+
+    static {
+      SHUFFLE_MAP.put(8.732940673828125, 0.0); // Outside of field (top)
+      SHUFFLE_MAP.put(6.384957313537598, 0.0); // In front of Speaker basically
+      SHUFFLE_MAP.put(3.165, 33.0);
+      SHUFFLE_MAP.put(2.45, 30.0);
+      SHUFFLE_MAP.put(2.07, 36.0);
+      SHUFFLE_MAP.put(0.42119738459587097, 36.0); // Preset Value
+      SHUFFLE_MAP.put(-0.5405449271202087, 36.0); // Outside of field (bottom)
+
     }
   }
 
@@ -320,8 +349,9 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(-9.82), Units.inchesToMeters(8)),
-        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-25)));
+        new Translation3d(Units.inchesToMeters(14.5) - 0.045, -(Units.inchesToMeters(14.5) - 0.114),
+            Units.inchesToMeters(8.125)),
+        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(-19)));
 
     /**
      * The position, in meters, of the center of the camera lens relative to the
@@ -332,8 +362,10 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(9.82), Units.inchesToMeters(8)),
-        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
+        new Translation3d(Units.inchesToMeters(14.5) - 0.045, Units.inchesToMeters(14.5) - 0.114,
+            Units.inchesToMeters(8.125)),
+        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(19)));
+
   }
 
   public static class constTransfer {
@@ -343,6 +375,6 @@ public final class Constants {
    * Locations that the robot can attempt to lock onto.
    */
   public enum LockedLocation {
-    NONE, SPEAKER, AMP
+    NONE, SPEAKER, AMP, SHUFFLE
   }
 }

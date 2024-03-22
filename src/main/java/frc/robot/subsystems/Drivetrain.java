@@ -12,12 +12,14 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.FieldConstants;
@@ -41,6 +43,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   private static SwerveModuleState[] loggedDesiredStates;
   @Log.NT
   private static SwerveModuleState[] loggedActualStates;
+
+  @Log.NT
+  double desiredSnappingRot = 0;
 
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -84,16 +89,16 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
             Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
             Units.degreesToRadians(prefDrivetrain.measurementStdDevsHeading.getValue())),
         VecBuilder.fill(
-            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
-            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
-            Units.degreesToRadians(prefVision.visionStdDevsHeading.getValue())),
+            Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
+            Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
+            Units.degreesToRadians(prefVision.multiTagStdDevsHeading.getValue())),
         new PIDConstants(prefDrivetrain.autoDriveP.getValue(),
             prefDrivetrain.autoDriveI.getValue(),
             prefDrivetrain.autoDriveD.getValue()),
         new PIDConstants(prefDrivetrain.autoSteerP.getValue(),
             prefDrivetrain.autoSteerI.getValue(),
             prefDrivetrain.autoSteerD.getValue()),
-        new ReplanningConfig(),
+        new ReplanningConfig(false, true),
         () -> FieldConstants.isRedAlliance(),
         Robot.isSimulation());
   }
@@ -152,6 +157,20 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     }
   }
 
+  public void setClimbMode() {
+    SwerveModuleState[] desiredStates = {
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)) };
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constDrivetrain.SWERVE_CONSTANTS.maxSpeedMeters);
+
+    for (SN_SwerveModule mod : modules) {
+      mod.setModuleState(desiredStates[mod.moduleNumber], true, true);
+    }
+  }
+
   /**
    * <p>
    * <b>Must be run periodically in order to function properly!</b>
@@ -172,8 +191,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    * @param timestamp     The timestamp of that pose estimate (not necessarily the
    *                      current timestamp)
    */
-  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp) {
-    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp);
+  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp, Vector<N3> stdevs) {
+    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp, stdevs);
   }
 
   /**
@@ -181,7 +200,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    * @return The desired velocity needed to snap. <b>Units:</b> Radians per Second
    */
   public double getVelocityToSnap(Rotation2d desiredYaw) {
-    double yawSetpoint = yawSnappingController.calculate(getRotation().getRadians(), desiredYaw.getRadians());
+    desiredSnappingRot = desiredYaw.getDegrees();
+    double yawSetpoint = yawSnappingController.calculate(getRotation().getRadians(),
+        (desiredYaw.getDegrees() < 0) ? (2 * Math.PI) + desiredYaw.getRadians() : desiredYaw.getRadians());
 
     // limit the PID output to our maximum rotational speed
     yawSetpoint = MathUtil.clamp(yawSetpoint, -Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()),
@@ -192,6 +213,26 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
   public Pose3d getPose3d() {
     return new Pose3d(getPose());
+  }
+
+  public Rotation2d getDesiredRotForChain(Pose2d rightStagePose, Pose2d leftStagePose, Pose2d centerStagePose) {
+    Pose2d curPose = getPose();
+
+    Pose2d rightStagePoseFromBot = rightStagePose.relativeTo(curPose);
+    Pose2d centerStagePoseFromBot = centerStagePose.relativeTo(curPose);
+    Pose2d leftStagePoseFromBot = leftStagePose.relativeTo(curPose);
+
+    double distanceFromLeftChain = Math.hypot(leftStagePoseFromBot.getX(), leftStagePoseFromBot.getY());
+    double distanceFromRightChain = Math.hypot(rightStagePoseFromBot.getX(), rightStagePoseFromBot.getY());
+    double distanceFromCenterChain = Math.hypot(centerStagePoseFromBot.getX(), centerStagePoseFromBot.getY());
+
+    if (distanceFromLeftChain < distanceFromCenterChain && distanceFromLeftChain < distanceFromRightChain) {
+      return leftStagePose.getRotation();
+    } else if (distanceFromCenterChain < distanceFromLeftChain && distanceFromCenterChain < distanceFromRightChain) {
+      return centerStagePose.getRotation();
+    } else {
+      return rightStagePose.getRotation();
+    }
   }
 
   @Override

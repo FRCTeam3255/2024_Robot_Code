@@ -75,7 +75,7 @@ public class PrepAmp extends Command {
     } else {
       subTurret.setTurretAngle(lastHoodAngle);
       subPitch.setPitchAngle(lastHoodAngle);
-      subIntake.setPivotAngle(lastIntakeAngle);
+      subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue());
     }
   }
 

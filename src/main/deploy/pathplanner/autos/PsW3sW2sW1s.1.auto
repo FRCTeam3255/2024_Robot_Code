@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.44,
+      "y": 4.1
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PsW3sW2sW1s.1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Wing Up",
+  "choreoAuto": false
+}

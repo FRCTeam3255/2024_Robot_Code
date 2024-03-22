@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.frcteam3255.joystick.SN_XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.FieldConstants;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
@@ -57,7 +58,7 @@ public class ShootingPreset extends Command {
   public void initialize() {
     subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
     subShooter.setDesiredVelocities(desiredLeftVelocity, desiredRightVelocity);
-    subTurret.setTurretAngle(desiredTurretAngle);
+    subTurret.setTurretAngle((FieldConstants.isRedAlliance()) ? -desiredTurretAngle : desiredTurretAngle);
     subPitch.setPitchAngle(desiredPitchAngle);
     subShooter.setIgnoreFlywheelSpeed(ignoreFlywheelSpeed);
   }
@@ -99,8 +100,6 @@ public class ShootingPreset extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // subTurret.setTurretAngle(0);
-    // subPitch.setPitchAngle(prefPitch.pitchReverseLimit.getValue());
     subShooter.setIgnoreFlywheelSpeed(false);
   }
 

@@ -4,11 +4,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
@@ -22,14 +24,16 @@ public class TransferGamePiece extends Command {
   Shooter subShooter;
   Pitch subPitch;
   Intake subIntake;
+  Climber subClimber;
 
   public TransferGamePiece(Shooter subShooter, Turret subTurret,
-      Transfer subTransfer, Pitch subPitch, Intake subIntake) {
+      Transfer subTransfer, Pitch subPitch, Intake subIntake, Climber subClimber) {
     this.subTransfer = subTransfer;
     this.subShooter = subShooter;
     this.subPitch = subPitch;
     this.subTurret = subTurret;
     this.subIntake = subIntake;
+    this.subClimber = subClimber;
 
     addRequirements(subTransfer, subIntake);
   }
@@ -37,6 +41,7 @@ public class TransferGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subTransfer.setTransferSensorAngle(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,12 +58,23 @@ public class TransferGamePiece extends Command {
         return;
       }
     } else {
-      subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getValue());
-      if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceAmpAngle.getValue())) {
-        subTransfer.setGamePieceCollected(false);
-        subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue());
+      // TRAP
+      if (subClimber.getPosition() > 0.3) {
+        subIntake.setPivotAngle(prefIntake.pivotPlaceTrapAngle.getValue());
+        if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceTrapAngle.getValue())) {
+          subTransfer.setGamePieceCollected(false);
+          subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceTrapSpeed.getValue());
+        }
+      } else {
+        subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getValue());
+
+        if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceAmpAngle.getValue())) {
+          subTransfer.setGamePieceCollected(false);
+          subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue());
+        }
       }
     }
+    subTransfer.setTransferSensorAngle(0);
     subTransfer.setFeederMotorSpeed(0);
     subTransfer.setTransferMotorSpeed(0);
     return;
@@ -68,9 +84,11 @@ public class TransferGamePiece extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subTransfer.setFeederMotorSpeed(0);
-    subTransfer.setTransferMotorSpeed(0);
-    subIntake.setIntakeRollerSpeed(0);
+    if (!RobotState.isAutonomous()) {
+      subTransfer.setFeederMotorSpeed(0);
+      subTransfer.setTransferMotorSpeed(0);
+      subIntake.setIntakeRollerSpeed(0);
+    }
   }
 
   // Returns true when the command should end.
