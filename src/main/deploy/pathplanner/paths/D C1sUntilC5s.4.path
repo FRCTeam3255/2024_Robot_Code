@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.45,
-        "y": 6.263
+        "x": 3.9,
+        "y": 5.550426959991455
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4499999999999997,
-        "y": 6.263
+        "x": 3.8090909167912086,
+        "y": 5.550426938815631
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.263
+        "x": 5.7443191809460545,
+        "y": 4.1123223304748535
       },
       "prevControl": {
-        "x": 3.846685576347168,
-        "y": 6.263
+        "x": 4.49304465560498,
+        "y": 4.303448834817898
       },
       "nextControl": {
-        "x": 4.153314423652832,
-        "y": 6.263
+        "x": 5.834185943089389,
+        "y": 4.098595590453193
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.376,
-        "y": 7.473
+        "x": 7.375899729919436,
+        "y": 4.1123223304748535
       },
       "prevControl": {
-        "x": 6.426107405561715,
-        "y": 7.473
+        "x": 7.284990717861153,
+        "y": 4.1123223304748535
       },
       "nextControl": {
-        "x": 7.400043205507347,
-        "y": 7.473
+        "x": 7.466808741977718,
+        "y": 4.1123223304748535
       },
       "isLocked": false,
       "linkedName": null
@@ -49,11 +49,11 @@
     {
       "anchor": {
         "x": 7.8,
-        "y": 7.473
+        "y": 4.11
       },
       "prevControl": {
-        "x": 7.74,
-        "y": 7.473
+        "x": 7.709091161411675,
+        "y": 4.11
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,8 +64,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "W5",
-      "waypointRelativePos": 2.0,
+      "name": "W3",
+      "waypointRelativePos": 1.9,
       "command": {
         "type": "parallel",
         "data": {

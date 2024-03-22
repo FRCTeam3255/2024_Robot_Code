@@ -83,6 +83,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                 .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle().getAsDouble())),
             Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
                 .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
+
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
@@ -154,27 +155,24 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   }
 
   public String determineInitPathName() {
-    // return (goesDown) ? "D PsC1" : "U PsC5";
-    return "U PsC5";
+    return (goesDown) ? "D PsC1" : "U PsC5";
   }
 
   public String determineScorePathName() {
-    // return (goesDown) ? "D C1sUntilC5s" : "U C5sUntilC1s";
-    return "U C5sUntilC1s";
+    return (goesDown) ? "D C1sUntilC5s" : "U C5sUntilC1s";
   }
 
   public String determineHopPathName() {
-    // return (goesDown) ? "D C1UntilC5" : "U C5UntilC1";
-    return "U C5UntilC1";
+    return (goesDown) ? "D C1UntilC5" : "U C5UntilC1";
   }
 
   public DoubleSupplier getTurretInitAngle() {
-    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -52.837 : 52.837) // TODO: UPDATE GOES DOWN
+    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 : 30.613)
         : ((FieldConstants.isRedAlliance()) ? 50.659 : -50.659);
   }
 
   public DoubleSupplier getPitchInitAngle() {
-    return () -> (goesDown) ? (42.262) : (46.474); // TODO: UPDATE GOES DOWN
+    return () -> (goesDown) ? (53.674) : (46.474);
   }
 
   public Command getAutonomousCommand() {

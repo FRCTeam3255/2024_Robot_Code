@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 7.8,
-      "y": 4.11
+      "x": 3.9,
+      "y": 5.55
     },
     "rotation": 180.0
   },
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "U C5UntilC1.3"
+            "pathName": "D C1sUntilC5s.4"
           }
         }
       ]
     }
   },
-  "folder": "Centerline Up",
+  "folder": "Centerline Down",
   "choreoAuto": false
 }

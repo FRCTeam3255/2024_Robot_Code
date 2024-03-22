@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.45,
+      "y": 6.26
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D PsC1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D C1sUntilC5s.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D C1sUntilC5s.2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D C1sUntilC5s.3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D C1sUntilC5s.4"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Centerline Down",
+  "choreoAuto": false
+}
