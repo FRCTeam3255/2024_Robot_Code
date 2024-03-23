@@ -7,6 +7,7 @@ package frc.robot.commands.autos;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -58,6 +59,15 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
     this.subTurret = subTurret;
     this.subClimber = subClimber;
     this.goesDown = goesDown;
+
+    AutoBuilder.buildAuto(determineInitPathName());
+    AutoBuilder.buildAuto(determineScorePathName() + ".1");
+    AutoBuilder.buildAuto(determineScorePathName() + ".2");
+    AutoBuilder.buildAuto(determineScorePathName() + ".3");
+    AutoBuilder.buildAuto(determineScorePathName() + ".4");
+
+    AutoBuilder.buildAuto(determineHopPathName() + ".1");
+    AutoBuilder.buildAuto(determineHopPathName() + ".2");
 
     addCommands(
         Commands.runOnce(

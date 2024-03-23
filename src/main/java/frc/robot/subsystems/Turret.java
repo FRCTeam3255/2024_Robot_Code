@@ -305,6 +305,8 @@ public class Turret extends SubsystemBase {
         && angle >= Units.rotationsToDegrees(prefTurret.turretReverseLimit.getValue()));
   }
 
+  Pose3d turretPose = new Pose3d();
+
   public Pose3d getDesiredAngleAsPose3d() {
     return new Pose3d(new Translation3d(),
         new Rotation3d(0, 0, Units.degreesToRadians(desiredTurretAngle)));

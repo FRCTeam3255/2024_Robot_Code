@@ -77,8 +77,12 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+
         Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
+            getInitialPose().get().getRotation().getDegrees())).unless(() -> FieldConstants.isRedAlliance()),
+
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            getInitialPose().get().getRotation().getDegrees() - 180)).unless(() -> !FieldConstants.isRedAlliance()),
 
         Commands.sequence(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
@@ -120,11 +124,11 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     double isRed = (FieldConstants.isRedAlliance()) ? -1 : 1;
     switch (startingPosition) {
       case 0: // S1
-        return 12.810 * isRed;
+        return 0 * isRed;
       case 1: // S2
         return 0.0 * isRed;
       case 2: // S3
-        return -13.093 * isRed;
+        return 0 * isRed;
       case 3: // S4
         return -61.712 * isRed;
       case 4: // S5 (We don't run this one EVER)
@@ -138,11 +142,11 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
   public double getPitchInitAngle() {
     switch (startingPosition) {
       case 0: // S1
-        return 56;
+        return 55;
       case 1: // S2
-        return 56;
+        return 55;
       case 2: // S3
-        return 55.766;
+        return 55;
       case 3: // S4
         return 38.453;
       case 4: // S5 (We don't run this one EVER)

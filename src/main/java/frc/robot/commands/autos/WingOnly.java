@@ -7,6 +7,7 @@ package frc.robot.commands.autos;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -153,7 +154,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   }
 
   public DoubleSupplier getTurretInitAngle() {
-    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -52.837 : 52.837)
+    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -54.837 : 54.837)
         : ((FieldConstants.isRedAlliance()) ? 50.702 : -50.702);
   }
 

@@ -43,6 +43,7 @@ import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootingPreset;
+import frc.robot.commands.SmileyDefense;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualHoodMovement;
@@ -115,13 +116,6 @@ public class RobotContainer implements Logged {
   static Pose3d desiredCarriagePose;
   @Log.NT
   static Pose3d desiredIntakePose;
-
-  @Log.NT
-  static Pose3d actualTurretPose;
-  @Log.NT
-  static Pose3d actualCarriagePose;
-  @Log.NT
-  static Pose3d actualIntakePose;
 
   @Log.NT
   boolean hasNamedCommandRun = false;
@@ -303,6 +297,9 @@ public class RobotContainer implements Logged {
             prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true,
             switchboardStick, "Peninsula", constRobot.TUNING_MODE)));
 
+    // Steel Stingers Defense !!!
+    switchboardStick.btn_7.onTrue(new SmileyDefense(subClimber, subIntake, subTurret, subPitch, subShooter, subLEDs));
+
     // Wing
     switchboardStick.btn_8.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
@@ -411,17 +408,19 @@ public class RobotContainer implements Logged {
         new Rotation3d(0,
             -Units.degreesToRadians(subIntake.getDesiredPivotAngle()), 0).plus(desiredCarriagePose.getRotation()));
 
-    // Actual Poses
-    actualTurretPose = new Pose3d(new Translation3d(),
-        new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
-    actualCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-        subClimber.getPosition()) / 7, 0,
-        ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
-        new Rotation3d());
-    actualIntakePose = new Pose3d(actualCarriagePose.getX() + -0.197, actualCarriagePose.getY(),
-        actualCarriagePose.getZ() + 0.305,
-        new Rotation3d(0,
-            -Units.degreesToRadians(subIntake.getPivotAngle()), 0).plus(actualCarriagePose.getRotation()));
+    // // Actual Poses
+    // actualTurretPose = new Pose3d(new Translation3d(),
+    // new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
+    // actualCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+    // subClimber.getPosition()) / 7, 0,
+    // ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
+    // new Rotation3d());
+    // actualIntakePose = new Pose3d(actualCarriagePose.getX() + -0.197,
+    // actualCarriagePose.getY(),
+    // actualCarriagePose.getZ() + 0.305,
+    // new Rotation3d(0,
+    // -Units.degreesToRadians(subIntake.getPivotAngle()),
+    // 0).plus(actualCarriagePose.getRotation()));
   }
 
   // --- PDH ---
