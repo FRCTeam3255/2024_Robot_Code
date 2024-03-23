@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.UnaliveShooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -93,7 +95,11 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
             // Shoot
             new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                 .until(() -> subTransfer.calcGPShotAuto()),
-            Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))).unless(() -> !shoots),
+            Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+
+            new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
+            Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())))
+            .unless(() -> !shoots),
 
         new PathPlannerAuto(determinePathName()));
   }

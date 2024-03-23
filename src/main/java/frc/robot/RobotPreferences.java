@@ -28,7 +28,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0);
     public static final SN_DoublePreference climberG = new SN_DoublePreference("climberG", 0);
-    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 0);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 40);
     public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
     public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
@@ -105,9 +105,9 @@ public class RobotPreferences {
     public static final SN_BooleanPreference climberSupplyCurrentLimitEnable = new SN_BooleanPreference(
         "climberSupplyCurrentLimitEnable", true);
     public static final SN_DoublePreference climberSupplyCurrentLimitCeilingAmps = new SN_DoublePreference(
-        "climberSupplyCurrentLimitCeilingAmps", 0.01);
+        "climberSupplyCurrentLimitCeilingAmps", 1);
     public static final SN_DoublePreference climberSupplyCurrentThreshold = new SN_DoublePreference(
-        "climberSupplyCurrentThreshold", 5);
+        "climberSupplyCurrentThreshold", 40);
     public static final SN_DoublePreference climberSupplyTimeThreshold = new SN_DoublePreference(
         "climberSupplyTimeThreshold", 0.1);
 
@@ -115,7 +115,7 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Percent Output
      */
-    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 0.4);
+    public static final SN_DoublePreference climberUpSpeed = new SN_DoublePreference("climberUpSpeed", 1);
 
     /**
      * <b> Units: </b> Percent Output
@@ -146,9 +146,9 @@ public class RobotPreferences {
     public static final SN_BooleanPreference driveEnableCurrentLimiting = new SN_BooleanPreference(
         "driveEnableCurrentLimiting", true);
     public static final SN_DoublePreference driveCurrentThreshold = new SN_DoublePreference("driveCurrentThreshold",
-        50);
-    public static final SN_DoublePreference driveCurrentLimit = new SN_DoublePreference("driveCurrentThreshold",
         40);
+    public static final SN_DoublePreference driveCurrentLimit = new SN_DoublePreference("driveCurrentThreshold",
+        30);
     public static final SN_DoublePreference driveCurrentTimeThreshold = new SN_DoublePreference(
         "driveCurrentTimeThreshold", 0.1);
 
@@ -325,10 +325,10 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference rollerSpitSpeed = new SN_DoublePreference("rollerSpitSpeed", -1);
 
-    public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.5);
+    public static final SN_DoublePreference rollerPlaceAmpSpeed = new SN_DoublePreference("rollerPlaceAmpSpeed", -0.4);
 
     public static final SN_DoublePreference rollerPlaceTrapSpeed = new SN_DoublePreference("rollerPlaceTrapSpeed",
-        -1);
+        -0.45);
 
     /**
      * <b> Units: </b> Percent Output
@@ -385,7 +385,7 @@ public class RobotPreferences {
      * <b> Units: </b> Degrees
      */
     public static final SN_DoublePreference pivotPlaceAmpAngle = new SN_DoublePreference("pivotPlaceAmpAngle",
-        94.6);
+        110);
 
     /**
      * <p>
@@ -510,7 +510,7 @@ public class RobotPreferences {
         27);
     public static final SN_DoublePreference pitchPanamaCanalAngle = new SN_DoublePreference("pitchPanamaCanalAngle", 0);
     public static final SN_DoublePreference pitchNoteShufflingAngle = new SN_DoublePreference("pitchNoteShufflingAngle",
-        36);
+        46.5);
     public static final SN_DoublePreference pitchPodiumAngle = new SN_DoublePreference("pitchPodiumAngle", 33);
     public static final SN_DoublePreference pitchLeapfrogAngle = new SN_DoublePreference("pitchLeapfrogAngle", 40);
     public static final SN_DoublePreference pitchShootFromAmpAngle = new SN_DoublePreference("pitchShootFromAmpAngle",
@@ -649,21 +649,21 @@ public class RobotPreferences {
      * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
      */
     public static final SN_DoublePreference feederHasGamePieceCurrent = new SN_DoublePreference(
-        "feederHasGamePieceCurrent", -7);
+        "feederHasGamePieceCurrent", -6);
 
     /**
      * The value that the transfer current must be <b>ABOVE</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
-        "transferHasGamePieceCurrent", 7);
+        "transferHasGamePieceCurrent", 8);
 
     /**
      * The value that the transfer velocity must be <b>BELOW</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
-        "transferHasGamePieceVelocity", 16);
+        "transferHasGamePieceVelocity", 15);
 
     public static final SN_DoublePreference sourceFeederHasGamePieceCurrent = new SN_DoublePreference(
         "sourceFeederHasGamePieceCurrent", -6);
@@ -765,7 +765,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretTrapPresetPos = new SN_DoublePreference("turretTrapPresetPos", 0);
 
     public static final SN_DoublePreference turretBehindPodiumPresetPos = new SN_DoublePreference(
-        "turretBehindPodiumPresetPos", -25.136719);
+        "turretBehindPodiumPresetPos", 12);
     public static final SN_DoublePreference turretPanamaCanalPresetPos = new SN_DoublePreference(
         "turretPanamaCanalPresetPos", 0);
     public static final SN_DoublePreference turretNoteShufflingPresetPos = new SN_DoublePreference(
@@ -775,8 +775,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretLeapfrogPresetPos = new SN_DoublePreference("turretLeapfrogPresetPos",
         0);
     public static final SN_DoublePreference turretShootFromAmpPresetPos = new SN_DoublePreference(
-        "turretLeapfrogPresetPos",
-        -49);
+        "turretShootFromAmpPresetPos",
+        -39);
     public static final SN_DoublePreference turretWingPresetPos = new SN_DoublePreference(
         "turretWingPresetPos",
         0);

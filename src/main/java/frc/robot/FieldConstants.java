@@ -99,7 +99,7 @@ public class FieldConstants {
      */
     private static final Pose3d AMP = new Pose3d(14.706, 8.2112312, (0.457 / 2) + 0.660, new Rotation3d(0, 0, 0));
 
-    private static final Pose3d SOURCE = new Pose3d(new Pose2d(0, 0, Rotation2d.fromDegrees(240)));
+    private static final Pose3d SOURCE = new Pose3d(new Pose2d(0, 0, Rotation2d.fromDegrees(60)));
     private static final Pose3d LEFT_STAGE = new Pose3d(
         new Pose2d(12.0610990524292, 3.4952545166015625, Rotation2d.fromDegrees(300)));
     private static final Pose3d CENTER_STAGE = new Pose3d(

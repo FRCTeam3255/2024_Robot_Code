@@ -255,7 +255,7 @@ public final class Constants {
    */
   public static class constRobot {
 
-    public static final boolean TUNING_MODE = false;
+    public static final boolean TUNING_MODE = true;
 
     /**
      * Volts

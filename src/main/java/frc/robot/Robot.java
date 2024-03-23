@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     FieldConstants.ALLIANCE = DriverStation.getAlliance();
     SmartDashboard.putString("ALLIANCE", FieldConstants.ALLIANCE.toString());
 
-    m_robotContainer.setAutoPlacementLEDs(DriverStation.getAlliance());
+    m_robotContainer.setAutoPlacementLEDs(DriverStation.getAlliance(), hasAutonomousRun);
   }
 
   @Override

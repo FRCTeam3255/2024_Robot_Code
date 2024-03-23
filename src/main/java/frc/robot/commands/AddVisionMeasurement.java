@@ -17,6 +17,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Robot;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
@@ -67,7 +68,7 @@ public class AddVisionMeasurement extends Command {
     OVresult = subVision.getPoseFromOVCamera();
 
     // Don't collect Vision results in auto
-    if (!RobotState.isAutonomous()) {
+    if (!RobotState.isAutonomous() && !RobotState.isDisabled()) {
 
       // If both results are present, pick the closest of the 2 poses
       if (ARresult.isPresent() && OVresult.isPresent()) {

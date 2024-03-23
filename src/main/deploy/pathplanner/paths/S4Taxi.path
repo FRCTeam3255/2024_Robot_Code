@@ -32,11 +32,11 @@
     },
     {
       "anchor": {
-        "x": 0.6,
+        "x": 0.3,
         "y": 3.36
       },
       "prevControl": {
-        "x": 1.6,
+        "x": 1.3,
         "y": 3.36
       },
       "nextControl": null,

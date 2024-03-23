@@ -181,6 +181,7 @@ public class RobotContainer implements Logged {
                 () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
 
     controller.btn_LeftTrigger
+        .onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
         .whileTrue(
             Commands.run((() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())), subClimber))
         .onFalse(Commands.runOnce(() -> subClimber.setPercentOutput(0), subClimber));
@@ -244,7 +245,7 @@ public class RobotContainer implements Logged {
                 prefShooter.rightShooterSpeakerVelocity.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
     // B: Prep Amp
-    controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter));
+    controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter, subClimber));
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSubVelocity.getValue(),
@@ -291,6 +292,8 @@ public class RobotContainer implements Logged {
 
     // ZERO INTAKE
     switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake).unless(() -> constRobot.TUNING_MODE));
+    // ZERO CLIMBER
+    switchboardStick.btn_5.onTrue(new ZeroClimber(subClimber).unless(() -> constRobot.TUNING_MODE));
 
     // Peninsula preset (behind the podium)
     switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -495,9 +498,11 @@ public class RobotContainer implements Logged {
         .unless(() -> subIntake.getPivotAngle() > prefIntake.pivotStowAngle.getValue());
   }
 
-  public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
+  public void setAutoPlacementLEDs(Optional<Alliance> alliance, boolean hasAutoRun) {
     startingPosition = autoChooser.getSelected().getInitialPose().get();
-    subDrivetrain.resetPoseToPose(startingPosition);
+    if (!hasAutoRun) {
+      subDrivetrain.resetPoseToPose(startingPosition);
+    }
 
     double desiredStartingPositionX = startingPosition.getX();
     double desiredStartingPositionY = startingPosition.getY();

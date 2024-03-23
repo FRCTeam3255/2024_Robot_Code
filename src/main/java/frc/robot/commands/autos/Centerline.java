@@ -168,11 +168,11 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
   public DoubleSupplier getTurretInitAngle() {
     return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 : 30.613)
-        : ((FieldConstants.isRedAlliance()) ? 50.659 : -50.659);
+        : ((FieldConstants.isRedAlliance()) ? 50.659 : -71.114);
   }
 
   public DoubleSupplier getPitchInitAngle() {
-    return () -> (goesDown) ? (53.674) : (46.474);
+    return () -> (goesDown) ? (53.674) : (29.339);
   }
 
   public Command getAutonomousCommand() {

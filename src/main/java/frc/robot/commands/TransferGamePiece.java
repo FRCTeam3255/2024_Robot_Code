@@ -35,7 +35,7 @@ public class TransferGamePiece extends Command {
     this.subIntake = subIntake;
     this.subClimber = subClimber;
 
-    addRequirements(subTransfer, subIntake);
+    addRequirements(subTransfer, subIntake, subClimber);
   }
 
   // Called when the command is initially scheduled.
@@ -59,7 +59,7 @@ public class TransferGamePiece extends Command {
       }
     } else {
       // TRAP
-      if (subClimber.getPosition() > 0.3) {
+      if (subClimber.getPosition() > 0.6) {
         subIntake.setPivotAngle(prefIntake.pivotPlaceTrapAngle.getValue());
         if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceTrapAngle.getValue())) {
           subTransfer.setGamePieceCollected(false);
@@ -89,6 +89,8 @@ public class TransferGamePiece extends Command {
       subTransfer.setTransferMotorSpeed(0);
       subIntake.setIntakeRollerSpeed(0);
     }
+
+    subClimber.setPosition(-0.05);
   }
 
   // Returns true when the command should end.
