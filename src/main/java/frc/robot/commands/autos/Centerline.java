@@ -95,7 +95,8 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
         // Go get C5/1
         new PathPlannerAuto(determineInitPathName()),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(0.5),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
+            .withTimeout(0.25),
         Commands.waitSeconds(1),
 
         // We are now at C5 or C1
@@ -121,7 +122,8 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
             () -> subTransfer.hasGamePiece),
 
         // Either way, we just tried to get C4 or C2
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(0.5),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
+            .withTimeout(0.25),
         Commands.waitSeconds(1),
 
         Commands.either(
