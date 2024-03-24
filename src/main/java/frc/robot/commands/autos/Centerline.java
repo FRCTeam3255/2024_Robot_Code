@@ -60,14 +60,14 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
     this.subClimber = subClimber;
     this.goesDown = goesDown;
 
-    AutoBuilder.buildAuto(determineInitPathName());
-    AutoBuilder.buildAuto(determineScorePathName() + ".1");
-    AutoBuilder.buildAuto(determineScorePathName() + ".2");
-    AutoBuilder.buildAuto(determineScorePathName() + ".3");
-    AutoBuilder.buildAuto(determineScorePathName() + ".4");
+    // AutoBuilder.buildAuto(determineInitPathName());
+    // AutoBuilder.buildAuto(determineScorePathName() + ".1");
+    // AutoBuilder.buildAuto(determineScorePathName() + ".2");
+    // AutoBuilder.buildAuto(determineScorePathName() + ".3");
+    // AutoBuilder.buildAuto(determineScorePathName() + ".4");
 
-    AutoBuilder.buildAuto(determineHopPathName() + ".1");
-    AutoBuilder.buildAuto(determineHopPathName() + ".2");
+    // AutoBuilder.buildAuto(determineHopPathName() + ".1");
+    // AutoBuilder.buildAuto(determineHopPathName() + ".2");
 
     addCommands(
         Commands.runOnce(
@@ -179,12 +179,15 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   }
 
   public DoubleSupplier getTurretInitAngle() {
-    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 : 30.613)
-        : ((FieldConstants.isRedAlliance()) ? 50.659 : -71.114);
+    // return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 :
+    // 30.613)
+    // : ((FieldConstants.isRedAlliance()) ? 0 : 0);
+    return () -> 0;
   }
 
   public DoubleSupplier getPitchInitAngle() {
-    return () -> (goesDown) ? (53.674) : (29.339);
+    // return () -> (goesDown) ? (46.349) : (55);
+    return () -> 55;
   }
 
   public Command getAutonomousCommand() {
