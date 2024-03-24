@@ -493,8 +493,6 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference pitchAmpAngle = new SN_DoublePreference("pitchAmpAngle", 57.5);
 
-    public static final SN_DoublePreference pitchWingAngle = new SN_DoublePreference("pitchWingAngle", 24);
-
     public static final SN_DoublePreference pitchTrapAngle = new SN_DoublePreference("pitchTrapAngle",
         61);
 
@@ -507,7 +505,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchSourceAngle = new SN_DoublePreference("pitchSourceAngle", 48.6);
 
     public static final SN_DoublePreference pitchBehindPodiumAngle = new SN_DoublePreference("pitchBehindPodiumAngle",
-        28.351577);
+        26.351577);
     public static final SN_DoublePreference pitchPanamaCanalAngle = new SN_DoublePreference("pitchPanamaCanalAngle", 0);
     public static final SN_DoublePreference pitchNoteShufflingAngle = new SN_DoublePreference("pitchNoteShufflingAngle",
         46.5);
@@ -516,7 +514,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference pitchShootFromAmpAngle = new SN_DoublePreference("pitchShootFromAmpAngle",
         36.598096);
     public static final SN_DoublePreference pitchWingPresetAngle = new SN_DoublePreference("pitchWingPresetAngle",
-        21);
+        20.6995);
 
   }
 
@@ -664,6 +662,27 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
         "transferHasGamePieceVelocity", 15);
+
+    /**
+     * The value that the feeder current must be <b>BELOW</b> to have a Game Piece
+     * in auto
+     */
+    public static final SN_DoublePreference feederAutoHasGamePieceCurrent = new SN_DoublePreference(
+        "feederAutoHasGamePieceCurrent", -7);
+
+    /**
+     * The value that the transfer current must be <b>ABOVE</b> to have a Game
+     * Piece in auto
+     */
+    public static final SN_DoublePreference transferAutoHasGamePieceCurrent = new SN_DoublePreference(
+        "transferAutoHasGamePieceCurrent", 7);
+
+    /**
+     * The value that the transfer velocity must be <b>BELOW</b> to have a Game
+     * Piece in auto
+     */
+    public static final SN_DoublePreference transferAutoHasGamePieceVelocity = new SN_DoublePreference(
+        "transferAutoHasGamePieceVelocity", 16);
 
     public static final SN_DoublePreference sourceFeederHasGamePieceCurrent = new SN_DoublePreference(
         "sourceFeederHasGamePieceCurrent", -6);
