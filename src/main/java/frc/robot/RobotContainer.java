@@ -95,7 +95,7 @@ public class RobotContainer implements Logged {
   private final static Shooter subShooter = new Shooter();
   private final static Turret subTurret = new Turret();
   private final static Transfer subTransfer = new Transfer();
-  private final static Vision subVision = new Vision();
+  // private final static Vision subVision = new Vision();
 
   SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
 
@@ -585,7 +585,8 @@ public class RobotContainer implements Logged {
     }
   }
 
-  public static Command AddVisionMeasurement() {
-    return new AddVisionMeasurement(subDrivetrain, subVision).ignoringDisable(true);
-  }
+  // public static Command AddVisionMeasurement() {
+  // return new AddVisionMeasurement(subDrivetrain,
+  // subVision).ignoringDisable(true);
+  // }
 }
