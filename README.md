@@ -21,5 +21,5 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 
 Interested in learning more about CRESCENDO? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
-## Controls
+## Driver Controls
 ![Controls](src/main/assets/controllerMap2024.png)
