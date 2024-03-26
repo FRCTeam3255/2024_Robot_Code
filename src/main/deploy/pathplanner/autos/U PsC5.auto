@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.44,
-      "y": 4.110304832458496
+      "x": 0.6,
+      "y": 4.35
     },
-    "rotation": -179.99998015215715
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -21,5 +21,5 @@
     }
   },
   "folder": "Centerline Up",
-  "choreoAuto": true
+  "choreoAuto": false
 }

@@ -43,6 +43,7 @@ import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootingPreset;
+import frc.robot.commands.SmileyDefense;
 import frc.robot.commands.SpitGamePiece;
 import frc.robot.commands.LockTurret;
 import frc.robot.commands.ManualHoodMovement;
@@ -59,6 +60,7 @@ import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
 import frc.robot.commands.autos.PreloadOnly;
+import frc.robot.commands.autos.PreloadTaxi;
 import frc.robot.commands.autos.WingOnly;
 import frc.robot.commands.autos.Centerline;
 import frc.robot.subsystems.Climber;
@@ -93,7 +95,7 @@ public class RobotContainer implements Logged {
   private final static Shooter subShooter = new Shooter();
   private final static Turret subTurret = new Turret();
   private final static Transfer subTransfer = new Transfer();
-  private final static Vision subVision = new Vision();
+  // private final static Vision subVision = new Vision();
 
   SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
 
@@ -114,13 +116,6 @@ public class RobotContainer implements Logged {
   static Pose3d desiredCarriagePose;
   @Log.NT
   static Pose3d desiredIntakePose;
-
-  @Log.NT
-  static Pose3d actualTurretPose;
-  @Log.NT
-  static Pose3d actualCarriagePose;
-  @Log.NT
-  static Pose3d actualIntakePose;
 
   @Log.NT
   boolean hasNamedCommandRun = false;
@@ -180,6 +175,7 @@ public class RobotContainer implements Logged {
                 () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
 
     controller.btn_LeftTrigger
+        .onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
         .whileTrue(
             Commands.run((() -> subClimber.setPercentOutput(prefClimber.climberUpSpeed.getValue())), subClimber))
         .onFalse(Commands.runOnce(() -> subClimber.setPercentOutput(0), subClimber));
@@ -243,7 +239,7 @@ public class RobotContainer implements Logged {
                 prefShooter.rightShooterSpeakerVelocity.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
     // B: Prep Amp
-    controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter));
+    controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter, subClimber));
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSubVelocity.getValue(),
@@ -290,6 +286,8 @@ public class RobotContainer implements Logged {
 
     // ZERO INTAKE
     switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake).unless(() -> constRobot.TUNING_MODE));
+    // ZERO CLIMBER
+    switchboardStick.btn_5.onTrue(new ZeroClimber(subClimber).unless(() -> constRobot.TUNING_MODE));
 
     // Peninsula preset (behind the podium)
     switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -298,6 +296,9 @@ public class RobotContainer implements Logged {
 
             prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true,
             switchboardStick, "Peninsula", constRobot.TUNING_MODE)));
+
+    // Steel Stingers Defense !!!
+    switchboardStick.btn_7.onTrue(new SmileyDefense(subClimber, subIntake, subTurret, subPitch, subShooter, subLEDs));
 
     // Wing
     switchboardStick.btn_8.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
@@ -316,28 +317,50 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("Default Auto",
+    // PRELOAD ONLY
+    autoChooser.addOption("Disruptor",
         new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
 
     // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            0));
+            0, true));
     autoChooser.addOption("Preload S2",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            1));
+            1, true));
     autoChooser.addOption("Preload S3",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            2));
+            2, true));
     autoChooser.addOption("Preload S4",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            3));
-    autoChooser.addOption("Preload S5",
+            3, true));
+
+    // "Do Nothing"
+    autoChooser.addOption("NO SHOOT S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            4));
+            0, false));
+    autoChooser.addOption("NO SHOOT S3",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            2, false));
+    autoChooser.addOption("NO SHOOT S4",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            3, false));
+    autoChooser.addOption("NO SHOOT S5",
+        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            4, false));
+
+    // Taxi + Preload
+    autoChooser.addOption("Taxi + Preload S4",
+        new PreloadTaxi(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            true));
+
+    // Taxi ONLY
+    autoChooser.addOption("Taxi S5",
+        new PreloadTaxi(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            false));
 
     // Wing ONLY
-    autoChooser.addOption("Wing Only Down",
+    autoChooser.setDefaultOption("Wing Only Down",
         new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             true));
 
@@ -346,13 +369,13 @@ public class RobotContainer implements Logged {
             false));
 
     // // Centerline ONLY
-    // autoChooser.addOption("Centerline Down", new Centerline(subDrivetrain,
-    // subIntake, subLEDs, subPitch, subShooter,
-    // subTransfer, subTurret, subClimber, true));
+    autoChooser.addOption("Centerline Down", new Centerline(subDrivetrain,
+        subIntake, subLEDs, subPitch, subShooter,
+        subTransfer, subTurret, subClimber, true));
 
-    // autoChooser.addOption("Centerline Up", new Centerline(subDrivetrain,
-    // subIntake, subLEDs, subPitch, subShooter,
-    // subTransfer, subTurret, subClimber, false));
+    autoChooser.addOption("Centerline Up", new Centerline(subDrivetrain,
+        subIntake, subLEDs, subPitch, subShooter,
+        subTransfer, subTurret, subClimber, false));
 
     SmartDashboard.putData(autoChooser);
   }
@@ -385,17 +408,19 @@ public class RobotContainer implements Logged {
         new Rotation3d(0,
             -Units.degreesToRadians(subIntake.getDesiredPivotAngle()), 0).plus(desiredCarriagePose.getRotation()));
 
-    // Actual Poses
-    actualTurretPose = new Pose3d(new Translation3d(),
-        new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
-    actualCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-        subClimber.getPosition()) / 7, 0,
-        ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
-        new Rotation3d());
-    actualIntakePose = new Pose3d(actualCarriagePose.getX() + -0.197, actualCarriagePose.getY(),
-        actualCarriagePose.getZ() + 0.305,
-        new Rotation3d(0,
-            -Units.degreesToRadians(subIntake.getPivotAngle()), 0).plus(actualCarriagePose.getRotation()));
+    // // Actual Poses
+    // actualTurretPose = new Pose3d(new Translation3d(),
+    // new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
+    // actualCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+    // subClimber.getPosition()) / 7, 0,
+    // ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
+    // new Rotation3d());
+    // actualIntakePose = new Pose3d(actualCarriagePose.getX() + -0.197,
+    // actualCarriagePose.getY(),
+    // actualCarriagePose.getZ() + 0.305,
+    // new Rotation3d(0,
+    // -Units.degreesToRadians(subIntake.getPivotAngle()),
+    // 0).plus(actualCarriagePose.getRotation()));
   }
 
   // --- PDH ---
@@ -472,9 +497,11 @@ public class RobotContainer implements Logged {
         .unless(() -> subIntake.getPivotAngle() > prefIntake.pivotStowAngle.getValue());
   }
 
-  public void setAutoPlacementLEDs(Optional<Alliance> alliance) {
+  public void setAutoPlacementLEDs(Optional<Alliance> alliance, boolean hasAutoRun) {
     startingPosition = autoChooser.getSelected().getInitialPose().get();
-    subDrivetrain.resetPoseToPose(startingPosition);
+    if (!hasAutoRun) {
+      subDrivetrain.resetPoseToPose(startingPosition);
+    }
 
     double desiredStartingPositionX = startingPosition.getX();
     double desiredStartingPositionY = startingPosition.getY();
@@ -558,7 +585,8 @@ public class RobotContainer implements Logged {
     }
   }
 
-  public static Command AddVisionMeasurement() {
-    return new AddVisionMeasurement(subDrivetrain, subVision).ignoringDisable(true);
-  }
+  // public static Command AddVisionMeasurement() {
+  // return new AddVisionMeasurement(subDrivetrain,
+  // subVision).ignoringDisable(true);
+  // }
 }

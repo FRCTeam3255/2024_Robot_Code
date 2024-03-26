@@ -83,7 +83,7 @@ public final class Constants {
 
       public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
           SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-          0.10033 * Math.PI,
+          0.101092 * Math.PI,
           SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
           SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 

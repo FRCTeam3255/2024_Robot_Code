@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,6 +32,10 @@ public class Transfer extends SubsystemBase implements Logged {
   double feederCurrent;
   @Log.NT
   double transferVelocity;
+
+  double feederHasGamePieceCurrent = prefTransfer.feederHasGamePieceCurrent.getValue();
+  double transferHasGamePieceCurrent = prefTransfer.transferHasGamePieceCurrent.getValue();
+  double transferHasGamePieceVelocity = prefTransfer.transferHasGamePieceVelocity.getValue();
 
   public boolean hasGamePiece;
 
@@ -82,10 +87,20 @@ public class Transfer extends SubsystemBase implements Logged {
     feederCurrent = feederMotor.getStatorCurrent();
     transferVelocity = transferMotor.getVelocity().getValue();
 
+    feederHasGamePieceCurrent = prefTransfer.feederHasGamePieceCurrent.getValue();
+    transferHasGamePieceCurrent = prefTransfer.transferHasGamePieceCurrent.getValue();
+    transferHasGamePieceVelocity = prefTransfer.transferHasGamePieceVelocity.getValue();
+
+    if (RobotState.isAutonomous()) {
+      feederHasGamePieceCurrent = prefTransfer.feederAutoHasGamePieceCurrent.getValue();
+      transferHasGamePieceCurrent = prefTransfer.transferAutoHasGamePieceCurrent.getValue();
+      transferHasGamePieceVelocity = prefTransfer.transferAutoHasGamePieceVelocity.getValue();
+    }
+
     if (hasGamePiece ||
-        (feederCurrent <= prefTransfer.feederHasGamePieceCurrent.getValue())
-            && (transferCurrent >= prefTransfer.transferHasGamePieceCurrent.getValue())
-            && (transferVelocity <= prefTransfer.transferHasGamePieceVelocity.getValue())) {
+        (feederCurrent <= feederHasGamePieceCurrent)
+            && (transferCurrent >= transferHasGamePieceCurrent)
+            && (transferVelocity <= transferHasGamePieceVelocity)) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;

@@ -194,7 +194,7 @@ public class Shooter extends SubsystemBase implements Logged {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter/Left/Velocity RPS", getLeftShooterVelocity());
     SmartDashboard.putNumber("Shooter/Left/Desired Velocity RPS", desiredLeftVelocity);
-    SmartDashboard.putBoolean("Shooter/Left/Up to Speed", isLeftShooterUpToSpeed());
+    SmartDashboard.putBoolean("Shooter Left Up to Speed", isLeftShooterUpToSpeed());
 
     SmartDashboard.putNumber("Shooter/Right/Velocity RPS", getRightShooterVelocity());
     SmartDashboard.putNumber("Shooter/Right/Desired Velocity RPS", desiredRightVelocity);

@@ -7,6 +7,7 @@ package frc.robot.commands.autos;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -16,13 +17,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefShooter;
-import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.AimAuto;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.LockPitch;
-import frc.robot.commands.LockTurret;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -94,6 +93,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             .until(() -> subTransfer.calcGPShotAuto()),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
+        // Get W3
         new PathPlannerAuto(determinePathName() + ".1"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
@@ -154,7 +154,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   }
 
   public DoubleSupplier getTurretInitAngle() {
-    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -52.837 : 52.837)
+    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -54.837 : 54.837)
         : ((FieldConstants.isRedAlliance()) ? 50.702 : -50.702);
   }
 

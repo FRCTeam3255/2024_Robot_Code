@@ -13,12 +13,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefShooter;
-import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.IntakeGroundGamePiece;
-import frc.robot.commands.LockPitch;
-import frc.robot.commands.LockTurret;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -51,19 +48,21 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
   Pose2d[] startingPositionsBlue = { S1B, S2B, S3B, S4B, S5B };
 
   // RED
-  Pose2d S1R = new Pose2d(FIELD_LENGTH - 0.602, 6.747, Rotation2d.fromRadians(-1.0496856238629728));
+  Pose2d S1R = new Pose2d(FIELD_LENGTH - 0.602, 6.747, Rotation2d.fromRadians(-2.68780728));
   Pose2d S2R = new Pose2d(FIELD_LENGTH - 1.360, 5.563, Rotation2d.fromRadians(0));
-  Pose2d S3R = new Pose2d(FIELD_LENGTH - 0.602, 4.348, Rotation2d.fromRadians(1.0496856238629728));
+  Pose2d S3R = new Pose2d(FIELD_LENGTH - 0.602, 4.348, Rotation2d.fromRadians(2.68780728));
   Pose2d S4R = new Pose2d(FIELD_LENGTH - 1.438, 3.359, Rotation2d.fromRadians(0));
   Pose2d S5R = new Pose2d(FIELD_LENGTH - 1.438, 2.059, Rotation2d.fromRadians(0));
   Pose2d[] startingPositionsRed = { S1R, S2R, S3R, S4R, S5R };
+
+  boolean shoots = true;
 
   /*
    * @param startingPosition Your desired starting position. 0 -> 4. Please refer
    * to Choreo for this
    */
   public PreloadOnly(Drivetrain subDrivetrain, Intake subIntake, LEDs subLEDs, Pitch subPitch, Shooter subShooter,
-      Transfer subTransfer, Turret subTurret, Climber subClimber, int startingPosition) {
+      Transfer subTransfer, Turret subTurret, Climber subClimber, int startingPosition, boolean shoots) {
     this.subDrivetrain = subDrivetrain;
     this.subIntake = subIntake;
     this.subLEDs = subLEDs;
@@ -73,36 +72,44 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     this.subTurret = subTurret;
     this.subClimber = subClimber;
     this.startingPosition = startingPosition;
+    this.shoots = shoots;
 
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+
         Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
+            getInitialPose().get().getRotation().getDegrees())).unless(() -> FieldConstants.isRedAlliance()),
 
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue())),
-        Commands.runOnce(() -> subShooter.getUpToSpeed()),
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        Commands.runOnce(() -> subTurret.setTurretGoalAngle(-3255)),
-        Commands.runOnce(() -> subPitch.setPitchGoalAngle(-3255)),
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            getInitialPose().get().getRotation().getDegrees() - 180)).unless(() -> !FieldConstants.isRedAlliance()),
 
-        // throw out that intake
-        // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+        Commands.sequence(
+            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+                prefShooter.rightShooterSpeakerVelocity.getValue())),
+            Commands.runOnce(() -> subShooter.getUpToSpeed()),
+            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+            Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
-        // PRELOAD
-        // Aim
-        Commands.parallel(
-            new LockTurret(subTurret, subDrivetrain).repeatedly().until(() -> subTurret.isTurretLocked()),
-            new LockPitch(subPitch, subDrivetrain).repeatedly().until(() -> subPitch.isPitchLocked())),
-        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+            // throw out that intake
+            // Intake until we have the game piece
+            new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
-        // Shoot
-        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()),
-        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))
+            // PRELOAD
+            // Aim
+            Commands.parallel(
+                Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle()))
+                    .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle())),
+                Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle()))
+                    .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle()))),
+
+            Commands.runOnce(() -> subShooter.getUpToSpeed()),
+
+            // Shoot
+            new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+                .until(() -> subTransfer.calcGPShotAuto()),
+            Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))).unless(() -> !shoots)
 
     );
   }
@@ -111,6 +118,42 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     return () -> (FieldConstants.isRedAlliance())
         ? startingPositionsRed[startingPosition]
         : startingPositionsBlue[startingPosition];
+  }
+
+  public double getTurretInitAngle() {
+    double isRed = (FieldConstants.isRedAlliance()) ? -1 : 1;
+    switch (startingPosition) {
+      case 0: // S1
+        return 0 * isRed;
+      case 1: // S2
+        return 0.0 * isRed;
+      case 2: // S3
+        return 0 * isRed;
+      case 3: // S4
+        return -61.712 * isRed;
+      case 4: // S5 (We don't run this one EVER)
+        return -3255 * isRed;
+      default:
+        return -3255 * isRed;
+
+    }
+  }
+
+  public double getPitchInitAngle() {
+    switch (startingPosition) {
+      case 0: // S1
+        return 55;
+      case 1: // S2
+        return 55;
+      case 2: // S3
+        return 55;
+      case 3: // S4
+        return 38.453;
+      case 4: // S5 (We don't run this one EVER)
+        return -3255;
+      default:
+        return -3255;
+    }
   }
 
   public Command getAutonomousCommand() {

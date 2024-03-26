@@ -4,6 +4,7 @@
 
 package frc.robot.commands.autos;
 
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -18,12 +19,9 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AimAuto;
 import frc.robot.commands.IntakeGroundGamePiece;
-import frc.robot.commands.LockPitch;
-import frc.robot.commands.LockTurret;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.TransferGamePiece;
-import frc.robot.commands.UnaliveShooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -62,216 +60,102 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
     this.subClimber = subClimber;
     this.goesDown = goesDown;
 
+    // AutoBuilder.buildAuto(determineInitPathName());
+    // AutoBuilder.buildAuto(determineScorePathName() + ".1");
+    // AutoBuilder.buildAuto(determineScorePathName() + ".2");
+    // AutoBuilder.buildAuto(determineScorePathName() + ".3");
+    // AutoBuilder.buildAuto(determineScorePathName() + ".4");
+
+    // AutoBuilder.buildAuto(determineHopPathName() + ".1");
+    // AutoBuilder.buildAuto(determineHopPathName() + ".2");
+
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
 
+        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
+            prefShooter.rightShooterSpeakerVelocity.getValue())),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
+
         // throw out that intake
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
-        // Shoot Preload
-        Commands.race(
-            new Shoot(subShooter, subLEDs).repeatedly(),
-            new LockTurret(subTurret, subDrivetrain).repeatedly(),
-            new LockPitch(subPitch, subDrivetrain).repeatedly(),
+        // PRELOAD
+        // Aim
+        Commands.parallel(
+            Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle().getAsDouble()))
+                .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle().getAsDouble())),
+            Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
+                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
 
-            // Shooting the game piece
-            Commands.sequence(
-                // Aim
-                Commands.parallel(
-                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                    Commands
-                        .runOnce(
-                            () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                prefShooter.rightShooterSpeakerVelocity.getValue())),
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
-                // Shoot
-                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-                    .until(() -> !subTransfer.hasGamePiece),
-                Commands.parallel(
-                    Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                    Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+
+        // Shoot
+        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+            .until(() -> subTransfer.calcGPShotAuto()),
+        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
         // Go get C5/1
-        new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineInitPathName() + ".1")),
+        new PathPlannerAuto(determineInitPathName()),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
+            .withTimeout(0.25),
+        Commands.waitSeconds(1),
 
         // We are now at C5 or C1
         Commands.either(
             Commands.sequence(
-                // Shoot C5 or C1
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".1")),
-                Commands.race(
-                    new Shoot(subShooter, subLEDs).repeatedly(),
-                    new LockTurret(subTurret, subDrivetrain).repeatedly(),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly(),
-
-                    // Shooting the game piece
-                    Commands.sequence(
-                        // Aim
-                        Commands.parallel(
-                            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                            Commands
-                                .runOnce(
-                                    () -> subShooter.setDesiredVelocities(
-                                        prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                        prefShooter.rightShooterSpeakerVelocity.getValue())),
-                            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
-
-                        // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-                            .until(() -> !subTransfer.hasGamePiece),
-                        Commands.parallel(
-                            Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                            Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
-                // Return to centerline (C4 or C2)
-                new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".2"))),
-
-            // Hop to C4 or C2
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineHopPathName() + ".1")),
-            () -> !subTransfer.hasGamePiece),
-
-        // Either way, we just tried to get C4 or C2
-        Commands.either(
-            Commands.sequence(
-                // Shoot C4 or C2
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".3")),
-                Commands.race(
-                    new Shoot(subShooter, subLEDs).repeatedly(),
-                    new LockTurret(subTurret, subDrivetrain).repeatedly(),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly(),
-
-                    // Shooting the game piece
-                    Commands.sequence(
-                        // Aim
-                        Commands.parallel(
-                            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                            Commands
-                                .runOnce(
-                                    () -> subShooter.setDesiredVelocities(
-                                        prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                        prefShooter.rightShooterSpeakerVelocity.getValue())),
-                            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
-
-                        // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-                            .until(() -> !subTransfer.hasGamePiece),
-                        Commands.parallel(
-                            Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                            Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
-
-                // Return to centerline (C3)
-                new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".4"))),
-
-            // Hop to C3
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineHopPathName() + ".2")),
-            () -> !subTransfer.hasGamePiece),
-
-        // Either way, we just tried to get C3
-        Commands.either(
-            Commands.sequence(
-                // Shoot C3
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".5")),
-                Commands.race(
-                    new Shoot(subShooter, subLEDs).repeatedly(),
-                    new LockTurret(subTurret, subDrivetrain).repeatedly(),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly(),
-
-                    // Shooting the game piece
-                    Commands.sequence(
-                        // Aim
-                        Commands.parallel(
-                            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                            Commands
-                                .runOnce(
-                                    () -> subShooter.setDesiredVelocities(
-                                        prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                        prefShooter.rightShooterSpeakerVelocity.getValue())),
-                            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
-
-                        // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-                            .until(() -> !subTransfer.hasGamePiece),
-                        Commands.parallel(
-                            Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                            Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
-
-                // Return to centerline (C2 or C4)
-                new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".6"))),
-
-            // Hop to C2 or C4
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineHopPathName() + ".3")),
-            () -> !subTransfer.hasGamePiece),
-
-        // Either way, we just tried to get C2 or C4
-        Commands.either(
-            Commands.sequence(
-                // Shoot C2 or C4
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".7")),
-                Commands.race(
-                    new Shoot(subShooter, subLEDs).repeatedly(),
-                    new LockTurret(subTurret, subDrivetrain).repeatedly(),
-                    new LockPitch(subPitch, subDrivetrain).repeatedly(),
-
-                    // Shooting the game piece
-                    Commands.sequence(
-                        // Aim
-                        Commands.parallel(
-                            Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                            Commands
-                                .runOnce(
-                                    () -> subShooter.setDesiredVelocities(
-                                        prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                        prefShooter.rightShooterSpeakerVelocity.getValue())),
-                            Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
-
-                        // Shoot
-                        new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-                            .until(() -> !subTransfer.hasGamePiece),
-                        Commands.parallel(
-                            Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()),
-                            Commands.runOnce(() -> subTransfer.setTransferNeutralOutput())))),
-
-                // Return to centerline (C1 or C5)
-                new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
-                AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".8"))),
-
-            // Hop to C1 or C5
-            AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineHopPathName() + ".4")),
-            () -> !subTransfer.hasGamePiece),
-
-        // Either way, we just tried to get C1 or C5. Just shoot it
-        // Shoot C1 or C5
-        AutoBuilder.followPath(PathPlannerPath.fromChoreoTrajectory(determineScorePathName() + ".9")),
-        Commands.race(
-            new Shoot(subShooter, subLEDs).repeatedly(),
-            new LockTurret(subTurret, subDrivetrain).repeatedly(),
-            new LockPitch(subPitch, subDrivetrain).repeatedly(),
-
-            // Shooting the game piece
-            Commands.sequence(
+                // Drive to shoot
+                new PathPlannerAuto(determineScorePathName() + ".1"),
+                // SHOOT C5
                 // Aim
-                Commands.parallel(
-                    Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-                    Commands
-                        .runOnce(
-                            () -> subShooter.setDesiredVelocities(
-                                prefShooter.leftShooterSpeakerVelocity.getValue(),
-                                prefShooter.rightShooterSpeakerVelocity.getValue())),
-                    Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))),
+                new AimAuto(subPitch, subTurret, subDrivetrain),
+                Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
                 // Shoot
                 new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-                    .until(() -> !subTransfer.hasGamePiece),
-                Commands.parallel(
-                    Commands.runOnce(() -> subTransfer.setFeederNeutralOutput()))))
+                    .until(() -> subTransfer.calcGPShotAuto()),
+                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+
+                // Return to centerline (C4 or C2)
+                new PathPlannerAuto(determineScorePathName() + ".2")),
+
+            // Hop to C4 or C2
+            new PathPlannerAuto(determineHopPathName() + ".1"),
+            () -> subTransfer.hasGamePiece),
+
+        // Either way, we just tried to get C4 or C2
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
+            .withTimeout(0.25),
+        Commands.waitSeconds(1),
+
+        Commands.either(
+            Commands.sequence(
+                // Drive to shoot
+                new PathPlannerAuto(determineScorePathName() + ".3"),
+                // SHOOT C4/2
+                // Aim
+                new AimAuto(subPitch, subTurret, subDrivetrain),
+                Commands.runOnce(() -> subShooter.getUpToSpeed()),
+
+                // Shoot
+                new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
+                    .until(() -> subTransfer.calcGPShotAuto()),
+                Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+
+                // Return to centerline (C3)
+                new PathPlannerAuto(determineScorePathName() + ".4")),
+
+            // Hop to C3
+            new PathPlannerAuto(determineHopPathName() + ".2"),
+            () -> subTransfer.hasGamePiece)
 
     );
   }
@@ -279,7 +163,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   public Supplier<Pose2d> getInitialPose() {
     return () -> (!FieldConstants.isRedAlliance())
         ? PathPlannerAuto.getStaringPoseFromAutoFile(determineInitPathName())
-        : PathPlannerPath.fromChoreoTrajectory(determineInitPathName()).flipPath().getPreviewStartingHolonomicPose();
+        : PathPlannerPath.fromPathFile(determineInitPathName()).flipPath().getPreviewStartingHolonomicPose();
   }
 
   public String determineInitPathName() {
@@ -292,6 +176,18 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
   public String determineHopPathName() {
     return (goesDown) ? "D C1UntilC5" : "U C5UntilC1";
+  }
+
+  public DoubleSupplier getTurretInitAngle() {
+    // return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 :
+    // 30.613)
+    // : ((FieldConstants.isRedAlliance()) ? 0 : 0);
+    return () -> 0;
+  }
+
+  public DoubleSupplier getPitchInitAngle() {
+    // return () -> (goesDown) ? (46.349) : (55);
+    return () -> 55;
   }
 
   public Command getAutonomousCommand() {

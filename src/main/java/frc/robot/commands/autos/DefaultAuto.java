@@ -47,11 +47,19 @@ public class DefaultAuto extends SequentialCommandGroup implements AutoInterface
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
         Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())));
+            getInitialPose().get().getRotation().getDegrees())),
+
+        new PathPlannerAuto(determinePathName()));
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> PathPlannerPath.fromChoreoTrajectory("box").getPreviewStartingHolonomicPose();
+    return () -> (!FieldConstants.isRedAlliance())
+        ? PathPlannerAuto.getStaringPoseFromAutoFile(determinePathName())
+        : PathPlannerPath.fromPathFile(determinePathName()).flipPath().getPreviewStartingHolonomicPose();
+  }
+
+  public String determinePathName() {
+    return "YOINKER";
   }
 
   public Command getAutonomousCommand() {
