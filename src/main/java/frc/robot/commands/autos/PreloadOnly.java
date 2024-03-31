@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -85,11 +86,12 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             getInitialPose().get().getRotation().getDegrees() - 180)).unless(() -> !FieldConstants.isRedAlliance()),
 
         Commands.sequence(
-            Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-                prefShooter.rightShooterSpeakerVelocity.getValue())),
+            Commands.runOnce(
+                () -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(Units.Value),
+                    prefShooter.rightShooterSpeakerVelocity.getValue(Units.Value))),
             Commands.runOnce(() -> subShooter.getUpToSpeed()),
             Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-            Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+            Commands.runOnce(() -> subTransfer.setTransferSensorAngle(Units.Degrees.zero())),
             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
             // throw out that intake
@@ -99,10 +101,10 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             // PRELOAD
             // Aim
             Commands.parallel(
-                Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle()))
-                    .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle())),
-                Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle()))
-                    .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle()))),
+                Commands.run(() -> subTurret.setTurretAngle(Units.Degrees.of(getTurretInitAngle())))
+                    .until(() -> subTurret.isTurretAtAngle(Units.Degrees.of(getTurretInitAngle()))),
+                Commands.run(() -> subPitch.setPitchAngle(Units.Degrees.of(getPitchInitAngle())))
+                    .until(() -> subPitch.isPitchAtAngle(Units.Degrees.of(getPitchInitAngle())))),
 
             Commands.runOnce(() -> subShooter.getUpToSpeed()),
 

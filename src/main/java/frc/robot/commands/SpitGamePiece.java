@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
@@ -19,7 +21,7 @@ public class SpitGamePiece extends Command {
   Transfer globalTransfer;
   Pitch subPitch;
 
-  double lastDesiredPitch;
+  Measure<Angle> lastDesiredPitch;
 
   public SpitGamePiece(Intake subIntake, Transfer subTransfer, Pitch subPitch) {
     globalIntake = subIntake;
@@ -38,12 +40,12 @@ public class SpitGamePiece extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    globalIntake.setIntakeRollerSpeed(prefIntake.rollerSpitSpeed.getValue());
+    globalIntake.setIntakeRollerSpeed(prefIntake.rollerSpitSpeed.getValue(Units.Value));
 
-    globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue());
-    globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue());
+    globalTransfer.setTransferMotorSpeed(prefTransfer.transferSpitOutSpeed.getValue(Units.Value));
+    globalTransfer.setFeederMotorSpeed(prefTransfer.feederSpitOutSpeed.getValue(Units.Value));
 
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+    subPitch.setPitchAngle(prefPitch.pitchReverseLimit.getMeasure());
 
   }
 

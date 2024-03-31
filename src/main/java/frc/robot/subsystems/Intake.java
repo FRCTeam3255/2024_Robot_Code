@@ -15,7 +15,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.frcteam3255.utils.SN_Math;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,7 +36,7 @@ public class Intake extends SubsystemBase implements Logged {
   TalonFXConfiguration rollerConfig, pivotConfig;
 
   @Log.NT
-  double desiredPivotAngle;
+  Measure<Angle> desiredPivotAngle;
   double absoluteEncoderOffset;
   boolean invertAbsEncoder;
 
@@ -54,7 +56,7 @@ public class Intake extends SubsystemBase implements Logged {
     motionMagicRequest = new MotionMagicVoltage(0);
     voltageRequest = new VoltageOut(0);
 
-    desiredPivotAngle = prefIntake.pivotMinPos.getValue();
+    desiredPivotAngle = prefIntake.pivotMinPos.getMeasure();
 
     configure();
   }
@@ -63,40 +65,38 @@ public class Intake extends SubsystemBase implements Logged {
     // - Roller -
     rollerConfig = new TalonFXConfiguration();
     rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = prefIntake.rollerEnableCurrentLimiting.getValue();
-    rollerConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.rollerCurrentThreshold.getValue();
-    rollerConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.rollerCurrentLimit.getValue();
-    rollerConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.rollerCurrentTimeThreshold.getValue();
+    rollerConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.rollerCurrentThreshold.getValue(Units.Value);
+    rollerConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.rollerCurrentLimit.getValue(Units.Value);
+    rollerConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.rollerCurrentTimeThreshold.getValue(Units.Value);
     rollerConfig.MotorOutput.Inverted = constIntake.ROLLER_INVERT;
 
     // - Pivot -
     pivotConfig = new TalonFXConfiguration();
     pivotConfig.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
     pivotConfig.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
-    pivotConfig.Slot0.kS = prefIntake.pivotS.getValue();
-    pivotConfig.Slot0.kG = prefIntake.pivotG.getValue();
-    pivotConfig.Slot0.kA = prefIntake.pivotA.getValue();
-    pivotConfig.Slot0.kP = prefIntake.pivotP.getValue();
-    pivotConfig.Slot0.kI = prefIntake.pivotI.getValue();
-    pivotConfig.Slot0.kD = prefIntake.pivotD.getValue();
+    pivotConfig.Slot0.kS = prefIntake.pivotS.getValue(Units.Value);
+    pivotConfig.Slot0.kG = prefIntake.pivotG.getValue(Units.Value);
+    pivotConfig.Slot0.kA = prefIntake.pivotA.getValue(Units.Value);
+    pivotConfig.Slot0.kP = prefIntake.pivotP.getValue(Units.Value);
+    pivotConfig.Slot0.kI = prefIntake.pivotI.getValue(Units.Value);
+    pivotConfig.Slot0.kD = prefIntake.pivotD.getValue(Units.Value);
 
     // Motion Magic
-    pivotConfig.MotionMagic.MotionMagicCruiseVelocity = prefIntake.pivotCruiseVelocity.getValue();
-    pivotConfig.MotionMagic.MotionMagicAcceleration = prefIntake.pivotAcceleration.getValue();
-    pivotConfig.MotionMagic.MotionMagicJerk = prefIntake.pivotJerk.getValue();
+    pivotConfig.MotionMagic.MotionMagicCruiseVelocity = prefIntake.pivotCruiseVelocity.getValue(Units.Value);
+    pivotConfig.MotionMagic.MotionMagicAcceleration = prefIntake.pivotAcceleration.getValue(Units.Value);
+    pivotConfig.MotionMagic.MotionMagicJerk = prefIntake.pivotJerk.getValue(Units.Value);
 
     // Soft Limits
     pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
-        .degreesToRotations(prefIntake.pivotMaxPos.getValue());
+    pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefIntake.pivotMaxPos.getValue(Units.Rotations);
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units
-        .degreesToRotations(prefIntake.pivotMinPos.getValue());
+    pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefIntake.pivotMinPos.getValue(Units.Rotations);
 
     // Current Limiting
     pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = prefIntake.pivotEnableCurrentLimiting.getValue();
-    pivotConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.pivotCurrentThreshold.getValue();
-    pivotConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.pivotCurrentLimit.getValue();
-    pivotConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.pivotCurrentTimeThreshold.getValue();
+    pivotConfig.CurrentLimits.SupplyCurrentThreshold = prefIntake.pivotCurrentThreshold.getValue(Units.Value);
+    pivotConfig.CurrentLimits.SupplyCurrentLimit = prefIntake.pivotCurrentLimit.getValue(Units.Value);
+    pivotConfig.CurrentLimits.SupplyTimeThreshold = prefIntake.pivotCurrentTimeThreshold.getValue(Units.Value);
 
     pivotConfig.Feedback.SensorToMechanismRatio = constIntake.GEAR_RATIO;
     pivotConfig.MotorOutput.NeutralMode = constIntake.PIVOT_NEUTRAL_MODE;
@@ -144,8 +144,8 @@ public class Intake extends SubsystemBase implements Logged {
   /**
    * @return The current angle of the pivot. <b> Units: </b> Degrees
    */
-  public double getPivotAngle() {
-    return Units.rotationsToDegrees(pivotMotor.getPosition().getValueAsDouble());
+  public Measure<Angle> getPivotAngle() {
+    return Units.Rotations.of(pivotMotor.getPosition().getValueAsDouble());
   }
 
   /**
@@ -153,8 +153,8 @@ public class Intake extends SubsystemBase implements Logged {
    *         rotations.
    *         <b> Units: </b> Degrees
    */
-  public double getRollerAngle() {
-    return Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
+  public Measure<Angle> getRollerAngle() {
+    return Units.Rotations.of(rollerMotor.getPosition().getValueAsDouble());
   }
 
   /**
@@ -175,19 +175,15 @@ public class Intake extends SubsystemBase implements Logged {
    *         second
    */
   public double getPivotVelocity() {
-    return Units.rotationsToDegrees(pivotMotor.getVelocity().getValueAsDouble());
+    return Units.Rotations.of(pivotMotor.getVelocity().getValueAsDouble()).in(Units.Degrees);
   }
 
   /**
    * @param angle The angle to check if we are at <b>Units:</b> Degrees
    * @return If we are within our tolerance to that angle
    */
-  public boolean isPivotAtAngle(double angle) {
-    if (Math.abs(getPivotAngle() - angle) <= prefIntake.pivotIsAtAngleTolerance.getValue()) {
-      return true;
-    } else {
-      return false;
-    }
+  public boolean isPivotAtAngle(Measure<Angle> angle) {
+    return SN_Math.measureInTolerance(getPivotAngle(), angle, prefIntake.pivotIsAtAngleTolerance.getMeasure());
   }
 
   /**
@@ -197,12 +193,12 @@ public class Intake extends SubsystemBase implements Logged {
    * @return If we have a game piece.
    */
   public boolean calcGamePieceReadyToAmp() {
-    double currentPosition = Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
+    double currentPosition = Units.Rotations.of(rollerMotor.getPosition().getValueAsDouble()).in(Units.Degrees);
 
-    return currentPosition <= -prefIntake.rollerRotationsToAmp.getValue();
+    return currentPosition <= -prefIntake.rollerRotationsToAmp.getValue(Units.Value);
   }
 
-  public double getDesiredPivotAngle() {
+  public Measure<Angle> getDesiredPivotAngle() {
     return desiredPivotAngle;
   }
 
@@ -221,9 +217,9 @@ public class Intake extends SubsystemBase implements Logged {
    * 
    * @param angle The angle to set the pivot to. <b> Units: </b> Degrees
    */
-  public void setPivotAngle(double angle) {
+  public void setPivotAngle(Measure<Angle> angle) {
     desiredPivotAngle = angle;
-    pivotMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
+    pivotMotor.setControl(motionMagicRequest.withPosition(angle.in(Units.Rotations)));
   }
 
   /**
@@ -255,8 +251,8 @@ public class Intake extends SubsystemBase implements Logged {
    * 
    * @param angle The angle to set the roller motor to. <b> Units: </b> Degrees
    */
-  public void setRollerSensorAngle(double angle) {
-    rollerMotor.setPosition(Units.degreesToRotations(angle));
+  public void setRollerSensorAngle(Measure<Angle> angle) {
+    rollerMotor.setPosition(angle.in(Units.Rotations));
   }
 
   /**
@@ -264,17 +260,17 @@ public class Intake extends SubsystemBase implements Logged {
    * 
    * @param angle The angle to set the pivot motor to. <b> Units: </b> Degrees
    */
-  public void setPivotSensorAngle(double angle) {
-    pivotMotor.setPosition(Units.degreesToRotations(angle));
+  public void setPivotSensorAngle(Measure<Angle> angle) {
+    pivotMotor.setPosition(angle.in(Units.Rotations));
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Intake/Absolute Encoder Raw Value (Rotations)", getRawAbsoluteEncoder());
     SmartDashboard.putNumber("Intake/Offset Absolute Encoder Value (Rotations)", getAbsoluteEncoder());
-    SmartDashboard.putNumber("Intake/Angle (Degrees)", getPivotAngle());
+    SmartDashboard.putNumber("Intake/Angle (Degrees)", getPivotAngle().in(Units.Degrees));
 
-    SmartDashboard.putNumber("Intake/Roller Angle (Degrees)", getRollerAngle());
+    SmartDashboard.putNumber("Intake/Roller Angle (Degrees)", getRollerAngle().in(Units.Degrees));
     SmartDashboard.putBoolean("Intake/Calc GP ready amp", calcGamePieceReadyToAmp());
 
   }

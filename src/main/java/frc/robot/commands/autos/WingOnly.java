@@ -12,6 +12,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -67,11 +68,12 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
 
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue())),
+        Commands
+            .runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(Units.Value),
+                prefShooter.rightShooterSpeakerVelocity.getValue(Units.Value))),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(Units.Degrees.zero())),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
         // throw out that intake
@@ -81,10 +83,10 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         // PRELOAD
         // Aim
         Commands.parallel(
-            Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle().getAsDouble()))
-                .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle().getAsDouble())),
-            Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
-                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
+            Commands.run(() -> subTurret.setTurretAngle(Units.Degrees.of(getTurretInitAngle().getAsDouble())))
+                .until(() -> subTurret.isTurretAtAngle(Units.Degrees.of(getTurretInitAngle().getAsDouble()))),
+            Commands.run(() -> subPitch.setPitchAngle(Units.Degrees.of(getPitchInitAngle().getAsDouble())))
+                .until(() -> subPitch.isPitchAtAngle(Units.Degrees.of(getPitchInitAngle().getAsDouble())))),
 
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
@@ -98,7 +100,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
 
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(Units.Degrees.zero())),
 
         // SHOOT W3
         // Aim
@@ -115,7 +117,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
 
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(Units.Degrees.zero())),
 
         // SHOOT W2
         // Aim
@@ -132,7 +134,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
 
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(Units.Degrees.zero())),
 
         // SHOOT W1
         // Aim

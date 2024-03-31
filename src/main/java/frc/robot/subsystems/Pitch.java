@@ -17,10 +17,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LockedLocation;
@@ -34,8 +37,8 @@ import monologue.Annotations.Log;
 public class Pitch extends SubsystemBase implements Logged {
   TalonFX pitchMotor;
   TalonFXConfiguration pitchConfig;
-  double desiredPitchAngle;
-  Rotation2d desiredLockingAngle = new Rotation2d();
+  Measure<Angle> desiredPitchAngle = Units.Degrees.of(0);
+  Measure<Angle> desiredLockingAngle = Units.Degrees.of(0);
   PositionVoltage positionRequest;
   MotionMagicVoltage motionMagicRequest;
 
@@ -65,27 +68,27 @@ public class Pitch extends SubsystemBase implements Logged {
   }
 
   public void configure() {
-    pitchConfig.Slot0.kS = prefPitch.pitchS.getValue();
-    pitchConfig.Slot0.kG = prefPitch.pitchG.getValue();
-    pitchConfig.Slot0.kA = prefPitch.pitchA.getValue();
-    pitchConfig.Slot0.kP = prefPitch.pitchP.getValue();
-    pitchConfig.Slot0.kI = prefPitch.pitchI.getValue();
-    pitchConfig.Slot0.kD = prefPitch.pitchD.getValue();
+    pitchConfig.Slot0.kS = prefPitch.pitchS.getValue(Units.Value);
+    pitchConfig.Slot0.kG = prefPitch.pitchG.getValue(Units.Value);
+    pitchConfig.Slot0.kA = prefPitch.pitchA.getValue(Units.Value);
+    pitchConfig.Slot0.kP = prefPitch.pitchP.getValue(Units.Value);
+    pitchConfig.Slot0.kI = prefPitch.pitchI.getValue(Units.Value);
+    pitchConfig.Slot0.kD = prefPitch.pitchD.getValue(Units.Value);
 
     pitchConfig.MotionMagic.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
     pitchConfig.MotionMagic.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
     pitchConfig.MotionMagic.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
     pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefPitch.pitchForwardLimit.getValue();
+    pitchConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefPitch.pitchForwardLimit.getValue(Units.Rotations);
 
     pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue();
+    pitchConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefPitch.pitchReverseLimit.getValue(Units.Rotations);
 
     pitchConfig.CurrentLimits.SupplyCurrentLimitEnable = prefPitch.pitchEnableCurrentLimiting.getValue();
-    pitchConfig.CurrentLimits.SupplyCurrentThreshold = prefPitch.pitchCurrentThreshold.getValue();
-    pitchConfig.CurrentLimits.SupplyCurrentLimit = prefPitch.pitchCurrentLimit.getValue();
-    pitchConfig.CurrentLimits.SupplyTimeThreshold = prefPitch.pitchCurrentTimeThreshold.getValue();
+    pitchConfig.CurrentLimits.SupplyCurrentThreshold = prefPitch.pitchCurrentThreshold.getValue(Units.Value);
+    pitchConfig.CurrentLimits.SupplyCurrentLimit = prefPitch.pitchCurrentLimit.getValue(Units.Value);
+    pitchConfig.CurrentLimits.SupplyTimeThreshold = prefPitch.pitchCurrentTimeThreshold.getValue(Units.Value);
 
     pitchConfig.Feedback.SensorToMechanismRatio = GEAR_RATIO;
     pitchConfig.MotorOutput.NeutralMode = constPitch.PITCH_NEUTRAL_MODE_VALUE;
@@ -93,7 +96,7 @@ public class Pitch extends SubsystemBase implements Logged {
     pitchMotor.getConfigurator().apply(pitchConfig);
     pitchMotor.setInverted(INVERT_MOTOR);
 
-    setPitchSensorAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+    setPitchSensorAngle(prefPitch.pitchReverseLimit.getMeasure());
   }
 
   // -- Set --
@@ -112,18 +115,18 @@ public class Pitch extends SubsystemBase implements Logged {
    * @param angle The angle to set the pitch motor to. <b> Units: </b>
    *              Degrees
    */
-  public void setPitchAngle(double angle) {
+  public void setPitchAngle(Measure<Angle> angle) {
     // if (angle >= prefPitch.pitchMaxIntake.getValue()) {
     // angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ?
     // prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
     // }
     if (isAnglePossible(angle)) {
       desiredPitchAngle = angle;
-      pitchMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
+      pitchMotor.setControl(motionMagicRequest.withPosition(angle.in(Units.Rotations)));
     }
   }
 
-  public void setPitchGoalAngle(double angle) {
+  public void setPitchGoalAngle(Measure<Angle> angle) {
     desiredPitchAngle = angle;
   }
 
@@ -132,8 +135,8 @@ public class Pitch extends SubsystemBase implements Logged {
    * 
    * @param angle The angle to set the pitch motor to. <b> Units: </b> Degrees
    */
-  public void setPitchSensorAngle(double angle) {
-    pitchMotor.setPosition(Units.degreesToRotations(angle));
+  public void setPitchSensorAngle(Measure<Angle> angle) {
+    pitchMotor.setPosition(angle.in(Units.Rotations));
   }
 
   /**
@@ -166,8 +169,9 @@ public class Pitch extends SubsystemBase implements Logged {
     return isPitchAtAngle(desiredPitchAngle);
   }
 
-  public boolean isPitchAtAngle(double angle) {
-    if (Math.abs(getPitchAngle() - angle) <= prefPitch.pitchIsAtAngleTolerance.getValue()) {
+  public boolean isPitchAtAngle(Measure<Angle> angle) {
+    if (getPitchAngle().minus(angle).lte(prefPitch.pitchIsAtAngleTolerance.getMeasure())
+        || getPitchAngle().negate().minus(angle).lte(prefPitch.pitchIsAtAngleTolerance.getMeasure())) {
       return true;
     } else {
       return false;
@@ -175,7 +179,7 @@ public class Pitch extends SubsystemBase implements Logged {
   }
 
   public boolean isPitchLocked() {
-    return isPitchAtAngle(desiredLockingAngle.getDegrees());
+    return isPitchAtAngle(desiredLockingAngle);
   }
 
   /**
@@ -190,23 +194,23 @@ public class Pitch extends SubsystemBase implements Logged {
    *         second
    */
   public double getPitchVelocity() {
-    return Units.rotationsToDegrees(pitchMotor.getVelocity().getValueAsDouble());
+    return Units.Rotations.of(pitchMotor.getVelocity().getValueAsDouble()).in(Units.Degrees);
   }
 
   /**
    * @return The current angle of the pitch motor. <b> Units: </b> Degrees
    */
-  public double getPitchAngle() {
-    return Units.rotationsToDegrees(pitchMotor.getPosition().getValueAsDouble());
+  public Measure<Angle> getPitchAngle() {
+    return Units.Rotations.of(pitchMotor.getPosition().getValueAsDouble());
   }
 
   /**
    * @param angle The angle to check. <b> Units: </b> Degrees
    * @return If the given angle is possible for the pitch motor to reach
    */
-  public boolean isAnglePossible(double angle) {
-    return (angle <= Units.rotationsToDegrees(prefPitch.pitchForwardLimit.getValue())
-        && angle >= Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+  public boolean isAnglePossible(Measure<Angle> angle) {
+    return (angle.lte(prefPitch.pitchForwardLimit.getMeasure()))
+        && angle.gte(prefPitch.pitchReverseLimit.getMeasure());
   }
 
   /**
@@ -223,7 +227,7 @@ public class Pitch extends SubsystemBase implements Logged {
    * 
    * @return The desired angle required to reach the current locked location
    */
-  public Optional<Rotation2d> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
+  public Optional<Measure<Angle>> getDesiredAngleToLock(Pose2d robotPose, Pose3d[] fieldPoses,
       LockedLocation lockedLocation) {
 
     Pose3d targetPose;
@@ -232,7 +236,7 @@ public class Pitch extends SubsystemBase implements Logged {
         return Optional.empty();
 
       case AMP:
-        return Optional.of(Rotation2d.fromRotations(prefPitch.pitchReverseLimit.getValue()));
+        return Optional.of(prefPitch.pitchReverseLimit.getMeasure());
 
       case SPEAKER:
         targetPose = fieldPoses[0];
@@ -240,7 +244,7 @@ public class Pitch extends SubsystemBase implements Logged {
 
       case SHUFFLE:
         Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
-        desiredLockingAngle = Rotation2d.fromDegrees(constPitch.SHUFFLE_MAP.get(pitchPose.getY()));
+        desiredLockingAngle = Units.Degrees.of(constPitch.SHUFFLE_MAP.get(pitchPose.getY()));
 
         return Optional.of(desiredLockingAngle);
     }
@@ -254,14 +258,14 @@ public class Pitch extends SubsystemBase implements Logged {
     double distX = Math.abs(targetPose.getX() - pitchPose.getX());
     double distY = Math.abs(targetPose.getY() - pitchPose.getY());
     distanceFromSpeaker = Math.hypot(distX, distY);
-    desiredLockingAngle = Rotation2d.fromDegrees(constPitch.DISTANCE_MAP.get(distanceFromSpeaker));
+    desiredLockingAngle = Units.Degrees.of(constPitch.DISTANCE_MAP.get(distanceFromSpeaker));
 
     return Optional.of(desiredLockingAngle);
   }
 
   public Pose3d getDesiredAngleAsPose3d(double turretRotation) {
     return new Pose3d(new Translation3d(-0.1, 0, 0.36),
-        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), turretRotation));
+        new Rotation3d(0, desiredPitchAngle.negate().in(Units.Radians), turretRotation));
   }
 
   @Override
@@ -269,9 +273,9 @@ public class Pitch extends SubsystemBase implements Logged {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Pitch/Velocity DPS", getPitchVelocity());
     SmartDashboard.putNumber("Pitch/Voltage", getPitchVoltage());
-    SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
-    SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
-    SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredLockingAngle.getDegrees());
+    SmartDashboard.putNumber("Pitch/Angle", getPitchAngle().in(Units.Degrees));
+    SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle.in(Units.Degrees));
+    SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredLockingAngle.in(Units.Degrees));
     SmartDashboard.putBoolean("Pitch/Is Locked", isPitchLocked());
 
     SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());

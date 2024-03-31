@@ -5,6 +5,7 @@
 // Concept credit: FRC team 2910, Jack in the Bot
 package frc.robot.commands;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefTurret;
@@ -26,14 +27,14 @@ public class ZeroTurret extends Command {
   public void initialize() {
     subTurret.setTurretSoftwareLimits(true, false);
 
-    subTurret.setTurretVoltage(0);
+    subTurret.setTurretVoltage(Units.Volt.of(0));
     zeroingTimestamp = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subTurret.setTurretVoltage(prefTurret.turretZeroingVoltage.getValue());
+    subTurret.setTurretVoltage(prefTurret.turretZeroingVoltage.getMeasure());
   }
 
   // Called once the command ends or is interrupted.
@@ -42,11 +43,11 @@ public class ZeroTurret extends Command {
     subTurret.setTurretSoftwareLimits(true, true);
 
     // Stop all movement
-    subTurret.setTurretVoltage(0);
+    subTurret.setTurretVoltage(Units.Volt.of(0));
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subTurret.setTurretSensorAngle(prefTurret.turretSensorZeroedAngle.getValue());
+      subTurret.setTurretSensorAngle(prefTurret.turretSensorZeroedAngle.getMeasure());
     }
   }
 
@@ -54,7 +55,7 @@ public class ZeroTurret extends Command {
   @Override
   public boolean isFinished() {
     // If the current velocity is low enough to be considered as zeroed
-    if (Math.abs(subTurret.getTurretVelocity()) <= Math.abs(prefTurret.turretZeroedVelocity.getValue())) {
+    if (Math.abs(subTurret.getTurretVelocity()) <= Math.abs(prefTurret.turretZeroedVelocity.getValue(Units.Value))) {
       // And this is the first loop it has happened, begin the timer
       if (zeroingTimestamp == 0) {
         zeroingTimestamp = Timer.getFPGATimestamp();
@@ -63,7 +64,7 @@ public class ZeroTurret extends Command {
 
       // If this isn't the first loop, return if it has been below the threshold for
       // long enough
-      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefTurret.turretZeroedTime.getValue();
+      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefTurret.turretZeroedTime.getValue(Units.Value);
     }
 
     // If the above wasn't true, we have gained too much velocity, so we aren't at 0

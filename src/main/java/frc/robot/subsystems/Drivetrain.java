@@ -20,7 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.FieldConstants;
 import frc.robot.Robot;
@@ -78,26 +78,26 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         constDrivetrain.TRACK_WIDTH,
         mapDrivetrain.CAN_BUS_NAME,
         mapDrivetrain.PIGEON_CAN,
-        prefDrivetrain.minimumSteerSpeedPercent.getValue(),
+        prefDrivetrain.minimumSteerSpeedPercent.getValue(Units.Value),
         constDrivetrain.DRIVE_MOTOR_INVERT,
         constDrivetrain.STEER_MOTOR_INVERT,
         constDrivetrain.CANCODER_INVERT,
         constDrivetrain.DRIVE_NEUTRAL_MODE,
         constDrivetrain.STEER_NEUTRAL_MODE,
         VecBuilder.fill(
-            Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
-            Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
-            Units.degreesToRadians(prefDrivetrain.measurementStdDevsHeading.getValue())),
+            prefDrivetrain.measurementStdDevsPosition.getValue(Units.Meters),
+            prefDrivetrain.measurementStdDevsPosition.getValue(Units.Meters),
+            prefDrivetrain.measurementStdDevsHeading.getValue(Units.Radians)),
         VecBuilder.fill(
-            Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
-            Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
-            Units.degreesToRadians(prefVision.multiTagStdDevsHeading.getValue())),
-        new PIDConstants(prefDrivetrain.autoDriveP.getValue(),
-            prefDrivetrain.autoDriveI.getValue(),
-            prefDrivetrain.autoDriveD.getValue()),
-        new PIDConstants(prefDrivetrain.autoSteerP.getValue(),
-            prefDrivetrain.autoSteerI.getValue(),
-            prefDrivetrain.autoSteerD.getValue()),
+            prefVision.multiTagStdDevsPosition.getValue(Units.Meters),
+            prefVision.multiTagStdDevsPosition.getValue(Units.Meters),
+            prefVision.multiTagStdDevsHeading.getValue(Units.Radians)),
+        new PIDConstants(prefDrivetrain.autoDriveP.getValue(Units.Value),
+            prefDrivetrain.autoDriveI.getValue(Units.Value),
+            prefDrivetrain.autoDriveD.getValue(Units.Value)),
+        new PIDConstants(prefDrivetrain.autoSteerP.getValue(Units.Value),
+            prefDrivetrain.autoSteerI.getValue(Units.Value),
+            prefDrivetrain.autoSteerD.getValue(Units.Value)),
         new ReplanningConfig(false, true),
         () -> FieldConstants.isRedAlliance(),
         Robot.isSimulation());
@@ -105,29 +105,35 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
 
   @Override
   public void configure() {
-    driveConfiguration.Slot0.kV = prefDrivetrain.driveKv.getValue();
-    driveConfiguration.Slot0.kP = prefDrivetrain.driveP.getValue();
-    driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue();
-    driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue();
+    driveConfiguration.Slot0.kV = prefDrivetrain.driveKv.getValue(Units.Value);
+    driveConfiguration.Slot0.kP = prefDrivetrain.driveP.getValue(Units.Value);
+    driveConfiguration.Slot0.kI = prefDrivetrain.driveI.getValue(Units.Value);
+    driveConfiguration.Slot0.kD = prefDrivetrain.driveD.getValue(Units.Value);
 
-    driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.driveEnableCurrentLimiting.getValue();
-    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.driveCurrentThreshold.getValue();
-    driveConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.driveCurrentThreshold.getValue();
-    driveConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.driveCurrentTimeThreshold.getValue();
+    driveConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.driveEnableCurrentLimiting
+        .getValue();
+    driveConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.driveCurrentThreshold
+        .getValue(Units.Value);
+    driveConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.driveCurrentThreshold.getValue(Units.Value);
+    driveConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.driveCurrentTimeThreshold
+        .getValue(Units.Value);
 
     driveConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
     driveConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
     driveConfiguration.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.1;
 
-    steerConfiguration.Slot0.kS = prefDrivetrain.steerKs.getValue();
-    steerConfiguration.Slot0.kP = prefDrivetrain.steerP.getValue();
-    steerConfiguration.Slot0.kI = prefDrivetrain.steerI.getValue();
-    steerConfiguration.Slot0.kD = prefDrivetrain.steerD.getValue();
+    steerConfiguration.Slot0.kS = prefDrivetrain.steerKs.getValue(Units.Value);
+    steerConfiguration.Slot0.kP = prefDrivetrain.steerP.getValue(Units.Value);
+    steerConfiguration.Slot0.kI = prefDrivetrain.steerI.getValue(Units.Value);
+    steerConfiguration.Slot0.kD = prefDrivetrain.steerD.getValue(Units.Value);
 
-    steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.steerEnableCurrentLimiting.getValue();
-    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.steerCurrentThreshold.getValue();
-    steerConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.steerCurrentLimit.getValue();
-    steerConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.steerCurrentTimeThreshold.getValue();
+    steerConfiguration.CurrentLimits.SupplyCurrentLimitEnable = prefDrivetrain.steerEnableCurrentLimiting
+        .getValue();
+    steerConfiguration.CurrentLimits.SupplyCurrentThreshold = prefDrivetrain.steerCurrentThreshold
+        .getValue(Units.Value);
+    steerConfiguration.CurrentLimits.SupplyCurrentLimit = prefDrivetrain.steerCurrentLimit.getValue(Units.Value);
+    steerConfiguration.CurrentLimits.SupplyTimeThreshold = prefDrivetrain.steerCurrentTimeThreshold
+        .getValue(Units.Value);
 
     steerConfiguration.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.1;
     steerConfiguration.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.1;
@@ -137,9 +143,9 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     SN_SwerveModule.steerConfiguration = steerConfiguration;
 
     yawSnappingController = new PIDController(
-        prefDrivetrain.yawSnapP.getValue(),
-        prefDrivetrain.yawSnapI.getValue(),
-        prefDrivetrain.yawSnapD.getValue());
+        prefDrivetrain.yawSnapP.getValue(Units.Value),
+        prefDrivetrain.yawSnapI.getValue(Units.Value),
+        prefDrivetrain.yawSnapD.getValue(Units.Value));
     super.configure();
   }
 
@@ -205,8 +211,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         (desiredYaw.getDegrees() < 0) ? (2 * Math.PI) + desiredYaw.getRadians() : desiredYaw.getRadians());
 
     // limit the PID output to our maximum rotational speed
-    yawSetpoint = MathUtil.clamp(yawSetpoint, -Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()),
-        Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue()));
+    yawSetpoint = MathUtil.clamp(yawSetpoint, -prefDrivetrain.turnSpeed.getValue(Units.RadiansPerSecond),
+        prefDrivetrain.turnSpeed.getValue(Units.RadiansPerSecond));
 
     return yawSetpoint;
   }
@@ -241,15 +247,19 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     updateMonologueValues();
 
     for (SN_SwerveModule mod : modules) {
-      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Speed (FPS)",
-          Units.metersToFeet(Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
-      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Speed (FPS)",
-          Units.metersToFeet(Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+      // SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired
+      // Speed (FPS)",
+      // Units.metersToFeet(Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
+      // SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual
+      // Speed (FPS)",
+      // Units.metersToFeet(Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond)));
 
-      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Angle (Degrees)",
-          Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees())));
-      SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Angle (Degrees)",
-          Math.abs(Units.metersToFeet(getActualModuleStates()[mod.moduleNumber].angle.getDegrees())));
+      // SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired
+      // Angle (Degrees)",
+      // Math.abs(Units.metersToFeet(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees())));
+      // SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual
+      // Angle (Degrees)",
+      // Math.abs(Units.metersToFeet(getActualModuleStates()[mod.moduleNumber].angle.getDegrees())));
 
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Offset Absolute Encoder Angle (Rotations)",
           mod.getAbsoluteEncoder());

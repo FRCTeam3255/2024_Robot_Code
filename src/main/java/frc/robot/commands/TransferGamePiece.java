@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -41,7 +42,7 @@ public class TransferGamePiece extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subTransfer.setTransferSensorAngle(0);
+    subTransfer.setTransferSensorAngle(Units.Degrees.zero());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,28 +54,28 @@ public class TransferGamePiece extends Command {
           && subTurret.isTurretAtGoalAngle()) {
 
         subTransfer.setGamePieceCollected(false);
-        subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue());
-        subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue());
+        subTransfer.setFeederMotorSpeed(prefTransfer.feederShootSpeed.getValue(Units.Value));
+        subTransfer.setTransferMotorSpeed(prefTransfer.transferShootSpeed.getValue(Units.Value));
         return;
       }
     } else {
       // TRAP
       if (subClimber.getPosition() > 0.6) {
-        subIntake.setPivotAngle(prefIntake.pivotPlaceTrapAngle.getValue());
-        if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceTrapAngle.getValue())) {
+        subIntake.setPivotAngle(prefIntake.pivotPlaceTrapAngle.getMeasure());
+        if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceTrapAngle.getMeasure())) {
           subTransfer.setGamePieceCollected(false);
-          subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceTrapSpeed.getValue());
+          subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceTrapSpeed.getValue(Units.Value));
         }
       } else {
-        subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getValue());
+        subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getMeasure());
 
-        if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceAmpAngle.getValue())) {
+        if (subIntake.isPivotAtAngle(prefIntake.pivotPlaceAmpAngle.getMeasure())) {
           subTransfer.setGamePieceCollected(false);
-          subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue());
+          subIntake.setIntakeRollerSpeed(prefIntake.rollerPlaceAmpSpeed.getValue(Units.Value));
         }
       }
     }
-    subTransfer.setTransferSensorAngle(0);
+    subTransfer.setTransferSensorAngle(Units.Degree.zero());
     subTransfer.setFeederMotorSpeed(0);
     subTransfer.setTransferMotorSpeed(0);
     return;

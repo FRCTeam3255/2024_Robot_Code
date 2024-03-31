@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
@@ -37,8 +37,8 @@ public class UnaliveShooter extends InstantCommand {
   public void initialize() {
     RobotContainer.setLockedLocation(LockedLocation.NONE);
     subShooter.setDesiredVelocities(0, 0);
-    subTurret.setTurretAngle(0);
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+    subTurret.setTurretAngle(Units.Degree.zero());
+    subPitch.setPitchAngle(prefPitch.pitchReverseLimit.getMeasure());
     subLEDs.clearAnimation();
     subShooter.setIgnoreFlywheelSpeed(false);
   }

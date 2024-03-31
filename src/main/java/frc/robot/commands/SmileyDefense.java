@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
@@ -47,12 +47,13 @@ public class SmileyDefense extends InstantCommand {
   public void initialize() {
     RobotContainer.setLockedLocation(LockedLocation.NONE);
     subShooter.setDesiredVelocities(0, 0);
-    subTurret.setTurretAngle(0);
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+    subTurret.setTurretAngle(Units.Degrees.zero());
+    subPitch.setPitchAngle(prefPitch.pitchReverseLimit.getMeasure());
     subLEDs.setLEDsToAnimation(constLEDs.PANIC_ANIMATION);
     subShooter.setIgnoreFlywheelSpeed(false);
 
     subClimber.setPosition(1.9);
-    subIntake.setPivotAngle(prefIntake.pivotMaxPos.getValue() - 1);
+    subIntake
+        .setPivotAngle(prefIntake.pivotMaxPos.getMeasure());// -1);
   }
 }

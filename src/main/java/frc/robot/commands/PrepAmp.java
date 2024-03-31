@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
@@ -26,7 +28,7 @@ public class PrepAmp extends Command {
   Shooter subShooter;
   Climber subClimber;
 
-  double lastTurretAngle, lastHoodAngle, lastIntakeAngle, initRollerAngle;
+  Measure<Angle> lastTurretAngle, lastHoodAngle, lastIntakeAngle, initRollerAngle;
 
   public PrepAmp(Intake subIntake, Pitch subPitch, Transfer subTransfer, Turret subTurret, Shooter subShooter,
       Climber subClimber) {
@@ -46,24 +48,25 @@ public class PrepAmp extends Command {
     lastHoodAngle = subPitch.getPitchAngle();
     lastIntakeAngle = subIntake.getPivotAngle();
 
-    subTurret.setTurretAngle(0);
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+    subTurret.setTurretAngle(Units.Degrees.zero());
+    subPitch.setPitchAngle(prefPitch.pitchReverseLimit.getMeasure());
 
     subShooter.setDesiredVelocities(0, 0);
     subShooter.getUpToSpeed();
     subShooter.setIgnoreFlywheelSpeed(false); // Here b/c we call it whenever we change presets
 
-    subIntake.setRollerSensorAngle(0);
-    subIntake.setPivotAngle(prefIntake.pivotTransferToAmpAngle.getValue());
+    subIntake.setRollerSensorAngle(Units.Degrees.zero());
+    subIntake.setPivotAngle(prefIntake.pivotTransferToAmpAngle.getMeasure());
   }
 
   @Override
   public void execute() {
     // Begin our timer when our pivot is at the transfer position
-    if (subIntake.isPivotAtAngle(prefIntake.pivotTransferToAmpAngle.getValue()) && subClimber.isAtPosition(0.2, 0.5)) {
-      subIntake.setIntakeRollerSpeed(prefIntake.rollerStageAmpNoteSpeed.getValue());
-      subTransfer.setFeederMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
+    if (subIntake.isPivotAtAngle(prefIntake.pivotTransferToAmpAngle.getMeasure())
+        && subClimber.isAtPosition(0.2, 0.5)) {
+      subIntake.setIntakeRollerSpeed(prefIntake.rollerStageAmpNoteSpeed.getValue(Units.Value));
+      subTransfer.setFeederMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue(Units.Value));
+      subTransfer.setTransferMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue(Units.Value));
     }
   }
 
@@ -75,13 +78,13 @@ public class PrepAmp extends Command {
 
     if (!interrupted) {
       RobotContainer.setLockedLocation(LockedLocation.AMP);
-      subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getValue());
+      subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getMeasure());
       subClimber.setPosition(0.4);
 
     } else {
       subTurret.setTurretAngle(lastHoodAngle);
       subPitch.setPitchAngle(lastHoodAngle);
-      subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue());
+      subIntake.setPivotAngle(prefIntake.pivotStowAngle.getMeasure());
     }
   }
 

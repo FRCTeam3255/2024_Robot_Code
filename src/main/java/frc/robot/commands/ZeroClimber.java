@@ -5,6 +5,7 @@
 // Concept credit: FRC team 2910, Jack in the Bot
 package frc.robot.commands;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefClimber;
@@ -33,7 +34,7 @@ public class ZeroClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subClimber.setVoltage(prefClimber.climberZeroingVoltage.getValue());
+    subClimber.setVoltage(prefClimber.climberZeroingVoltage.getValue(Units.Value));
   }
 
   // Called once the command ends or is interrupted.
@@ -46,7 +47,7 @@ public class ZeroClimber extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subClimber.setSensorAngle(prefClimber.climberSensorZeroedPos.getValue());
+      subClimber.setSensorAngle(prefClimber.climberSensorZeroedPos.getValue(Units.Value));
     }
   }
 
@@ -54,7 +55,7 @@ public class ZeroClimber extends Command {
   @Override
   public boolean isFinished() {
     // If the current velocity is low enough to be considered as zeroed
-    if (Math.abs(subClimber.getVelocity()) <= Math.abs(prefClimber.climberZeroedVelocity.getValue())) {
+    if (Math.abs(subClimber.getVelocity()) <= Math.abs(prefClimber.climberZeroedVelocity.getValue(Units.Value))) {
       // And this is the first loop it has happened, begin the timer
       if (zeroingTimestamp == 0) {
         zeroingTimestamp = Timer.getFPGATimestamp();
@@ -63,7 +64,7 @@ public class ZeroClimber extends Command {
 
       // If this isn't the first loop, return if it has been below the threshold for
       // long enough
-      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefClimber.climberZeroedTime.getValue();
+      return (Timer.getFPGATimestamp() - zeroingTimestamp) >= prefClimber.climberZeroedTime.getValue(Units.Value);
     }
 
     // If the above wasn't true, we have gained too much velocity, so we aren't at 0

@@ -10,7 +10,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,8 +33,8 @@ public class AimAuto extends Command {
 
   LockedLocation lockedLocation = LockedLocation.NONE;
 
-  double desiredPitchAngle;
-  Rotation2d desiredTurretAngle;
+  Measure<Angle> desiredPitchAngle;
+  Measure<Angle> desiredTurretAngle;
 
   Optional<Alliance> alliance = DriverStation.getAlliance();
 
@@ -56,7 +58,7 @@ public class AimAuto extends Command {
   @Override
   public void initialize() {
     desiredPitchAngle = subPitch.getPitchAngle();
-    desiredTurretAngle = Rotation2d.fromDegrees(subTurret.getAngle());
+    desiredTurretAngle = subTurret.getAngle();
 
     fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
   }
@@ -70,27 +72,27 @@ public class AimAuto extends Command {
     // AIM PITCH
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedPitchAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
+    Optional<Measure<Angle>> calculatedPitchAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
         RobotContainer.getLockedLocation());
 
     if (calculatedPitchAngle.isPresent()) {
-      desiredPitchAngle = MathUtil.clamp(
-          calculatedPitchAngle.get().getRotations(),
-          prefPitch.pitchReverseLimit.getValue(),
-          prefPitch.pitchForwardLimit.getValue());
+      desiredPitchAngle = Units.Rotations.of(MathUtil.clamp(
+          calculatedPitchAngle.get().in(Units.Rotations),
+          prefPitch.pitchReverseLimit.getValue(Units.Rotations),
+          prefPitch.pitchForwardLimit.getValue(Units.Rotations)));
     }
 
-    subPitch.setPitchAngle(Units.rotationsToDegrees(desiredPitchAngle));
+    subPitch.setPitchAngle(desiredPitchAngle);
 
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedTurretAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
+    Optional<Measure<Angle>> calculatedTurretAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
         RobotContainer.getLockedLocation());
 
     if (calculatedTurretAngle.isPresent()) {
       desiredTurretAngle = calculatedTurretAngle.get();
-      if (subTurret.isAnglePossible(desiredTurretAngle.getDegrees())) {
-        subTurret.setTurretAngle(desiredTurretAngle.getDegrees());
+      if (subTurret.isAnglePossible(desiredTurretAngle)) {
+        subTurret.setTurretAngle(desiredTurretAngle);
       }
 
     }

@@ -9,6 +9,9 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,7 +28,7 @@ public class LockTurret extends Command {
 
   LockedLocation lockedLocation = LockedLocation.NONE;
 
-  Rotation2d desiredAngle = new Rotation2d();
+  Measure<Angle> desiredAngle = Units.Degrees.of(0);
 
   Optional<Alliance> alliance = DriverStation.getAlliance();
 
@@ -43,7 +46,7 @@ public class LockTurret extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    desiredAngle = Rotation2d.fromDegrees(subTurret.getAngle());
+    desiredAngle = subTurret.getAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,13 +56,15 @@ public class LockTurret extends Command {
     fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
-        RobotContainer.getLockedLocation());
+    Optional<Measure<Angle>> calculatedAngle = Optional
+        .of(subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
+            RobotContainer.getLockedLocation()))
+        .get();
 
     if (calculatedAngle.isPresent()) {
       desiredAngle = calculatedAngle.get();
-      if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
-        subTurret.setTurretAngle(desiredAngle.getDegrees());
+      if (subTurret.isAnglePossible(desiredAngle)) {
+        subTurret.setTurretAngle(desiredAngle);
       }
 
     }

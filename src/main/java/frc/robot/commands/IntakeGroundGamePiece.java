@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -30,8 +32,8 @@ public class IntakeGroundGamePiece extends Command {
   Shooter subShooter;
   Climber subClimber;
 
-  double lastDesiredPitch;
-  double lastDesiredTurret;
+  Measure<Angle> lastDesiredPitch;
+  Measure<Angle> lastDesiredTurret;
 
   boolean climberReachedBottom = false;
 
@@ -53,26 +55,26 @@ public class IntakeGroundGamePiece extends Command {
     lastDesiredTurret = subTurret.getAngle();
     lastDesiredPitch = subPitch.getPitchAngle();
 
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
-    subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
-    subClimber.setPosition(prefClimber.climberMinPos.getValue());
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getMeasure());
+    subPitch.setPitchAngle(prefPitch.pitchReverseLimit.getMeasure());
+    subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getMeasure());
+    subClimber.setPosition(prefClimber.climberMinPos.getValue(Units.Value));
 
   }
 
   @Override
   public void execute() {
-    if (!climberReachedBottom && subClimber.isAtPosition(prefClimber.climberMinPos.getValue(),
-        prefClimber.climberIsAtPositionTolerance.getValue())) {
+    if (!climberReachedBottom && subClimber.isAtPosition(prefClimber.climberMinPos.getValue(Units.Value),
+        prefClimber.climberIsAtPositionTolerance.getValue(Units.Value))) {
       climberReachedBottom = true;
       subClimber.setNeutralOutput();
     }
-    if (subIntake.isPivotAtAngle(prefIntake.pivotGroundIntakeAngle.getValue())) {
+    if (subIntake.isPivotAtAngle(prefIntake.pivotGroundIntakeAngle.getMeasure())) {
       subIntake.setPivotNeutralOutput();
-      subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
+      subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue(Units.Value));
     }
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
-    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue(Units.Value));
+    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue(Units.Value));
   }
 
   // Called once the command ends or is interrupted.
@@ -84,8 +86,8 @@ public class IntakeGroundGamePiece extends Command {
     if (!interrupted) {
       subTransfer.repositionGamePiece();
 
-      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-          prefShooter.rightShooterSubVelocity.getValue());
+      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(Units.Value),
+          prefShooter.rightShooterSubVelocity.getValue(Units.Value));
       subShooter.getUpToSpeed();
     } else {
       subTransfer.setTransferNeutralOutput();

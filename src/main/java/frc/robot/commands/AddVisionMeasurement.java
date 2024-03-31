@@ -4,21 +4,7 @@
 
 package frc.robot.commands;
 
-import java.util.Optional;
-
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Robot;
-import frc.robot.RobotPreferences.prefVision;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -42,15 +28,15 @@ public class AddVisionMeasurement extends Command {
   // double ovRotRelativeToBot = 0;
 
   // Vector<N3> multiTagSTDevs = VecBuilder.fill(
-  // Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
-  // Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue()),
-  // Units.degreesToRadians(prefVision.multiTagStdDevsHeading.getValue()));
+  // Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue(Units.Value)),
+  // Units.feetToMeters(prefVision.multiTagStdDevsPosition.getValue(Units.Value)),
+  // Units.degreesToRadians(prefVision.multiTagStdDevsHeading.getValue(Units.Value)));
 
   // // Not used because we reject all single-tag estimates for now
   // Vector<N3> singleTagSTDevs = VecBuilder.fill(
-  // Units.feetToMeters(prefVision.singleTagStdDevsPosition.getValue()),
-  // Units.feetToMeters(prefVision.singleTagStdDevsPosition.getValue()),
-  // Units.degreesToRadians(prefVision.singleTagStdDevsHeading.getValue()));
+  // Units.feetToMeters(prefVision.singleTagStdDevsPosition.getValue(Units.Value)),
+  // Units.feetToMeters(prefVision.singleTagStdDevsPosition.getValue(Units.Value)),
+  // Units.degreesToRadians(prefVision.singleTagStdDevsHeading.getValue(Units.Value)));
 
   public AddVisionMeasurement(Drivetrain subDrivetrain, Vision subVision) {
     // this.subDrivetrain = subDrivetrain;

@@ -12,6 +12,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -75,11 +78,12 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
 
-        Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
-            prefShooter.rightShooterSpeakerVelocity.getValue())),
+        Commands
+            .runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(Units.Value),
+                prefShooter.rightShooterSpeakerVelocity.getValue(Units.Value))),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(Units.Degrees.zero())),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
         // throw out that intake
@@ -89,10 +93,10 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
         // PRELOAD
         // Aim
         Commands.parallel(
-            Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle().getAsDouble()))
-                .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle().getAsDouble())),
-            Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
-                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
+            Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle()))
+                .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle())),
+            Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle()))
+                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle()))),
 
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
@@ -178,16 +182,16 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
     return (goesDown) ? "D C1UntilC5" : "U C5UntilC1";
   }
 
-  public DoubleSupplier getTurretInitAngle() {
+  public Measure<Angle> getTurretInitAngle() {
     // return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 :
     // 30.613)
     // : ((FieldConstants.isRedAlliance()) ? 0 : 0);
-    return () -> 0;
+    return Units.Degrees.zero();
   }
 
-  public DoubleSupplier getPitchInitAngle() {
+  public Measure<Angle> getPitchInitAngle() {
     // return () -> (goesDown) ? (46.349) : (55);
-    return () -> 55;
+    return Units.Degrees.of(55);
   }
 
   public Command getAutonomousCommand() {

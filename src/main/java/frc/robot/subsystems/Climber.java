@@ -13,6 +13,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -44,30 +45,35 @@ public class Climber extends SubsystemBase {
 
     // PID
     climberConfig.Slot0.GravityType = constClimber.GRAVITY_TYPE;
-    climberConfig.Slot0.kS = prefClimber.climberS.getValue();
-    climberConfig.Slot0.kG = prefClimber.climberG.getValue();
-    climberConfig.Slot0.kV = prefClimber.climberV.getValue();
-    climberConfig.Slot0.kP = prefClimber.climberP.getValue();
-    climberConfig.Slot0.kI = prefClimber.climberI.getValue();
-    climberConfig.Slot0.kD = prefClimber.climberD.getValue();
+    climberConfig.Slot0.kS = prefClimber.climberS.getValue(Units.Value);
+    climberConfig.Slot0.kG = prefClimber.climberG.getValue(Units.Value);
+    climberConfig.Slot0.kV = prefClimber.climberV.getValue(Units.Value);
+    climberConfig.Slot0.kP = prefClimber.climberP.getValue(Units.Value);
+    climberConfig.Slot0.kI = prefClimber.climberI.getValue(Units.Value);
+    climberConfig.Slot0.kD = prefClimber.climberD.getValue(Units.Value);
 
     // Motion Magic
-    climberConfig.MotionMagic.MotionMagicCruiseVelocity = prefClimber.climberCruiseVelocity.getValue();
-    climberConfig.MotionMagic.MotionMagicAcceleration = prefClimber.climberAcceleration.getValue();
-    climberConfig.MotionMagic.MotionMagicJerk = prefClimber.climberJerk.getValue();
+    climberConfig.MotionMagic.MotionMagicCruiseVelocity = prefClimber.climberCruiseVelocity.getValue(Units.Value);
+    climberConfig.MotionMagic.MotionMagicAcceleration = prefClimber.climberAcceleration.getValue(Units.Value);
+    climberConfig.MotionMagic.MotionMagicJerk = prefClimber.climberJerk.getValue(Units.Value);
 
     // Software Limits
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = prefClimber.climberForwardLimitEnable.getValue();
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMaxPos.getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = prefClimber.climberForwardLimitEnable
+        .getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMaxPos.getValue(Units.Rotations);
 
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = prefClimber.climberReverseLimitEnable.getValue();
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMinPos.getValue();
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = prefClimber.climberReverseLimitEnable
+        .getValue();
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMinPos.getValue(Units.Rotations);
 
     // Current Limiting
-    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = prefClimber.climberSupplyCurrentLimitEnable.getValue();
-    climberConfig.CurrentLimits.SupplyCurrentLimit = prefClimber.climberSupplyCurrentLimitCeilingAmps.getValue();
-    climberConfig.CurrentLimits.SupplyCurrentThreshold = prefClimber.climberSupplyCurrentThreshold.getValue();
-    climberConfig.CurrentLimits.SupplyTimeThreshold = prefClimber.climberSupplyTimeThreshold.getValue();
+    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = prefClimber.climberSupplyCurrentLimitEnable
+        .getValue();
+    climberConfig.CurrentLimits.SupplyCurrentLimit = prefClimber.climberSupplyCurrentLimitCeilingAmps
+        .getValue(Units.Value);
+    climberConfig.CurrentLimits.SupplyCurrentThreshold = prefClimber.climberSupplyCurrentThreshold
+        .getValue(Units.Value);
+    climberConfig.CurrentLimits.SupplyTimeThreshold = prefClimber.climberSupplyTimeThreshold.getValue(Units.Value);
 
     // Other jazz
     climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
@@ -98,8 +104,8 @@ public class Climber extends SubsystemBase {
    * 
    */
   public void setPosition(double position) {
-    position = SN_Math.metersToRotations(MathUtil.clamp(position, prefClimber.climberMinPos.getValue(),
-        prefClimber.climberMaxPos.getValue()), 1, 1);
+    position = MathUtil.clamp(position, prefClimber.climberMinPos.getValue(Units.Rotations),
+        prefClimber.climberMaxPos.getValue(Units.Rotations));
 
     desiredPosition = position;
 

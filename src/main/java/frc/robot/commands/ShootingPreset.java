@@ -7,6 +7,9 @@ package frc.robot.commands;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 import com.frcteam3255.joystick.SN_XboxController;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
@@ -24,9 +27,9 @@ public class ShootingPreset extends Command {
 
   double desiredLeftVelocity;
   double desiredRightVelocity;
-  double desiredTurretAngle;
+  Measure<Angle> desiredTurretAngle;
 
-  double desiredPitchAngle;
+  Measure<Angle> desiredPitchAngle;
   boolean ignoreFlywheelSpeed;
 
   String presetName;
@@ -38,7 +41,8 @@ public class ShootingPreset extends Command {
   public ShootingPreset(Shooter subShooter, Turret subTurret, Pitch subPitch, Intake subIntake,
       double desiredLeftVelocity,
 
-      double desiredRightVelocity, double desiredTurretAngle, double desiredPitchAngle, boolean ignoreFlywheelSpeed,
+      double desiredRightVelocity, Measure<Angle> desiredTurretAngle, Measure<Angle> desiredPitchAngle,
+      boolean ignoreFlywheelSpeed,
       SN_SwitchboardStick controller, String presetName, boolean tuningMode) {
     this.subShooter = subShooter;
     this.subTurret = subTurret;
@@ -59,9 +63,9 @@ public class ShootingPreset extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
+    subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getMeasure());
     subShooter.setDesiredVelocities(desiredLeftVelocity, desiredRightVelocity);
-    subTurret.setTurretAngle((FieldConstants.isRedAlliance()) ? -desiredTurretAngle : desiredTurretAngle);
+    subTurret.setTurretAngle((FieldConstants.isRedAlliance()) ? desiredTurretAngle.negate() : desiredTurretAngle);
     subPitch.setPitchAngle(desiredPitchAngle);
     subShooter.setIgnoreFlywheelSpeed(ignoreFlywheelSpeed);
   }
@@ -71,22 +75,22 @@ public class ShootingPreset extends Command {
   public void execute() {
     if (tuningMode == true) {
       if (controller.btn_10.getAsBoolean() == true) {
-        desiredPitchAngle += 0.5;
+        desiredPitchAngle.plus(Units.Degrees.of(0.5));
         initialize();
       }
       if (controller.btn_7.getAsBoolean() == true) {
-        desiredPitchAngle -= 0.5;
+        desiredPitchAngle.minus(Units.Degrees.of(0.5));
         initialize();
       }
 
       if (controller.btn_4.getAsBoolean() == true) {
-        desiredTurretAngle -= 0.5;
+        desiredTurretAngle.minus(Units.Degrees.of(0.5));
         initialize();
 
       }
 
       if (controller.btn_5.getAsBoolean() == true) {
-        desiredTurretAngle += 0.5;
+        desiredTurretAngle.plus(Units.Degrees.of(0.5));
         initialize();
 
       }
@@ -110,8 +114,8 @@ public class ShootingPreset extends Command {
 
     SmartDashboard.putString("PRESET NAME", presetName);
     SmartDashboard.putNumber("PRESET SHOOTER LEFT VELOCITY", desiredLeftVelocity);
-    SmartDashboard.putNumber("PRESET TURRET ANGLE", desiredTurretAngle);
-    SmartDashboard.putNumber("PRESET HOOD ANGLE", desiredPitchAngle);
+    SmartDashboard.putNumber("PRESET TURRET ANGLE", desiredTurretAngle.in(Units.Degrees));
+    SmartDashboard.putNumber("PRESET HOOD ANGLE", desiredPitchAngle.in(Units.Degrees));
   }
 
   // Called once the command ends or is interrupted.

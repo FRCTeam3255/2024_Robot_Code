@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Turret;
@@ -35,7 +36,7 @@ public class ManualTurretMovement extends Command {
   @Override
   public void execute() {
     subTurret.setTurretGoalAngle(subTurret.getAngle());
-    subTurret.setTurretSpeed(-xAxis.getAsDouble() * prefTurret.turretPercentageSpeed.getValue());
+    subTurret.setTurretSpeed(prefTurret.turretPercentageSpeed.getMeasure());// .times(-xAxis.getAsDouble()));
   }
 
   // Called once the command ends or is interrupted.

@@ -10,7 +10,10 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Unit;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,7 +31,7 @@ public class LockPitch extends Command {
 
   LockedLocation lockedLocation = LockedLocation.NONE;
 
-  double desiredAngle;
+  Measure<Angle> desiredAngle;
 
   Optional<Alliance> alliance = DriverStation.getAlliance();
 
@@ -56,16 +59,16 @@ public class LockPitch extends Command {
   public void execute() {
     robotPose = subDrivetrain.getPose();
 
-    Optional<Rotation2d> calculatedAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
+    Optional<Measure<Angle>> calculatedAngle = subPitch.getDesiredAngleToLock(robotPose, fieldPoses,
         RobotContainer.getLockedLocation());
 
     if (calculatedAngle.isPresent()) {
-      desiredAngle = MathUtil.clamp(
-          calculatedAngle.get().getRotations(),
-          prefPitch.pitchReverseLimit.getValue(),
-          prefPitch.pitchForwardLimit.getValue());
+      desiredAngle = Units.Rotations.of(MathUtil.clamp(
+          calculatedAngle.get().in(Units.Rotations),
+          prefPitch.pitchReverseLimit.getValue(Units.Rotations),
+          prefPitch.pitchForwardLimit.getValue(Units.Rotations)));
 
-      subPitch.setPitchAngle(Units.rotationsToDegrees(desiredAngle));
+      subPitch.setPitchAngle(desiredAngle);
     }
   }
 

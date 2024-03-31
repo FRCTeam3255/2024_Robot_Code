@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.subsystems.Pitch;
@@ -32,7 +33,7 @@ public class ManualHoodMovement extends Command {
   @Override
   public void execute() {
     subPitch.setPitchGoalAngle(subPitch.getPitchAngle());
-    subPitch.setPitchSpeed(xAxis.getAsDouble() * prefPitch.pitchPercentageSpeed.getValue());
+    subPitch.setPitchSpeed(xAxis.getAsDouble() * prefPitch.pitchPercentageSpeed.getValue(Units.Percent));
   }
 
   // Called once the command ends or is interrupted.

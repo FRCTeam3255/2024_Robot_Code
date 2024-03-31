@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -22,9 +25,9 @@ public class IntakeFromSource extends Command {
   Pitch subPitch;
   Turret subTurret;
 
-  double lastDesiredPitch = prefPitch.pitchReverseLimit.getValue();
-  double lastDesiredAngle;
-  double lastDesiredTurret;
+  Measure<Angle> lastDesiredPitch = prefPitch.pitchReverseLimit.getMeasure();
+  Measure<Angle> lastDesiredAngle;
+  Measure<Angle> lastDesiredTurret;
 
   /** Creates a new ShooterIntake. */
   public IntakeFromSource(Shooter subShooter, Transfer subTransfer, Pitch subPitch, Turret subTurret) {
@@ -41,18 +44,18 @@ public class IntakeFromSource extends Command {
   public void initialize() {
     lastDesiredPitch = subPitch.getPitchAngle();
 
-    subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
-        prefShooter.rightShooterIntakeVoltage.getValue());
+    subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(Units.Volts),
+        prefShooter.rightShooterIntakeVoltage.getValue(Units.Volts));
 
-    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue());
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
+    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getMeasure());
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getMeasure());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue());
-    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue());
+    subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeSourceSpeed.getValue(Units.Value));
+    subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeSourceSpeed.getValue(Units.Value));
   }
 
   // Called once the command ends or is interrupted.
@@ -64,8 +67,8 @@ public class IntakeFromSource extends Command {
     if (!interrupted) {
       subTransfer.repositionGamePiece();
 
-      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-          prefShooter.rightShooterSubVelocity.getValue());
+      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(Units.Value),
+          prefShooter.rightShooterSubVelocity.getValue(Units.Value));
     } else {
       subTransfer.setTransferNeutralOutput();
       subShooter.setDesiredVelocities(0, 0);

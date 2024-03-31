@@ -11,6 +11,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -64,22 +65,22 @@ public class Shooter extends SubsystemBase implements Logged {
   }
 
   public void configure() {
-    leftConfig.Slot0.kV = prefShooter.leftShooterV.getValue();
-    leftConfig.Slot0.kS = prefShooter.leftShooterS.getValue();
-    leftConfig.Slot0.kA = prefShooter.leftShooterA.getValue();
-    leftConfig.Slot0.kP = prefShooter.leftShooterP.getValue();
-    leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue();
-    leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue();
+    leftConfig.Slot0.kV = prefShooter.leftShooterV.getValue(Units.Value);
+    leftConfig.Slot0.kS = prefShooter.leftShooterS.getValue(Units.Value);
+    leftConfig.Slot0.kA = prefShooter.leftShooterA.getValue(Units.Value);
+    leftConfig.Slot0.kP = prefShooter.leftShooterP.getValue(Units.Value);
+    leftConfig.Slot0.kI = prefShooter.leftShooterI.getValue(Units.Value);
+    leftConfig.Slot0.kD = prefShooter.leftShooterD.getValue(Units.Value);
 
     leftConfig.MotionMagic.MotionMagicAcceleration = 400;
     leftConfig.MotionMagic.MotionMagicJerk = 4000;
 
-    rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue();
-    rightConfig.Slot0.kS = prefShooter.rightShooterS.getValue();
-    rightConfig.Slot0.kA = prefShooter.rightShooterA.getValue();
-    rightConfig.Slot0.kP = prefShooter.rightShooterP.getValue();
-    rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue();
-    rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue();
+    rightConfig.Slot0.kV = prefShooter.rightShooterV.getValue(Units.Value);
+    rightConfig.Slot0.kS = prefShooter.rightShooterS.getValue(Units.Value);
+    rightConfig.Slot0.kA = prefShooter.rightShooterA.getValue(Units.Value);
+    rightConfig.Slot0.kP = prefShooter.rightShooterP.getValue(Units.Value);
+    rightConfig.Slot0.kI = prefShooter.rightShooterI.getValue(Units.Value);
+    rightConfig.Slot0.kD = prefShooter.rightShooterD.getValue(Units.Value);
 
     rightConfig.MotionMagic.MotionMagicAcceleration = 400;
     rightConfig.MotionMagic.MotionMagicJerk = 4000;
@@ -142,7 +143,7 @@ public class Shooter extends SubsystemBase implements Logged {
    */
   public boolean isLeftShooterUpToSpeed() {
     return (Math.abs(getLeftShooterVelocity() - desiredLeftVelocity)) <= prefShooter.shooterUpToSpeedTolerance
-        .getValue();
+        .getValue(Units.Value);
   }
 
   /**
@@ -150,7 +151,7 @@ public class Shooter extends SubsystemBase implements Logged {
    */
   public boolean isRightShooterUpToSpeed() {
     return (Math.abs(getRightShooterVelocity() - desiredRightVelocity)) <= prefShooter.shooterUpToSpeedTolerance
-        .getValue();
+        .getValue(Units.Value);
   }
 
   /**
