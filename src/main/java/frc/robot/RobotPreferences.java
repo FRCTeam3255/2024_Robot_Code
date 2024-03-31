@@ -822,24 +822,6 @@ public class RobotPreferences {
         "multiTagStdDevsHeading", 0.9);
 
     /**
-     * <p>
-     * Pose estimator standard deviation for vision data using Single-tag
-     * <p>
-     * <b>Units:</b> Meters
-     */
-    public static final SN_DoublePreference singleTagStdDevsPosition = new SN_DoublePreference(
-        "singleTagStdDevsPosition", 10);
-
-    /**
-     * <p>
-     * Pose estimator standard deviation for vision data using Single-Tag
-     * </p>
-     * <b>Units:</b> Radians
-     */
-    public static final SN_DoublePreference singleTagStdDevsHeading = new SN_DoublePreference(
-        "singleTagStdDevsHeading", 3);
-
-    /**
      * The translational tolerance of how off we want to be to count as correct
      * (when placing the robot on the starting position in auto)
      * <b>Units:</b> Meters
