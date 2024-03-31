@@ -31,7 +31,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constTurret;
 import frc.robot.RobotContainer;
-import frc.robot.SN_Rotation2d;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
@@ -283,14 +282,14 @@ public class Turret extends SubsystemBase {
         Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
 
         // Get the angle of 0,0 to the turret pose
-        SN_Rotation2d r2ddesiredLockingAngle = (SN_Rotation2d) new Rotation2d(relativeToTarget.getX(),
+        Rotation2d r2ddesiredLockingAngle = new Rotation2d(relativeToTarget.getX(),
             relativeToTarget.getY());
 
         // Account for robot rotation
-        r2ddesiredLockingAngle = (SN_Rotation2d) r2ddesiredLockingAngle
+        r2ddesiredLockingAngle = r2ddesiredLockingAngle
             .rotateBy(robotPose.getRotation().unaryMinus().minus(Rotation2d.fromDegrees(180)));
 
-        return Optional.of(r2ddesiredLockingAngle.getMeasure());
+        return Optional.of(Units.Radians.of(r2ddesiredLockingAngle.getRadians()));
     }
 
     // Get the turret pose (field relative)
@@ -300,14 +299,14 @@ public class Turret extends SubsystemBase {
     Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
 
     // Get the angle of 0,0 to the turret pose
-    SN_Rotation2d r2ddesiredLockingAngle = (SN_Rotation2d) new Rotation2d(relativeToTarget.getX(),
+    Rotation2d r2ddesiredLockingAngle = new Rotation2d(relativeToTarget.getX(),
         relativeToTarget.getY());
 
     // Account for robot rotation
-    r2ddesiredLockingAngle = (SN_Rotation2d) r2ddesiredLockingAngle
+    r2ddesiredLockingAngle = r2ddesiredLockingAngle
         .rotateBy(robotPose.getRotation().unaryMinus().minus(Rotation2d.fromDegrees(180)));
 
-    return Optional.of(r2ddesiredLockingAngle.getMeasure());
+    return Optional.of(Units.Radians.of(r2ddesiredLockingAngle.getRadians()));
   }
 
   /**
