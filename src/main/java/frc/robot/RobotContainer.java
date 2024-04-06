@@ -445,26 +445,7 @@ public class RobotContainer implements Logged {
     PDH.setSwitchableChannel(isPowered);
   }
 
-  /**
-   * Updates the values supplied to the PDH to SmartDashboard. Should be called
-   * periodically.
-   */
-  public static void logPDHValues() {
-    SmartDashboard.putNumber("PDH/Input Voltage", PDH.getVoltage());
-    SmartDashboard.putBoolean("PDH/Is Switchable Channel Powered", PDH.getSwitchableChannel());
-    SmartDashboard.putNumber("PDH/Total Current", PDH.getTotalCurrent());
-    SmartDashboard.putNumber("PDH/Total Power", PDH.getTotalPower());
-    SmartDashboard.putNumber("PDH/Total Energy", PDH.getTotalEnergy());
-
-    for (int i = 0; i < Constants.constRobot.PDH_DEVICES.length; i++) {
-      if (Constants.constRobot.PDH_DEVICES[i] != null) {
-        SmartDashboard.putNumber("PDH/" + Constants.constRobot.PDH_DEVICES[i] + " Current", PDH.getCurrent(i));
-      }
-    }
-  }
-
   // --- Locking Logic ---
-
   public static void setLockedLocation(LockedLocation location) {
     lockedLocation = location;
   }

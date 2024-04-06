@@ -15,13 +15,8 @@ import edu.wpi.first.math.util.Units;
  * | Angle per Time    | Degrees per Second    |
  * | Time              | Seconds               |
  * @formatter:on
- *
- * If the unit does not fall under any of these types, 
- * add a JavaDoc for that variable specifying it's unit. 
- * Avoid specifying units in the variable name.
- * Preferences that obviously don't use the above units (ex. PID)
- * are exempt from this
  */
+
 public class RobotPreferences {
   public static final class prefClimber {
     // - PID -

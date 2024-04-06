@@ -30,12 +30,6 @@ import edu.wpi.first.math.util.Units;
  * | Angle per Time    | Degrees per Second    |
  * | Time              | Seconds               |
  * @formatter:on
- *
- * If the unit does not fall under any of these types, 
- * add a JavaDoc for that variable specifying it's unit. 
- * Avoid specifying units in the variable name.
- * Preferences that obviously don't use the above units (ex. PID)
- * are exempt from this
  */
 public final class Constants {
   public static class constClimber {
@@ -254,38 +248,6 @@ public final class Constants {
     public static final boolean TUNING_MODE = false;
 
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
-
-    // @formatter:off
-    /**
-     * Updated by Alice to match Comp bot Feb. 19
-     */
-    // TODO: UPDATE BEFORE RELEASE
-    public static final String[] PDH_DEVICES = {
-        /*  0 */ "Swerve/FL Steer",
-        /*  1 */ "Swerve/FL Drive",
-        /*  2 */ "Shooter/Right",
-        /*  3 */ "Transfer/Feeder",
-        /*  4 */ "Shooter/Pitch",
-        /*  5 */ "Transfer/Transfer",
-        /*  6 */ "Shooter/Left",
-        /*  7 */ "7 HAS NOTHING!",
-        /*  8 */ "Swerve/FR Steer",
-        /*  9 */ "Swerve/FR Drive",
-        /* 10 */ "Swerve/BR Drive",
-        /* 11 */ "Swerve/BR Steer",
-        /* 12 */ "12 HAS NOTHING!",
-        /* 13 */ "13 HAS NOTHING!",
-        /* 14 */ "14 HAS NOTHING!",
-        /* 15 */ "15 HAS NOTHING!",
-        /* 16 */ "Turret",
-        /* 17 */ "Swerve/BL Steer",
-        /* 18 */ "Swerve/BL Drive",
-        /* 19 */ "Ethernet Switch",
-        /* 20 */ "Swerve CANCoders & Pigeon",
-        /* 21 */ "RoboRIO",
-        /* 22 */ "Radio Power Module",
-        /* 23 */ "Beelink" };
-    // @formatter:on
   }
 
   public static class constShooter {
