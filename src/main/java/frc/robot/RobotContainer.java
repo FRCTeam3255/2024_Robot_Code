@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -95,7 +96,7 @@ public class RobotContainer implements Logged {
   private final static Shooter subShooter = new Shooter();
   private final static Turret subTurret = new Turret();
   private final static Transfer subTransfer = new Transfer();
-  // private final static Vision subVision = new Vision();
+  private final static Vision subVision = new Vision();
 
   SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
 
@@ -109,13 +110,13 @@ public class RobotContainer implements Logged {
   @Log.NT
   static Pose3d currentRobotPose;
   @Log.NT
-  static Pose3d desiredTurretPose;
+  static Pose3d turretPose;
   @Log.NT
-  static Pose3d desiredHoodPose;
+  static Pose3d hoodPose;
   @Log.NT
-  static Pose3d desiredCarriagePose;
+  static Pose3d carriagePose;
   @Log.NT
-  static Pose3d desiredIntakePose;
+  static Pose3d intakePose;
 
   @Log.NT
   boolean hasNamedCommandRun = false;
@@ -146,6 +147,7 @@ public class RobotContainer implements Logged {
     subLEDs
         .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subPitch, subTransfer,
             conDriver.btn_RightBumper));
+    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
     // Register Autonomous Named Commands
     NamedCommands.registerCommand("IntakeGamePiece",
@@ -156,6 +158,7 @@ public class RobotContainer implements Logged {
 
     // View controls at:
     // src\main\assets\controllerMap2024.png
+    // src\main\assets\numpadMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
     configureNumpadBindings(conNumpad);
@@ -259,7 +262,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureNumpadBindings(SN_SwitchboardStick switchboardStick) {
-
     // Gulf of Mexico
     switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
@@ -368,7 +370,7 @@ public class RobotContainer implements Logged {
         new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             false));
 
-    // // Centerline ONLY
+    // Centerline ONLY
     autoChooser.addOption("Centerline Down", new Centerline(subDrivetrain,
         subIntake, subLEDs, subPitch, subShooter,
         subTransfer, subTurret, subClimber, true));
@@ -393,34 +395,44 @@ public class RobotContainer implements Logged {
     return !isPracticeBot.get();
   }
 
-  // TODO: Clean these up maybe idk idc
   public static void updateLoggedPoses() {
     currentRobotPose = subDrivetrain.getPose3d();
-    desiredTurretPose = subTurret.getDesiredAngleAsPose3d();
-    desiredHoodPose = subPitch.getDesiredAngleAsPose3d(desiredTurretPose.getRotation().getZ());
-    // I CANNOT EXPLAIN THESE THINGS
-    desiredCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-        subClimber.getDesiredPosition()) / 7, 0,
-        ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getDesiredPosition()) / 7,
-        new Rotation3d());
-    desiredIntakePose = new Pose3d(desiredCarriagePose.getX() + -0.197, desiredCarriagePose.getY(),
-        desiredCarriagePose.getZ() + 0.305,
-        new Rotation3d(0,
-            -Units.degreesToRadians(subIntake.getDesiredPivotAngle()), 0).plus(desiredCarriagePose.getRotation()));
+    if (Robot.isSimulation()) {
+      turretPose = subTurret.getDesiredAngleAsPose3d();
 
-    // // Actual Poses
-    // actualTurretPose = new Pose3d(new Translation3d(),
-    // new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
-    // actualCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-    // subClimber.getPosition()) / 7, 0,
-    // ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
-    // new Rotation3d());
-    // actualIntakePose = new Pose3d(actualCarriagePose.getX() + -0.197,
-    // actualCarriagePose.getY(),
-    // actualCarriagePose.getZ() + 0.305,
-    // new Rotation3d(0,
-    // -Units.degreesToRadians(subIntake.getPivotAngle()),
-    // 0).plus(actualCarriagePose.getRotation()));
+      // TODO: Fix this pose so that it visually accounts for the rotation of the
+      // turret as well
+      hoodPose = subPitch.getDesiredAngleAsPose3d(turretPose.getRotation().getZ());
+
+      carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+          subClimber.getDesiredPosition()) / 7, 0,
+          ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getDesiredPosition()) / 7,
+          new Rotation3d());
+
+      intakePose = new Pose3d(carriagePose.getX() + -0.197, carriagePose.getY(),
+          carriagePose.getZ() + 0.305,
+          new Rotation3d(0,
+              -Units.degreesToRadians(subIntake.getDesiredPivotAngle()), 0).plus(carriagePose.getRotation()));
+    } else {
+      // Actual Poses
+      turretPose = new Pose3d(new Translation3d(),
+          new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
+
+      hoodPose = new Pose3d(new Translation3d(),
+          new Rotation3d(0, 0, Units.degreesToRadians(subPitch.getPitchAngle())));
+
+      carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+          subClimber.getPosition()) / 7, 0,
+          ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
+          new Rotation3d());
+
+      intakePose = new Pose3d(carriagePose.getX() + -0.197,
+          carriagePose.getY(),
+          carriagePose.getZ() + 0.305,
+          new Rotation3d(0,
+              -Units.degreesToRadians(subIntake.getPivotAngle()),
+              0).plus(carriagePose.getRotation()));
+    }
   }
 
   // --- PDH ---
