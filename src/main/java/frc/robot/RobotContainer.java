@@ -412,7 +412,8 @@ public class RobotContainer implements Logged {
       intakePose = new Pose3d(carriagePose.getX() + -0.197, carriagePose.getY(),
           carriagePose.getZ() + 0.305,
           new Rotation3d(0,
-              -Units.degreesToRadians(subIntake.getDesiredPivotAngle()), 0).plus(carriagePose.getRotation()));
+              Units.degreesToRadians(subIntake.getDesiredPivotAngle() - prefIntake.pivotMaxPos.getValue()), 0)
+              .plus(carriagePose.getRotation()));
     } else {
       // Actual Poses
       turretPose = new Pose3d(new Translation3d(),
@@ -426,12 +427,12 @@ public class RobotContainer implements Logged {
           ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()),
           new Rotation3d());
 
-      intakePose = new Pose3d(carriagePose.getX() + -0.197,
-          carriagePose.getY(),
+      intakePose = new Pose3d(carriagePose.getX() + -0.197, carriagePose.getY(),
           carriagePose.getZ() + 0.305,
           new Rotation3d(0,
-              -Units.degreesToRadians(subIntake.getPivotAngle()),
-              0).plus(carriagePose.getRotation()));
+              Units.degreesToRadians(subIntake.getPivotAngle() - prefIntake.pivotMaxPos.getValue()), 0)
+              .plus(carriagePose.getRotation()));
+
     }
   }
 

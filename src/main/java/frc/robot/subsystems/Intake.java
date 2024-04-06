@@ -53,7 +53,7 @@ public class Intake extends SubsystemBase implements Logged {
     motionMagicRequest = new MotionMagicVoltage(0);
     voltageRequest = new VoltageOut(0);
 
-    desiredPivotAngle = prefIntake.pivotMinPos.getValue();
+    desiredPivotAngle = prefIntake.pivotMaxPos.getValue();
 
     configure();
   }
