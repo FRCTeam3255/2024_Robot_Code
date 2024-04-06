@@ -37,8 +37,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   private static TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
   private static PIDController yawSnappingController;
 
-  // Struct logging - Allows for logging data that SmartDashboard alone can't log,
-  // but must be called on the variable's creation
   @Log.NT
   private static SwerveModuleState[] loggedDesiredStates;
   @Log.NT
