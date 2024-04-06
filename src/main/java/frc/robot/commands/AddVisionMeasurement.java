@@ -26,7 +26,7 @@ public class AddVisionMeasurement extends Command {
   Pose2d estimatedPose;
   double timestamp;
   Optional<EstimatedRobotPose> ARresult = Optional.empty();
-  Optional<EstimatedRobotPose> OVresult = Optional.empty();
+  Optional<EstimatedRobotPose> OVResult = Optional.empty();
 
   EstimatedRobotPose arResult;
   EstimatedRobotPose ovResult;
@@ -56,15 +56,15 @@ public class AddVisionMeasurement extends Command {
   @Override
   public void execute() {
     ARresult = subVision.getPoseFromARCamera();
-    OVresult = subVision.getPoseFromOVCamera();
+    OVResult = subVision.getPoseFromOVCamera();
 
     // Don't collect Vision results in auto
     if (!RobotState.isAutonomous() && !RobotState.isDisabled()) {
 
       // If both results are present, pick the closest of the 2 poses
-      if (ARresult.isPresent() && OVresult.isPresent()) {
+      if (ARresult.isPresent() && OVResult.isPresent()) {
         arResult = ARresult.get();
-        ovResult = OVresult.get();
+        ovResult = OVResult.get();
 
         // If both are viable...
         if (isEstimateViable(arResult) && isEstimateViable(ovResult)) {
@@ -125,8 +125,8 @@ public class AddVisionMeasurement extends Command {
         }
       }
 
-      else if (OVresult.isPresent()) {
-        ovResult = OVresult.get();
+      else if (OVResult.isPresent()) {
+        ovResult = OVResult.get();
         estimatedPose = ovResult.estimatedPose.toPose2d();
         timestamp = ovResult.timestampSeconds;
 
