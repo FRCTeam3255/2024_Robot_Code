@@ -101,7 +101,6 @@ public class Robot extends TimedRobot {
 
     if (!hasAutonomousRun) {
       RobotContainer.zeroClimber().schedule();
-      // RobotContainer.stowIntakePivot().schedule();
     }
   }
 

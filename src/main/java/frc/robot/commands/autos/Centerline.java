@@ -7,7 +7,6 @@ package frc.robot.commands.autos;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -60,15 +59,6 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
     this.subClimber = subClimber;
     this.goesDown = goesDown;
 
-    // AutoBuilder.buildAuto(determineInitPathName());
-    // AutoBuilder.buildAuto(determineScorePathName() + ".1");
-    // AutoBuilder.buildAuto(determineScorePathName() + ".2");
-    // AutoBuilder.buildAuto(determineScorePathName() + ".3");
-    // AutoBuilder.buildAuto(determineScorePathName() + ".4");
-
-    // AutoBuilder.buildAuto(determineHopPathName() + ".1");
-    // AutoBuilder.buildAuto(determineHopPathName() + ".2");
-
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
@@ -82,7 +72,6 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
-        // throw out that intake
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
@@ -179,15 +168,12 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   }
 
   public DoubleSupplier getTurretInitAngle() {
-    // return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 :
-    // 30.613)
-    // : ((FieldConstants.isRedAlliance()) ? 0 : 0);
-    return () -> 0;
+    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 : 30.613)
+        : ((FieldConstants.isRedAlliance()) ? 0 : 0);
   }
 
   public DoubleSupplier getPitchInitAngle() {
-    // return () -> (goesDown) ? (46.349) : (55);
-    return () -> 55;
+    return () -> (goesDown) ? (46.349) : (55);
   }
 
   public Command getAutonomousCommand() {
