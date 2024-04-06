@@ -307,14 +307,6 @@ public class RobotPreferences {
      */
     public static final SN_DoublePreference pivotMinPos = new SN_DoublePreference("pivotMinPos", 0);
 
-    // - Game Piece Detection -
-    /**
-     * The time that we wait to get a game piece in auto
-     * <b> Units: </b> Seconds
-     */
-    public static final SN_DoublePreference intakeGamePieceGetTime = new SN_DoublePreference("intakeGamePieceGetTime",
-        0.5);
-
     // - Speeds -
     /**
      * <b> Units: </b> Percent Output
@@ -705,6 +697,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference transferRepositionSpeed = new SN_DoublePreference("transferRepositionSpeed",
         -0.3);
 
+    // - Other -
     /**
      * <p>
      * The amount of degrees to turn before considering the note to have been shot

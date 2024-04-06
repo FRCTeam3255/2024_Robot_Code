@@ -63,7 +63,7 @@ public class PrepAmp extends Command {
     if (subIntake.isPivotAtAngle(prefIntake.pivotTransferToAmpAngle.getValue()) && subClimber.isAtPosition(0.2, 0.5)) {
       subIntake.setIntakeRollerSpeed(prefIntake.rollerStageAmpNoteSpeed.getValue());
       subTransfer.setFeederMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.transferStageAmpNoteSpeed.getValue());
     }
   }
 
