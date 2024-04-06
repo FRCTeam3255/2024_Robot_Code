@@ -92,7 +92,6 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
-            // throw out that intake
             // Intake until we have the game piece
             new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
@@ -131,7 +130,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         return 0 * isRed;
       case 3: // S4
         return -61.712 * isRed;
-      case 4: // S5 (We don't run this one EVER)
+      case 4: // S5 (We've NEVER run this one)
         return -3255 * isRed;
       default:
         return -3255 * isRed;
@@ -149,7 +148,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         return 55;
       case 3: // S4
         return 38.453;
-      case 4: // S5 (We don't run this one EVER)
+      case 4: // S5 (We've NEVER run this one)
         return -3255;
       default:
         return -3255;

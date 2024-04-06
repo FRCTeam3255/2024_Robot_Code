@@ -78,7 +78,6 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
             Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
-            // throw out that intake
             // Intake until we have the game piece
             new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
