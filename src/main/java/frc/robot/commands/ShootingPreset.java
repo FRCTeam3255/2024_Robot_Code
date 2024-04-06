@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import com.frcteam3255.joystick.SN_SwitchboardStick;
-import com.frcteam3255.joystick.SN_XboxController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;

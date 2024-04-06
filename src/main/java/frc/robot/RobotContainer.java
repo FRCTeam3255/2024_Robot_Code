@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -15,7 +14,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -37,7 +35,6 @@ import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefVision;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTurret;
-import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFromSource;
 import frc.robot.commands.IntakeGroundGamePiece;
@@ -73,7 +70,6 @@ import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
-import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Turret;
 
 public class RobotContainer implements Logged {

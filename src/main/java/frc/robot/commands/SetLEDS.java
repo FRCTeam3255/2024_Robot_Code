@@ -41,10 +41,6 @@ public class SetLEDS extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (false) {
-      subLEDs.setLEDsToAnimation(constLEDs.AMPLIFY_ANIMATION);
-      return;
-    }
 
     // If we have a game piece, set to game piece colors
     if (subTransfer.hasGamePiece) {
