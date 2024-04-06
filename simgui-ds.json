@@ -8,12 +8,10 @@
     {
       "axisConfig": [
         {
-          "decKey": 65,
-          "incKey": 68
+          "decKey": 65
         },
         {
-          "decKey": 87,
-          "incKey": 83
+          "decKey": 87
         },
         {
           "decayRate": 0.0,
@@ -25,13 +23,18 @@
           "incKey": 82
         }
       ],
-      "axisCount": 5,
-      "buttonCount": 4,
+      "axisCount": 0,
+      "buttonCount": 9,
       "buttonKeys": [
         90,
         88,
         67,
-        86
+        86,
+        83,
+        68,
+        -1,
+        -1,
+        -1
       ],
       "povConfig": [
         {
@@ -45,7 +48,7 @@
           "key90": 326
         }
       ],
-      "povCount": 1
+      "povCount": 0
     },
     {
       "axisConfig": [
@@ -104,6 +107,9 @@
     {
       "guid": "78696e70757401000000000000000000",
       "useGamepad": true
+    },
+    {
+      "guid": "Keyboard0"
     }
   ]
 }

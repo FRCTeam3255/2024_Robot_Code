@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -162,7 +163,7 @@ public class Climber extends SubsystemBase {
   }
 
   public double getDesiredPosition() {
-    return desiredPosition;
+    return Units.feetToMeters(desiredPosition);
   }
 
   /**

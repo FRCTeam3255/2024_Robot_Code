@@ -5,6 +5,8 @@ Shang-Chi competed at the regional level in the following competitions:
 - [Port Hueneme](https://www.thebluealliance.com/event/2024caph)
 - [San Diego](https://www.thebluealliance.com/event/2024casd)
 
+At the end of qualification matches at SDR, Shang-Chi ranked 2nd of 51 teams. We ultimately placed 4th as the 2nd seeded alliance with [Team 2102 Team Paradox](https://www.thebluealliance.com/team/2102/2024) and [Team 3341 Option 16](https://www.thebluealliance.com/team/3341/2024)!
+
 ## View Shang-Chi in Action!
 - [Instagram](https://www.instagram.com/frcteam3255/) 
 - [YouTube (Primary)](https://www.youtube.com/@FRC3255)
@@ -21,8 +23,9 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 
 Interested in learning more about CRESCENDO? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
-## San Diego Regional
-At the end of qualification matches at SDR, Shang-Chi ranked 2nd of 51 teams. As captain of the 2nd seeded alliance, our team chose [Team 2102 Team Paradox](https://www.thebluealliance.com/team/2102/2024) and [Team 3341 Option 16](https://www.thebluealliance.com/team/3341/2024). Our alliance made it to semifinals before being eliminated, ultimately placing 4th overall.
+## Robot Features
+
 
 ## Controls
-![Controls](src/main/assets/controllerMap2024.png)
+![Controllers](src/main/assets/controllerMap2024.png)
+![Numpad](src/main/assets/numpadMap2024.png)
