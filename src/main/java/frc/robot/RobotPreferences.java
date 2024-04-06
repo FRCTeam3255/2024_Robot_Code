@@ -48,9 +48,12 @@ public class RobotPreferences {
     /**
      * <b> Units: </b> Meters
      */
-    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos", 2.99);
+    public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos",
+        Units.feetToMeters(2.99));
+
     public static final SN_BooleanPreference climberForwardLimitEnable = new SN_BooleanPreference(
         "climberForwardLimitEnable", true);
+
     /**
      * <b> Units: </b> Meters
      */
@@ -122,7 +125,7 @@ public class RobotPreferences {
      * <b> Units: </b> Meters
      */
     public static final SN_DoublePreference climberIsAtPositionTolerance = new SN_DoublePreference(
-        "climberIsAtPositionTolerance", 0.2);
+        "climberIsAtPositionTolerance", Units.feetToMeters(0.2));
 
   }
 

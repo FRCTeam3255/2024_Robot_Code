@@ -50,7 +50,7 @@ public class SmileyDefense extends InstantCommand {
     subLEDs.setLEDsToAnimation(constLEDs.PANIC_ANIMATION);
     subShooter.setIgnoreFlywheelSpeed(false);
 
-    subClimber.setPosition(1.9);
+    subClimber.setPosition(Units.feetToMeters(1.9));
     subIntake.setPivotAngle(prefIntake.pivotMaxPos.getValue() - 1);
   }
 }

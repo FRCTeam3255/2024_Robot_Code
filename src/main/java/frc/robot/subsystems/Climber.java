@@ -97,10 +97,10 @@ public class Climber extends SubsystemBase {
    * 
    */
   public void setPosition(double position) {
+    desiredPosition = position;
+
     position = SN_Math.metersToRotations(MathUtil.clamp(position, prefClimber.climberMinPos.getValue(),
         prefClimber.climberMaxPos.getValue()), 1, 1);
-
-    desiredPosition = position;
 
     climberMotor.setControl(motionMagicPositionalRequest.withPosition(position));
   }

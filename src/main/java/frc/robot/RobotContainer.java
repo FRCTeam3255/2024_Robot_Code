@@ -213,11 +213,13 @@ public class RobotContainer implements Logged {
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
 
     // North: Intake from Source
-    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
+    // controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer,
+    // subPitch, subTurret));
     // East: GP Override
     controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
     // South: Eject
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch));
+    // controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
+    // subPitch));
     // West: Stow
     controller.btn_West.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
 
@@ -402,8 +404,9 @@ public class RobotContainer implements Logged {
       hoodPose = subPitch.getDesiredAngleAsPose3d(turretPose.getRotation().getZ());
 
       carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-          subClimber.getDesiredPosition()) / 7, 0,
-          ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getDesiredPosition()) / 7,
+          subClimber.getDesiredPosition()), 0,
+          ((Math.sin(Units.degreesToRadians(78.75))) *
+              subClimber.getDesiredPosition()),
           new Rotation3d());
 
       intakePose = new Pose3d(carriagePose.getX() + -0.197, carriagePose.getY(),
@@ -419,8 +422,8 @@ public class RobotContainer implements Logged {
           new Rotation3d(0, 0, Units.degreesToRadians(subPitch.getPitchAngle())));
 
       carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-          subClimber.getPosition()) / 7, 0,
-          ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
+          subClimber.getPosition()), 0,
+          ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()),
           new Rotation3d());
 
       intakePose = new Pose3d(carriagePose.getX() + -0.197,
