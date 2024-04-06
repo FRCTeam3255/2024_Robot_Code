@@ -145,7 +145,6 @@ public class RobotContainer implements Logged {
     subLEDs
         .setDefaultCommand(new SetLEDS(subLEDs, subShooter, subTurret, subPitch, subTransfer,
             conDriver.btn_RightBumper));
-    subVision.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subVision));
 
     // Register Autonomous Named Commands
     NamedCommands.registerCommand("IntakeGamePiece",
@@ -521,14 +520,6 @@ public class RobotContainer implements Logged {
     boolean XCorrect = false;
     boolean YCorrect = false;
 
-    // values only for testing
-    // SmartDashboard.putNumber("Current Drivetrain X",
-    // subDrivetrain.getPose().getX());
-    // SmartDashboard.putNumber("Current Drivetrain Y",
-    // subDrivetrain.getPose().getY());
-    // SmartDashboard.putNumber("Current Drivetrain Rotation",
-    // subDrivetrain.getPose().getRotation().getDegrees());
-
     subLEDs.setLEDBrightness(0.4);
 
     // Checking Rotation
@@ -595,8 +586,8 @@ public class RobotContainer implements Logged {
     }
   }
 
-  // public static Command AddVisionMeasurement() {
-  // return new AddVisionMeasurement(subDrivetrain,
-  // subVision).ignoringDisable(true);
-  // }
+  public static Command AddVisionMeasurement() {
+    return new AddVisionMeasurement(subDrivetrain,
+        subVision).ignoringDisable(true);
+  }
 }
