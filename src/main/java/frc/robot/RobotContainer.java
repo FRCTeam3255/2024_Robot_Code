@@ -399,9 +399,7 @@ public class RobotContainer implements Logged {
     if (Robot.isSimulation()) {
       turretPose = subTurret.getDesiredAngleAsPose3d();
 
-      // TODO: Fix this pose so that it visually accounts for the rotation of the
-      // turret as well
-      hoodPose = subPitch.getDesiredAngleAsPose3d(turretPose.getRotation().getZ());
+      hoodPose = subPitch.getDesiredAngleAsPose3d(turretPose.getRotation());
 
       carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
           subClimber.getDesiredPosition()), 0,
@@ -419,8 +417,7 @@ public class RobotContainer implements Logged {
       turretPose = new Pose3d(new Translation3d(),
           new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
 
-      hoodPose = new Pose3d(new Translation3d(),
-          new Rotation3d(0, 0, Units.degreesToRadians(subPitch.getPitchAngle())));
+      hoodPose = subPitch.getDesiredAngleAsPose3d(turretPose.getRotation());
 
       carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
           subClimber.getPosition()), 0,
