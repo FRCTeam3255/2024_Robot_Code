@@ -18,9 +18,6 @@ import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SmileyDefense extends InstantCommand {
   Climber subClimber;
   Intake subIntake;
@@ -29,6 +26,9 @@ public class SmileyDefense extends InstantCommand {
   Shooter subShooter;
   LEDs subLEDs;
 
+  /**
+   * Defensive preset inspired by FRC 9452 - LHS Steel Stingers
+   */
   public SmileyDefense(Climber subClimber, Intake subIntake, Turret subTurret, Pitch subPitch, Shooter subShooter,
       LEDs subLEDs) {
     this.subClimber = subClimber;
@@ -41,7 +41,6 @@ public class SmileyDefense extends InstantCommand {
     addRequirements(subClimber, subIntake, subTurret, subPitch, subShooter, subLEDs);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     RobotContainer.setLockedLocation(LockedLocation.NONE);

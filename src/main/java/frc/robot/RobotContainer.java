@@ -104,7 +104,7 @@ public class RobotContainer implements Logged {
   int[] XTranslationColor;
   int[] YTranslationColor;
 
-  // Poses
+  // Logged Poses
   @Log.NT
   static Pose3d currentRobotPose;
   @Log.NT
@@ -169,10 +169,11 @@ public class RobotContainer implements Logged {
 
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+
+    // Reset Pose
     controller.btn_South
-        .onTrue(
-            Commands.runOnce(
-                () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
 
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
@@ -211,16 +212,16 @@ public class RobotContainer implements Logged {
     // Left Stick Press = Panic
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
 
-    // D-PAD North: Intake from Source
+    // North: Intake from Source
     controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
-    // D-PAD East: GP Override
+    // East: GP Override
     controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
-    // D-PAD South: Eject
+    // South: Eject
     controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch));
-    // D-PAD West: Stow
+    // West: Stow
     controller.btn_West.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
 
-    // Right Trigger = Shoot
+    // Right Trigger: Shoot
     controller.btn_RightTrigger
         .whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer,
             subPitch, subIntake, subClimber))
@@ -228,7 +229,7 @@ public class RobotContainer implements Logged {
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
             .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)));
 
-    // Right Bumper = Unalive Shooter
+    // Right Bumper: Unalive Shooter
     controller.btn_RightBumper.onTrue(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
@@ -238,14 +239,18 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
                 prefShooter.rightShooterSpeakerVelocity.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
+
     // B: Prep Amp
     controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter, subClimber));
+
+    // X: Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSubVelocity.getValue(),
             prefShooter.rightShooterSubVelocity.getValue(),
             prefTurret.turretSubPresetPos.getValue(),
             prefPitch.pitchSubAngle.getValue(), true, conNumpad, "Subwoofer", constRobot.TUNING_MODE)));
+
     // Y: Pass Note (with Vision)
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SHUFFLE))
         .alongWith(
@@ -253,29 +258,27 @@ public class RobotContainer implements Logged {
                 prefShooter.rightShooterShuffleVelocity.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
-    // Back/Start are Zero turret and pitch
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
   }
 
   private void configureNumpadBindings(SN_SwitchboardStick switchboardStick) {
-    // Gulf of Mexico
+    // Gulf of Mexico (Shooting from the amp)
     switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
             prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true,
             switchboardStick, "Gulf of Mexico", constRobot.TUNING_MODE)));
 
-    // "Leapfrog" or starting-line preset or "Spike Mark" (even though it isn't
-    // spike mark)
+    // Starting-line preset or "Spike" (even though it isn't at the spike mark)
     switchboardStick.btn_2.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true,
+            prefTurret.turretStartingLinePos.getValue(), prefPitch.pitchStartingLineAngle.getValue(), true,
             switchboardStick,
             "Spike", constRobot.TUNING_MODE)));
 
-    // Podium preset (the new panama canal)
+    // Podium preset (AKA Panama Canal)
     switchboardStick.btn_3.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
@@ -283,9 +286,7 @@ public class RobotContainer implements Logged {
             "Podium",
             constRobot.TUNING_MODE)));
 
-    // ZERO INTAKE
     switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake).unless(() -> constRobot.TUNING_MODE));
-    // ZERO CLIMBER
     switchboardStick.btn_5.onTrue(new ZeroClimber(subClimber).unless(() -> constRobot.TUNING_MODE));
 
     // Peninsula preset (behind the podium)
@@ -296,7 +297,7 @@ public class RobotContainer implements Logged {
             prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true,
             switchboardStick, "Peninsula", constRobot.TUNING_MODE)));
 
-    // Steel Stingers Defense !!!
+    // Steel Stingers Defense
     switchboardStick.btn_7.onTrue(new SmileyDefense(subClimber, subIntake, subTurret, subPitch, subShooter, subLEDs));
 
     // Wing
@@ -307,7 +308,7 @@ public class RobotContainer implements Logged {
             switchboardStick, "Wing",
             constRobot.TUNING_MODE)));
 
-    // 254 Shuffling preset (centerline corner to amp zone corner)
+    // Shuffling preset (centerline corner to amp zone corner)
     switchboardStick.btn_9.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterShuffleVelocity.getValue(), prefShooter.rightShooterShuffleVelocity.getValue(),
