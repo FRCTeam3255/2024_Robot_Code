@@ -198,7 +198,7 @@ public class Intake extends SubsystemBase implements Logged {
   public boolean calcGamePieceReadyToAmp() {
     double currentPosition = Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
 
-    return currentPosition <= -prefIntake.rollerRotationsToAmp.getValue();
+    return currentPosition <= -prefIntake.rollerRotationToAmp.getValue();
   }
 
   public double getDesiredPivotAngle() {

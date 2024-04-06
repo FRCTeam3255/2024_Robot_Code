@@ -94,6 +94,6 @@ public class IntakeGroundGamePiece extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.calcGamePieceCollected();
+    return subTransfer.calcGamePieceCollected(false);
   }
 }
