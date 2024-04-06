@@ -213,13 +213,13 @@ public class RobotContainer implements Logged {
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
 
     // North: Intake from Source
-    // controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer,
-    // subPitch, subTurret));
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer,
+        subPitch, subTurret));
     // East: GP Override
     controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
     // South: Eject
-    // controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
-    // subPitch));
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
+        subPitch));
     // West: Stow
     controller.btn_West.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
 
