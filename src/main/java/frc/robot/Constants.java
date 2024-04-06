@@ -115,7 +115,7 @@ public final class Constants {
         SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
         SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
-    public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive; // false
+    public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
     public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.CounterClockwise_Positive;
 
@@ -207,6 +207,7 @@ public final class Constants {
     public static final InterpolatingDoubleTreeMap DISTANCE_MAP = new InterpolatingDoubleTreeMap();
 
     // Comments indicate where we placed the robot directly in line with the SPEAKER
+    // to get the value
     static {
       DISTANCE_MAP.put(1.3373, 56.0); // Subwoofer
       DISTANCE_MAP.put(2.295, 41.0); // Starting Line
@@ -214,7 +215,7 @@ public final class Constants {
       DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
       DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
       DISTANCE_MAP.put(6.5973, 19.9); // Mid Centerline
-      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :)
+      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :D
 
       // edge of bumper to center of turret = 42.29cm = 0.4229 m
     }
@@ -252,15 +253,13 @@ public final class Constants {
 
     public static final boolean TUNING_MODE = false;
 
-    /**
-     * Volts
-     */
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
     // @formatter:off
     /**
      * Updated by Alice to match Comp bot Feb. 19
      */
+    // TODO: UPDATE BEFORE RELEASE
     public static final String[] PDH_DEVICES = {
         /*  0 */ "Swerve/FL Steer",
         /*  1 */ "Swerve/FL Drive",
@@ -311,6 +310,8 @@ public final class Constants {
 
     public static final double ABS_ENCODER_OFFSET = 0.011700;
     public static final boolean ABS_ENCODER_INVERT = false;
+
+    public static final InvertedValue MOTOR_INVERTED = InvertedValue.CounterClockwise_Positive;
 
     /**
      * The amount that the absolute encoder's rotation must surpass before we start

@@ -747,8 +747,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference turretReverseLimit = new SN_DoublePreference("turretReverseLimit",
         Units.degreesToRotations(-79));
 
-    public static final SN_BooleanPreference turretInverted = new SN_BooleanPreference("turretInverted", false);
-
     // -- Zeroing --
     public static final SN_DoublePreference turretZeroingVoltage = new SN_DoublePreference("turretZeroingVoltage", 1);
     public static final SN_DoublePreference turretZeroedVelocity = new SN_DoublePreference("turretZeroedVelocity",

@@ -93,7 +93,7 @@ public class Turret extends SubsystemBase {
     turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimit.getValue();
     turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretCurrentTimeThreshold.getValue();
 
-    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+    turretConfig.MotorOutput.Inverted = constTurret.MOTOR_INVERTED;
     turretMotor.getConfigurator().apply(turretConfig);
   }
   // "Set" Methods
@@ -112,7 +112,6 @@ public class Turret extends SubsystemBase {
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
     turretMotor.getConfigurator().apply(turretConfig);
-    turretMotor.setInverted(prefTurret.turretInverted.getValue());
   }
 
   public void setTurretSensorAngle(double angle) {
