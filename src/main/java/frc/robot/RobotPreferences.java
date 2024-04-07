@@ -49,7 +49,7 @@ public class RobotPreferences {
      * <b> Units: </b> Meters
      */
     public static final SN_DoublePreference climberMaxPos = new SN_DoublePreference("climberMaxPos",
-        Units.feetToMeters(2.99));
+        0.42);
 
     public static final SN_BooleanPreference climberForwardLimitEnable = new SN_BooleanPreference(
         "climberForwardLimitEnable", true);

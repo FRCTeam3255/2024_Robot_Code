@@ -33,7 +33,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class constClimber {
-    public static final double GEAR_RATIO = 18.56;
+    public static final double GEAR_RATIO = 133.0739;
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
     public static final InvertedValue MOTOR_INVERTED = InvertedValue.Clockwise_Positive;

@@ -163,7 +163,7 @@ public class Climber extends SubsystemBase {
   }
 
   public double getDesiredPosition() {
-    return Units.feetToMeters(desiredPosition);
+    return desiredPosition;
   }
 
   /**
