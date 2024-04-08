@@ -127,6 +127,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberIsAtPositionTolerance = new SN_DoublePreference(
         "climberIsAtPositionTolerance", Units.feetToMeters(0.2));
 
+    public static final SN_DoublePreference climberSmileyPos = new SN_DoublePreference("climberSmileyPos", 0.19);
+
   }
 
   public static final class prefDrivetrain {
