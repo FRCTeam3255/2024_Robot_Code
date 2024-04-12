@@ -1,6 +1,7 @@
 # Shang-Chi - FRC Team 3255's 2024 Robot
 Jump into the code [`here!`](src/main/java/frc/robot)
 
+
 Shang-Chi competed at the regional level in the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2024caph)
 - [San Diego](https://www.thebluealliance.com/event/2024casd)
@@ -23,22 +24,10 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 
 Interested in learning more about CRESCENDO? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
-## Robot Features
-Our code is written off of WPI’s Command-Based libraries and framework and utilizes our team's own vendor library, [SuperCORE](https://github.com/FRCTeam3255/SuperCORE). All of our subsystems implement Supply current limiting at high voltages in order to prevent motors burning out and mechanisms breaking. Similarly, all of our positionally controlled subsystems have a zeroing fallback if their position is inaccurate. We turn off current limiting, run the motor at a slow speed, and detect a current spike before to zero the subsystem's position.
-### Shooter
-- The hood uses the y-coordinate of the robot's pose to linearly interpolate the angle to shuffle notes from our robot's position.
-- The flywheels are controlled seperately and can be set to different speeds and PID values. They begin to get up to speed as soon as we collect a game piece and are set to neutral output once we shoot out the game piece.
-- The turret uses trigonometry to determine the angle to shuffle notes from our robot's position.
-### Elevator
-- The elevator is set to neutral output when it is close to 0 to conserve battery.
-### Intake/Transfer
-- Our game piece detection relies on current and voltage. We detect the spike in the current on our rollers when a game piece is collected.
-- We briefly push back the game piece when it is collected using time-based methods, setting the game piece to a consistent position before shooting it. We also position the game piece for amp placement using encoder-based methods.
-### Drivetrain
-- 
-### LEDs
-- The LEDs are controlled using CTRE's CANdle. They flash when we are intaking and turn solid when a game piece is collected.
-
 ## Controls
 ![Controllers](src/main/assets/controllerMap2024.png)
 ![Numpad](src/main/assets/numpadMap2024.png)
+
+## Robot Simulation
+![Photo of Shang-Chi in Sim](src/main/assets/simPhoto.png)
+Interested in visualizing our code in AdvantageScope? Find our 3d robot model [here]()! Download the "Robot_2024_Shang-Chi" folder and follow the official instructions on [importing custom assets into AdvantageScope](https://github.com/Mechanical-Advantage/AdvantageScope/blob/main/docs/CUSTOM-ASSETS.md#custom-assets).
