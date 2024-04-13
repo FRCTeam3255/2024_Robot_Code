@@ -13,7 +13,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
-import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -54,7 +53,7 @@ public class Intake extends SubsystemBase implements Logged {
     motionMagicRequest = new MotionMagicVoltage(0);
     voltageRequest = new VoltageOut(0);
 
-    desiredPivotAngle = prefIntake.pivotMinPos.getValue();
+    desiredPivotAngle = prefIntake.pivotMaxPos.getValue();
 
     configure();
   }
@@ -199,7 +198,7 @@ public class Intake extends SubsystemBase implements Logged {
   public boolean calcGamePieceReadyToAmp() {
     double currentPosition = Units.rotationsToDegrees(rollerMotor.getPosition().getValueAsDouble());
 
-    return currentPosition <= -prefIntake.rollerRotationsToAmp.getValue();
+    return currentPosition <= -prefIntake.rollerRotationToAmp.getValue();
   }
 
   public double getDesiredPivotAngle() {

@@ -44,7 +44,7 @@ public class IntakeFromSource extends Command {
     subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
         prefShooter.rightShooterIntakeVoltage.getValue());
 
-    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue());
+    subPitch.setPitchAngle(prefPitch.pitchIntakeShooterAngle.getValue());
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
   }
 
@@ -80,6 +80,6 @@ public class IntakeFromSource extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.calcGamePieceCollected();
+    return subTransfer.calcGamePieceCollected(true);
   }
 }

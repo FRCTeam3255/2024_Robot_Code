@@ -54,9 +54,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // Logging to SmartDashboard
-    // RobotContainer.logPDHValues();
-    // RobotContainer.AddVisionMeasurement().schedule();
     RobotContainer.updateLoggedPoses();
+    RobotContainer.AddVisionMeasurement();
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
   }
 
@@ -81,7 +80,6 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     RobotContainer.zeroClimber().schedule();
-    // RobotContainer.stowIntakePivot().schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -104,7 +102,6 @@ public class Robot extends TimedRobot {
 
     if (!hasAutonomousRun) {
       RobotContainer.zeroClimber().schedule();
-      // RobotContainer.stowIntakePivot().schedule();
     }
   }
 

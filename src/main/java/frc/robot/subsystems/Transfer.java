@@ -50,23 +50,6 @@ public class Transfer extends SubsystemBase implements Logged {
     configure();
   }
 
-  public boolean intakeSourceGamePieceDetection() {
-    transferCurrent = transferMotor.getStatorCurrent().getValue();
-    transferVelocity = transferMotor.getVelocity().getValue();
-    feederCurrent = feederMotor.getStatorCurrent();
-
-    if (hasGamePiece ||
-        (feederCurrent <= prefTransfer.sourceFeederHasGamePieceCurrent.getValue())
-            && (transferCurrent >= prefTransfer.sourceTransferHasGamePieceCurrent.getValue())
-            && (transferVelocity <= prefTransfer.sourceTransferHasGamePieceVelocity.getValue())) {
-      hasGamePiece = true;
-    } else {
-      hasGamePiece = false;
-    }
-
-    return hasGamePiece;
-  }
-
   public void configure() {
     feederMotor.configFactoryDefault();
     transferMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -78,11 +61,12 @@ public class Transfer extends SubsystemBase implements Logged {
   /**
    * Calculates and sets the value of hasGamePiece based off of Transfer & Feeder
    * current & velocity. If we already have a game piece, this will return true
-   * without recalculating.
+   * without recalculating. Detection is more lenient during Auto.
    * 
+   * @param fromSource If we are intaking from Source
    * @return If we have a game piece.
    */
-  public boolean calcGamePieceCollected() {
+  public boolean calcGamePieceCollected(boolean fromSource) {
     transferCurrent = transferMotor.getStatorCurrent().getValue();
     feederCurrent = feederMotor.getStatorCurrent();
     transferVelocity = transferMotor.getVelocity().getValue();
@@ -90,6 +74,12 @@ public class Transfer extends SubsystemBase implements Logged {
     feederHasGamePieceCurrent = prefTransfer.feederHasGamePieceCurrent.getValue();
     transferHasGamePieceCurrent = prefTransfer.transferHasGamePieceCurrent.getValue();
     transferHasGamePieceVelocity = prefTransfer.transferHasGamePieceVelocity.getValue();
+
+    if (fromSource) {
+      feederHasGamePieceCurrent = prefTransfer.sourceFeederHasGamePieceCurrent.getValue();
+      transferHasGamePieceCurrent = prefTransfer.sourceTransferHasGamePieceCurrent.getValue();
+      transferHasGamePieceVelocity = prefTransfer.sourceTransferHasGamePieceVelocity.getValue();
+    }
 
     if (RobotState.isAutonomous()) {
       feederHasGamePieceCurrent = prefTransfer.feederAutoHasGamePieceCurrent.getValue();
@@ -216,6 +206,6 @@ public class Transfer extends SubsystemBase implements Logged {
         Units.rotationsToDegrees(transferMotor.getPosition().getValueAsDouble()));
 
     // Key is intentional - shows in SmartDashboard
-    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected());
+    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected(false));
   }
 }

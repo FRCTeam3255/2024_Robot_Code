@@ -18,16 +18,17 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constPitch;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap.mapPitch;
 import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefTurret;
 import monologue.Logged;
 import monologue.Annotations.Log;
 
@@ -259,9 +260,24 @@ public class Pitch extends SubsystemBase implements Logged {
     return Optional.of(desiredLockingAngle);
   }
 
-  public Pose3d getDesiredAngleAsPose3d(double turretRotation) {
-    return new Pose3d(new Translation3d(-0.1, 0, 0.36),
-        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), turretRotation));
+  public Pose3d getDesiredAngleAsPose3d(Rotation3d turretRotation) {
+    double pitchAngle;
+    if (Robot.isSimulation()) {
+      pitchAngle = desiredPitchAngle;
+    } else {
+      pitchAngle = getPitchAngle();
+    }
+
+    double radius = Units.inchesToMeters(4.5);
+    double turretAngle = turretRotation.getZ();
+
+    return new Pose3d(new Translation3d(
+        radius * Math.cos(
+            turretAngle + Units.degreesToRadians(180)),
+        radius * Math.sin(
+            turretAngle + Units.degreesToRadians(180)),
+        0.36),
+        new Rotation3d(0, -Units.degreesToRadians(pitchAngle), turretAngle));
   }
 
   @Override

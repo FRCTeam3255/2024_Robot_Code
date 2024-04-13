@@ -63,7 +63,7 @@ public class PrepAmp extends Command {
     if (subIntake.isPivotAtAngle(prefIntake.pivotTransferToAmpAngle.getValue()) && subClimber.isAtPosition(0.2, 0.5)) {
       subIntake.setIntakeRollerSpeed(prefIntake.rollerStageAmpNoteSpeed.getValue());
       subTransfer.setFeederMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
-      subTransfer.setTransferMotorSpeed(prefTransfer.feederStageAmpNoteSpeed.getValue());
+      subTransfer.setTransferMotorSpeed(prefTransfer.transferStageAmpNoteSpeed.getValue());
     }
   }
 
@@ -76,7 +76,7 @@ public class PrepAmp extends Command {
     if (!interrupted) {
       RobotContainer.setLockedLocation(LockedLocation.AMP);
       subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getValue());
-      subClimber.setPosition(0.4);
+      subClimber.setPosition(Units.feetToMeters(0.4));
 
     } else {
       subTurret.setTurretAngle(lastHoodAngle);

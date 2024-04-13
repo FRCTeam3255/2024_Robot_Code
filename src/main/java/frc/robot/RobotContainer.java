@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.frcteam3255.joystick.SN_SwitchboardStick;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -72,8 +71,8 @@ import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
-import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Vision;
 
 public class RobotContainer implements Logged {
   // Misc
@@ -95,7 +94,7 @@ public class RobotContainer implements Logged {
   private final static Shooter subShooter = new Shooter();
   private final static Turret subTurret = new Turret();
   private final static Transfer subTransfer = new Transfer();
-  // private final static Vision subVision = new Vision();
+  private final static Vision subVision = new Vision();
 
   SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
 
@@ -105,17 +104,17 @@ public class RobotContainer implements Logged {
   int[] XTranslationColor;
   int[] YTranslationColor;
 
-  // Poses
+  // Logged Poses
   @Log.NT
   static Pose3d currentRobotPose;
   @Log.NT
-  static Pose3d desiredTurretPose;
+  static Pose3d turretPose;
   @Log.NT
-  static Pose3d desiredHoodPose;
+  static Pose3d hoodPose;
   @Log.NT
-  static Pose3d desiredCarriagePose;
+  static Pose3d carriagePose;
   @Log.NT
-  static Pose3d desiredIntakePose;
+  static Pose3d intakePose;
 
   @Log.NT
   boolean hasNamedCommandRun = false;
@@ -156,6 +155,7 @@ public class RobotContainer implements Logged {
 
     // View controls at:
     // src\main\assets\controllerMap2024.png
+    // src\main\assets\numpadMap2024.png
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
     configureNumpadBindings(conNumpad);
@@ -169,10 +169,11 @@ public class RobotContainer implements Logged {
 
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+
+    // Reset Pose
     controller.btn_South
-        .onTrue(
-            Commands.runOnce(
-                () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
+        .onTrue(Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
 
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
@@ -211,16 +212,18 @@ public class RobotContainer implements Logged {
     // Left Stick Press = Panic
     controller.btn_LeftStick.whileTrue(new Panic(subLEDs));
 
-    // D-PAD North: Intake from Source
-    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer, subPitch, subTurret));
-    // D-PAD East: GP Override
+    // North: Intake from Source
+    controller.btn_North.whileTrue(new IntakeFromSource(subShooter, subTransfer,
+        subPitch, subTurret));
+    // East: GP Override
     controller.btn_East.onTrue(Commands.runOnce(() -> subTransfer.setGamePieceCollected(true)));
-    // D-PAD South: Eject
-    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer, subPitch));
-    // D-PAD West: Stow
+    // South: Eject
+    controller.btn_South.whileTrue(new SpitGamePiece(subIntake, subTransfer,
+        subPitch));
+    // West: Stow
     controller.btn_West.onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue())));
 
-    // Right Trigger = Shoot
+    // Right Trigger: Shoot
     controller.btn_RightTrigger
         .whileTrue(new TransferGamePiece(subShooter, subTurret, subTransfer,
             subPitch, subIntake, subClimber))
@@ -228,7 +231,7 @@ public class RobotContainer implements Logged {
             .alongWith(Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()))
             .alongWith(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)));
 
-    // Right Bumper = Unalive Shooter
+    // Right Bumper: Unalive Shooter
     controller.btn_RightBumper.onTrue(new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs)
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
@@ -238,14 +241,18 @@ public class RobotContainer implements Logged {
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
                 prefShooter.rightShooterSpeakerVelocity.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
+
     // B: Prep Amp
     controller.btn_B.whileTrue(new PrepAmp(subIntake, subPitch, subTransfer, subTurret, subShooter, subClimber));
+
+    // X: Subwoofer Preset
     controller.btn_X.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSubVelocity.getValue(),
             prefShooter.rightShooterSubVelocity.getValue(),
             prefTurret.turretSubPresetPos.getValue(),
             prefPitch.pitchSubAngle.getValue(), true, conNumpad, "Subwoofer", constRobot.TUNING_MODE)));
+
     // Y: Pass Note (with Vision)
     controller.btn_Y.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.SHUFFLE))
         .alongWith(
@@ -253,30 +260,27 @@ public class RobotContainer implements Logged {
                 prefShooter.rightShooterShuffleVelocity.getValue())))
         .alongWith(Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false))));
 
-    // Back/Start are Zero turret and pitch
     controller.btn_Back.onTrue(new ZeroTurret(subTurret));
     controller.btn_Start.onTrue(new ZeroPitch(subPitch));
   }
 
   private void configureNumpadBindings(SN_SwitchboardStick switchboardStick) {
-
-    // Gulf of Mexico
+    // Gulf of Mexico (Shooting from the amp)
     switchboardStick.btn_1.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
             prefTurret.turretShootFromAmpPresetPos.getValue(), prefPitch.pitchShootFromAmpAngle.getValue(), true,
             switchboardStick, "Gulf of Mexico", constRobot.TUNING_MODE)));
 
-    // "Leapfrog" or starting-line preset or "Spike Mark" (even though it isn't
-    // spike mark)
+    // Starting-line preset or "Spike" (even though it isn't at the spike mark)
     switchboardStick.btn_2.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-            prefTurret.turretLeapfrogPresetPos.getValue(), prefPitch.pitchLeapfrogAngle.getValue(), true,
+            prefTurret.turretStartingLinePos.getValue(), prefPitch.pitchStartingLineAngle.getValue(), true,
             switchboardStick,
             "Spike", constRobot.TUNING_MODE)));
 
-    // Podium preset (the new panama canal)
+    // Podium preset (AKA Panama Canal)
     switchboardStick.btn_3.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
@@ -284,20 +288,17 @@ public class RobotContainer implements Logged {
             "Podium",
             constRobot.TUNING_MODE)));
 
-    // ZERO INTAKE
     switchboardStick.btn_4.onTrue(new ZeroIntake(subIntake).unless(() -> constRobot.TUNING_MODE));
-    // ZERO CLIMBER
     switchboardStick.btn_5.onTrue(new ZeroClimber(subClimber).unless(() -> constRobot.TUNING_MODE));
 
     // Peninsula preset (behind the podium)
     switchboardStick.btn_6.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterSpeakerVelocity.getValue(), prefShooter.rightShooterSpeakerVelocity.getValue(),
-
             prefTurret.turretBehindPodiumPresetPos.getValue(), prefPitch.pitchBehindPodiumAngle.getValue(), true,
             switchboardStick, "Peninsula", constRobot.TUNING_MODE)));
 
-    // Steel Stingers Defense !!!
+    // Steel Stingers Defense
     switchboardStick.btn_7.onTrue(new SmileyDefense(subClimber, subIntake, subTurret, subPitch, subShooter, subLEDs));
 
     // Wing
@@ -308,7 +309,7 @@ public class RobotContainer implements Logged {
             switchboardStick, "Wing",
             constRobot.TUNING_MODE)));
 
-    // 254 Shuffling preset (centerline corner to amp zone corner)
+    // Shuffling preset (centerline corner to amp zone corner)
     switchboardStick.btn_9.onTrue(Commands.runOnce(() -> setLockedLocation(LockedLocation.NONE))
         .alongWith(new ShootingPreset(subShooter, subTurret, subPitch, subIntake,
             prefShooter.leftShooterShuffleVelocity.getValue(), prefShooter.rightShooterShuffleVelocity.getValue(),
@@ -368,7 +369,7 @@ public class RobotContainer implements Logged {
         new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             false));
 
-    // // Centerline ONLY
+    // Centerline ONLY
     autoChooser.addOption("Centerline Down", new Centerline(subDrivetrain,
         subIntake, subLEDs, subPitch, subShooter,
         subTransfer, subTurret, subClimber, true));
@@ -393,34 +394,43 @@ public class RobotContainer implements Logged {
     return !isPracticeBot.get();
   }
 
-  // TODO: Clean these up maybe idk idc
   public static void updateLoggedPoses() {
     currentRobotPose = subDrivetrain.getPose3d();
-    desiredTurretPose = subTurret.getDesiredAngleAsPose3d();
-    desiredHoodPose = subPitch.getDesiredAngleAsPose3d(desiredTurretPose.getRotation().getZ());
-    // I CANNOT EXPLAIN THESE THINGS
-    desiredCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-        subClimber.getDesiredPosition()) / 7, 0,
-        ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getDesiredPosition()) / 7,
-        new Rotation3d());
-    desiredIntakePose = new Pose3d(desiredCarriagePose.getX() + -0.197, desiredCarriagePose.getY(),
-        desiredCarriagePose.getZ() + 0.305,
-        new Rotation3d(0,
-            -Units.degreesToRadians(subIntake.getDesiredPivotAngle()), 0).plus(desiredCarriagePose.getRotation()));
+    if (Robot.isSimulation()) {
+      turretPose = subTurret.getDesiredAngleAsPose3d();
 
-    // // Actual Poses
-    // actualTurretPose = new Pose3d(new Translation3d(),
-    // new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
-    // actualCarriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
-    // subClimber.getPosition()) / 7, 0,
-    // ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()) / 7,
-    // new Rotation3d());
-    // actualIntakePose = new Pose3d(actualCarriagePose.getX() + -0.197,
-    // actualCarriagePose.getY(),
-    // actualCarriagePose.getZ() + 0.305,
-    // new Rotation3d(0,
-    // -Units.degreesToRadians(subIntake.getPivotAngle()),
-    // 0).plus(actualCarriagePose.getRotation()));
+      hoodPose = subPitch.getDesiredAngleAsPose3d(turretPose.getRotation());
+
+      carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+          subClimber.getDesiredPosition()), 0,
+          ((Math.sin(Units.degreesToRadians(78.75))) *
+              subClimber.getDesiredPosition()),
+          new Rotation3d());
+
+      intakePose = new Pose3d(carriagePose.getX() + -0.197, carriagePose.getY(),
+          carriagePose.getZ() + 0.305,
+          new Rotation3d(0,
+              Units.degreesToRadians(subIntake.getDesiredPivotAngle() - prefIntake.pivotMaxPos.getValue()), 0)
+              .plus(carriagePose.getRotation()));
+    } else {
+      // Actual Poses
+      turretPose = new Pose3d(new Translation3d(),
+          new Rotation3d(0, 0, Units.degreesToRadians(subTurret.getAngle())));
+
+      hoodPose = subPitch.getDesiredAngleAsPose3d(turretPose.getRotation());
+
+      carriagePose = new Pose3d(-(Math.cos(Units.degreesToRadians(78.75)) *
+          subClimber.getPosition()), 0,
+          ((Math.sin(Units.degreesToRadians(78.75))) * subClimber.getPosition()),
+          new Rotation3d());
+
+      intakePose = new Pose3d(carriagePose.getX() + -0.197, carriagePose.getY(),
+          carriagePose.getZ() + 0.305,
+          new Rotation3d(0,
+              Units.degreesToRadians(subIntake.getPivotAngle() - prefIntake.pivotMaxPos.getValue()), 0)
+              .plus(carriagePose.getRotation()));
+
+    }
   }
 
   // --- PDH ---
@@ -435,26 +445,7 @@ public class RobotContainer implements Logged {
     PDH.setSwitchableChannel(isPowered);
   }
 
-  /**
-   * Updates the values supplied to the PDH to SmartDashboard. Should be called
-   * periodically.
-   */
-  public static void logPDHValues() {
-    SmartDashboard.putNumber("PDH/Input Voltage", PDH.getVoltage());
-    SmartDashboard.putBoolean("PDH/Is Switchable Channel Powered", PDH.getSwitchableChannel());
-    SmartDashboard.putNumber("PDH/Total Current", PDH.getTotalCurrent());
-    SmartDashboard.putNumber("PDH/Total Power", PDH.getTotalPower());
-    SmartDashboard.putNumber("PDH/Total Energy", PDH.getTotalEnergy());
-
-    for (int i = 0; i < Constants.constRobot.PDH_DEVICES.length; i++) {
-      if (Constants.constRobot.PDH_DEVICES[i] != null) {
-        SmartDashboard.putNumber("PDH/" + Constants.constRobot.PDH_DEVICES[i] + " Current", PDH.getCurrent(i));
-      }
-    }
-  }
-
   // --- Locking Logic ---
-
   public static void setLockedLocation(LockedLocation location) {
     lockedLocation = location;
   }
@@ -510,14 +501,6 @@ public class RobotContainer implements Logged {
     boolean rotationCorrect = false;
     boolean XCorrect = false;
     boolean YCorrect = false;
-
-    // values only for testing
-    // SmartDashboard.putNumber("Current Drivetrain X",
-    // subDrivetrain.getPose().getX());
-    // SmartDashboard.putNumber("Current Drivetrain Y",
-    // subDrivetrain.getPose().getY());
-    // SmartDashboard.putNumber("Current Drivetrain Rotation",
-    // subDrivetrain.getPose().getRotation().getDegrees());
 
     subLEDs.setLEDBrightness(0.4);
 
@@ -585,8 +568,8 @@ public class RobotContainer implements Logged {
     }
   }
 
-  // public static Command AddVisionMeasurement() {
-  // return new AddVisionMeasurement(subDrivetrain,
-  // subVision).ignoringDisable(true);
-  // }
+  public static Command AddVisionMeasurement() {
+    return new AddVisionMeasurement(subDrivetrain,
+        subVision).ignoringDisable(true);
+  }
 }

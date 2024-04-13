@@ -7,7 +7,6 @@ package frc.robot.commands.autos;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -21,7 +20,6 @@ import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.AimAuto;
 import frc.robot.commands.IntakeGroundGamePiece;
-import frc.robot.commands.LockPitch;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -74,7 +72,6 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
-        // throw out that intake
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
