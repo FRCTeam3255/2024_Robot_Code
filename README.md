@@ -30,4 +30,4 @@ Interested in learning more about CRESCENDO? Visit [FIRST's website](https://www
 
 ## Robot Simulation
 ![Photo of Shang-Chi in Sim](src/main/assets/simPhoto.png)
-Interested in visualizing our code in AdvantageScope? Find our 3d robot model [here]()! Download the "Robot_2024_Shang-Chi" folder and follow the official instructions on [importing custom assets into AdvantageScope](https://github.com/Mechanical-Advantage/AdvantageScope/blob/main/docs/CUSTOM-ASSETS.md#custom-assets).
+Interested in visualizing our code in AdvantageScope? Find our 3d robot model [here](https://drive.google.com/drive/folders/1FDgifq-smxX3cTIWhzZPKftL3REFLVva?usp=sharing)! Download the "Robot_2024_Shang-Chi" folder and follow the official instructions on [importing custom assets into AdvantageScope](https://github.com/Mechanical-Advantage/AdvantageScope/blob/main/docs/CUSTOM-ASSETS.md#custom-assets).
