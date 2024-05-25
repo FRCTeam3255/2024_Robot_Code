@@ -68,11 +68,11 @@ import monologue.Annotations.Log;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
-import frc.robot.subsystems.Vision;
 
 public class RobotContainer implements Logged {
   // Misc
@@ -94,7 +94,7 @@ public class RobotContainer implements Logged {
   private final static Shooter subShooter = new Shooter();
   private final static Turret subTurret = new Turret();
   private final static Transfer subTransfer = new Transfer();
-  private final static Vision subVision = new Vision();
+  private final static Limelight subLimelight = new Limelight();
 
   SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
 
@@ -570,6 +570,6 @@ public class RobotContainer implements Logged {
 
   public static Command AddVisionMeasurement() {
     return new AddVisionMeasurement(subDrivetrain,
-        subVision).ignoringDisable(true);
+        subLimelight).ignoringDisable(true);
   }
 }
