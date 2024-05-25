@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
@@ -53,21 +55,23 @@ public class AddVisionMeasurement extends Command {
 
   public boolean rejectUpdate(PoseEstimate poseEstimate, double gyroRate) {
     // Angular velocity is too high to have accurate vision
-    if (Math.abs(gyroRate) > 720) {
-      return false;
-    }
+    // if (Math.abs(gyroRate) > 720) {
+    // return true;
+    // }
     // No tags :[
     if (poseEstimate.tagCount == 0) {
-      return false;
-    }
-    // 1 Tag with a large area
-    if (poseEstimate.tagCount == 1 && LimelightHelpers.getTA("limelight") > areaThreshold) {
-      return true;
-      // 2 tags
-    } else if (poseEstimate.tagCount > 1) {
       return true;
     }
+    // // 1 Tag with a large area
+    // if (poseEstimate.tagCount == 1 && LimelightHelpers.getTA("limelight") >
+    // areaThreshold) {
+    // return false;
+    // // 2 tags
+    // } else if (poseEstimate.tagCount > 1) {
+    // return false;
+    // }
 
+    // return true;
     return false;
   }
 }

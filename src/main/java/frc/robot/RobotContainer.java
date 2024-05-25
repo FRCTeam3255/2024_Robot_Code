@@ -164,6 +164,7 @@ public class RobotContainer implements Logged {
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
     subIntake.resetPivotToAbsolute();
+    subLimelight.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subLimelight));
     subLEDs.clearAnimation();
   }
 
@@ -568,8 +569,9 @@ public class RobotContainer implements Logged {
     }
   }
 
-  public static Command AddVisionMeasurement() {
-    return new AddVisionMeasurement(subDrivetrain,
-        subLimelight).ignoringDisable(true);
-  }
+  // TODO: FIX
+  // public static Command AddVisionMeasurement() {
+  // return new AddVisionMeasurement(subDrivetrain,
+  // subLimelight).ignoringDisable(true);
+  // }
 }
