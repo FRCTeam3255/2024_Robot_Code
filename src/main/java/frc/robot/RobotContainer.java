@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constLEDs;
@@ -196,12 +197,14 @@ public class RobotContainer implements Logged {
   private void configureOperatorBindings(SN_XboxController controller) {
     // Left Trigger = Intake
     controller.btn_LeftTrigger
-        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter))
-        .whileFalse(
-            new RepositionGamePiece(subTransfer, subShooter).unless(() -> !subTransfer.calcGamePieceCollected()))
         .onTrue(Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.NONE))
             .alongWith(Commands.runOnce(() -> subTransfer.hasGamePiece = false))
-            .unless(() -> RobotContainer.getLockedLocation() != LockedLocation.AMP));
+            .unless(() -> RobotContainer.getLockedLocation() != LockedLocation.AMP))
+        .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
+            .unless(() -> subTransfer.hasGamePiece));
+
+    Trigger repositionTrigger = new Trigger(() -> subTransfer.calcGamePieceCollected(false));
+    repositionTrigger.onTrue(new RepositionGamePiece(subTransfer, subShooter));
 
     // Left Bumper = Enable both Manuals
     // Left Stick = Manual Hood

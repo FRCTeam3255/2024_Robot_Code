@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
 import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.subsystems.Climber;
@@ -78,7 +79,13 @@ public class IntakeGroundGamePiece extends Command {
     if (!RobotState.isAutonomous()) {
       subIntake.setRollerNeutralOutput();
     }
-    subTransfer.setTransferNeutralOutput();
+    if (!interrupted) {
+      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+          prefShooter.rightShooterSubVelocity.getValue());
+      subShooter.getUpToSpeed();
+    } else {
+      subTransfer.setTransferNeutralOutput();
+    }
     subTransfer.setFeederNeutralOutput();
   }
 
