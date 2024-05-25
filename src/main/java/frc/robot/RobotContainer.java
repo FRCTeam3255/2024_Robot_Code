@@ -491,9 +491,6 @@ public class RobotContainer implements Logged {
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance, boolean hasAutoRun) {
     startingPosition = autoChooser.getSelected().getInitialPose().get();
-    if (!hasAutoRun) {
-      subDrivetrain.resetPoseToPose(startingPosition);
-    }
 
     double desiredStartingPositionX = startingPosition.getX();
     double desiredStartingPositionY = startingPosition.getY();
@@ -569,9 +566,8 @@ public class RobotContainer implements Logged {
     }
   }
 
-  // TODO: FIX
-  // public static Command AddVisionMeasurement() {
-  // return new AddVisionMeasurement(subDrivetrain,
-  // subLimelight).ignoringDisable(true);
-  // }
+  public static Command AddVisionMeasurement() {
+    return new AddVisionMeasurement(subDrivetrain,
+        subLimelight).ignoringDisable(true);
+  }
 }

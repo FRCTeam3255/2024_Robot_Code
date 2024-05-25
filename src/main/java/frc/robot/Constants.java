@@ -215,8 +215,11 @@ public final class Constants {
     static {
       DISTANCE_MAP.put(1.3373, 56.0); // Subwoofer
       DISTANCE_MAP.put(2.295, 41.0); // Starting Line
-      DISTANCE_MAP.put(3.3073, 31.0); // Spike Mark
-      DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
+      // DISTANCE_MAP.put(3.9073, 31.0); // Spike Mark
+      // DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
+      DISTANCE_MAP.put(3.9073, 31.0); // Spike mark, translated to match 1678's values
+      DISTANCE_MAP.put(4.4, 28.0);
+      DISTANCE_MAP.put(5.3, 25.5); // Mid wing, translated to match 1678's values
       DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
       DISTANCE_MAP.put(6.5973, 19.9); // Mid Centerline
       DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :D
