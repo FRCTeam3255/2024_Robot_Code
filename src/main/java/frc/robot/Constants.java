@@ -33,6 +33,11 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class constClimber {
+    /*
+     * <b>Units:</b> Seconds
+     */
+    public static final double ZEROING_TIMEOUT = 3;
+
     public static final double GEAR_RATIO = 133.0739;
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
@@ -173,6 +178,11 @@ public final class Constants {
     public static final double PITCH_GEAR_RATIO = 186.666;
     public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
     public static final boolean INVERT = false;
+
+    /*
+     * <b>Units:</b> Seconds
+     */
+    public static final double ZEROING_TIMEOUT = 3;
 
     /**
      * The position, in meters, of the center of rotation for the pitch motor

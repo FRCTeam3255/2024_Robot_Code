@@ -26,7 +26,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constLEDs;
+import frc.robot.Constants.constPitch;
 import frc.robot.Constants.constRobot;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefClimber;
@@ -434,8 +436,6 @@ public class RobotContainer implements Logged {
     }
   }
 
-  // --- PDH ---
-
   /**
    * Enable or disable whether the switchable channel on the PDH is supplied
    * power.
@@ -446,7 +446,6 @@ public class RobotContainer implements Logged {
     PDH.setSwitchableChannel(isPowered);
   }
 
-  // --- Locking Logic ---
   public static void setLockedLocation(LockedLocation location) {
     lockedLocation = location;
   }
@@ -461,27 +460,28 @@ public class RobotContainer implements Logged {
   /**
    * Returns the command to zero the pitch. This will make the pitch move itself
    * downwards until it sees a current spike and cancel any incoming commands that
-   * require the pitch motor. If the zeroing does not end within 3 seconds, it
-   * will interrupt itself.
+   * require the pitch motor. If the zeroing does not end within a certain time
+   * frame (set in constants), it will interrupt itself.
    * 
    * @return The command to zero the pitch
    */
   public static Command zeroPitch() {
-    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withTimeout(constPitch.ZEROING_TIMEOUT);
   }
 
   /**
    * Returns the command to zero the climber. This will make the climber move
    * itself
    * downwards until it sees a current spike and cancel any incoming commands that
-   * require the pitch motor. If the zeroing does not end within 3 seconds, it
-   * will interrupt itself.
+   * require the pitch motor. If the zeroing does not end within a certain time
+   * frame (set in constants), it will interrupt itself.
    * 
    * @return The command to zero the pitch
    */
   public static Command zeroClimber() {
     return new ZeroClimber(subClimber).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
-        .withTimeout(3);
+        .withTimeout(constClimber.ZEROING_TIMEOUT);
   }
 
   public static Command stowIntakePivot() {
