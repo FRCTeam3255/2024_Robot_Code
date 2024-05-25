@@ -189,8 +189,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    * @param timestamp     The timestamp of that pose estimate (not necessarily the
    *                      current timestamp)
    */
-  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp, Vector<N3> stdevs) {
-    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp, stdevs);
+  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp) {
+    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp);
   }
 
   /**
@@ -231,6 +231,14 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     } else {
       return rightStagePose.getRotation();
     }
+  }
+
+  /**
+   * @return The current rate of rotation for the Pigeon 2. <b>Units:</b> Degrees
+   *         per Second
+   */
+  public double getGyroRate() {
+    return pigeon.getRate();
   }
 
   @Override

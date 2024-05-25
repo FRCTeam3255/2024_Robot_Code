@@ -769,7 +769,7 @@ public class RobotPreferences {
      * <b>Units:</b> Meters
      */
     public static final SN_DoublePreference multiTagStdDevsPosition = new SN_DoublePreference(
-        "multiTagStdDevsPosition", 0.5);
+        "multiTagStdDevsPosition", 0.7);
 
     /**
      * <p>
@@ -778,7 +778,7 @@ public class RobotPreferences {
      * <b>Units:</b> Radians
      */
     public static final SN_DoublePreference multiTagStdDevsHeading = new SN_DoublePreference(
-        "multiTagStdDevsHeading", Units.degreesToRadians(30));
+        "multiTagStdDevsHeading", 9999999);
 
     /**
      * The translational tolerance of how off we want to be to count as correct

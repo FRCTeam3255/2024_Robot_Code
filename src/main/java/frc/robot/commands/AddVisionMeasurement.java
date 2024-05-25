@@ -4,19 +4,9 @@
 
 package frc.robot.commands;
 
-import java.util.Optional;
-
-import org.photonvision.EstimatedRobotPose;
-
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotPreferences.prefVision;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
@@ -24,8 +14,10 @@ public class AddVisionMeasurement extends Command {
   Drivetrain subDrivetrain;
   Limelight subLimelight;
 
-  Pose2d estimatedPose;
+  PoseEstimate estimatedPose;
   double drivetrainRotation = 0;
+  double maxAngularVelocity = 720; // Degrees per Second
+  double areaThreshold = 0.1; // The area that one tag needs to exceed before being accepted
 
   public AddVisionMeasurement(Drivetrain subDrivetrain, Limelight subLimelight) {
     this.subDrivetrain = subDrivetrain;
@@ -40,7 +32,14 @@ public class AddVisionMeasurement extends Command {
 
   @Override
   public void execute() {
+    LimelightHelpers.SetRobotOrientation("limelight",
+        subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
 
+    estimatedPose = subLimelight.getPoseEstimate();
+
+    if (!rejectUpdate(estimatedPose, subDrivetrain.getGyroRate())) {
+      subDrivetrain.addVisionMeasurement(estimatedPose.pose, estimatedPose.timestampSeconds);
+    }
   }
 
   @Override
@@ -49,6 +48,26 @@ public class AddVisionMeasurement extends Command {
 
   @Override
   public boolean isFinished() {
+    return false;
+  }
+
+  public boolean rejectUpdate(PoseEstimate poseEstimate, double gyroRate) {
+    // Angular velocity is too high to have accurate vision
+    if (Math.abs(gyroRate) > 720) {
+      return false;
+    }
+    // No tags :[
+    if (poseEstimate.tagCount == 0) {
+      return false;
+    }
+    // 1 Tag with a large area
+    if (poseEstimate.tagCount == 1 && LimelightHelpers.getTA("limelight") > areaThreshold) {
+      return true;
+      // 2 tags
+    } else if (poseEstimate.tagCount > 1) {
+      return true;
+    }
+
     return false;
   }
 }

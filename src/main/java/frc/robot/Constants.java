@@ -298,35 +298,6 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String AR_NAME = "Global_Shutter_Camera";
-    public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
-
-    /**
-     * The position, in meters, of the center of the camera lens relative to the
-     * center of the robot (Robot Coordinates).
-     * 
-     * @see <a href=
-     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
-     *      Coordinate System</a>
-     */
-    public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(14.5) - 0.045, -(Units.inchesToMeters(14.5) - 0.114),
-            Units.inchesToMeters(8.125)),
-        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(-19)));
-
-    /**
-     * The position, in meters, of the center of the camera lens relative to the
-     * center of the robot (Robot Coordinates).
-     * 
-     * @see <a href=
-     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
-     *      Coordinate System</a>
-     */
-    public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(14.5) - 0.045, Units.inchesToMeters(14.5) - 0.114,
-            Units.inchesToMeters(8.125)),
-        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(19)));
-
   }
 
   public static class constTransfer {
