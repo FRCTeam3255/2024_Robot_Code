@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefTransfer;
@@ -22,23 +23,25 @@ public class IntakeGroundGamePiece extends Command {
   Intake subIntake;
   Transfer subTransfer;
   Turret subTurret;
-  Climber subClimber;
   Pitch subPitch;
   Shooter subShooter;
+  Climber subClimber;
 
   double lastDesiredPitch;
   double lastDesiredTurret;
 
+  boolean climberReachedBottom = false;
+
   public IntakeGroundGamePiece(Intake subIntake, Transfer subTransfer, Turret subTurret,
-      Climber subClimber, Pitch subPitch, Shooter subShooter) {
+      Pitch subPitch, Shooter subShooter, Climber subClimber) {
     this.subIntake = subIntake;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-    this.subClimber = subClimber;
     this.subPitch = subPitch;
     this.subShooter = subShooter;
+    this.subClimber = subClimber;
 
-    addRequirements(subIntake, subTransfer, subTurret, subClimber, subPitch, subShooter);
+    addRequirements(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber);
   }
 
   // Called when the command is initially scheduled.
@@ -46,45 +49,42 @@ public class IntakeGroundGamePiece extends Command {
   public void initialize() {
     lastDesiredTurret = subTurret.getAngle();
     lastDesiredPitch = subPitch.getPitchAngle();
-    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue(), subClimber.collidesWithTurret());
-    subClimber.configure(false);
+
+    subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
+    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()));
+    subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue());
+    subClimber.setPosition(prefClimber.climberMinPos.getValue());
+
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subClimber.getPosition() < 30) {
-      subClimber.setClimberVoltage(11);
-    } else {
-      subClimber.setClimberVoltage(0);
+    if (!climberReachedBottom && subClimber.isAtPosition(prefClimber.climberMinPos.getValue(),
+        prefClimber.climberIsAtPositionTolerance.getValue())) {
+      climberReachedBottom = true;
       subClimber.setNeutralOutput();
     }
-
-    subIntake.setIntakeMotorsSpeed(prefIntake.intakeRollerSpeed.getValue());
-
+    if (subIntake.isPivotAtAngle(prefIntake.pivotGroundIntakeAngle.getValue())) {
+      subIntake.setPivotNeutralOutput();
+      subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
+    }
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
     subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue());
-
-    subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()),
-        subClimber.collidesWithPitch());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     if (!RobotState.isAutonomous()) {
-      subIntake.setNeutralMode();
+      subIntake.setRollerNeutralOutput();
     }
     subTransfer.setTransferNeutralOutput();
     subTransfer.setFeederNeutralOutput();
-    subPitch.setPitchAngle(lastDesiredPitch, subClimber.collidesWithPitch());
-    subTurret.setTurretAngle(lastDesiredTurret, subClimber.collidesWithTurret());
-    subClimber.setNeutralOutput();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.calcGamePieceCollected();
+    return subTransfer.calcGamePieceCollected(false);
   }
 }

@@ -1,0 +1,118 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.4,
+        "y": 3.48
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.3090909337318806,
+        "y": 3.4799999322373645
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.5600293821877877,
+        "y": 3.0344380841107315
+      },
+      "prevControl": {
+        "x": 3.09515527781401,
+        "y": 3.037804191196293
+      },
+      "nextControl": {
+        "x": 4.223525811759076,
+        "y": 3.0296337725523723
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.085662621744897,
+        "y": 4.11
+      },
+      "prevControl": {
+        "x": 4.3725143605895305,
+        "y": 4.11
+      },
+      "nextControl": {
+        "x": 6.445662621744906,
+        "y": 4.11
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.376,
+        "y": 4.11
+      },
+      "prevControl": {
+        "x": 7.2860000000000005,
+        "y": 4.11
+      },
+      "nextControl": {
+        "x": 7.436000000000001,
+        "y": 4.11
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.9,
+        "y": 4.112
+      },
+      "prevControl": {
+        "x": 7.840000000000001,
+        "y": 4.112
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "W3",
+      "waypointRelativePos": 2.95,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGroundGamePiece"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 270.0,
+    "maxAngularAcceleration": 360.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "Centerline Up",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

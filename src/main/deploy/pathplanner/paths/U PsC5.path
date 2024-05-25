@@ -1,0 +1,102 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.602,
+        "y": 4.348
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.68542385444866,
+        "y": 3.9821573970558877
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.973104168430559,
+        "y": 2.4440782784699477
+      },
+      "prevControl": {
+        "x": 0.8795509328910394,
+        "y": 3.2275866261134243
+      },
+      "nextControl": {
+        "x": 1.1164128764858732,
+        "y": 1.2438678485066876
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.375899729919436,
+        "y": 0.7444295883178711
+      },
+      "prevControl": {
+        "x": 6.437301995745873,
+        "y": 0.8384792066499069
+      },
+      "nextControl": {
+        "x": 7.435600764551306,
+        "y": 0.7384474094602811
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.9,
+        "y": 0.7444295883178711
+      },
+      "prevControl": {
+        "x": 7.840000000000001,
+        "y": 0.7444295883178711
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "W5",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGroundGamePiece"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 270.0,
+    "maxAngularAcceleration": 360.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "Centerline Up",
+  "previewStartingState": {
+    "rotation": 120.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

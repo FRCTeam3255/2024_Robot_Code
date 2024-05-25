@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 7.8,
+      "y": 7.47
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D C1UntilC5.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D C1UntilC5.2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Centerline Down",
+  "choreoAuto": false
+}

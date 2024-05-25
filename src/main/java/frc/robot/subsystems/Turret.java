@@ -28,10 +28,8 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotMap.mapTurret;
 import frc.robot.RobotPreferences.prefTurret;
-import monologue.Annotations.Log;
-import monologue.Logged;
 
-public class Turret extends SubsystemBase implements Logged {
+public class Turret extends SubsystemBase {
   TalonFX turretMotor;
   DutyCycleEncoder absoluteEncoder;
   TalonFXConfiguration turretConfig;
@@ -42,9 +40,6 @@ public class Turret extends SubsystemBase implements Logged {
 
   double absoluteEncoderOffset, desiredTurretAngle, absEncoderRollover;
   boolean invertAbsEncoder, isPracticeBot;
-
-  @Log.NT
-  Pose3d actualPose = new Pose3d();
 
   Rotation2d desiredLockingAngle = new Rotation2d();
 
@@ -98,7 +93,7 @@ public class Turret extends SubsystemBase implements Logged {
     turretConfig.CurrentLimits.SupplyCurrentLimit = prefTurret.turretCurrentLimit.getValue();
     turretConfig.CurrentLimits.SupplyTimeThreshold = prefTurret.turretCurrentTimeThreshold.getValue();
 
-    turretMotor.setInverted(prefTurret.turretInverted.getValue());
+    turretConfig.MotorOutput.Inverted = constTurret.MOTOR_INVERTED;
     turretMotor.getConfigurator().apply(turretConfig);
   }
   // "Set" Methods
@@ -106,15 +101,10 @@ public class Turret extends SubsystemBase implements Logged {
   /**
    * Sets the physical angle of the turret
    * 
-   * @param angle        The angle to set the turret to. <b> Units: </b> Degrees
-   * @param hasCollision If there is a collision with the turret. If this is true,
-   *                     the turret will not turn
+   * @param angle The angle to set the turret to. <b> Units: </b> Degrees
    */
-  public void setTurretAngle(double angle, boolean hasCollision) {
+  public void setTurretAngle(double angle) {
     desiredTurretAngle = angle;
-    if (hasCollision) {
-      angle = 0;
-    }
     turretMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
   }
 
@@ -122,7 +112,6 @@ public class Turret extends SubsystemBase implements Logged {
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
     turretMotor.getConfigurator().apply(turretConfig);
-    turretMotor.setInverted(prefTurret.turretInverted.getValue());
   }
 
   public void setTurretSensorAngle(double angle) {
@@ -140,7 +129,7 @@ public class Turret extends SubsystemBase implements Logged {
   }
 
   /**
-   * Sets the speed of the turet motor
+   * Sets the speed of the turret motor
    * 
    * @param speed The speed to set the turret motor to (-1 to 1)
    */
@@ -263,9 +252,31 @@ public class Turret extends SubsystemBase implements Logged {
       default:
         return Optional.empty();
 
+      case AMP:
+        return Optional.of(Rotation2d.fromDegrees(0));
+
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
+
+      case SHUFFLE:
+        targetPose = fieldPoses[7];
+
+        // Get the turret pose (field relative) knowing that we are at the centerline
+        Pose2d turretPose = robotPose.transformBy(robotToTurret);
+        turretPose = new Pose2d(8.274689674377441, turretPose.getY(), turretPose.getRotation());
+
+        // Move the turret pose to be relative to the target (the target is now 0,0)
+        Pose2d relativeToTarget = turretPose.relativeTo(targetPose.toPose2d());
+
+        // Get the angle of 0,0 to the turret pose
+        desiredLockingAngle = new Rotation2d(relativeToTarget.getX(), relativeToTarget.getY());
+
+        // Account for robot rotation
+        desiredLockingAngle = desiredLockingAngle
+            .rotateBy(robotPose.getRotation().unaryMinus().minus(Rotation2d.fromDegrees(180)));
+
+        return Optional.of(desiredLockingAngle);
     }
 
     // Get the turret pose (field relative)
@@ -279,7 +290,7 @@ public class Turret extends SubsystemBase implements Logged {
 
     // Account for robot rotation
     desiredLockingAngle = desiredLockingAngle
-        .rotateBy(robotPose.getRotation().unaryMinus().minus(new Rotation2d().fromDegrees(180)));
+        .rotateBy(robotPose.getRotation().unaryMinus().minus(Rotation2d.fromDegrees(180)));
 
     return Optional.of(desiredLockingAngle);
   }
@@ -293,7 +304,7 @@ public class Turret extends SubsystemBase implements Logged {
         && angle >= Units.rotationsToDegrees(prefTurret.turretReverseLimit.getValue()));
   }
 
-  public Pose3d getAngleAsPose3d() {
+  public Pose3d getDesiredAngleAsPose3d() {
     return new Pose3d(new Translation3d(),
         new Rotation3d(0, 0, Units.degreesToRadians(desiredTurretAngle)));
   }
@@ -306,9 +317,7 @@ public class Turret extends SubsystemBase implements Logged {
     SmartDashboard.putNumber("Turret/Desired Angle (Degrees)", desiredTurretAngle);
     SmartDashboard.putBoolean("Turret/Is At Desired Angle", isTurretAtGoalAngle());
     SmartDashboard.putNumber("Turret/Locking Desired Angle", desiredLockingAngle.getDegrees());
-
-    actualPose = new Pose3d(new Translation3d(),
-        new Rotation3d(0, 0, Units.degreesToRadians(getAngle())));
+    SmartDashboard.putBoolean("Turret/Is Locked", isTurretLocked());
 
     SmartDashboard.putNumber("Turret/Current", getTurretCurrent());
   }

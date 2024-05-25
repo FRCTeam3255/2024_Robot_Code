@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix.led.ColorFlowAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -29,17 +30,13 @@ import edu.wpi.first.math.util.Units;
  * | Angle per Time    | Degrees per Second    |
  * | Time              | Seconds               |
  * @formatter:on
- *
- * If the unit does not fall under any of these types, 
- * add a JavaDoc for that variable specifying it's unit. 
- * Avoid specifying units in the variable name.
- * Preferences that obviously don't use the above units (ex. PID)
- * are exempt from this
  */
 public final class Constants {
-
   public static class constClimber {
-    public static final double GEAR_RATIO = 327.6;
+    public static final double GEAR_RATIO = 133.0739;
+    public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
+    public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
+    public static final InvertedValue MOTOR_INVERTED = InvertedValue.Clockwise_Positive;
   }
 
   public static class constControllers {
@@ -75,18 +72,18 @@ public final class Constants {
 
       public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
           SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-          SN_SwerveConstants.MK4I.KRAKEN.L3.wheelCircumference,
+          0.101092 * Math.PI,
           SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
-          DRIVE_SPEED);
+          SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
     }
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.155518;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.039062;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.399658;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.418945;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.152832;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.032471;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.107666;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.095215;
 
     /**
      * <p>
@@ -108,9 +105,9 @@ public final class Constants {
 
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-        SN_SwerveConstants.MK4I.KRAKEN.L3.wheelCircumference,
+        0.10033 * Math.PI,
         SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
-        DRIVE_SPEED);
+        SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
     public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
@@ -132,6 +129,14 @@ public final class Constants {
   }
 
   public static class constIntake {
+    public static final double ABS_ENCODER_OFFSET = 0.420915;
+    public static final boolean ABS_ENCODER_INVERT = true;
+    public static final double GEAR_RATIO = 28.13;
+    public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;
+
+    public static final InvertedValue ROLLER_INVERT = InvertedValue.Clockwise_Positive;
+    public static final InvertedValue PIVOT_INVERT = InvertedValue.Clockwise_Positive;
+
   }
 
   public static class constLEDs {
@@ -196,6 +201,7 @@ public final class Constants {
     public static final InterpolatingDoubleTreeMap DISTANCE_MAP = new InterpolatingDoubleTreeMap();
 
     // Comments indicate where we placed the robot directly in line with the SPEAKER
+    // to get the value
     static {
       DISTANCE_MAP.put(1.3373, 56.0); // Subwoofer
       DISTANCE_MAP.put(2.295, 41.0); // Starting Line
@@ -203,9 +209,34 @@ public final class Constants {
       DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
       DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
       DISTANCE_MAP.put(6.5973, 19.9); // Mid Centerline
-      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :)
+      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :D
 
       // edge of bumper to center of turret = 42.29cm = 0.4229 m
+    }
+
+    /**
+     * <p>
+     * Determines the necessary angle for the shooter to shuffle notes depending on
+     * the Y-location of the robot.
+     * </p>
+     * <b>KEY:</b> The Y position (in meters) of the center of the turret to the
+     * SPEAKER
+     * <br>
+     * <br>
+     * <b>VALUE:</b> The angle (in degrees) for the hood to go up by
+     * 
+     */
+    public static final InterpolatingDoubleTreeMap SHUFFLE_MAP = new InterpolatingDoubleTreeMap();
+
+    static {
+      SHUFFLE_MAP.put(8.732940673828125, 0.0); // Outside of field (top)
+      SHUFFLE_MAP.put(6.384957313537598, 0.0); // In front of Speaker basically
+      SHUFFLE_MAP.put(3.165, 33.0);
+      SHUFFLE_MAP.put(2.45, 30.0);
+      SHUFFLE_MAP.put(2.07, 36.0);
+      SHUFFLE_MAP.put(0.42119738459587097, 36.0); // Preset Value
+      SHUFFLE_MAP.put(-0.5405449271202087, 36.0); // Outside of field (bottom)
+
     }
   }
 
@@ -213,41 +244,10 @@ public final class Constants {
    * General Robot Constants that don't fall under a subsystem
    */
   public static class constRobot {
-    /**
-     * Volts
-     */
-    public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
-    // @formatter:off
-    /**
-     * Updated by Alice to match Comp bot Feb. 19
-     */
-    public static final String[] PDH_DEVICES = {
-        /*  0 */ "Swerve/FL Steer",
-        /*  1 */ "Swerve/FL Drive",
-        /*  2 */ "Shooter/Right",
-        /*  3 */ "Transfer/Feeder",
-        /*  4 */ "Shooter/Pitch",
-        /*  5 */ "Transfer/Transfer",
-        /*  6 */ "Shooter/Left",
-        /*  7 */ "7 HAS NOTHING!",
-        /*  8 */ "Swerve/FR Steer",
-        /*  9 */ "Swerve/FR Drive",
-        /* 10 */ "Swerve/BR Drive",
-        /* 11 */ "Swerve/BR Steer",
-        /* 12 */ "12 HAS NOTHING!",
-        /* 13 */ "13 HAS NOTHING!",
-        /* 14 */ "14 HAS NOTHING!",
-        /* 15 */ "15 HAS NOTHING!",
-        /* 16 */ "Turret",
-        /* 17 */ "Swerve/BL Steer",
-        /* 18 */ "Swerve/BL Drive",
-        /* 19 */ "Ethernet Switch",
-        /* 20 */ "Swerve CANCoders & Pigeon",
-        /* 21 */ "RoboRIO",
-        /* 22 */ "Radio Power Module",
-        /* 23 */ "Beelink" };
-    // @formatter:on
+    public static final boolean TUNING_MODE = false;
+
+    public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
   }
 
   public static class constShooter {
@@ -272,6 +272,8 @@ public final class Constants {
 
     public static final double ABS_ENCODER_OFFSET = 0.011700;
     public static final boolean ABS_ENCODER_INVERT = false;
+
+    public static final InvertedValue MOTOR_INVERTED = InvertedValue.CounterClockwise_Positive;
 
     /**
      * The amount that the absolute encoder's rotation must surpass before we start
@@ -308,8 +310,9 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(-9.82), Units.inchesToMeters(8)),
-        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-25)));
+        new Translation3d(Units.inchesToMeters(14.5) - 0.045, -(Units.inchesToMeters(14.5) - 0.114),
+            Units.inchesToMeters(8.125)),
+        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(-19)));
 
     /**
      * The position, in meters, of the center of the camera lens relative to the
@@ -320,8 +323,10 @@ public final class Constants {
      *      Coordinate System</a>
      */
     public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11), Units.inchesToMeters(9.82), Units.inchesToMeters(8)),
-        new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(25)));
+        new Translation3d(Units.inchesToMeters(14.5) - 0.045, Units.inchesToMeters(14.5) - 0.114,
+            Units.inchesToMeters(8.125)),
+        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(19)));
+
   }
 
   public static class constTransfer {
@@ -331,6 +336,6 @@ public final class Constants {
    * Locations that the robot can attempt to lock onto.
    */
   public enum LockedLocation {
-    NONE, SPEAKER
+    NONE, SPEAKER, AMP, SHUFFLE
   }
 }

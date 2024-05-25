@@ -1,11 +1,14 @@
-# FRC Team 3255's 2024 Robot Code
+# Shang-Chi - FRC Team 3255's 2024 Robot
 Jump into the code [`here!`](src/main/java/frc/robot)
 
-This robot will be competing at the regional level in the following competitions: 
+
+Shang-Chi competed at the regional level in the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2024caph)
 - [San Diego](https://www.thebluealliance.com/event/2024casd)
 
-## View our Robot in Action!
+At the end of qualification matches at SDR, Shang-Chi ranked 2nd of 51 teams. We ultimately placed 4th as the 2nd seeded alliance with [Team 2102 Team Paradox](https://www.thebluealliance.com/team/2102/2024) and [Team 3341 Option 16](https://www.thebluealliance.com/team/3341/2024)!
+
+## View Shang-Chi in Action!
 - [Instagram](https://www.instagram.com/frcteam3255/) 
 - [YouTube (Primary)](https://www.youtube.com/@FRC3255)
 - [YouTube (Clips)](https://www.youtube.com/@FRC3255Clips)
@@ -22,4 +25,9 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 Interested in learning more about CRESCENDO? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
 ## Controls
-![Controls](src/main/assets/controllerMap2024.png)
+![Controllers](src/main/assets/controllerMap2024.png)
+![Numpad](src/main/assets/numpadMap2024.png)
+
+## Robot Simulation
+![Photo of Shang-Chi in Sim](src/main/assets/simPhoto.png)
+Interested in visualizing our code in AdvantageScope? Find our 3d robot model [here](https://drive.google.com/drive/folders/1FDgifq-smxX3cTIWhzZPKftL3REFLVva?usp=sharing)! Download the "Robot_2024_Shang-Chi" folder and follow the official instructions on [importing custom assets into AdvantageScope](https://github.com/Mechanical-Advantage/AdvantageScope/blob/main/docs/CUSTOM-ASSETS.md#custom-assets).

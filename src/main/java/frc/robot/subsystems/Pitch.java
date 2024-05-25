@@ -24,9 +24,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LockedLocation;
 import frc.robot.Constants.constPitch;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap.mapPitch;
 import frc.robot.RobotPreferences.prefPitch;
+import frc.robot.RobotPreferences.prefTurret;
 import monologue.Logged;
 import monologue.Annotations.Log;
 
@@ -108,15 +110,14 @@ public class Pitch extends SubsystemBase implements Logged {
    * Sets the angle of the pitch motor. The angle will not be set if the angle is
    * not possible.
    * 
-   * @param angle        The angle to set the pitch motor to. <b> Units: </b>
-   *                     Degrees
-   * @param hasCollision If there is a collision with the pitch. If this is true,
-   *                     the pitch will not turn above 30 degrees
+   * @param angle The angle to set the pitch motor to. <b> Units: </b>
+   *              Degrees
    */
-  public void setPitchAngle(double angle, boolean hasCollision) {
-    if (hasCollision && angle >= prefPitch.pitchMaxIntake.getValue()) {
-      angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ? prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
-    }
+  public void setPitchAngle(double angle) {
+    // if (angle >= prefPitch.pitchMaxIntake.getValue()) {
+    // angle = (angle >= prefPitch.pitchMaxIntake.getValue()) ?
+    // prefPitch.pitchMaxIntake.getValue() : getPitchAngle();
+    // }
     if (isAnglePossible(angle)) {
       desiredPitchAngle = angle;
       pitchMotor.setControl(motionMagicRequest.withPosition(Units.degreesToRotations(angle)));
@@ -174,7 +175,9 @@ public class Pitch extends SubsystemBase implements Logged {
     }
   }
 
-  // -- Get --
+  public boolean isPitchLocked() {
+    return isPitchAtAngle(desiredLockingAngle.getDegrees());
+  }
 
   /**
    * @return The current applied (output) voltage. <b> Units: </b> Volts
@@ -229,9 +232,18 @@ public class Pitch extends SubsystemBase implements Logged {
       default:
         return Optional.empty();
 
+      case AMP:
+        return Optional.of(Rotation2d.fromRotations(prefPitch.pitchReverseLimit.getValue()));
+
       case SPEAKER:
         targetPose = fieldPoses[0];
         break;
+
+      case SHUFFLE:
+        Pose3d pitchPose = new Pose3d(robotPose).transformBy(constPitch.ROBOT_TO_PITCH);
+        desiredLockingAngle = Rotation2d.fromDegrees(constPitch.SHUFFLE_MAP.get(pitchPose.getY()));
+
+        return Optional.of(desiredLockingAngle);
     }
 
     // Get the pitch pose (field relative)
@@ -248,9 +260,24 @@ public class Pitch extends SubsystemBase implements Logged {
     return Optional.of(desiredLockingAngle);
   }
 
-  public Transform3d getAngleAsTransform3d() {
-    return new Transform3d(new Translation3d(),
-        new Rotation3d(0, -Units.degreesToRadians(desiredPitchAngle), 0));
+  public Pose3d getDesiredAngleAsPose3d(Rotation3d turretRotation) {
+    double pitchAngle;
+    if (Robot.isSimulation()) {
+      pitchAngle = desiredPitchAngle;
+    } else {
+      pitchAngle = getPitchAngle();
+    }
+
+    double radius = Units.inchesToMeters(4.5);
+    double turretAngle = turretRotation.getZ();
+
+    return new Pose3d(new Translation3d(
+        radius * Math.cos(
+            turretAngle + Units.degreesToRadians(180)),
+        radius * Math.sin(
+            turretAngle + Units.degreesToRadians(180)),
+        0.36),
+        new Rotation3d(0, -Units.degreesToRadians(pitchAngle), turretAngle));
   }
 
   @Override
@@ -261,6 +288,7 @@ public class Pitch extends SubsystemBase implements Logged {
     SmartDashboard.putNumber("Pitch/Angle", getPitchAngle());
     SmartDashboard.putNumber("Pitch/Desired Angle", desiredPitchAngle);
     SmartDashboard.putNumber("Pitch/Locking Desired Angle", desiredLockingAngle.getDegrees());
+    SmartDashboard.putBoolean("Pitch/Is Locked", isPitchLocked());
 
     SmartDashboard.putBoolean("Pitch/Is At Desired Angle", isPitchAtGoalAngle());
   }

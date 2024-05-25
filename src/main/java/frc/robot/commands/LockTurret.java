@@ -11,19 +11,16 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.LockedLocation;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Turret;
 
 public class LockTurret extends Command {
   Turret subTurret;
   Drivetrain subDrivetrain;
-  Climber subClimber;
 
   LockedLocation lockedLocation = LockedLocation.NONE;
 
@@ -36,11 +33,9 @@ public class LockTurret extends Command {
   Pose3d ampPose;
   Pose2d robotPose = new Pose2d();
 
-  public LockTurret(Turret subTurret, Drivetrain subDrivetrain, Climber subClimber) {
+  public LockTurret(Turret subTurret, Drivetrain subDrivetrain) {
     this.subTurret = subTurret;
     this.subDrivetrain = subDrivetrain;
-    this.subClimber = subClimber;
-
     addRequirements(subTurret);
   }
 
@@ -54,7 +49,7 @@ public class LockTurret extends Command {
   @Override
   public void execute() {
     // This is in initialize in case the alliance changes after command init
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS();
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
     robotPose = subDrivetrain.getPose();
 
     Optional<Rotation2d> calculatedAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
@@ -63,7 +58,7 @@ public class LockTurret extends Command {
     if (calculatedAngle.isPresent()) {
       desiredAngle = calculatedAngle.get();
       if (subTurret.isAnglePossible(desiredAngle.getDegrees())) {
-        subTurret.setTurretAngle(desiredAngle.getDegrees(), subClimber.collidesWithTurret());
+        subTurret.setTurretAngle(desiredAngle.getDegrees());
       }
 
     }

@@ -5,146 +5,191 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.frcteam3255.utils.SN_Math;
 
-import frc.robot.Constants.constClimber;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap.mapClimber;
+import frc.robot.Robot;
+import frc.robot.Constants.constClimber;
+import frc.robot.RobotMap.*;
 import frc.robot.RobotPreferences.prefClimber;
-import frc.robot.RobotPreferences.prefIntake;
-
-import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 
 public class Climber extends SubsystemBase {
   TalonFX climberMotor;
-
-  double absoluteEncoderOffset, absEncoderRollover;
-  VoltageOut voltageRequest;
   TalonFXConfiguration climberConfig;
 
-  PositionVoltage positionRequest;
+  MotionMagicVoltage motionMagicPositionalRequest;
+  VoltageOut voltageRequest;
+
+  double desiredPosition;
 
   public Climber() {
     climberMotor = new TalonFX(mapClimber.CLIMBER_MOTOR_CAN, "rio");
     climberConfig = new TalonFXConfiguration();
 
-    positionRequest = new PositionVoltage(0);
+    motionMagicPositionalRequest = new MotionMagicVoltage(0);
     voltageRequest = new VoltageOut(0);
-    configure(true);
+
+    configure();
   }
 
-  public void configure(boolean isBrake) {
+  public void configure() {
     climberMotor.getConfigurator().apply(new TalonFXConfiguration());
-    climberConfig.Slot0.kG = prefClimber.climberGtele.getValue();
-    climberConfig.Slot0.kP = prefClimber.climberPtele.getValue();
-    climberConfig.Slot0.kI = prefClimber.climberItele.getValue();
-    climberConfig.Slot0.kD = prefClimber.climberDtele.getValue();
 
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units
-        .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
+    // PID
+    climberConfig.Slot0.GravityType = constClimber.GRAVITY_TYPE;
+    climberConfig.Slot0.kS = prefClimber.climberS.getValue();
+    climberConfig.Slot0.kG = prefClimber.climberG.getValue();
+    climberConfig.Slot0.kV = prefClimber.climberV.getValue();
+    climberConfig.Slot0.kP = prefClimber.climberP.getValue();
+    climberConfig.Slot0.kI = prefClimber.climberI.getValue();
+    climberConfig.Slot0.kD = prefClimber.climberD.getValue();
 
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units
-        .degreesToRotations(prefClimber.climberMotorReverseLimit.getValue());
+    // Motion Magic
+    climberConfig.MotionMagic.MotionMagicCruiseVelocity = prefClimber.climberCruiseVelocity.getValue();
+    climberConfig.MotionMagic.MotionMagicAcceleration = prefClimber.climberAcceleration.getValue();
+    climberConfig.MotionMagic.MotionMagicJerk = prefClimber.climberJerk.getValue();
 
-    if (isBrake) {
-      climberConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    } else {
-      climberConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    }
+    // Software Limits
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = prefClimber.climberForwardLimitEnable.getValue();
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = prefClimber.climberMaxPos.getValue();
 
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = prefClimber.climberReverseLimitEnable.getValue();
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = prefClimber.climberMinPos.getValue();
+
+    // Current Limiting
+    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = prefClimber.climberSupplyCurrentLimitEnable.getValue();
+    climberConfig.CurrentLimits.SupplyCurrentLimit = prefClimber.climberSupplyCurrentLimitCeilingAmps.getValue();
+    climberConfig.CurrentLimits.SupplyCurrentThreshold = prefClimber.climberSupplyCurrentThreshold.getValue();
+    climberConfig.CurrentLimits.SupplyTimeThreshold = prefClimber.climberSupplyTimeThreshold.getValue();
+
+    // Other jazz
     climberConfig.Feedback.SensorToMechanismRatio = constClimber.GEAR_RATIO;
+    climberConfig.MotorOutput.NeutralMode = constClimber.NEUTRAL_MODE;
 
-    climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
-    climberConfig.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = 0;
-
-    climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionEnable = true;
-    climberConfig.HardwareLimitSwitch.ForwardLimitAutosetPositionValue = Units
-        .degreesToRotations(prefClimber.climberMotorForwardLimit.getValue());
-
-    climberConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
-    climberConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
-
+    climberConfig.MotorOutput.Inverted = constClimber.MOTOR_INVERTED;
     climberMotor.getConfigurator().apply(climberConfig);
-    climberMotor.setInverted(prefClimber.climberInverted.getValue());
-
   }
 
-  public void setClimberMotorSpeed(double motorSpeed) {
-    climberMotor.set(motorSpeed);
+  // -- Set --
+
+  public void setCurrentLimiting(boolean enabled) {
+    climberConfig.CurrentLimits.SupplyCurrentLimitEnable = enabled;
+    climberMotor.getConfigurator().apply(climberConfig);
+  }
+
+  public void setSoftwareLimits(boolean reverse, boolean forward) {
+    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
+    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
+    climberMotor.getConfigurator().apply(climberConfig);
   }
 
   /**
-   * @return <b>Units:</b> Degrees
+   * Sets the climber to the given position using Motion Magic. The position will
+   * be clamped to be within our software limits prior to being set.
+   * 
+   * @param position The position to go to. <b> Units: </b> Meters
+   * 
    */
-  public double getPosition() {
-    return Units.rotationsToDegrees(climberMotor.getPosition().getValueAsDouble());
+  public void setPosition(double position) {
+    desiredPosition = position;
+
+    position = SN_Math.metersToRotations(MathUtil.clamp(position, prefClimber.climberMinPos.getValue(),
+        prefClimber.climberMaxPos.getValue()), 1, 1);
+
+    climberMotor.setControl(motionMagicPositionalRequest.withPosition(position));
+  }
+
+  /**
+   * Set the current percent output of the climber.
+   * 
+   * @param speed The desired percent output. (-1.0 -> 1.0)
+   */
+  public void setPercentOutput(double speed) {
+    climberMotor.set(speed);
+  }
+
+  /**
+   * Sets the voltage of the climber motor
+   * 
+   * @param voltage The voltage to set the climber motor to. <b> Units: </b>
+   *                Volts
+   */
+  public void setVoltage(double voltage) {
+    climberMotor.setControl(voltageRequest.withOutput(voltage));
+  }
+
+  /**
+   * Sets the current position of the climber to read as the given value
+   * 
+   * @param position The position to set the climber to. <b> Units: </b> Meters
+   */
+  public void setSensorAngle(double position) {
+    climberMotor.setPosition(SN_Math.metersToRotations(position, 1, 1));
   }
 
   public void setNeutralOutput() {
     climberMotor.setControl(new NeutralOut());
   }
 
-  public void setClimberSoftwareLimits(boolean reverse, boolean forward) {
-    climberConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverse;
-    climberConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = forward;
-    climberMotor.getConfigurator().apply(climberConfig);
-    climberMotor.setInverted(prefClimber.climberInverted.getValue());
-  }
+  // -- Get --
 
-  public void setClimberVoltage(double voltage) {
-    climberMotor.setControl(voltageRequest.withOutput(voltage));
-  }
-
-  public double getClimberVelocity() {
-    return Units.rotationsToDegrees(climberMotor.getVelocity().getValueAsDouble());
+  /**
+   * @return The current velocity of the climber. <b> Units: </b> Meters per
+   *         second
+   */
+  public double getVelocity() {
+    return SN_Math.rotationsToMeters(climberMotor.getVelocity().getValueAsDouble(), 1, 1);
   }
 
   /**
-   * Sets the angle of the climber motor
+   * @return The current applied (output) voltage. <b> Units: </b> Volts
+   */
+  public double getVoltage() {
+    return climberMotor.getMotorVoltage().getValueAsDouble();
+  }
+
+  /**
+   * @return The current position of the climber. <b> Units: </b> Meters
+   */
+  public double getPosition() {
+    return SN_Math.rotationsToMeters(climberMotor.getPosition().getValueAsDouble(), 1, 1);
+  }
+
+  public double getDesiredPosition() {
+    return desiredPosition;
+  }
+
+  /**
+   * Calculate if the climber motor is within tolerance to a given position. In
+   * simulation, this will return true if our desired position
+   * matches the given position
    * 
-   * @param angle The angle to set the climber motor to. <b> Units: </b> Degrees
+   * @param position  The position to check if we are at.<b> Units: </b>
+   *                  Meters
+   * @param tolerance Our tolerance for determining if we are at that
+   *                  position. <b> Units: </b> Meters
+   * @return If we are at that position
    */
-  public void setClimberAngle(double angle) {
-    climberMotor.setControl(positionRequest.withPosition(Units.degreesToRotations(angle)));
-  }
-
-  public void resetAngleToAngle(double angle) {
-    climberMotor.setPosition(angle);
-  }
-
-  /**
-   * @return True if the intake is going to collide with the turret (should the
-   *         turret move)
-   */
-  public boolean collidesWithTurret() {
-    return !(getPosition() >= prefIntake.intakeIntakingAngle.getValue() - prefClimber.climberAtAngleTolerance.getValue()
-        || getPosition() <= prefIntake.intakeStowAngle.getValue() + prefClimber.climberAtAngleTolerance.getValue());
-  }
-
-  /**
-   * @return True if the intake is going to collide with the pitch (should the
-   *         pitch move)
-   */
-
-  public boolean collidesWithPitch() {
-    return !(getPosition() >= prefIntake.intakeIntakingAngle.getValue()
-        - prefClimber.climberAtAngleTolerance.getValue());
+  public boolean isAtPosition(double position, double tolerance) {
+    if (Robot.isSimulation()) {
+      return desiredPosition == position;
+    }
+    return tolerance >= Math.abs(getPosition() - position);
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Climber/Motor Position (Degrees)", getPosition());
-    SmartDashboard.putNumber("Climber/Motor Percent output", climberMotor.get());
-    SmartDashboard.putString("Climber/Limit Switch Reverse", climberMotor.getReverseLimit().getValue().toString());
-    SmartDashboard.putString("Climber/Limit Switch Forward", climberMotor.getForwardLimit().getValue().toString());
+    SmartDashboard.putNumber("Climber/Velocity", getVelocity());
+    SmartDashboard.putNumber("Climber/Voltage", getVoltage());
+    SmartDashboard.putNumber("Climber/Current Position (Meters)", getPosition());
+    SmartDashboard.putNumber("Climber/Desired Position (Meters)", desiredPosition);
 
   }
-
 }

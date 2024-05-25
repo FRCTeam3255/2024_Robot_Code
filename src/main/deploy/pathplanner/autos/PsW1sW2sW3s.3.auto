@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 2.53,
+      "y": 6.0
+    },
+    "rotation": 135.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PsW1sW2sW3s.3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Wing Down",
+  "choreoAuto": false
+}
