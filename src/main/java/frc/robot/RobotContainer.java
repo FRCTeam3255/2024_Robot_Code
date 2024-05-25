@@ -98,6 +98,7 @@ public class RobotContainer implements Logged {
   private final static Transfer subTransfer = new Transfer();
   private final static Vision subVision = new Vision();
 
+  Trigger repositionTrigger = new Trigger(() -> subTransfer.calcGamePieceCollected(false));
   SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
 
   @Log.NT
@@ -203,7 +204,6 @@ public class RobotContainer implements Logged {
         .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
             .unless(() -> subTransfer.hasGamePiece));
 
-    Trigger repositionTrigger = new Trigger(() -> subTransfer.calcGamePieceCollected(false));
     repositionTrigger.onTrue(new RepositionGamePiece(subTransfer, subShooter));
 
     // Left Bumper = Enable both Manuals
