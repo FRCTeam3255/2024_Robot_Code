@@ -228,7 +228,7 @@ public final class Constants {
       DISTANCE_MAP.put(5.5499, 21.5);
       DISTANCE_MAP.put(5.8547, 21.0);
       DISTANCE_MAP.put(6.1595, 20.5);
-      
+    }      
 
     /**
      * <p>
@@ -256,73 +256,73 @@ public final class Constants {
     }
   }
 
-  /**
-   * General Robot Constants that don't fall under a subsystem
-   */
-  public static class constRobot {
+    /**
+     * General Robot Constants that don't fall under a subsystem
+     */
+    public static class constRobot {
 
-    public static final boolean TUNING_MODE = false;
+      public static final boolean TUNING_MODE = false;
 
-    public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
-  }
+      public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
+    }
 
-  public static class constShooter {
-    public static final class pracBot {
+    public static class constShooter {
+      public static final class pracBot {
+        public static final boolean LEFT_INVERT = true;
+        public static final boolean RIGHT_INVERT = false;
+      }
+
       public static final boolean LEFT_INVERT = true;
       public static final boolean RIGHT_INVERT = false;
     }
 
-    public static final boolean LEFT_INVERT = true;
-    public static final boolean RIGHT_INVERT = false;
-  }
+    public static class constTurret {
+      public static class pracBot {
+        public static final double ABS_ENCODER_OFFSET = 0.812425;
+        public static final boolean ABS_ENCODER_INVERT = false;
+        public static final double ABS_ENCODER_ROLLOVER = 0.5;
+      }
 
-  public static class constTurret {
-    public static class pracBot {
-      public static final double ABS_ENCODER_OFFSET = 0.812425;
+      public static final double GEAR_RATIO = 39;
+      public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+
+      public static final double ABS_ENCODER_OFFSET = 0.011700;
       public static final boolean ABS_ENCODER_INVERT = false;
+
+      public static final InvertedValue MOTOR_INVERTED = InvertedValue.CounterClockwise_Positive;
+
+      /**
+       * The amount that the absolute encoder's rotation must surpass before we start
+       * calculating the angle as negative
+       * [0 -> 360] -> [-90, 90]
+       * Theres probably a better way to do this... but PHR is in 3 days
+       */
       public static final double ABS_ENCODER_ROLLOVER = 0.5;
+
+      /**
+       * The position, in meters, of the center of the turret relative to the center
+       * of the robot (Robot Coordinates).
+       * 
+       * @see <a href=
+       *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
+       *      Coordinate System</a>
+       */
+      public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
+          new Translation3d(Units.inchesToMeters(1), 0, 0),
+          new Rotation3d(0, 0, 0));
+
     }
 
-    public static final double GEAR_RATIO = 39;
-    public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
+    public static class constVision {
+    }
 
-    public static final double ABS_ENCODER_OFFSET = 0.011700;
-    public static final boolean ABS_ENCODER_INVERT = false;
-
-    public static final InvertedValue MOTOR_INVERTED = InvertedValue.CounterClockwise_Positive;
+    public static class constTransfer {
+    }
 
     /**
-     * The amount that the absolute encoder's rotation must surpass before we start
-     * calculating the angle as negative
-     * [0 -> 360] -> [-90, 90]
-     * Theres probably a better way to do this... but PHR is in 3 days
+     * Locations that the robot can attempt to lock onto.
      */
-    public static final double ABS_ENCODER_ROLLOVER = 0.5;
-
-    /**
-     * The position, in meters, of the center of the turret relative to the center
-     * of the robot (Robot Coordinates).
-     * 
-     * @see <a href=
-     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
-     *      Coordinate System</a>
-     */
-    public static final Transform3d ROBOT_TO_TURRET = new Transform3d(
-        new Translation3d(Units.inchesToMeters(1), 0, 0),
-        new Rotation3d(0, 0, 0));
-
-  }
-
-  public static class constVision {
-  }
-
-  public static class constTransfer {
-  }
-
-  /**
-   * Locations that the robot can attempt to lock onto.
-   */
-  public enum LockedLocation {
-    NONE, SPEAKER, AMP, SHUFFLE
-  }
+    public enum LockedLocation {
+      NONE, SPEAKER, AMP, SHUFFLE
+    }
 }
