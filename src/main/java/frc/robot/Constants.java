@@ -210,22 +210,25 @@ public final class Constants {
      */
     public static final InterpolatingDoubleTreeMap DISTANCE_MAP = new InterpolatingDoubleTreeMap();
 
-    // Comments indicate where we placed the robot directly in line with the SPEAKER
-    // to get the value
     static {
-      DISTANCE_MAP.put(1.3373, 56.0); // Subwoofer
-      DISTANCE_MAP.put(2.295, 41.0); // Starting Line
-      // DISTANCE_MAP.put(3.9073, 31.0); // Spike Mark
-      // DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
-      DISTANCE_MAP.put(3.9073, 31.0); // Spike mark, translated to match 1678's values
-      DISTANCE_MAP.put(4.4, 28.0);
-      DISTANCE_MAP.put(5.3, 25.5); // Mid wing, translated to match 1678's values
-      DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
-      DISTANCE_MAP.put(6.5973, 19.9); // Mid Centerline
-      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :D
-
-      // edge of bumper to center of turret = 42.29cm = 0.4229 m
-    }
+      DISTANCE_MAP.put(1.2827, 55.0);
+      DISTANCE_MAP.put(1.5875, 53.0);
+      DISTANCE_MAP.put(1.8923, 47.0);
+      DISTANCE_MAP.put(2.1971, 41.5);
+      DISTANCE_MAP.put(2.5019, 36.5);
+      DISTANCE_MAP.put(2.8067, 34.0);
+      DISTANCE_MAP.put(3.1115, 32.0);
+      DISTANCE_MAP.put(3.4163, 30.0);
+      DISTANCE_MAP.put(3.7211, 28.5);
+      DISTANCE_MAP.put(4.0259, 27.0);
+      DISTANCE_MAP.put(4.3307, 25.0);
+      DISTANCE_MAP.put(4.6355, 24.5);
+      DISTANCE_MAP.put(4.9403, 23.0);
+      DISTANCE_MAP.put(5.2451, 22.0);
+      DISTANCE_MAP.put(5.5499, 21.5);
+      DISTANCE_MAP.put(5.8547, 21.0);
+      DISTANCE_MAP.put(6.1595, 20.5);
+      
 
     /**
      * <p>
