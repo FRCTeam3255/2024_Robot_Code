@@ -99,23 +99,6 @@ public class Transfer extends SubsystemBase implements Logged {
     return hasGamePiece;
   }
 
-  public void repositionGamePiece() {
-    hasRepositioned = false;
-    double time = Timer.getFPGATimestamp();
-
-    while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue()) {
-      setTransferMotorSpeed(prefTransfer.transferRepositionSpeed.getValue());
-    }
-
-    time = Timer.getFPGATimestamp();
-
-    while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue() / 2) {
-      setTransferMotorSpeed(-prefTransfer.transferRepositionSpeed.getValue());
-    }
-    setTransferNeutralOutput();
-    hasRepositioned = true;
-  }
-
   public boolean calcGPShotAuto() {
     double currentPosition = Units.rotationsToDegrees(transferMotor.getPosition().getValueAsDouble());
 
