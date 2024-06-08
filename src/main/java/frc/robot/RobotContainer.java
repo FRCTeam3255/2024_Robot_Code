@@ -166,7 +166,6 @@ public class RobotContainer implements Logged {
     subDrivetrain.resetModulesToAbsolute();
     subTurret.resetTurretToAbsolutePosition();
     subIntake.resetPivotToAbsolute();
-    subLimelight.setDefaultCommand(new AddVisionMeasurement(subDrivetrain, subLimelight));
     subLEDs.clearAnimation();
   }
 

@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
 
     // Logging to SmartDashboard
     RobotContainer.updateLoggedPoses();
-    // RobotContainer.AddVisionMeasurement();
+    RobotContainer.AddVisionMeasurement();
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
   }
 

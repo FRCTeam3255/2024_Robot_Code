@@ -16,7 +16,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
  */
 public class FieldConstants {
   public static Optional<Alliance> ALLIANCE = Optional.empty();
-  public static double FIELD_LENGTH = 16.541;
+
+  /**
+   * <b> Units: </b> Meters
+   */
+  public static double FIELD_LENGTH = 12.823;
 
   /**
    * Gets the positions of all of the necessary field elements on the field. All

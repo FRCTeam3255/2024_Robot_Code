@@ -79,10 +79,7 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
 
         Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())).unless(() -> FieldConstants.isRedAlliance()),
-
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees() - 180)).unless(() -> !FieldConstants.isRedAlliance()),
+            getInitialPose().get().getRotation().getDegrees())),
 
         Commands.sequence(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),

@@ -4,27 +4,57 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
 
 public class Limelight extends SubsystemBase {
 
-  AprilTagFieldLayout aprilTagFieldLayout;
+  /**
+   * <p>
+   * Maximum rate of rotation before we begin rejecting pose updates
+   * </p>
+   * <b> Units: </b> Rotations per second
+   */
+  final double maxAngularVelocity = 720;
 
-  public Limelight() {
-    try {
-      aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
-    } catch (Exception e) {
-      System.out.println("Could not load AprilTagFieldLayout!" + e);
-    }
-
-  }
+  /**
+   * The area that one tag (if its the only tag in the update) needs to exceed
+   * before being accepted
+   */
+  final double areaThreshold = 0.1;
 
   public PoseEstimate getPoseEstimate() {
     return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+  }
+
+  /**
+   * Determines if a given pose estimate should be rejected.
+   * 
+   * @param poseEstimate The pose estimate to check
+   * @param gyroRate     The current rate of rotation observed by our gyro. <b>
+   *                     Units: </b> Rotations per second
+   * @return True if the estimate should be rejected
+   */
+  public boolean rejectUpdate(PoseEstimate poseEstimate, double gyroRate) {
+    // Angular velocity is too high to have accurate vision
+    if (Math.abs(gyroRate) > maxAngularVelocity) {
+      return true;
+    }
+    // No tags :[
+    if (poseEstimate.tagCount == 0) {
+      return true;
+    }
+    // // 1 Tag with a large area
+    // if (poseEstimate.tagCount == 1 && LimelightHelpers.getTA("limelight") >
+    // areaThreshold) {
+    // return false;
+    // // 2 tags
+    // } else if (poseEstimate.tagCount > 1) {
+    // return false;
+    // }
+
+    return false;
   }
 
   @Override

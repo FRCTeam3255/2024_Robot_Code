@@ -40,8 +40,6 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   Turret subTurret;
   Climber subClimber;
 
-  double FIELD_LENGTH = FieldConstants.FIELD_LENGTH;
-
   boolean goesDown = false;
 
   /**
@@ -139,10 +137,8 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                     .until(() -> subTransfer.calcGPShotAuto()),
                 Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
-                // Return to centerline (C3)
                 new PathPlannerAuto(determineScorePathName() + ".4")),
 
-            // Hop to C3
             new PathPlannerAuto(determineHopPathName() + ".2"),
             () -> subTransfer.hasGamePiece)
 
