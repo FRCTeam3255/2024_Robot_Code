@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
@@ -21,6 +23,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.FieldConstants;
 import frc.robot.Robot;
@@ -239,6 +242,18 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    */
   public double getGyroRate() {
     return pigeon.getRate();
+  }
+
+  /**
+   * Resets the driving orientation depending on alliance.
+   * 
+   * @param alliance
+   */
+  public void resetDriving(Optional<Alliance> alliance) {
+    if (alliance.isPresent() && alliance.get().equals(Alliance.Red)) {
+      resetYaw();
+    }
+    resetYaw(180);
   }
 
   @Override

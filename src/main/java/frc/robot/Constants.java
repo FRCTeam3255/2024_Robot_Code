@@ -314,6 +314,14 @@ public final class Constants {
   }
 
   public static class constVision {
+    // These aren't used anywhere in code. They get put into the MegaTag setup
+    private static final double LL_FORWARD = 0.3302;
+    private static final double LL_RIGHT = -0.2921;
+    private static final double LL_UP = 0.2286;
+
+    private static final double LL_ROLL = 0;
+    private static final double LL_PITCH = 15.92;
+    private static final double LL_YAW = -20;
   }
 
   public static class constTransfer {

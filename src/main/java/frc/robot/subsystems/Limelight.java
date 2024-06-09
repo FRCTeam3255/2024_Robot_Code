@@ -38,9 +38,9 @@ public class Limelight extends SubsystemBase {
    */
   public boolean rejectUpdate(PoseEstimate poseEstimate, double gyroRate) {
     // Angular velocity is too high to have accurate vision
-    if (Math.abs(gyroRate) > maxAngularVelocity) {
-      return true;
-    }
+    // if (Math.abs(gyroRate) > maxAngularVelocity) {
+    // return true;
+    // }
     // No tags :[
     if (poseEstimate.tagCount == 0) {
       return true;

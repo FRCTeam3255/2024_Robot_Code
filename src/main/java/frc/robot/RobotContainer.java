@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 import com.frcteam3255.joystick.SN_SwitchboardStick;
@@ -130,8 +131,8 @@ public class RobotContainer implements Logged {
         .setDefaultCommand(new Drive(
             subDrivetrain,
             conDriver.axis_LeftY,
-            conDriver.axis_LeftX,
-            conDriver.axis_RightX,
+            () -> -conDriver.axis_LeftX.getAsDouble(),
+            () -> -conDriver.axis_RightX.getAsDouble(),
             conDriver.btn_LeftBumper,
             conDriver.btn_Y,
             conDriver.btn_B,
@@ -170,12 +171,13 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE)));
 
     // Reset Pose
     controller.btn_South
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
+            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d()))
+            .alongWith(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE))));
 
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
@@ -483,9 +485,9 @@ public class RobotContainer implements Logged {
         .withTimeout(constClimber.ZEROING_TIMEOUT);
   }
 
-  public static Command stowIntakePivot() {
-    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue()))
-        .unless(() -> subIntake.getPivotAngle() > prefIntake.pivotStowAngle.getValue());
+  public static Command AddVisionMeasurement() {
+    return new AddVisionMeasurement(subDrivetrain, subLimelight)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance, boolean hasAutoRun) {
@@ -565,8 +567,4 @@ public class RobotContainer implements Logged {
     }
   }
 
-  public static Command AddVisionMeasurement() {
-    return new AddVisionMeasurement(subDrivetrain,
-        subLimelight).ignoringDisable(true);
-  }
 }

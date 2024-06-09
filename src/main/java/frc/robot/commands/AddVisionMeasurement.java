@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
@@ -35,7 +36,7 @@ public class AddVisionMeasurement extends Command {
 
     estimatedPose = subLimelight.getPoseEstimate();
 
-    if (subLimelight.rejectUpdate(estimatedPose, subDrivetrain.getGyroRate())) {
+    if (!subLimelight.rejectUpdate(estimatedPose, subDrivetrain.getGyroRate())) {
       subDrivetrain.addVisionMeasurement(estimatedPose.pose, estimatedPose.timestampSeconds);
     }
   }

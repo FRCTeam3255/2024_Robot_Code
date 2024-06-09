@@ -23,7 +23,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference climberS = new SN_DoublePreference("climberS", 0);
     public static final SN_DoublePreference climberV = new SN_DoublePreference("climberV", 0);
     public static final SN_DoublePreference climberG = new SN_DoublePreference("climberG", 0);
-    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 40);
+    public static final SN_DoublePreference climberP = new SN_DoublePreference("climberP", 230);
     public static final SN_DoublePreference climberI = new SN_DoublePreference("climberI", 0);
     public static final SN_DoublePreference climberD = new SN_DoublePreference("climberD", 0);
 
@@ -32,13 +32,13 @@ public class RobotPreferences {
      * <b> Units: </b> Rotations per second (rps)
      */
     public static final SN_DoublePreference climberCruiseVelocity = new SN_DoublePreference(
-        "climberCruiseVelocity", 80);
+        "climberCruiseVelocity", 160);
 
     /**
      * <b> Units: </b> Rotations per second per second (rps/s)
      */
     public static final SN_DoublePreference climberAcceleration = new SN_DoublePreference(
-        "climberAcceleration", 160);
+        "climberAcceleration", 260);
     /**
      * <b> Units: </b> Rotations per second per second per second (rps/s/s)
      */
