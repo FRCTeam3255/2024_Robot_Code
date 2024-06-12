@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
@@ -62,10 +62,7 @@ public class IntakeFromSource extends Command {
       subTransfer.setNeutralMode();
     }
     if (!interrupted) {
-      subTransfer.repositionGamePiece();
-
-      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-          prefShooter.rightShooterSubVelocity.getValue());
+      Commands.runOnce(() -> new RepositionGamePiece(subTransfer, subShooter));
     } else {
       subTransfer.setTransferNeutralOutput();
       subShooter.setDesiredVelocities(0, 0);
