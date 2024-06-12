@@ -176,7 +176,7 @@ public class RobotContainer implements Logged {
     // Reset Pose
     controller.btn_South
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d()))
+            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS(false).get()[6].toPose2d()))
             .alongWith(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE))));
 
     controller.btn_LeftTrigger
@@ -323,10 +323,6 @@ public class RobotContainer implements Logged {
 
   private void configureAutoSelector() {
     // PRELOAD ONLY
-    autoChooser.addOption("Disruptor",
-        new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
-
-    // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             0, true));
@@ -350,9 +346,6 @@ public class RobotContainer implements Logged {
     autoChooser.addOption("NO SHOOT S4",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             3, false));
-    autoChooser.addOption("NO SHOOT S5",
-        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            4, false));
 
     // Taxi + Preload
     autoChooser.addOption("Taxi + Preload S4",

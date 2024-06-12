@@ -79,7 +79,7 @@ public class Drive extends Command {
   @Override
   public void initialize() {
     driveSpeed = (isPracticeBot) ? constDrivetrain.pracBot.DRIVE_SPEED : constDrivetrain.DRIVE_SPEED;
-    fieldPositions = FieldConstants.GET_FIELD_POSITIONS().get();
+    fieldPositions = FieldConstants.GET_FIELD_POSITIONS(false).get();
 
     sourcePose = fieldPositions[2].toPose2d();
     leftStage = fieldPositions[3].toPose2d();

@@ -110,7 +110,7 @@ public final class Constants {
 
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-        0.31599353,
+        0.09779 * Math.PI,
         SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
         SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
@@ -134,7 +134,7 @@ public final class Constants {
   }
 
   public static class constIntake {
-    public static final double ABS_ENCODER_OFFSET = 0.384;
+    public static final double ABS_ENCODER_OFFSET = 0.376984;
     public static final boolean ABS_ENCODER_INVERT = true;
     public static final double GEAR_RATIO = 28.13;
     public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;

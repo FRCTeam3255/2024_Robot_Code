@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.FieldConstants;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers.PoseEstimate;
 
 public class Limelight extends SubsystemBase {
@@ -37,6 +40,11 @@ public class Limelight extends SubsystemBase {
    * @return True if the estimate should be rejected
    */
   public boolean rejectUpdate(PoseEstimate poseEstimate, double gyroRate) {
+    // TODO: For Fairbotics, remove later
+    if (RobotState.isAutonomous() && FieldConstants.isRedAlliance()) {
+      return true;
+    }
+
     // Angular velocity is too high to have accurate vision
     // if (Math.abs(gyroRate) > maxAngularVelocity) {
     // return true;
@@ -45,16 +53,15 @@ public class Limelight extends SubsystemBase {
     if (poseEstimate.tagCount == 0) {
       return true;
     }
-    // // 1 Tag with a large area
-    // if (poseEstimate.tagCount == 1 && LimelightHelpers.getTA("limelight") >
-    // areaThreshold) {
-    // return false;
-    // // 2 tags
-    // } else if (poseEstimate.tagCount > 1) {
-    // return false;
-    // }
+    // 1 Tag with a large area
+    if (poseEstimate.tagCount == 1 && LimelightHelpers.getTA("limelight") > areaThreshold) {
+      return false;
+      // 2 tags
+    } else if (poseEstimate.tagCount > 1) {
+      return false;
+    }
 
-    return false;
+    return true;
   }
 
   @Override

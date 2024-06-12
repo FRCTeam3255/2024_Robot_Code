@@ -83,19 +83,23 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
                 .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
 
-        Commands.runOnce(() -> subShooter.getUpToSpeed()),
-
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
             .until(() -> subTransfer.calcGPShotAuto()),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
+
+        // TODO: Remove after Fairbotics
+        Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            getInitialPose().get().getRotation().getDegrees())),
 
         // Get W3
         new PathPlannerAuto(determinePathName() + ".1"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
-
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W3
         // Aim
@@ -106,13 +110,13 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
             .until(() -> subTransfer.calcGPShotAuto()),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // GET W2
         new PathPlannerAuto(determinePathName() + ".2"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
-
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W2
         // Aim
@@ -123,13 +127,13 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
             .until(() -> subTransfer.calcGPShotAuto()),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // GET W1
         new PathPlannerAuto(determinePathName() + ".3"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
         Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
-
-        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // SHOOT W1
         // Aim
@@ -139,15 +143,19 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
             .until(() -> subTransfer.calcGPShotAuto()),
-        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))
-
-    );
+        Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
+        Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)));
   }
 
   public Supplier<Pose2d> getInitialPose() {
     return () -> (!FieldConstants.isRedAlliance())
         ? PathPlannerAuto.getStaringPoseFromAutoFile(determinePathName())
         : PathPlannerPath.fromPathFile(determinePathName()).flipPath().getPreviewStartingHolonomicPose();
+  }
+
+  public String determinePathName() {
+    return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
   }
 
   public DoubleSupplier getTurretInitAngle() {
@@ -157,10 +165,6 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
   public DoubleSupplier getPitchInitAngle() {
     return () -> (goesDown) ? (42.262) : (46.349);
-  }
-
-  public String determinePathName() {
-    return (goesDown) ? "PsW1sW2sW3s" : "PsW3sW2sW1s";
   }
 
   public Command getAutonomousCommand() {

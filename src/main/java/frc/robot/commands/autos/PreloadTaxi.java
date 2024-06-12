@@ -18,6 +18,7 @@ import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AimAuto;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.UnaliveShooter;
@@ -88,7 +89,6 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
                     .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle())),
                 Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle()))
                     .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle()))),
-
             Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
             // Shoot

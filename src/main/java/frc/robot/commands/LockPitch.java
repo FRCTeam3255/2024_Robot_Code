@@ -47,7 +47,7 @@ public class LockPitch extends Command {
   public void initialize() {
     desiredAngle = subPitch.getPitchAngle();
 
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS(false).get();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
