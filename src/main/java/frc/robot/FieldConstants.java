@@ -20,7 +20,7 @@ public class FieldConstants {
   /**
    * <b> Units: </b> Meters
    */
-  public static double FIELD_LENGTH = 12.823;
+  public static double FIELD_LENGTH = 12.85875;
 
   /**
    * Gets the positions of all of the necessary field elements on the field. All
