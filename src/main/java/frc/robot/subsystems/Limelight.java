@@ -10,6 +10,7 @@ import frc.robot.FieldConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers.PoseEstimate;
+import frc.robot.LimelightHelpers.RawFiducial;
 
 public class Limelight extends SubsystemBase {
 
@@ -43,6 +44,29 @@ public class Limelight extends SubsystemBase {
     // TODO: For Fairbotics, remove later
     if (RobotState.isAutonomous() && FieldConstants.isRedAlliance()) {
       return true;
+    }
+
+    int[] blueTags = { 6, 7, 8, 9, 10, 14, 15, 16 };
+    int[] redTags = { 1, 2, 3, 4, 5, 11, 12, 13 };
+
+    if (FieldConstants.isRedAlliance()) {
+      // reject blue tags
+      for (int tag : blueTags) {
+        for (RawFiducial id : poseEstimate.rawFiducials) {
+          if (id.id == tag) {
+            return true;
+          }
+        }
+      }
+    } else {
+      // reject red tags
+      for (int tag : redTags) {
+        for (RawFiducial id : poseEstimate.rawFiducials) {
+          if (id.id == tag) {
+            return true;
+          }
+        }
+      }
     }
 
     // Angular velocity is too high to have accurate vision

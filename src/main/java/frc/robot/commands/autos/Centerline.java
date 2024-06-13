@@ -139,7 +139,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
 
                 new PathPlannerAuto(determineScorePathName() + ".4")),
 
-            new PathPlannerAuto(determineHopPathName() + ".2"),
+            Commands.waitSeconds(1),
             () -> subTransfer.hasGamePiece)
 
     );

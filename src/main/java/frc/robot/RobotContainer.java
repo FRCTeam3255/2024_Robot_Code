@@ -373,10 +373,6 @@ public class RobotContainer implements Logged {
             false));
 
     // Centerline ONLY
-    autoChooser.addOption("Centerline Down", new Centerline(subDrivetrain,
-        subIntake, subLEDs, subPitch, subShooter,
-        subTransfer, subTurret, subClimber, true));
-
     autoChooser.addOption("Centerline Up", new Centerline(subDrivetrain,
         subIntake, subLEDs, subPitch, subShooter,
         subTransfer, subTurret, subClimber, false));
