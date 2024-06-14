@@ -80,7 +80,14 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
             // Intake until we have the game piece
-            new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+            new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
+                .withTimeout(0.5),
+
+            Commands.runOnce(
+                () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+
+            Commands.runOnce(() -> subDrivetrain.resetYaw(
+                getInitialPose().get().getRotation().getDegrees())),
 
             // PRELOAD
             // Aim

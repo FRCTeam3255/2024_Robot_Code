@@ -41,11 +41,6 @@ public class Limelight extends SubsystemBase {
    * @return True if the estimate should be rejected
    */
   public boolean rejectUpdate(PoseEstimate poseEstimate, double gyroRate) {
-    // TODO: For Fairbotics, remove later
-    if (RobotState.isAutonomous() && FieldConstants.isRedAlliance()) {
-      return true;
-    }
-
     int[] blueTags = { 6, 7, 8, 9, 10, 14, 15, 16 };
     int[] redTags = { 1, 2, 3, 4, 5, 11, 12, 13 };
 

@@ -92,6 +92,12 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             // Intake until we have the game piece
             new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
+            Commands.runOnce(
+                () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+
+            Commands.runOnce(() -> subDrivetrain.resetYaw(
+                getInitialPose().get().getRotation().getDegrees())),
+
             // PRELOAD
             // Aim
             Commands.parallel(

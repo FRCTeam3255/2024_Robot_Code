@@ -69,9 +69,10 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees())),
 
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(1),
 
         // PRELOAD
         // Aim
@@ -79,15 +80,14 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
             Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle().getAsDouble()))
                 .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle().getAsDouble())),
             Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
-                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
-
-        Commands.runOnce(() -> subShooter.getUpToSpeed()),
+                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble())))
+            .withTimeout(1.3),
 
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()),
+            .until(() -> subTransfer.calcGPShotAuto()).withTimeout(2),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
         // Go get C5/1
@@ -164,8 +164,7 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   }
 
   public DoubleSupplier getTurretInitAngle() {
-    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 : 30.613)
-        : ((FieldConstants.isRedAlliance()) ? 0 : 0);
+    return () -> 0;
   }
 
   public DoubleSupplier getPitchInitAngle() {

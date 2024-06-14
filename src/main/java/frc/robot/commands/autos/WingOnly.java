@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
@@ -62,18 +63,22 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees())),
 
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
             prefShooter.rightShooterSpeakerVelocity.getValue())),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
-        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees())),
+
+        Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())),
 
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+        // new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch,
+        // subShooter, subClimber),
+
+        Commands.runOnce(() -> subTransfer.hasGamePiece = true),
 
         // PRELOAD
         // Aim
@@ -85,7 +90,7 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
 
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()),
+            .until(() -> subTransfer.calcGPShotAuto()).withTimeout(2),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
@@ -95,37 +100,38 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
+        Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
 
         // Get W3
         new PathPlannerAuto(determinePathName() + ".1"),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
-        Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(2),
+        Commands.waitUntil(() -> subTransfer.hasRepositioned == true).withTimeout(2),
 
         // SHOOT W3
         // Aim
-        new AimAuto(subPitch, subTurret, subDrivetrain),
+        new AimAuto(subPitch, subTurret, subDrivetrain).withTimeout(1),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()),
+            .until(() -> subTransfer.calcGPShotAuto()).withTimeout(2),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
 
         // GET W2
         new PathPlannerAuto(determinePathName() + ".2"),
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
-        Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(2),
+        Commands.waitUntil(() -> subTransfer.hasRepositioned == true).withTimeout(2),
 
         // SHOOT W2
         // Aim
-        new AimAuto(subPitch, subTurret, subDrivetrain),
+        new AimAuto(subPitch, subTurret, subDrivetrain).withTimeout(1),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()),
+            .until(() -> subTransfer.calcGPShotAuto()).withTimeout(2),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
@@ -133,16 +139,16 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         // GET W1
         new PathPlannerAuto(determinePathName() + ".3"),
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
-        Commands.waitUntil(() -> subTransfer.hasRepositioned == true),
+        Commands.waitUntil(() -> subTransfer.hasRepositioned == true).withTimeout(2),
 
         // SHOOT W1
         // Aim
-        new AimAuto(subPitch, subTurret, subDrivetrain),
+        new AimAuto(subPitch, subTurret, subDrivetrain).withTimeout(1),
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()),
+            .until(() -> subTransfer.calcGPShotAuto()).withTimeout(2),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferMotorSpeed(0)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)));
