@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
@@ -48,7 +47,7 @@ public class LockPitch extends Command {
   public void initialize() {
     desiredAngle = subPitch.getPitchAngle();
 
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS();
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

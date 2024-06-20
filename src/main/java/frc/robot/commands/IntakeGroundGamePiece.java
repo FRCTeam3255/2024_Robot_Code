@@ -7,8 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefClimber;
 import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefPitch;
@@ -68,6 +66,7 @@ public class IntakeGroundGamePiece extends Command {
       subClimber.setNeutralOutput();
     }
     if (subIntake.isPivotAtAngle(prefIntake.pivotGroundIntakeAngle.getValue())) {
+      subIntake.setPivotNeutralOutput();
       subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue());
     }
     subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue());
@@ -81,8 +80,6 @@ public class IntakeGroundGamePiece extends Command {
       subIntake.setRollerNeutralOutput();
     }
     if (!interrupted) {
-      subTransfer.repositionGamePiece();
-
       subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
           prefShooter.rightShooterSubVelocity.getValue());
       subShooter.getUpToSpeed();
@@ -95,6 +92,6 @@ public class IntakeGroundGamePiece extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.calcGamePieceCollected();
+    return subTransfer.calcGamePieceCollected(false);
   }
 }

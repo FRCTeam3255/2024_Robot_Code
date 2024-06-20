@@ -6,10 +6,15 @@ package frc.robot.commands.autos;
 
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
+import frc.robot.FieldConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -36,11 +41,24 @@ public class DefaultAuto extends SequentialCommandGroup implements AutoInterface
     this.subShooter = subShooter;
     this.subTransfer = subTransfer;
     this.subTurret = subTurret;
-    addCommands();
+
+    addCommands(
+        Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            getInitialPose().get().getRotation().getDegrees())),
+
+        new PathPlannerAuto(determinePathName()));
   }
 
   public Supplier<Pose2d> getInitialPose() {
-    return () -> new Pose2d();
+    return () -> (!FieldConstants.isRedAlliance())
+        ? PathPlannerAuto.getStaringPoseFromAutoFile(determinePathName())
+        : PathPlannerPath.fromPathFile(determinePathName()).flipPath().getPreviewStartingHolonomicPose();
+  }
+
+  public String determinePathName() {
+    return "YOINKER";
   }
 
   public Command getAutonomousCommand() {

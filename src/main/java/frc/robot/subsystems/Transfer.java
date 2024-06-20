@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,7 +33,13 @@ public class Transfer extends SubsystemBase implements Logged {
   @Log.NT
   double transferVelocity;
 
+  double feederHasGamePieceCurrent = prefTransfer.feederHasGamePieceCurrent.getValue();
+  double transferHasGamePieceCurrent = prefTransfer.transferHasGamePieceCurrent.getValue();
+  double transferHasGamePieceVelocity = prefTransfer.transferHasGamePieceVelocity.getValue();
+
   public boolean hasGamePiece;
+
+  public boolean hasRepositioned = false;
 
   public Transfer() {
     transferMotor = new TalonFX(mapTransfer.TRANSFER_MOTOR_CAN);
@@ -40,23 +48,6 @@ public class Transfer extends SubsystemBase implements Logged {
     transferCurrentLimitConfigs = new CurrentLimitsConfigs();
 
     configure();
-  }
-
-  public boolean intakeSourceGamePieceDetection() {
-    transferCurrent = transferMotor.getStatorCurrent().getValue();
-    transferVelocity = transferMotor.getVelocity().getValue();
-    feederCurrent = feederMotor.getStatorCurrent();
-
-    if (hasGamePiece ||
-        (feederCurrent <= prefTransfer.sourceFeederHasGamePieceCurrent.getValue())
-            && (transferCurrent >= prefTransfer.sourceTransferHasGamePieceCurrent.getValue())
-            && (transferVelocity <= prefTransfer.sourceTransferHasGamePieceVelocity.getValue())) {
-      hasGamePiece = true;
-    } else {
-      hasGamePiece = false;
-    }
-
-    return hasGamePiece;
   }
 
   public void configure() {
@@ -70,19 +61,36 @@ public class Transfer extends SubsystemBase implements Logged {
   /**
    * Calculates and sets the value of hasGamePiece based off of Transfer & Feeder
    * current & velocity. If we already have a game piece, this will return true
-   * without recalculating.
+   * without recalculating. Detection is more lenient during Auto.
    * 
+   * @param fromSource If we are intaking from Source
    * @return If we have a game piece.
    */
-  public boolean calcGamePieceCollected() {
+  public boolean calcGamePieceCollected(boolean fromSource) {
     transferCurrent = transferMotor.getStatorCurrent().getValue();
     feederCurrent = feederMotor.getStatorCurrent();
     transferVelocity = transferMotor.getVelocity().getValue();
 
+    feederHasGamePieceCurrent = prefTransfer.feederHasGamePieceCurrent.getValue();
+    transferHasGamePieceCurrent = prefTransfer.transferHasGamePieceCurrent.getValue();
+    transferHasGamePieceVelocity = prefTransfer.transferHasGamePieceVelocity.getValue();
+
+    if (fromSource) {
+      feederHasGamePieceCurrent = prefTransfer.sourceFeederHasGamePieceCurrent.getValue();
+      transferHasGamePieceCurrent = prefTransfer.sourceTransferHasGamePieceCurrent.getValue();
+      transferHasGamePieceVelocity = prefTransfer.sourceTransferHasGamePieceVelocity.getValue();
+    }
+
+    if (RobotState.isAutonomous()) {
+      feederHasGamePieceCurrent = prefTransfer.feederAutoHasGamePieceCurrent.getValue();
+      transferHasGamePieceCurrent = prefTransfer.transferAutoHasGamePieceCurrent.getValue();
+      transferHasGamePieceVelocity = prefTransfer.transferAutoHasGamePieceVelocity.getValue();
+    }
+
     if (hasGamePiece ||
-        (feederCurrent <= prefTransfer.feederHasGamePieceCurrent.getValue())
-            && (transferCurrent >= prefTransfer.transferHasGamePieceCurrent.getValue())
-            && (transferVelocity <= prefTransfer.transferHasGamePieceVelocity.getValue())) {
+        (feederCurrent <= feederHasGamePieceCurrent)
+            && (transferCurrent >= transferHasGamePieceCurrent)
+            && (transferVelocity <= transferHasGamePieceVelocity)) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
@@ -91,19 +99,10 @@ public class Transfer extends SubsystemBase implements Logged {
     return hasGamePiece;
   }
 
-  public void repositionGamePiece() {
-    double time = Timer.getFPGATimestamp();
+  public boolean calcGPShotAuto() {
+    double currentPosition = Units.rotationsToDegrees(transferMotor.getPosition().getValueAsDouble());
 
-    while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue()) {
-      setTransferMotorSpeed(prefTransfer.transferRepositionSpeed.getValue());
-    }
-
-    time = Timer.getFPGATimestamp();
-
-    while (Timer.getFPGATimestamp() <= time + prefTransfer.transferRepositionTime.getValue() / 2) {
-      setTransferMotorSpeed(-prefTransfer.transferRepositionSpeed.getValue());
-    }
-    setTransferNeutralOutput();
+    return currentPosition >= prefTransfer.transferRotationsShot.getValue();
   }
 
   /**
@@ -172,12 +171,24 @@ public class Transfer extends SubsystemBase implements Logged {
     transferMotor.setControl(new NeutralOut());
   }
 
+  /**
+   * Sets the current angle of the transfer motor to read as the given value
+   * 
+   * @param angle The angle to set the transfer motor to. <b> Units: </b> Degrees
+   */
+  public void setTransferSensorAngle(double angle) {
+    transferMotor.setPosition(Units.degreesToRotations(angle));
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Transfer/Feeder/Percent", getFeederMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Percent", getTransferMotorPercentOutput());
     SmartDashboard.putNumber("Transfer/Velocity RPM", transferMotor.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("Transfer/Transfer Rotations",
+        Units.rotationsToDegrees(transferMotor.getPosition().getValueAsDouble()));
+
     // Key is intentional - shows in SmartDashboard
-    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected());
+    SmartDashboard.putBoolean("Has Game Piece", calcGamePieceCollected(false));
   }
 }

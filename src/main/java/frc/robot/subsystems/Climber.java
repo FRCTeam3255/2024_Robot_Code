@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -97,10 +98,10 @@ public class Climber extends SubsystemBase {
    * 
    */
   public void setPosition(double position) {
+    desiredPosition = position;
+
     position = SN_Math.metersToRotations(MathUtil.clamp(position, prefClimber.climberMinPos.getValue(),
         prefClimber.climberMaxPos.getValue()), 1, 1);
-
-    desiredPosition = position;
 
     climberMotor.setControl(motionMagicPositionalRequest.withPosition(position));
   }
@@ -159,6 +160,10 @@ public class Climber extends SubsystemBase {
    */
   public double getPosition() {
     return SN_Math.rotationsToMeters(climberMotor.getPosition().getValueAsDouble(), 1, 1);
+  }
+
+  public double getDesiredPosition() {
+    return desiredPosition;
   }
 
   /**

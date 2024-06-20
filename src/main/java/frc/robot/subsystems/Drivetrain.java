@@ -12,12 +12,14 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.FieldConstants;
@@ -35,8 +37,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
   private static TalonFXConfiguration steerConfiguration = new TalonFXConfiguration();
   private static PIDController yawSnappingController;
 
-  // Struct logging - Allows for logging data that SmartDashboard alone can't log,
-  // but must be called on the variable's creation
   @Log.NT
   private static SwerveModuleState[] loggedDesiredStates;
   @Log.NT
@@ -83,20 +83,20 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
         constDrivetrain.DRIVE_NEUTRAL_MODE,
         constDrivetrain.STEER_NEUTRAL_MODE,
         VecBuilder.fill(
-            Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
-            Units.feetToMeters(prefDrivetrain.measurementStdDevsPosition.getValue()),
-            Units.degreesToRadians(prefDrivetrain.measurementStdDevsHeading.getValue())),
+            prefDrivetrain.measurementStdDevsPosition.getValue(),
+            prefDrivetrain.measurementStdDevsPosition.getValue(),
+            prefDrivetrain.measurementStdDevsHeading.getValue()),
         VecBuilder.fill(
-            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
-            Units.feetToMeters(prefVision.visionStdDevsPosition.getValue()),
-            Units.degreesToRadians(prefVision.visionStdDevsHeading.getValue())),
+            prefVision.multiTagStdDevsPosition.getValue(),
+            prefVision.multiTagStdDevsPosition.getValue(),
+            prefVision.multiTagStdDevsHeading.getValue()),
         new PIDConstants(prefDrivetrain.autoDriveP.getValue(),
             prefDrivetrain.autoDriveI.getValue(),
             prefDrivetrain.autoDriveD.getValue()),
         new PIDConstants(prefDrivetrain.autoSteerP.getValue(),
             prefDrivetrain.autoSteerI.getValue(),
             prefDrivetrain.autoSteerD.getValue()),
-        new ReplanningConfig(),
+        new ReplanningConfig(false, true),
         () -> FieldConstants.isRedAlliance(),
         Robot.isSimulation());
   }
@@ -155,6 +155,20 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     }
   }
 
+  public void setClimbMode() {
+    SwerveModuleState[] desiredStates = {
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(0)) };
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constDrivetrain.SWERVE_CONSTANTS.maxSpeedMeters);
+
+    for (SN_SwerveModule mod : modules) {
+      mod.setModuleState(desiredStates[mod.moduleNumber], true, true);
+    }
+  }
+
   /**
    * <p>
    * <b>Must be run periodically in order to function properly!</b>
@@ -175,8 +189,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    * @param timestamp     The timestamp of that pose estimate (not necessarily the
    *                      current timestamp)
    */
-  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp) {
-    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp);
+  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp, Vector<N3> stdevs) {
+    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp, stdevs);
   }
 
   /**

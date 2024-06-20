@@ -1,7 +1,6 @@
 package frc.robot;
 
 // Contains all ports on our robot
-
 public class RobotMap {
   public static final int IS_PRACTICE_BOT_DIO = 0;
 

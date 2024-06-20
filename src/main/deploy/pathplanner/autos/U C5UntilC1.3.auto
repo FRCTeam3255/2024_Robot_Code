@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 7.9,
+      "y": 4.11
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "U C5UntilC1.3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Centerline Up",
+  "choreoAuto": false
+}

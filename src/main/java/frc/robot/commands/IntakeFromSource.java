@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.RobotPreferences.prefTransfer;
@@ -44,7 +44,7 @@ public class IntakeFromSource extends Command {
     subShooter.setVoltage(prefShooter.leftShooterIntakeVoltage.getValue(),
         prefShooter.rightShooterIntakeVoltage.getValue());
 
-    subPitch.setPitchAngle(prefPitch.pitchSourceAngle.getValue());
+    subPitch.setPitchAngle(prefPitch.pitchIntakeShooterAngle.getValue());
     subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue());
   }
 
@@ -62,10 +62,7 @@ public class IntakeFromSource extends Command {
       subTransfer.setNeutralMode();
     }
     if (!interrupted) {
-      subTransfer.repositionGamePiece();
-
-      subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
-          prefShooter.rightShooterSubVelocity.getValue());
+      Commands.runOnce(() -> new RepositionGamePiece(subTransfer, subShooter));
     } else {
       subTransfer.setTransferNeutralOutput();
       subShooter.setDesiredVelocities(0, 0);
@@ -80,6 +77,6 @@ public class IntakeFromSource extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subTransfer.calcGamePieceCollected();
+    return subTransfer.calcGamePieceCollected(true);
   }
 }

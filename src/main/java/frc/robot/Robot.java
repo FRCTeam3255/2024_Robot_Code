@@ -39,6 +39,13 @@ public class Robot extends TimedRobot {
     // Log the DS data and joysticks
     DriverStation.startDataLog(DataLogManager.getLog(), true);
     DriverStation.silenceJoystickConnectionWarning(Constants.constRobot.SILENCE_JOYSTICK_WARNINGS);
+
+    SmartDashboard.putString("PRESET NAME", "None! :(");
+    SmartDashboard.putNumber("PRESET SHOOTER LEFT VELOCITY", 0);
+    SmartDashboard.putNumber("PRESET TURRET ANGLE", 0);
+    SmartDashboard.putNumber("PRESET HOOD ANGLE", 0);
+    SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
+
   }
 
   @Override
@@ -47,10 +54,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // Logging to SmartDashboard
-    // RobotContainer.logPDHValues();
-    RobotContainer.AddVisionMeasurement().schedule();
     RobotContainer.updateLoggedPoses();
-    SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
+    RobotContainer.AddVisionMeasurement();
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
   }
 
@@ -61,7 +66,9 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     FieldConstants.ALLIANCE = DriverStation.getAlliance();
-    m_robotContainer.setAutoPlacementLEDs(DriverStation.getAlliance());
+    SmartDashboard.putString("ALLIANCE", FieldConstants.ALLIANCE.toString());
+
+    m_robotContainer.setAutoPlacementLEDs(DriverStation.getAlliance(), hasAutonomousRun);
   }
 
   @Override
@@ -73,7 +80,6 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     RobotContainer.zeroClimber().schedule();
-    RobotContainer.stowIntakePivot().schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -96,7 +102,6 @@ public class Robot extends TimedRobot {
 
     if (!hasAutonomousRun) {
       RobotContainer.zeroClimber().schedule();
-      RobotContainer.stowIntakePivot().schedule();
     }
   }
 
