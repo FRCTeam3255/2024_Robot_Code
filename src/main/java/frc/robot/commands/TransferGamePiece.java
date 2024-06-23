@@ -75,7 +75,6 @@ public class TransferGamePiece extends Command {
         }
       }
     }
-    subTransfer.setTransferSensorAngle(0);
     subTransfer.setFeederMotorSpeed(0);
     subTransfer.setTransferMotorSpeed(0);
     return;

@@ -45,7 +45,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("PRESET TURRET ANGLE", 0);
     SmartDashboard.putNumber("PRESET HOOD ANGLE", 0);
     SmartDashboard.putBoolean("Is Practice Bot", RobotContainer.isPracticeBot());
-
   }
 
   @Override
@@ -55,8 +54,9 @@ public class Robot extends TimedRobot {
 
     // Logging to SmartDashboard
     RobotContainer.updateLoggedPoses();
-    RobotContainer.AddVisionMeasurement();
     SmartDashboard.putString("Current Locked Location", RobotContainer.getLockedLocation().toString());
+
+    RobotContainer.AddVisionMeasurement().schedule();
   }
 
   @Override

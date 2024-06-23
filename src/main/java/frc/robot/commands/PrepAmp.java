@@ -76,7 +76,7 @@ public class PrepAmp extends Command {
     if (!interrupted) {
       RobotContainer.setLockedLocation(LockedLocation.AMP);
       subIntake.setPivotAngle(prefIntake.pivotPlaceAmpAngle.getValue());
-      subClimber.setPosition(Units.feetToMeters(0.4));
+      subClimber.setPosition(0.055);
 
     } else {
       subTurret.setTurretAngle(lastHoodAngle);

@@ -33,6 +33,11 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class constClimber {
+    /*
+     * <b>Units:</b> Seconds
+     */
+    public static final double ZEROING_TIMEOUT = 3;
+
     public static final double GEAR_RATIO = 133.0739;
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final GravityTypeValue GRAVITY_TYPE = GravityTypeValue.Elevator_Static;
@@ -105,7 +110,7 @@ public final class Constants {
 
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.KRAKEN.L3.steerGearRatio,
-        0.10033 * Math.PI,
+        0.09779 * Math.PI,
         SN_SwerveConstants.MK4I.KRAKEN.L3.driveGearRatio,
         SN_SwerveConstants.MK4I.KRAKEN.L3.maxSpeedMeters);
 
@@ -129,7 +134,8 @@ public final class Constants {
   }
 
   public static class constIntake {
-    public static final double ABS_ENCODER_OFFSET = 0.384;
+    public static final double ABS_ENCODER_OFFSET = 0.376984;
+    
     public static final boolean ABS_ENCODER_INVERT = true;
     public static final double GEAR_RATIO = 28.13;
     public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;
@@ -174,6 +180,11 @@ public final class Constants {
     public static final NeutralModeValue PITCH_NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
     public static final boolean INVERT = false;
 
+    /*
+     * <b>Units:</b> Seconds
+     */
+    public static final double ZEROING_TIMEOUT = 3;
+
     /**
      * The position, in meters, of the center of rotation for the pitch motor
      * relative to the center of the robot (Robot Coordinates).
@@ -200,18 +211,24 @@ public final class Constants {
      */
     public static final InterpolatingDoubleTreeMap DISTANCE_MAP = new InterpolatingDoubleTreeMap();
 
-    // Comments indicate where we placed the robot directly in line with the SPEAKER
-    // to get the value
     static {
-      DISTANCE_MAP.put(1.3373, 56.0); // Subwoofer
-      DISTANCE_MAP.put(2.295, 41.0); // Starting Line
-      DISTANCE_MAP.put(3.3073, 31.0); // Spike Mark
-      DISTANCE_MAP.put(4.6173, 25.5); // Mid Wing
-      DISTANCE_MAP.put(6.2296, 20.6995); // Edge Wing, value sponsored by NOMAD
-      DISTANCE_MAP.put(6.5973, 19.9); // Mid Centerline
-      DISTANCE_MAP.put(8.6973, 18.3255); // Edge Centerline, value sponsored by us :D
-
-      // edge of bumper to center of turret = 42.29cm = 0.4229 m
+      DISTANCE_MAP.put(1.2827, 55.0);
+      DISTANCE_MAP.put(1.5875, 53.0);
+      DISTANCE_MAP.put(1.8923, 47.0);
+      DISTANCE_MAP.put(2.1971, 41.5);
+      DISTANCE_MAP.put(2.5019, 36.5);
+      DISTANCE_MAP.put(2.8067, 34.0);
+      DISTANCE_MAP.put(3.1115, 32.0);
+      DISTANCE_MAP.put(3.4163, 30.0);
+      DISTANCE_MAP.put(3.7211, 28.5);
+      DISTANCE_MAP.put(4.0259, 27.0);
+      DISTANCE_MAP.put(4.3307, 25.0);
+      DISTANCE_MAP.put(4.6355, 24.5);
+      DISTANCE_MAP.put(4.9403, 23.0);
+      DISTANCE_MAP.put(5.2451, 22.0);
+      DISTANCE_MAP.put(5.5499, 21.5);
+      DISTANCE_MAP.put(5.8547, 21.0);
+      DISTANCE_MAP.put(6.1595, 20.5);
     }
 
     /**
@@ -298,35 +315,14 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String AR_NAME = "Global_Shutter_Camera";
-    public static final String OV_NAME = "Arducam_OV9281_USB_Camera";
+    // These aren't used anywhere in code. They get put into the MegaTag setup
+    private static final double LL_FORWARD = 0.3302;
+    private static final double LL_RIGHT = -0.2921;
+    private static final double LL_UP = 0.2286;
 
-    /**
-     * The position, in meters, of the center of the camera lens relative to the
-     * center of the robot (Robot Coordinates).
-     * 
-     * @see <a href=
-     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
-     *      Coordinate System</a>
-     */
-    public static final Transform3d ROBOT_TO_OV = new Transform3d(
-        new Translation3d(Units.inchesToMeters(14.5) - 0.045, -(Units.inchesToMeters(14.5) - 0.114),
-            Units.inchesToMeters(8.125)),
-        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(-19)));
-
-    /**
-     * The position, in meters, of the center of the camera lens relative to the
-     * center of the robot (Robot Coordinates).
-     * 
-     * @see <a href=
-     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">Robot
-     *      Coordinate System</a>
-     */
-    public static final Transform3d ROBOT_TO_AR = new Transform3d(
-        new Translation3d(Units.inchesToMeters(14.5) - 0.045, Units.inchesToMeters(14.5) - 0.114,
-            Units.inchesToMeters(8.125)),
-        new Rotation3d(0, Units.degreesToRadians(-19), Units.degreesToRadians(19)));
-
+    private static final double LL_ROLL = 0;
+    private static final double LL_PITCH = 15.92;
+    private static final double LL_YAW = -20;
   }
 
   public static class constTransfer {

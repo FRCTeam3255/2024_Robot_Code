@@ -40,8 +40,6 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   Turret subTurret;
   Climber subClimber;
 
-  double FIELD_LENGTH = FieldConstants.FIELD_LENGTH;
-
   boolean goesDown = false;
 
   /**
@@ -71,6 +69,8 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
+
+        new PathPlannerAuto(determinePathName() + ".1").withTimeout(0.01),
 
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),

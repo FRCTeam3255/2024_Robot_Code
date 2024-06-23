@@ -48,8 +48,8 @@ public class LockTurret extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // This is in initialize in case the alliance changes after command init
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
+    // This is in execute in case the alliance changes after command init
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS(false).get();
     robotPose = subDrivetrain.getPose();
 
     Optional<Rotation2d> calculatedAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,

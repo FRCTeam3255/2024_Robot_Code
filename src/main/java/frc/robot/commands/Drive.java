@@ -28,6 +28,21 @@ public class Drive extends Command {
   Pose3d[] fieldPositions;
   Pose2d sourcePose, leftStage, rightStage, centerStage;
 
+  /**
+   * @param subDrivetrain
+   * @param xAxis         When positive, drive the robot towards the red alliance
+   * @param yAxis         When positive, drive the robot towards the judging
+   *                      tables
+   * @param rotationAxis  When positive, turn counterclockwise
+   * @param slowMode
+   * @param northTrigger
+   * @param eastTrigger
+   * @param southTrigger
+   * @param westTrigger
+   * @param sourceTrigger
+   * @param trapTrigger
+   * @param isPracticeBot
+   */
   public Drive(
       Drivetrain subDrivetrain,
       DoubleSupplier xAxis,
@@ -64,7 +79,7 @@ public class Drive extends Command {
   @Override
   public void initialize() {
     driveSpeed = (isPracticeBot) ? constDrivetrain.pracBot.DRIVE_SPEED : constDrivetrain.DRIVE_SPEED;
-    fieldPositions = FieldConstants.GET_FIELD_POSITIONS().get();
+    fieldPositions = FieldConstants.GET_FIELD_POSITIONS(false).get();
 
     sourcePose = fieldPositions[2].toPose2d();
     leftStage = fieldPositions[3].toPose2d();
@@ -81,8 +96,8 @@ public class Drive extends Command {
     }
 
     xVelocity = (xAxis.getAsDouble() * driveSpeed) * slowMultiplier;
-    yVelocity = (-yAxis.getAsDouble() * driveSpeed) * slowMultiplier;
-    rVelocity = -rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
+    yVelocity = (yAxis.getAsDouble() * driveSpeed) * slowMultiplier;
+    rVelocity = rotationAxis.getAsDouble() * Units.degreesToRadians(prefDrivetrain.turnSpeed.getValue());
 
     translationVelocity = new Translation2d(xVelocity, yVelocity).times(slowMultiplier);
 
