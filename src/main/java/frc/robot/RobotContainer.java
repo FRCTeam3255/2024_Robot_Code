@@ -63,6 +63,7 @@ import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
+import frc.robot.commands.autos.Fairbotics1pc;
 import frc.robot.commands.autos.PreloadOnly;
 import frc.robot.commands.autos.PreloadTaxi;
 import frc.robot.commands.autos.WingOnly;
@@ -328,6 +329,9 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
+    autoChooser.setDefaultOption("FAIRBOTICS",
+        new Fairbotics1pc(subShooter, subIntake, subPitch, subTurret, subTransfer, subClimber, subLEDs));
+
     // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
@@ -364,7 +368,7 @@ public class RobotContainer implements Logged {
             false));
 
     // Wing ONLY
-    autoChooser.setDefaultOption("Wing Only Down",
+    autoChooser.addOption("Wing Only Down",
         new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             true));
 
