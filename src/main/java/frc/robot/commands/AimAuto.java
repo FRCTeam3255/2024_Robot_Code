@@ -53,7 +53,7 @@ public class AimAuto extends Command {
     desiredPitchAngle = subPitch.getPitchAngle();
     desiredTurretAngle = Rotation2d.fromDegrees(subTurret.getAngle());
 
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS(true).get();
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

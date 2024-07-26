@@ -63,7 +63,6 @@ import frc.robot.commands.ZeroPitch;
 import frc.robot.commands.ZeroTurret;
 import frc.robot.commands.autos.AutoInterface;
 import frc.robot.commands.autos.DefaultAuto;
-import frc.robot.commands.autos.Fairbotics1pc;
 import frc.robot.commands.autos.PreloadOnly;
 import frc.robot.commands.autos.PreloadTaxi;
 import frc.robot.commands.autos.WingOnly;
@@ -180,7 +179,7 @@ public class RobotContainer implements Logged {
     // Reset Pose
     controller.btn_South
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS(false).get()[6].toPose2d()))
+            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d()))
             .alongWith(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE))));
 
     controller.btn_LeftTrigger
@@ -329,9 +328,6 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("FAIRBOTICS",
-        new Fairbotics1pc(subShooter, subIntake, subPitch, subTurret, subTransfer, subClimber, subLEDs));
-
     // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
@@ -368,7 +364,7 @@ public class RobotContainer implements Logged {
             false));
 
     // Wing ONLY
-    autoChooser.addOption("Wing Only Down",
+    autoChooser.setDefaultOption("Wing Only Down",
         new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             true));
 

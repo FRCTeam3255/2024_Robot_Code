@@ -20,7 +20,6 @@ public class FieldConstants {
   /**
    * <b> Units: </b> Meters
    */
-  // public static double FIELD_LENGTH = 12.85875;
   public static double FIELD_LENGTH = 16.541;
 
   /**
@@ -33,14 +32,8 @@ public class FieldConstants {
    * @return An array of field element positions. Your Speaker, Amp, Source, Left
    *         Stage, Center Stage, Right Stage, Subwoofer, Shuffle
    */
-  public static Supplier<Pose3d[]> GET_FIELD_POSITIONS(boolean fairbotics) {
+  public static Supplier<Pose3d[]> GET_FIELD_POSITIONS() {
     if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-      if (fairbotics) {
-        return () -> new Pose3d[] { redConstants.FAIRBOTICS_SPEAKER, redConstants.AMP, redConstants.SOURCE,
-            redConstants.LEFT_STAGE,
-            redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, redConstants.SUBWOOFER, redConstants.SHUFFLE };
-
-      }
       return () -> new Pose3d[] { redConstants.SPEAKER_CENTER, redConstants.AMP, redConstants.SOURCE,
           redConstants.LEFT_STAGE,
           redConstants.CENTER_STAGE, redConstants.RIGHT_STAGE, redConstants.SUBWOOFER, redConstants.SHUFFLE };
@@ -103,12 +96,6 @@ public class FieldConstants {
      * The coordinate of the center of the red speaker, in meters
      */
     private static final Pose3d SPEAKER_CENTER = new Pose3d(FIELD_LENGTH - (0.457 / 2), 5.557034, 2.105 - (0.133 / 2),
-        new Rotation3d(0, 0, 0));
-
-    /**
-     * The coordinate of the center of the red speaker, in meters
-     */
-    private static final Pose3d FAIRBOTICS_SPEAKER = new Pose3d(16.541 - (0.457 / 2), 5.557034, 2.105 - (0.133 / 2),
         new Rotation3d(0, 0, 0));
 
     /**

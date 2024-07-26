@@ -49,7 +49,7 @@ public class LockTurret extends Command {
   @Override
   public void execute() {
     // This is in execute in case the alliance changes after command init
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS(false).get();
+    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
     robotPose = subDrivetrain.getPose();
 
     Optional<Rotation2d> calculatedAngle = subTurret.getDesiredAngleToLock(robotPose, fieldPoses,
