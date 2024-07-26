@@ -58,10 +58,10 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
     this.goesDown = goesDown;
 
     addCommands(
-        Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
+        Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
 
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
             prefShooter.rightShooterSpeakerVelocity.getValue())),
@@ -69,8 +69,6 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-
-        new PathPlannerAuto(determinePathName() + ".1").withTimeout(0.01),
 
         // Intake until we have the game piece
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),

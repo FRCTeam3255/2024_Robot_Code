@@ -75,11 +75,10 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     this.shoots = shoots;
 
     addCommands(
-        Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-
         Commands.runOnce(() -> subDrivetrain.resetYaw(
             getInitialPose().get().getRotation().getDegrees())),
+        Commands.runOnce(
+            () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
 
         Commands.sequence(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
@@ -94,9 +93,6 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
             Commands.runOnce(
                 () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-
-            Commands.runOnce(() -> subDrivetrain.resetYaw(
-                getInitialPose().get().getRotation().getDegrees())),
 
             // PRELOAD
             // Aim
