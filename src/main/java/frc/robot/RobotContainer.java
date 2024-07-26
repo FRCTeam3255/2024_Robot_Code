@@ -328,6 +328,15 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
+    // Wing ONLY
+    autoChooser.setDefaultOption("Wing Only Down",
+        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            true));
+
+    autoChooser.addOption("Wing Only Up",
+        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            false));
+
     // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
@@ -361,15 +370,6 @@ public class RobotContainer implements Logged {
     // Taxi ONLY
     autoChooser.addOption("Taxi S5",
         new PreloadTaxi(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            false));
-
-    // Wing ONLY
-    autoChooser.setDefaultOption("Wing Only Down",
-        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            true));
-
-    autoChooser.addOption("Wing Only Up",
-        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             false));
 
     // Centerline ONLY
