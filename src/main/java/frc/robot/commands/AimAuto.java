@@ -33,9 +33,6 @@ public class AimAuto extends Command {
 
   double desiredPitchAngle;
   Rotation2d desiredTurretAngle;
-
-  Optional<Alliance> alliance = DriverStation.getAlliance();
-
   Pose3d[] fieldPoses;
   Pose3d speakerPose;
   Pose3d ampPose;
@@ -48,8 +45,6 @@ public class AimAuto extends Command {
     this.subDrivetrain = subDrivetrain;
 
     addRequirements(subPitch, subTurret);
-
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -64,9 +59,6 @@ public class AimAuto extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    fieldPoses = FieldConstants.GET_FIELD_POSITIONS().get();
-    SmartDashboard.putString("SPEAKER according to AUTO AIM!!", fieldPoses[0].toString());
-
     // AIM PITCH
     robotPose = subDrivetrain.getPose();
 

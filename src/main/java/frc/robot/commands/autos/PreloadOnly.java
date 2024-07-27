@@ -15,8 +15,10 @@ import frc.robot.Constants.LockedLocation;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AimAuto;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.TransferGamePiece;
+import frc.robot.commands.UnaliveShooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -40,20 +42,18 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
   int startingPosition = 0;
   // BLUE
-  Pose2d S1B = new Pose2d(0.602, 6.747, Rotation2d.fromRadians(-2.094));
-  Pose2d S2B = new Pose2d(1.360, 5.563, Rotation2d.fromRadians(3.142));
-  Pose2d S3B = new Pose2d(0.602, 4.348, Rotation2d.fromRadians(2.094395));
-  Pose2d S4B = new Pose2d(1.438, 3.359, Rotation2d.fromRadians(3.142));
-  Pose2d S5B = new Pose2d(1.438, 2.059, Rotation2d.fromRadians(3.142));
-  Pose2d[] startingPositionsBlue = { S1B, S2B, S3B, S4B, S5B };
+  Pose2d S1B = new Pose2d(0.602, 6.747, Rotation2d.fromDegrees(-120));
+  Pose2d S2B = new Pose2d(1.360, 5.563, Rotation2d.fromDegrees(180));
+  Pose2d S3B = new Pose2d(0.602, 4.348, Rotation2d.fromDegrees(120));
+  Pose2d S4B = new Pose2d(1.438, 3.359, Rotation2d.fromDegrees(180));
+  Pose2d[] startingPositionsBlue = { S1B, S2B, S3B, S4B };
 
   // RED
-  Pose2d S1R = new Pose2d(FIELD_LENGTH - 0.602, 6.747, Rotation2d.fromRadians(-2.68780728));
-  Pose2d S2R = new Pose2d(FIELD_LENGTH - 1.360, 5.563, Rotation2d.fromRadians(0));
-  Pose2d S3R = new Pose2d(FIELD_LENGTH - 0.602, 4.348, Rotation2d.fromRadians(2.68780728));
-  Pose2d S4R = new Pose2d(FIELD_LENGTH - 1.438, 3.359, Rotation2d.fromRadians(0));
-  Pose2d S5R = new Pose2d(FIELD_LENGTH - 1.438, 2.059, Rotation2d.fromRadians(0));
-  Pose2d[] startingPositionsRed = { S1R, S2R, S3R, S4R, S5R };
+  Pose2d S1R = new Pose2d(FIELD_LENGTH - 0.602, 6.747, Rotation2d.fromDegrees(-210));
+  Pose2d S2R = new Pose2d(FIELD_LENGTH - 1.360, 5.563, Rotation2d.fromDegrees(0));
+  Pose2d S3R = new Pose2d(FIELD_LENGTH - 0.602, 4.348, Rotation2d.fromDegrees(30));
+  Pose2d S4R = new Pose2d(FIELD_LENGTH - 1.438, 3.359, Rotation2d.fromDegrees(0));
+  Pose2d[] startingPositionsRed = { S1R, S2R, S3R, S4R };
 
   boolean shoots = true;
 
@@ -75,14 +75,10 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
     this.shoots = shoots;
 
     addCommands(
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            getInitialPose().get().getRotation().getDegrees())),
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())).unless(() -> FieldConstants.isRedAlliance()),
-
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees() - 180)).unless(() -> !FieldConstants.isRedAlliance()),
 
         Commands.sequence(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
@@ -94,6 +90,9 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
 
             // Intake until we have the game piece
             new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
+
+            Commands.runOnce(
+                () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
 
             // PRELOAD
             // Aim
@@ -108,9 +107,9 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             // Shoot
             new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
                 .until(() -> subTransfer.calcGPShotAuto()),
-            Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))).unless(() -> !shoots)
 
-    );
+            new UnaliveShooter(subShooter, subTurret, subPitch, subLEDs),
+            Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0))).unless(() -> !shoots));
   }
 
   public Supplier<Pose2d> getInitialPose() {
@@ -130,8 +129,6 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         return 0 * isRed;
       case 3: // S4
         return -61.712 * isRed;
-      case 4: // S5 (We've NEVER run this one)
-        return -3255 * isRed;
       default:
         return -3255 * isRed;
 
@@ -148,8 +145,6 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         return 55;
       case 3: // S4
         return 38.453;
-      case 4: // S5 (We've NEVER run this one)
-        return -3255;
       default:
         return -3255;
     }

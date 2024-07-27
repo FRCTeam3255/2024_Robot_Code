@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
@@ -12,15 +14,14 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.FieldConstants;
 import frc.robot.Robot;
@@ -189,8 +190,8 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
    * @param timestamp     The timestamp of that pose estimate (not necessarily the
    *                      current timestamp)
    */
-  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp, Vector<N3> stdevs) {
-    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp, stdevs);
+  public void addVisionMeasurement(Pose2d estimatedPose, double timestamp) {
+    swervePoseEstimator.addVisionMeasurement(estimatedPose, timestamp);
   }
 
   /**
@@ -231,6 +232,26 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     } else {
       return rightStagePose.getRotation();
     }
+  }
+
+  /**
+   * @return The current rate of rotation for the Pigeon 2. <b>Units:</b> Degrees
+   *         per Second
+   */
+  public double getGyroRate() {
+    return pigeon.getRate();
+  }
+
+  /**
+   * Resets the driving orientation depending on alliance.
+   * 
+   * @param alliance
+   */
+  public void resetDriving(Optional<Alliance> alliance) {
+    if (alliance.isPresent() && alliance.get().equals(Alliance.Red)) {
+      resetYaw();
+    }
+    resetYaw(180);
   }
 
   @Override

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 import com.frcteam3255.joystick.SN_SwitchboardStick;
@@ -27,7 +28,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constLEDs;
+import frc.robot.Constants.constPitch;
 import frc.robot.Constants.constRobot;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefClimber;
@@ -70,11 +73,11 @@ import monologue.Annotations.Log;
 import monologue.Logged;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pitch;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Transfer;
 import frc.robot.subsystems.Turret;
-import frc.robot.subsystems.Vision;
 
 public class RobotContainer implements Logged {
   // Misc
@@ -96,7 +99,7 @@ public class RobotContainer implements Logged {
   private final static Shooter subShooter = new Shooter();
   private final static Turret subTurret = new Turret();
   private final static Transfer subTransfer = new Transfer();
-  private final static Vision subVision = new Vision();
+  private final static Limelight subLimelight = new Limelight();
 
   Trigger repositionTrigger = new Trigger(() -> subTransfer.calcGamePieceCollected(false));
   SendableChooser<AutoInterface> autoChooser = new SendableChooser<>();
@@ -131,8 +134,8 @@ public class RobotContainer implements Logged {
         .setDefaultCommand(new Drive(
             subDrivetrain,
             conDriver.axis_LeftY,
-            conDriver.axis_LeftX,
-            conDriver.axis_RightX,
+            () -> -conDriver.axis_LeftX.getAsDouble(),
+            () -> -conDriver.axis_RightX.getAsDouble(),
             conDriver.btn_LeftBumper,
             conDriver.btn_Y,
             conDriver.btn_B,
@@ -171,12 +174,13 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetYaw()));
+    controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE)));
 
     // Reset Pose
     controller.btn_South
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
+            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d()))
+            .alongWith(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE))));
 
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
@@ -324,9 +328,14 @@ public class RobotContainer implements Logged {
   }
 
   private void configureAutoSelector() {
-    // PRELOAD ONLY
-    autoChooser.addOption("Disruptor",
-        new DefaultAuto(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret));
+    // Wing ONLY
+    autoChooser.setDefaultOption("Wing Only Down",
+        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            true));
+
+    autoChooser.addOption("Wing Only Up",
+        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
+            false));
 
     // PRELOAD ONLY
     autoChooser.addOption("Preload S1",
@@ -352,9 +361,6 @@ public class RobotContainer implements Logged {
     autoChooser.addOption("NO SHOOT S4",
         new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             3, false));
-    autoChooser.addOption("NO SHOOT S5",
-        new PreloadOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            4, false));
 
     // Taxi + Preload
     autoChooser.addOption("Taxi + Preload S4",
@@ -366,20 +372,7 @@ public class RobotContainer implements Logged {
         new PreloadTaxi(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
             false));
 
-    // Wing ONLY
-    autoChooser.setDefaultOption("Wing Only Down",
-        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            true));
-
-    autoChooser.addOption("Wing Only Up",
-        new WingOnly(subDrivetrain, subIntake, subLEDs, subPitch, subShooter, subTransfer, subTurret, subClimber,
-            false));
-
     // Centerline ONLY
-    autoChooser.addOption("Centerline Down", new Centerline(subDrivetrain,
-        subIntake, subLEDs, subPitch, subShooter,
-        subTransfer, subTurret, subClimber, true));
-
     autoChooser.addOption("Centerline Up", new Centerline(subDrivetrain,
         subIntake, subLEDs, subPitch, subShooter,
         subTransfer, subTurret, subClimber, false));
@@ -439,8 +432,6 @@ public class RobotContainer implements Logged {
     }
   }
 
-  // --- PDH ---
-
   /**
    * Enable or disable whether the switchable channel on the PDH is supplied
    * power.
@@ -451,7 +442,6 @@ public class RobotContainer implements Logged {
     PDH.setSwitchableChannel(isPowered);
   }
 
-  // --- Locking Logic ---
   public static void setLockedLocation(LockedLocation location) {
     lockedLocation = location;
   }
@@ -466,39 +456,37 @@ public class RobotContainer implements Logged {
   /**
    * Returns the command to zero the pitch. This will make the pitch move itself
    * downwards until it sees a current spike and cancel any incoming commands that
-   * require the pitch motor. If the zeroing does not end within 3 seconds, it
-   * will interrupt itself.
+   * require the pitch motor. If the zeroing does not end within a certain time
+   * frame (set in constants), it will interrupt itself.
    * 
    * @return The command to zero the pitch
    */
   public static Command zeroPitch() {
-    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withTimeout(3);
+    return new ZeroPitch(subPitch).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
+        .withTimeout(constPitch.ZEROING_TIMEOUT);
   }
 
   /**
    * Returns the command to zero the climber. This will make the climber move
    * itself
    * downwards until it sees a current spike and cancel any incoming commands that
-   * require the pitch motor. If the zeroing does not end within 3 seconds, it
-   * will interrupt itself.
+   * require the pitch motor. If the zeroing does not end within a certain time
+   * frame (set in constants), it will interrupt itself.
    * 
    * @return The command to zero the pitch
    */
   public static Command zeroClimber() {
     return new ZeroClimber(subClimber).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming)
-        .withTimeout(3);
+        .withTimeout(constClimber.ZEROING_TIMEOUT);
   }
 
-  public static Command stowIntakePivot() {
-    return Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotStowAngle.getValue()))
-        .unless(() -> subIntake.getPivotAngle() > prefIntake.pivotStowAngle.getValue());
+  public static Command AddVisionMeasurement() {
+    return new AddVisionMeasurement(subDrivetrain, subLimelight)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
   }
 
   public void setAutoPlacementLEDs(Optional<Alliance> alliance, boolean hasAutoRun) {
     startingPosition = autoChooser.getSelected().getInitialPose().get();
-    if (!hasAutoRun) {
-      subDrivetrain.resetPoseToPose(startingPosition);
-    }
 
     double desiredStartingPositionX = startingPosition.getX();
     double desiredStartingPositionY = startingPosition.getY();
@@ -574,8 +562,4 @@ public class RobotContainer implements Logged {
     }
   }
 
-  public static Command AddVisionMeasurement() {
-    return new AddVisionMeasurement(subDrivetrain,
-        subVision).ignoringDisable(true);
-  }
 }
