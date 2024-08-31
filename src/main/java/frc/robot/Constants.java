@@ -135,7 +135,7 @@ public final class Constants {
 
   public static class constIntake {
     public static final double ABS_ENCODER_OFFSET = 0.376984;
-    
+
     public static final boolean ABS_ENCODER_INVERT = true;
     public static final double GEAR_RATIO = 28.13;
     public static final NeutralModeValue PIVOT_NEUTRAL_MODE = NeutralModeValue.Brake;
@@ -275,6 +275,8 @@ public final class Constants {
 
     public static final boolean LEFT_INVERT = true;
     public static final boolean RIGHT_INVERT = false;
+
+    public static final Rotation2d SHOOTER_TO_ROBOT = Rotation2d.fromDegrees(180);
   }
 
   public static class constTurret {
@@ -287,7 +289,7 @@ public final class Constants {
     public static final double GEAR_RATIO = 39;
     public static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
-    public static final double ABS_ENCODER_OFFSET = 0.011700;
+    public static final double ABS_ENCODER_OFFSET = 0.012675;
     public static final boolean ABS_ENCODER_INVERT = false;
 
     public static final InvertedValue MOTOR_INVERTED = InvertedValue.CounterClockwise_Positive;
