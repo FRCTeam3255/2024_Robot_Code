@@ -613,14 +613,14 @@ public class RobotPreferences {
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceCurrent = new SN_DoublePreference(
-        "transferHasGamePieceCurrent", 6);
+        "transferHasGamePieceCurrent", 8);
 
     /**
      * The value that the transfer velocity must be <b>BELOW</b> to have a Game
      * Piece
      */
     public static final SN_DoublePreference transferHasGamePieceVelocity = new SN_DoublePreference(
-        "transferHasGamePieceVelocity", 18);
+        "transferHasGamePieceVelocity", 15);
 
     // We are more lenient with game piece detection in auto since we end the auto
     // early with a false negative (Also our current is usually super high)
