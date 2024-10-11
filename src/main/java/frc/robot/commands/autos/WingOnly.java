@@ -40,6 +40,8 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   Turret subTurret;
   Climber subClimber;
 
+  double FIELD_LENGTH = FieldConstants.FIELD_LENGTH;
+
   boolean goesDown = false;
 
   /**
@@ -58,10 +60,10 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
     this.goesDown = goesDown;
 
     addCommands(
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
+        Commands.runOnce(() -> subDrivetrain.resetYaw(
+            getInitialPose().get().getRotation().getDegrees())),
 
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
             prefShooter.rightShooterSpeakerVelocity.getValue())),
