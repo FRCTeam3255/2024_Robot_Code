@@ -80,6 +80,7 @@ public class IntakeGroundGamePiece extends Command {
       subIntake.setRollerNeutralOutput();
     }
     if (!interrupted) {
+      subTransfer.repositionGamePiece();
       subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
           prefShooter.rightShooterSubVelocity.getValue());
       subShooter.getUpToSpeed();

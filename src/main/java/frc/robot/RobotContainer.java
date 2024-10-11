@@ -174,13 +174,10 @@ public class RobotContainer implements Logged {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_North.onTrue(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE)));
-
     // Reset Pose
     controller.btn_South
         .onTrue(Commands.runOnce(
-            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d()))
-            .alongWith(Commands.runOnce(() -> subDrivetrain.resetDriving(FieldConstants.ALLIANCE))));
+            () -> subDrivetrain.resetPoseToPose(FieldConstants.GET_FIELD_POSITIONS().get()[6].toPose2d())));
 
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())))
@@ -207,8 +204,6 @@ public class RobotContainer implements Logged {
             .unless(() -> RobotContainer.getLockedLocation() != LockedLocation.AMP))
         .whileTrue(new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
             .unless(() -> subTransfer.hasGamePiece));
-
-    repositionTrigger.onTrue(new RepositionGamePiece(subTransfer, subShooter));
 
     // Left Bumper = Enable both Manuals
     // Left Stick = Manual Hood

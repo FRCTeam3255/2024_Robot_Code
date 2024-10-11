@@ -40,6 +40,8 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   Turret subTurret;
   Climber subClimber;
 
+  double FIELD_LENGTH = FieldConstants.FIELD_LENGTH;
+
   boolean goesDown = false;
 
   /**
@@ -60,8 +62,6 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
 
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
             prefShooter.rightShooterSpeakerVelocity.getValue())),
@@ -69,10 +69,9 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
         Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
         Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-        Commands.runOnce(() -> subDrivetrain.resetYaw(getInitialPose().get().getRotation().getDegrees())),
 
         // Intake until we have the game piece
-        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber).withTimeout(1),
+        new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
         // PRELOAD
         // Aim
@@ -80,14 +79,15 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
             Commands.run(() -> subTurret.setTurretAngle(getTurretInitAngle().getAsDouble()))
                 .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle().getAsDouble())),
             Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle().getAsDouble()))
-                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble())))
-            .withTimeout(1.3),
+                .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle().getAsDouble()))),
+
+        Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
         Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
         // Shoot
         new TransferGamePiece(subShooter, subTurret, subTransfer, subPitch, subIntake, subClimber)
-            .until(() -> subTransfer.calcGPShotAuto()).withTimeout(2),
+            .until(() -> subTransfer.calcGPShotAuto()),
         Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
         // Go get C5/1
@@ -137,9 +137,11 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
                     .until(() -> subTransfer.calcGPShotAuto()),
                 Commands.runOnce(() -> subIntake.setIntakeRollerSpeed(0)),
 
+                // Return to centerline (C3)
                 new PathPlannerAuto(determineScorePathName() + ".4")),
 
-            Commands.waitSeconds(1),
+            // Hop to C3
+            new PathPlannerAuto(determineHopPathName() + ".2"),
             () -> subTransfer.hasGamePiece)
 
     );
@@ -164,7 +166,8 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
   }
 
   public DoubleSupplier getTurretInitAngle() {
-    return () -> 0;
+    return () -> (goesDown) ? ((FieldConstants.isRedAlliance()) ? -30.613 : 30.613)
+        : ((FieldConstants.isRedAlliance()) ? 0 : 0);
   }
 
   public DoubleSupplier getPitchInitAngle() {

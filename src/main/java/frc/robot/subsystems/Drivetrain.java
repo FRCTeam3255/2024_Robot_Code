@@ -242,18 +242,6 @@ public class Drivetrain extends SN_SuperSwerve implements Logged {
     return pigeon.getRate();
   }
 
-  /**
-   * Resets the driving orientation depending on alliance.
-   * 
-   * @param alliance
-   */
-  public void resetDriving(Optional<Alliance> alliance) {
-    if (alliance.isPresent() && alliance.get().equals(Alliance.Red)) {
-      resetYaw();
-    }
-    resetYaw(180);
-  }
-
   @Override
   public void periodic() {
     super.periodic();

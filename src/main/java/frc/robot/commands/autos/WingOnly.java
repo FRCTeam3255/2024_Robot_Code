@@ -11,11 +11,16 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LockedLocation;
+import frc.robot.RobotPreferences.prefIntake;
+import frc.robot.RobotPreferences.prefPitch;
 import frc.robot.RobotPreferences.prefShooter;
+import frc.robot.RobotPreferences.prefTransfer;
+import frc.robot.RobotPreferences.prefTurret;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.AimAuto;
@@ -40,6 +45,8 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
   Turret subTurret;
   Climber subClimber;
 
+  double FIELD_LENGTH = FieldConstants.FIELD_LENGTH;
+
   boolean goesDown = false;
 
   /**
@@ -58,8 +65,6 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
     this.goesDown = goesDown;
 
     addCommands(
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
 
@@ -71,6 +76,35 @@ public class WingOnly extends SequentialCommandGroup implements AutoInterface {
         Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
         // Intake until we have the game piece
+        // this hurts. im so sorry. the intaking command randomly broke. do not follow
+        // this example. i have officially lost it
+        // Commands.parallel(
+        // Commands.runOnce(() ->
+        // subTurret.setTurretAngle(prefTurret.turretIntakePos.getValue())),
+        // Commands.runOnce(
+        // () ->
+        // subPitch.setPitchAngle(Units.rotationsToDegrees(prefPitch.pitchReverseLimit.getValue()))),
+        // Commands.runOnce(() ->
+        // subIntake.setPivotAngle(prefIntake.pivotGroundIntakeAngle.getValue())),
+        // Commands.runOnce(() ->
+        // subIntake.setIntakeRollerSpeed(prefIntake.rollerIntakeSpeed.getValue())),
+        // Commands
+        // .runOnce(() ->
+        // subTransfer.setTransferMotorSpeed(prefTransfer.transferIntakeGroundSpeed.getValue())),
+        // Commands.runOnce(() ->
+        // subTransfer.setFeederMotorSpeed(prefTransfer.feederIntakeGroundSpeed.getValue()))),
+
+        // Commands.waitUntil(() -> subTransfer.calcGamePieceCollected(false)),
+
+        // Commands.parallel(
+        // Commands.runOnce(() -> subIntake.setRollerNeutralOutput()),
+        // Commands.runOnce(() ->
+        // subShooter.setDesiredVelocities(prefShooter.leftShooterSubVelocity.getValue(),
+        // prefShooter.rightShooterSubVelocity.getValue())),
+        // Commands.runOnce(() -> subShooter.getUpToSpeed()),
+        // Commands.runOnce(() -> subTransfer.setTransferNeutralOutput()),
+        // Commands.runOnce(() -> subTransfer.setFeederNeutralOutput())),
+
         new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
         // PRELOAD
