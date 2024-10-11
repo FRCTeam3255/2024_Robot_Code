@@ -67,8 +67,6 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
 
         Commands.sequence(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
@@ -77,9 +75,6 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
             Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
             Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-
-            // Intake until we have the game piece
-            new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
             // PRELOAD
             // Aim

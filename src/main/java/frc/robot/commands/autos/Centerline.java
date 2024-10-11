@@ -62,8 +62,6 @@ public class Centerline extends SequentialCommandGroup implements AutoInterface 
     addCommands(
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
 
         Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
             prefShooter.rightShooterSpeakerVelocity.getValue())),

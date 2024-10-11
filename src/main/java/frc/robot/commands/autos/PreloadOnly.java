@@ -78,12 +78,6 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
 
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())).unless(() -> FieldConstants.isRedAlliance()),
-
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees() - 180)).unless(() -> !FieldConstants.isRedAlliance()),
-
         Commands.sequence(
             Commands.runOnce(() -> subShooter.setDesiredVelocities(prefShooter.leftShooterSpeakerVelocity.getValue(),
                 prefShooter.rightShooterSpeakerVelocity.getValue())),
@@ -91,9 +85,6 @@ public class PreloadOnly extends SequentialCommandGroup implements AutoInterface
             Commands.runOnce(() -> RobotContainer.setLockedLocation(LockedLocation.SPEAKER)),
             Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
-
-            // Intake until we have the game piece
-            new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber),
 
             // PRELOAD
             // Aim
