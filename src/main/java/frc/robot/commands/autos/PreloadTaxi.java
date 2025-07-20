@@ -18,7 +18,6 @@ import frc.robot.RobotPreferences.prefIntake;
 import frc.robot.RobotPreferences.prefShooter;
 import frc.robot.FieldConstants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.AimAuto;
 import frc.robot.commands.IntakeGroundGamePiece;
 import frc.robot.commands.TransferGamePiece;
 import frc.robot.commands.UnaliveShooter;
@@ -66,8 +65,6 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
     this.shoots = shoots;
 
     addCommands(
-        Commands.runOnce(() -> subDrivetrain.resetYaw(
-            getInitialPose().get().getRotation().getDegrees())),
         Commands.runOnce(
             () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
 
@@ -79,16 +76,6 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
             Commands.runOnce(() -> subTransfer.setTransferSensorAngle(0)),
             Commands.runOnce(() -> subShooter.setIgnoreFlywheelSpeed(false)),
 
-            // Intake until we have the game piece
-            new IntakeGroundGamePiece(subIntake, subTransfer, subTurret, subPitch, subShooter, subClimber)
-                .withTimeout(0.5),
-
-            Commands.runOnce(
-                () -> subDrivetrain.resetPoseToPose(getInitialPose().get())),
-
-            Commands.runOnce(() -> subDrivetrain.resetYaw(
-                getInitialPose().get().getRotation().getDegrees())),
-
             // PRELOAD
             // Aim
             Commands.parallel(
@@ -96,6 +83,7 @@ public class PreloadTaxi extends SequentialCommandGroup implements AutoInterface
                     .until(() -> subTurret.isTurretAtAngle(getTurretInitAngle())),
                 Commands.run(() -> subPitch.setPitchAngle(getPitchInitAngle()))
                     .until(() -> subPitch.isPitchAtAngle(getPitchInitAngle()))),
+
             Commands.runOnce(() -> subShooter.getUpToSpeed()),
 
             // Shoot
